@@ -37,9 +37,9 @@ function getSupportMenuElement (chakraComponent: ChakraComponent<any>, styles: S
       borderRadius: "1rem",
       w: "100%",
       mx: "auto",
-      textAlign: "center",
+      textAlign: "left",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "start",
       ...styles
     }
   })
@@ -56,7 +56,7 @@ export default function SupportNav({ navItemComponent, navItemStyles }: {
       <Flex flexDir="column" gap="2rem" pb="2rem">
         {
           supportLinks.map((link) => (
-            <SupportMenuComponent onClick={() => router.push(link.href)}>
+            <SupportMenuComponent key={link.name} onClick={() => router.push(link.href)}>
               {link.name}
             </SupportMenuComponent>
           ))

@@ -60,7 +60,7 @@ export default function PublicNavigation() {
               <LoginButton />
               <SignupButton />
               <SupportNav navItemComponent={Button} navItemStyles={{
-                px: "2.3rem", py: "1.045rem", height: "unset"
+                px: "2.3rem", py: "1.045rem", height: "unset", justifyContent: "center"
               }} />
             </DrawerBody>
           </DrawerContent>

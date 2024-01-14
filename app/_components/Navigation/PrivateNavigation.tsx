@@ -85,7 +85,7 @@ function MainPrivateNav({ toggleShowMore }: {
         <PrivateMenuDivider />
         {
           privateLinks.map((link, idx, arr) => (
-            <Show below={link.showBelow}>
+            <Show key={link.name} below={link.showBelow}>
               <PrivateMenuItem onClick={() => router.push(link.href)}>
                 <PrivateMenuIcon as={link.icon} />
                 {link.name}
