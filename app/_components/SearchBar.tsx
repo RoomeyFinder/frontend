@@ -62,7 +62,13 @@ function SearchIconButton() {
       background="white.200"
       h="3rem"
       p=".5rem"
-      rounded=".8rem">
+      rounded=".8rem"
+      color="#707070"
+      transition="all 500ms ease"
+      _hover={{
+        bg: "brand.main",
+        color: "white.main"
+      }}>
       <SearchIcon />
     </Flex>
   )
