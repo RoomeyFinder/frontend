@@ -28,7 +28,7 @@ export default function PrivateNavigation() {
 }
 
 function PrivateNavigationDropDown() {
-  const { isOpen: showSupportNav, onToggle } = useDisclosure()
+  const { isOpen: showSupportNav, onToggle: onToggleShowSupportNav } = useDisclosure()
   return (
     <>
       <Menu>
@@ -56,9 +56,9 @@ function PrivateNavigationDropDown() {
             <MenuList
               overflow="hidden" w="95dvw" maxW="30rem" rounded="1rem" boxShadow="md" border="none" padding="0" borderTop="1px solid" borderTopColor="white.200" >
               {showSupportNav ?
-                <SubPrivateNav toggleHideMore={onToggle}/>
+                <SubPrivateNav toggleHideMore={onToggleShowSupportNav}/>
                 :
-                <MainPrivateNav toggleShowMore={onToggle} />}
+                <MainPrivateNav toggleShowMore={onToggleShowSupportNav} />}
             </MenuList>
           </>
         )}
