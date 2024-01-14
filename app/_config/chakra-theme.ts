@@ -1,5 +1,6 @@
 
 import { extendTheme } from '@chakra-ui/react'
+import * as components from "./chakra-components"
 
 const colors = {
   white: {
@@ -14,6 +15,7 @@ const colors = {
   brand: {
     main: '#3A86FF',
     10: "#3A86FF1A",
+    25: "#3A86FF40",
     50: "#3A86FF80",
     100: "#5DB8EA",
   },
@@ -39,6 +41,39 @@ const fonts = {
   heading: `Proxima Nova, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
 }
 
-const theme = extendTheme({ colors, fonts, })
+const fontSizes = {
+  xs: "0.75rem",
+  sm: "0.875rem",
+  md: "1rem",
+  lg: "1.125rem",
+  xl: "1.25rem",
+  "2xl": "1.5rem",
+  "3xl": "1.875rem",
+  "4xl": "2.25rem",
+  "5xl": "3rem",
+  "6xl": "3.75rem",
+  "7xl": "4.5rem",
+  "8xl": "6rem",
+  "9xl": "8rem",
+}
+
+const breakpoints = {
+  base: '0em',
+  sm: '30em',
+  md: '62em',
+  lg: '74em',
+  xl: '86em',
+  '2xl': '104em',
+}
+
+const theme = extendTheme({ 
+  colors, 
+  fonts,
+  fontSizes,
+  breakpoints,
+  components: {
+    ...components
+  }
+})
 
 export default theme
