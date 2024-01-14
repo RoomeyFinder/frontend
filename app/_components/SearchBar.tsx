@@ -1,11 +1,11 @@
 "use client"
-import { Box, Button, Flex, InputProps, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, RadioGroup, Show, Text } from "@chakra-ui/react";
+import { Box, Flex, InputProps, Show, Text } from "@chakra-ui/react";
 import { Input } from '@chakra-ui/react'
-import DownChevron from "../_assets/DownChevron";
 import SearchIcon from "../_assets/SearchIcon";
 import { useMemo, useState } from "react";
 import PersonIcon from "../_assets/PersonIcon";
 import HouseIcon from "../_assets/HouseIcon";
+import DropDownWithChevron from "./DropDownWithChevron";
 
 export default function SearchBar() {
   const [searchText, setSearchText] = useState("")
@@ -87,60 +87,52 @@ function SearchOptionsDropDown({
 }) {
   const options = useMemo(() => Object.entries(lookingForOptions), [])
   return (
-    <Popover placement='top-start'>
-      {({ isOpen, onClose }) => (
-        <>
-          <PopoverTrigger>
-            <Flex
-              as="button" type="button"
-              alignItems="center"
-              justifyContent="center"
-              gap="1rem"
-              rounded=".8rem"
-              p={{ base: "1rem", md: "0" }}
-              border="1px"
-              borderStyle="solid"
-              borderColor="white.200"
-              flexBasis="100%"
-              maxW={{ base: "15%", md: "25%" }}
-              height={{ base: "auto", md: "3rem" }}
-              color={isOpen ? "black" : "gray.main"}
-            >
-              <Show above="md">
-                <Text as="span" fontSize="1.6rem" textTransform="capitalize" textAlign="right">{selectedValue.length ? <>{selectedValue}</> : <>Find</>}</Text>
-              </Show>
-              <Box transition="transform 250ms ease" transform={isOpen ? "rotateX(180deg)" : "rotate(0deg)"}>
-                <DownChevron />
-              </Box>
-            </Flex>
-          </PopoverTrigger>
-          <PopoverContent border="none" borderRadius=".8rem" maxW="12.5rem">
-            <PopoverBody
-              bg="white.main"
-              padding="1rem 2.4rem"
-              boxShadow="0px 0px 0.5px 0px rgba(0, 0, 0, 0.11)"
-              flexDir="column" justifyContent="center"
-              alignItems="start" gap=".91rem" as={Flex}>
-              {
-                options.map(([lookingFor, icon]) => (
-                  <Flex _hover={{ color: "black" }} as="button" 
+    <Box maxW={{ base: "15%", md: "25%" }} flexBasis="100%">
+      <DropDownWithChevron
+        DropdownTrigger={() =>
+        (<Show above="md">
+          <Text height={{ base: "auto", md: "3rem" }} display="flex" alignItems="center" as="span" fontSize="1.6rem" textTransform="capitalize" textAlign="right">{selectedValue.length ? <>{selectedValue}</> : <>Find</>}</Text>
+        </Show>)}
+        DropdownContent={({ onClose }) => (
+          <Flex
+            bg="white.main"
+            width="fit-content"
+            padding="1rem 2.4rem"
+            borderRadius=".8rem" maxW="12.5rem"
+            boxShadow="0px 0px 0.5px 0px rgba(0, 0, 0, 0.11)"
+            flexDir="column" justifyContent="center"
+            alignItems="start" gap=".91rem">
+            {options.map(([lookingFor, icon]) => (
+                <LookingForOption 
+                  key={lookingFor} 
                   onClick={() => {
                     handleSelect(lookingFor as "rooms" | "roomies")
                     onClose()
                   }}
-                    type="button" alignItems="center" gap=".5rem" key={lookingFor}>
-                    <Box as="span">{icon}</Box>
-                    <Box
-                      as="span" lineHeight="1" color="gray.100" fontSize="1.6rem"
-                      fontWeight="600" textTransform="capitalize">
-                      {lookingFor} </Box>
-                  </Flex>
-                ))
-              }
-            </PopoverBody>
-          </PopoverContent>
-        </>
-      )}
-    </Popover>
+                  lookingFor={lookingFor} 
+                  icon={icon}/>
+              ))}
+          </Flex>
+        )}
+      />
+    </Box>
+  )
+}
+
+function LookingForOption({ lookingFor, icon, onClick }: {
+  lookingFor: string
+  icon: any
+  onClick: () => void
+}){
+  return (
+    <Flex color="gray.100" _hover={{ color: "black" }} as="button"
+      onClick={onClick}
+      type="button" alignItems="center" gap=".5rem" key={lookingFor}>
+      <Box as="span">{icon}</Box>
+      <Box
+        as="span" lineHeight="1" fontSize="1.6rem"
+        fontWeight="600" textTransform="capitalize">
+        {lookingFor} </Box>
+    </Flex>
   )
 }
