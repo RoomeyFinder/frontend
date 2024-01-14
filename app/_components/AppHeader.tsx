@@ -20,7 +20,7 @@ export default function AppHeader() {
       <Flex width={{ base: "60%", md: "75%" }} maxW="50rem" justifyContent="center" alignItems="center">
         <SearchBar />
       </Flex>
-      <Navigation isAuthenticated={!true} />
+      <Navigation isAuthenticated={true} />
     </Flex>
   )
 }

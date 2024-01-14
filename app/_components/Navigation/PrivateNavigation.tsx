@@ -9,6 +9,7 @@ import NotificationIcon from "@/app/_assets/NotificationIcon"
 import SupportNav, { baseNavItemStyles } from "./SupportNavList"
 import { privateLinks } from "./data"
 import { useRouter } from "next/navigation"
+import StandAloneIcon from "../StandaloneIcon"
 
 
 
@@ -17,8 +18,8 @@ export default function PrivateNavigation() {
     <Flex alignItems="center" gap="2rem">
       <Show above="md">
         <Flex gap="2rem">
-          <Link href="/chat"><MessageIcon /></Link>
-          <Link href="/notifications"><NotificationIcon /></Link>
+          <Link href="/chat"><StandAloneIcon><MessageIcon /></StandAloneIcon></Link>
+          <Link href="/notifications"><StandAloneIcon><NotificationIcon /></StandAloneIcon></Link>
         </Flex>
       </Show>
       <PrivateNavigationDropDown />
@@ -155,7 +156,7 @@ const PrivateMenuDivider = chakra(MenuDivider, {
     borderBottomColor: "white.200"
   },
 })
-const PrivateMenuIcon = chakra(Icon, {
+const PrivateMenuIcon = chakra(StandAloneIcon, {
   baseStyle: {
     padding: '1.3rem',
     color: 'gray.main',

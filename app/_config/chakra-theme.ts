@@ -1,6 +1,7 @@
 
 import { extendTheme } from '@chakra-ui/react'
 import * as components from "./chakra-components"
+import * as customComponents from "./custom-chakra-components"
 
 const colors = {
   white: {
@@ -72,7 +73,8 @@ const theme = extendTheme({
   fontSizes,
   breakpoints,
   components: {
-    ...components
+    ...components,
+    ...customComponents
   }
 })
 
