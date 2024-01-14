@@ -1,11 +1,10 @@
 import ChakraUIProvider from './_providers/chakra-ui'
 import type { Metadata } from 'next'
 import './globals.css'
+import appendSharedMetaData from "./_metadata"
+import GlobalLayout from "./_components/GlobalLayout"
 
-export const metadata: Metadata = {
-  title: 'RoomeyFinder',
-  description: 'Helping Nigerian students find roommates who are schoolmates with ease.',
-}
+export const metadata: Metadata = appendSharedMetaData({})
 
 export default function RootLayout({
   children,
@@ -16,7 +15,9 @@ export default function RootLayout({
     <html lang="en">
         <body>
           <ChakraUIProvider>
-            {children}
+            <GlobalLayout>
+              {children}
+            </GlobalLayout>
           </ChakraUIProvider >
         </body>
     </html>
