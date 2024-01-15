@@ -1,4 +1,4 @@
-import { defineStyleConfig } from "@chakra-ui/react";
+import { defineStyleConfig } from "@chakra-ui/react"
 
 export const StandAloneIcon = defineStyleConfig({
   baseStyle: {
@@ -31,15 +31,15 @@ export const BrandButton = defineStyleConfig({
     _hover: { 
       filter: "brightness(115%)",
       textDecor: "none"
-     },
+    },
   },
   variants: {
     "sm": {
-      fontSize: '1.6rem',
+      fontSize: "1.6rem",
       borderRadius: "1rem"
     },
     "rounded-md": {
-      fontSize: '1.9rem',
+      fontSize: "1.9rem",
       borderRadius: "1.2rem"
     },
   }

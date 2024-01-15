@@ -158,8 +158,8 @@ const PrivateMenuDivider = chakra(MenuDivider, {
 })
 const PrivateMenuIcon = chakra(StandAloneIcon, {
   baseStyle: {
-    padding: '1.3rem',
-    color: 'gray.main',
+    padding: "1.3rem",
+    color: "gray.main",
     fontSize: { base: "1.4rem", md: "1.6rem" }
   },
 })

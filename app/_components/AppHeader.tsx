@@ -1,8 +1,8 @@
-import { Flex, } from "@chakra-ui/react";
-import AppLogo from "./Logo";
-import SearchBar from "./SearchBar";
-import Navigation from "./Navigation/Navigation";
-import Link from "next/link";
+import { Flex, } from "@chakra-ui/react"
+import AppLogo from "./Logo"
+import SearchBar from "./SearchBar"
+import Navigation from "./Navigation/Navigation"
+import Link from "next/link"
 
 
 

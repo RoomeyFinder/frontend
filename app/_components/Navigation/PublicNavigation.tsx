@@ -1,9 +1,9 @@
-import HamburgerIcon from "@/app/_assets/HamburgerIcon";
-import { HStack, Show, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex, IconButton, useDisclosure, Link, CloseButton } from "@chakra-ui/react";
-import { useRef } from "react";
-import AppLogo from "../Logo";
-import SupportNav from "./SupportNavList";
-import BrandButton from "../BrandButton";
+import HamburgerIcon from "@/app/_assets/HamburgerIcon"
+import { HStack, Show, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex, IconButton, useDisclosure, Link, CloseButton } from "@chakra-ui/react"
+import { useRef } from "react"
+import AppLogo from "../Logo"
+import SupportNav from "./SupportNavList"
+import BrandButton from "../BrandButton"
 
 const SignupButton = () => {
   return (<BrandButton
@@ -11,7 +11,7 @@ const SignupButton = () => {
     py="1.045rem"
     as={Link} href="/signup"
     variant={"sm"}
-    >Sign up</BrandButton>)
+  >Sign up</BrandButton>)
 }
 const LoginButton = () => {
   return <Link href="/login" fontWeight="600" textAlign={{ base: "center", md: "right" }} fontSize="1.6rem">Login</Link>
@@ -52,7 +52,7 @@ export default function PublicNavigation() {
             <Flex justifyContent="space-between" mb="2rem" w="100%" maxW="60rem" mx="auto" alignItems="center">
               <AppLogo showTextLogo="base" />
               <CloseButton borderRadius="0" _hover={{ bg: "brand.10", color: "brand.main" }} 
-              onClick={onClose} size="lg" justifyContent="center" ml="auto" mr="2rem" />
+                onClick={onClose} size="lg" justifyContent="center" ml="auto" mr="2rem" />
             </Flex>
             <DrawerBody display="flex" flexDir="column" gap="1.5rem" w="100%" maxW="60rem" mx="auto">
               <LoginButton />

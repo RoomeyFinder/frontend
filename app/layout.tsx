@@ -1,6 +1,6 @@
-import ChakraUIProvider from './_providers/chakra-ui'
-import type { Metadata } from 'next'
-import './globals.css'
+import ChakraUIProvider from "./_providers/chakra-ui"
+import type { Metadata } from "next"
+import "./globals.css"
 import appendSharedMetaData from "./_metadata"
 import GlobalLayout from "./_components/GlobalLayout"
 
@@ -13,13 +13,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-        <body>
-          <ChakraUIProvider>
-            <GlobalLayout>
-              {children}
-            </GlobalLayout>
-          </ChakraUIProvider >
-        </body>
+      <body>
+        <ChakraUIProvider>
+          <GlobalLayout>
+            {children}
+          </GlobalLayout>
+        </ChakraUIProvider >
+      </body>
     </html>
   )
 }

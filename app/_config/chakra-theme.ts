@@ -1,5 +1,5 @@
 
-import { extendTheme } from '@chakra-ui/react'
+import { extendTheme } from "@chakra-ui/react"
 import * as components from "./chakra-components"
 import * as customComponents from "./custom-chakra-components"
 
@@ -14,7 +14,7 @@ const colors = {
 
   },
   brand: {
-    main: '#3A86FF',
+    main: "#3A86FF",
     10: "#3A86FF1A",
     25: "#3A86FF40",
     50: "#3A86FF80",
@@ -38,8 +38,8 @@ const colors = {
 }
 
 const fonts = {
-  body: `Proxima Nova, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
-  heading: `Proxima Nova, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
+  body: "Proxima Nova, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+  heading: "Proxima Nova, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
 }
 
 const fontSizes = {
@@ -59,12 +59,12 @@ const fontSizes = {
 }
 
 const breakpoints = {
-  base: '0em',
-  sm: '40em',
-  md: '62em',
-  lg: '74em',
-  xl: '86em',
-  '2xl': '104em',
+  base: "0em",
+  sm: "40em",
+  md: "62em",
+  lg: "74em",
+  xl: "86em",
+  "2xl": "104em",
 }
 
 const theme = extendTheme({ 

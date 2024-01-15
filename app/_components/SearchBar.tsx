@@ -1,14 +1,13 @@
 "use client"
-import { Box, Flex, InputProps, Show, Text } from "@chakra-ui/react";
-import { Input } from '@chakra-ui/react'
-import SearchIcon from "../_assets/SearchIcon";
-import { useMemo, useState } from "react";
-import PersonIcon from "../_assets/PersonIcon";
-import HouseIcon from "../_assets/HouseIcon";
-import DropDownWithChevron from "./DropDownWithChevron";
+import { Box, Flex, InputProps, Show, Text } from "@chakra-ui/react"
+import { Input } from "@chakra-ui/react"
+import SearchIcon from "../_assets/SearchIcon"
+import { ReactNode, useMemo, useState } from "react"
+import PersonIcon from "../_assets/PersonIcon"
+import HouseIcon from "../_assets/HouseIcon"
+import DropDownWithChevron from "./DropDownWithChevron"
 
 export default function SearchBar() {
-  const [searchText, setSearchText] = useState("")
   const [lookingFor, setLookingFor] = useState<"rooms" | "roomies" | "">("")
 
   return (
@@ -90,9 +89,9 @@ function SearchOptionsDropDown({
     <Box maxW={{ base: "15%", md: "25%" }} flexBasis="100%">
       <DropDownWithChevron
         DropdownTrigger={() =>
-        (<Show above="md">
-          <Text height={{ base: "auto", md: "3rem" }} display="flex" alignItems="center" as="span" fontSize="1.6rem" textTransform="capitalize" textAlign="right">{selectedValue.length ? <>{selectedValue}</> : <>Find</>}</Text>
-        </Show>)}
+          (<Show above="md">
+            <Text height={{ base: "auto", md: "3rem" }} display="flex" alignItems="center" as="span" fontSize="1.6rem" textTransform="capitalize" textAlign="right">{selectedValue.length ? <>{selectedValue}</> : <>Find</>}</Text>
+          </Show>)}
         DropdownContent={({ onClose }) => (
           <Flex
             bg="white.main"
@@ -103,15 +102,15 @@ function SearchOptionsDropDown({
             flexDir="column" justifyContent="center"
             alignItems="start" gap=".91rem">
             {options.map(([lookingFor, icon]) => (
-                <LookingForOption 
-                  key={lookingFor} 
-                  onClick={() => {
-                    handleSelect(lookingFor as "rooms" | "roomies")
-                    onClose()
-                  }}
-                  lookingFor={lookingFor} 
-                  icon={icon}/>
-              ))}
+              <LookingForOption 
+                key={lookingFor} 
+                onClick={() => {
+                  handleSelect(lookingFor as "rooms" | "roomies")
+                  onClose()
+                }}
+                lookingFor={lookingFor} 
+                icon={icon}/>
+            ))}
           </Flex>
         )}
       />
@@ -121,7 +120,7 @@ function SearchOptionsDropDown({
 
 function LookingForOption({ lookingFor, icon, onClick }: {
   lookingFor: string
-  icon: any
+  icon: ReactNode
   onClick: () => void
 }){
   return (

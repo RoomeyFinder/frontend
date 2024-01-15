@@ -1,9 +1,8 @@
 
+import { Box, useStyleConfig, BoxProps } from "@chakra-ui/react"
 
-import { Box, useStyleConfig } from '@chakra-ui/react'
-
-export default function StandAloneIcon(props: any) {
+export default function StandAloneIcon(props: BoxProps & { variant: string }) {
   const { variant, ...rest } = props
-  const styles = useStyleConfig('StandAloneIcon', { variant })
+  const styles = useStyleConfig("StandAloneIcon", { variant })
   return <Box __css={styles} {...rest} />
 }

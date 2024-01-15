@@ -1,10 +1,10 @@
-import { Metadata } from "next";
+import { Metadata } from "next"
 
 export default function appendSharedMetaData(metadataBase: Metadata): Metadata {
   return ({
     ...metadataBase,
-    title: 'RoomeyFinder | Find a roommate',
-    description: 'Helping Nigerian students find roommates who are schoolmates with ease.',
+    title: "RoomeyFinder | Find a roommate",
+    description: "Helping Nigerian students find roommates who are schoolmates with ease.",
     openGraph: {
       type: "website",
       url: "https://roomeyfinder.com",

@@ -1,4 +1,4 @@
-import { ChakraComponent, Flex, SystemStyleObject, chakra } from "@chakra-ui/react"
+import { BoxProps, ChakraComponent, Flex, SystemStyleObject, chakra, Box } from "@chakra-ui/react"
 import { supportLinks } from "./data"
 import { useRouter } from "next/navigation"
 
@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation"
 export const baseNavItemStyles = {
   bg: "transparent",
   width: "100%",
-  p: '1.3rem',
-  color: 'gray.main',
+  p: "1.3rem",
+  color: "gray.main",
   fontSize: { base: "1.4rem", md: "1.6rem" },
   display: "flex",
   alignItems: "center",
@@ -29,7 +29,7 @@ export const baseNavItemStyles = {
   }
 }
 
-function getSupportMenuElement (chakraComponent: ChakraComponent<any>, styles: SystemStyleObject) {
+function getSupportMenuElement (chakraComponent: ChakraComponent<never, BoxProps>, styles: SystemStyleObject) {
   return chakra(chakraComponent, {
     baseStyle: {
       ...baseNavItemStyles,
@@ -46,11 +46,11 @@ function getSupportMenuElement (chakraComponent: ChakraComponent<any>, styles: S
 }
 
 export default function SupportNav({ navItemComponent, navItemStyles }: {
-  navItemComponent: ChakraComponent<any>,
+  navItemComponent: ChakraComponent<never, BoxProps>,
   navItemStyles?: SystemStyleObject
 }) {
   const router = useRouter()
-  const SupportMenuComponent = getSupportMenuElement(navItemComponent, navItemStyles || {})
+  const SupportMenuComponent = getSupportMenuElement(navItemComponent, navItemStyles || {}) as ChakraComponent<typeof Box, BoxProps>
   return (
     <>
       <Flex flexDir="column" gap="2rem" pb="2rem">

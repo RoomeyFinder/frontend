@@ -1,27 +1,27 @@
-import { defineStyleConfig } from '@chakra-ui/react'
+import { defineStyleConfig } from "@chakra-ui/react"
 
 export const Button = defineStyleConfig({
   baseStyle: {
-    fontWeight: '600',
-    borderRadius: '1rem',
+    fontWeight: "600",
+    borderRadius: "1rem",
     cursor: "pointer"
   },
   sizes: {
     sm: {
-      fontSize: '1.6rem',
+      fontSize: "1.6rem",
     },
     md: {
-      fontSize: '1.9rem',
+      fontSize: "1.9rem",
     },
   },
   variants: {
     filled: {
-      color: 'white.main',
+      color: "white.main",
       background: "brand.main",
     },
   },
   defaultProps: {
-    size: 'sm',
+    size: "sm",
   },
 })
 

@@ -1,9 +1,9 @@
 "use client"
-import { Box, Divider, Flex, Link, LinkProps, List, ListItem, Text } from "@chakra-ui/react";
-import CopyrightIcon from "../_assets/CopyrightIcon";
-import { footerLinks, footerSubLinks, socialMediaLinks } from "./Navigation/data";
-import ListItemMarker from "../_assets/ListItemMarker";
-import StandAloneIcon from "./StandaloneIcon";
+import { Box, Divider, Flex, Link, LinkProps, List, ListItem, Text } from "@chakra-ui/react"
+import CopyrightIcon from "../_assets/CopyrightIcon"
+import { footerLinks, footerSubLinks, socialMediaLinks } from "./Navigation/data"
+import ListItemMarker from "../_assets/ListItemMarker"
+import StandAloneIcon from "./StandaloneIcon"
 
 
 
@@ -68,7 +68,7 @@ function FooterLink({ href, children, ...rest}: LinkProps){
         color: "black"
       }}
       {...rest}
-      >
+    >
       {children}
     </Link>
   )
