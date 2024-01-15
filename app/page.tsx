@@ -1,8 +1,7 @@
-import {  Text } from "@chakra-ui/react"
 
 export default function Home() {
   return (
-    <Text>
-    </Text>
+    <h1>
+    </h1>
   )
 }
