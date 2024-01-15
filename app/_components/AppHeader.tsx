@@ -10,6 +10,8 @@ export default function AppHeader() {
   return (
     <Flex
       as="header"
+      position="sticky"
+      top="0"
       height="7.4%"
       justifyContent="space-between"
       px={{ base: "3.125%", md: "3.125%" }}

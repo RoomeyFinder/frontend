@@ -60,7 +60,7 @@ const fontSizes = {
 
 const breakpoints = {
   base: '0em',
-  sm: '30em',
+  sm: '40em',
   md: '62em',
   lg: '74em',
   xl: '86em',

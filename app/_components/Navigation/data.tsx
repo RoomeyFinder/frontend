@@ -1,9 +1,12 @@
 import EditIcon from "@/app/_assets/EditIcon"
+import FacebookIcon from "@/app/_assets/FacebookIcon"
 import GrowthIcon from "@/app/_assets/GrowthIcon"
 import HeartIcon from "@/app/_assets/HeartIcon"
 import HeartShineIcon from "@/app/_assets/HeartShineIcon"
+import InstagramIcon from "@/app/_assets/InstagramIcon"
 import MessageIcon from "@/app/_assets/MessageIcon"
 import NotificationIcon from "@/app/_assets/NotificationIcon"
+import XIcon from "@/app/_assets/XIcon"
 
 export const privateLinks = [
   {
@@ -66,5 +69,61 @@ export const supportLinks = [
   {
     name: "Contact",
     href: "/contact",
+  },
+]
+
+export const footerLinks = [
+  {
+    name: "Home",
+    href: "/"
+  },
+  {
+    name: "About",
+    href: "/about"
+  },
+  {
+    name: "Contact",
+    href: "/contact"
+  },
+  {
+    name: "Legal",
+    href: "/legal"
+  },
+  {
+    name: "Help Center",
+    href: "/help"
+  },
+  {
+    name: "Testimonials",
+    href: "/testimonials"
+  },
+]
+
+export const footerSubLinks = [
+  {
+    name: "Privacy Policy",
+    href: "/privacy-policy"
+  },
+  {
+    name: "Blog",
+    href: "/blog"
+  },
+]
+
+export const socialMediaLinks = [
+  {
+    name: "facebook",
+    href: "https://web.facebook.com/roomeyfinder",
+    Icon: FacebookIcon,
+  },
+  {
+    name: "X (formerly twitter)",
+    href: "https://twitter.com/roomeyfinder",
+    Icon: XIcon,
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/roomeyfinder",
+    Icon: InstagramIcon,
   },
 ]
