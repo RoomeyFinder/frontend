@@ -7,7 +7,7 @@ module.exports = {
         "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
-			  "next/core-web-vitals"
+        "next/core-web-vitals"
     ],
     "overrides": [
     ],
@@ -37,7 +37,7 @@ module.exports = {
             "error",
             "never"
         ],
-			"react/react-in-jsx-scope": "off",
-			"react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx", ".js", ".jsx"] }], 
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx", ".js", ".jsx"] }],
     }
 }

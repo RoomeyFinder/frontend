@@ -1,12 +1,12 @@
-import EditIcon from "@/app/_assets/EditIcon"
-import FacebookIcon from "@/app/_assets/FacebookIcon"
-import GrowthIcon from "@/app/_assets/GrowthIcon"
-import HeartIcon from "@/app/_assets/HeartIcon"
-import HeartShineIcon from "@/app/_assets/HeartShineIcon"
-import InstagramIcon from "@/app/_assets/InstagramIcon"
-import MessageIcon from "@/app/_assets/MessageIcon"
-import NotificationIcon from "@/app/_assets/NotificationIcon"
-import XIcon from "@/app/_assets/XIcon"
+import EditIcon from "../../_assets/EditIcon"
+import FacebookIcon from "../../_assets/FacebookIcon"
+import GrowthIcon from "../../_assets/GrowthIcon"
+import HeartIcon from "../../_assets/HeartIcon"
+import HeartShineIcon from "../../_assets/HeartShineIcon"
+import InstagramIcon from "../../_assets/InstagramIcon"
+import MessageIcon from "../../_assets/MessageIcon"
+import NotificationIcon from "../../_assets/NotificationIcon"
+import XIcon from "../../_assets/XIcon"
 
 export const privateLinks = [
   {

@@ -6,9 +6,12 @@ import Link from "next/link"
 
 
 
-export default function AppHeader() {
+export default function AppHeader({ isAuthenticated }: {
+  isAuthenticated: boolean
+}) {
   return (
     <Flex
+      data-testid="header"
       as="header"
       position="sticky"
       top="0"
@@ -23,7 +26,7 @@ export default function AppHeader() {
       <Flex width={{ base: "60%", md: "75%" }} maxW="50rem" justifyContent="center" alignItems="center">
         <SearchBar />
       </Flex>
-      <Navigation isAuthenticated={!true} />
+      <Navigation isAuthenticated={isAuthenticated} />
     </Flex>
   )
 }

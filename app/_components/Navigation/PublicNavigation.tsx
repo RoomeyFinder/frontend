@@ -1,5 +1,5 @@
-import HamburgerIcon from "@/app/_assets/HamburgerIcon"
-import { HStack, Show, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex, IconButton, useDisclosure, Link, CloseButton } from "@chakra-ui/react"
+import HamburgerIcon from "../../_assets/HamburgerIcon"
+import { HStack, Show, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex, IconButton, useDisclosure, Link, CloseButton, Box } from "@chakra-ui/react"
 import { useRef } from "react"
 import AppLogo from "../Logo"
 import SupportNav from "./SupportNavList"
@@ -9,7 +9,8 @@ const SignupButton = () => {
   return (<BrandButton
     px="2.3rem"
     py="1.045rem"
-    as={Link} href="/signup"
+    as={Link} 
+    href="/signup"
     variant={"sm"}
   >Sign up</BrandButton>)
 }
@@ -57,7 +58,7 @@ export default function PublicNavigation() {
             <DrawerBody display="flex" flexDir="column" gap="1.5rem" w="100%" maxW="60rem" mx="auto">
               <LoginButton />
               <SignupButton />
-              <SupportNav navItemComponent={Button} navItemStyles={{
+              <SupportNav navItemComponent={Button as typeof Box} navItemStyles={{
                 px: "2.3rem", py: "1.045rem", height: "unset", justifyContent: "center"
               }} />
             </DrawerBody>

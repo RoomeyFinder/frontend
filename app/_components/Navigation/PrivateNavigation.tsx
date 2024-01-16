@@ -1,11 +1,11 @@
 
-import BoltIcon from "@/app/_assets/BoltIcon"
-import HamburgerIcon from "@/app/_assets/HamburgerIcon"
-import LeftChevron from "@/app/_assets/LeftChevron"
-import QuestionMarkCircled from "@/app/_assets/QuestionMarkCircled"
+import BoltIcon from "@/assets/BoltIcon"
+import HamburgerIcon from "@/assets/HamburgerIcon"
+import LeftChevron from "@/assets/LeftChevron"
+import QuestionMarkCircled from "@/assets/QuestionMarkCircled"
 import { Avatar, Box, Text, Button, Flex, Icon, Link, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Show, chakra, useDisclosure } from "@chakra-ui/react"
-import MessageIcon from "@/app/_assets/MessageIcon"
-import NotificationIcon from "@/app/_assets/NotificationIcon"
+import MessageIcon from "@/assets/MessageIcon"
+import NotificationIcon from "@/assets/NotificationIcon"
 import SupportNav, { baseNavItemStyles } from "./SupportNavList"
 import { privateLinks } from "./data"
 import { useRouter } from "next/navigation"
@@ -34,8 +34,8 @@ function PrivateNavigationDropDown() {
       <Menu>
         {({ isOpen, }) => (
           <>
-            <MenuButton cursor="pointer" as={Button} p="0"
-              bg={isOpen ? "white.main" : "transparent"}
+            <MenuButton onClick={() => console.log("clicker")} cursor="pointer" as={Button} p="0"
+              bg={isOpen ? "white.main" : "transparent"} data-testid="profile-toggle"
               h="unset" _active={{ bg: "white.main" }} _hover={{ bg: "transparent" }}>
               <Flex
                 as="span"
@@ -73,7 +73,7 @@ function MainPrivateNav({ toggleShowMore }: {
   const router = useRouter()
   return (
     <>
-      <Flex flexDir="column" w="100%">
+      <Flex flexDir="column" w="100%" data-testid="profile-nav">
         <PrivateMenuItem>
           <Flex as="span" w="100%" alignItems="center" justifyContent="space-between">
             <Text as="span">Profile</Text>
@@ -117,7 +117,7 @@ function SubPrivateNav({ toggleHideMore }: {
         <Text fontSize={{ base: "1.4rem", md: "1.6rem" }} fontWeight="600" as="span" display="block" flexGrow="1" textAlign="center" ml="auto" mr="2rem">Support</Text>
       </Flex>
       <PrivateMenuDivider mb="2rem"/>
-      <Box w="100%" maxW="28rem" mx="auto"><SupportNav navItemComponent={MenuItem} /></Box>
+      <Box w="100%" maxW="28rem" mx="auto"><SupportNav navItemComponent={MenuItem as typeof Box} /></Box>
     </>
   )
 }

@@ -10,7 +10,7 @@ export default function GlobalLayout({ children}: {
 }){
   return(
     <Box h="100dvh" overflow="auto">
-      <AppHeader/>
+      <AppHeader isAuthenticated={true} />
       <Box minH={{ base: "calc(100dvh - 30%)", sm: "calc(100dvh - 23%)" }}>
         {children}
       </Box>
