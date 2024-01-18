@@ -1,16 +1,19 @@
 
-import { extendTheme } from "@chakra-ui/react"
+import { defineStyleConfig, extendTheme } from "@chakra-ui/react"
 import * as components from "./chakra-components"
 import * as customComponents from "./custom-chakra-components"
+import { inputAnatomy } from "@chakra-ui/anatomy"
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react"
 
 const colors = {
   white: {
     main: "#FFFFFF",
     100: "#F1F1F1",
     200: "#F4F4F4",
-    300: "#F9F9F9",
-    400: "#EEEEEE",
-    500: "#E5E5E5",
+    300: "#F8F8F8",
+    400: "#F9F9F9",
+    500: "#EEEEEE",
+    600: "#E5E5E5",
 
   },
   brand: {
@@ -67,12 +70,93 @@ const breakpoints = {
   "2xl": "104em",
 }
 
+const headingTheme = defineStyleConfig({
+  baseStyle: {
+    color: "black",
+    fontSize: "2.4rem !important",
+    fontStyle: "normal",
+    fontWeight: 700,
+    lineHeight: "normal",
+  },
+  variants: {
+    "medium": {
+      fontSize: "3.2rem",
+      fontWeight: "600"
+    },
+    "bold": {
+      fontWeight: "700"
+    },
+  },
+  sizes: {
+    base: { 
+      fontSize: "2.4rem",
+    },
+    md: {
+      fontSize: "3.2rem"
+    },
+    xl: {
+      fontSize: "7.2rem"
+    }
+  },
+  defaultProps: {
+    colorScheme: "brand",
+    size: "base",
+    variant: "bold",
+  },
+})
+
+
+
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(inputAnatomy.keys)
+
+const baseStyle = definePartsStyle({
+  field: {
+    borderRadius: "1.2rem",
+    border: "1px solid",
+    fontSize: "1.6rem",
+    lineHeight: "150%",
+    color: "black",
+    height: "unset",
+    backgroundColor: "transparent",
+    _placeholder: {
+      color: "gray.100"
+    },
+  },
+})
+
+const filledInput = definePartsStyle({
+  field: {
+    bg: "white.300",
+    border: "1px solid",
+    borderColor: "gray.100",
+    py: { base: "1.4rem", md: "2rem" },
+    px: { base: "2rem", md: "2.7rem" },
+    _hover: {
+      background: "white.500"
+    },
+    _placeholder: {
+      fontSize: "1.6rem",
+      lineHeight: "150%"
+    }
+  },
+})
+
+export const inputTheme = defineMultiStyleConfig({ 
+  baseStyle, 
+  variants: {
+    filled: filledInput
+  }
+})
+
 const theme = extendTheme({ 
   colors, 
   fonts,
   fontSizes,
   breakpoints,
   components: {
+    Heading: headingTheme,
+    Input: inputTheme,
     ...components,
     ...customComponents
   }
