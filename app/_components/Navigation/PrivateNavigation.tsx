@@ -135,7 +135,7 @@ export function ProfileThrustAd() {
 
 function InterestsAccessCount(){
   return(
-    <Box bg="white.300" p="2rem">
+    <Box bg="white.400" p="2rem">
       <Flex fontSize="1.4rem" fontWeight={700} color="brand.main" flexDir="column" justifyContent="center" alignItems="center" gap="1rem" bg="brand.10" p="1rem" rounded="1rem">
         <Text lineHeight="1">Interest Access</Text>
         <Text lineHeight="1" color="black">20 Listings</Text>
