@@ -3,16 +3,15 @@ import { HStack, Show, Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay,
 import { useRef } from "react"
 import AppLogo from "../Logo"
 import SupportNav from "./SupportNavList"
-import BrandButton from "../BrandButton"
 
 const SignupButton = () => {
-  return (<BrandButton
+  return (<Button
     px="2.3rem"
     py="1.045rem"
     as={Link} 
     href="/signup"
-    variant={"sm"}
-  >Sign up</BrandButton>)
+    variant={"brand"}
+  >Sign up</Button>)
 }
 const LoginButton = () => {
   return <Link href="/login" fontWeight="600" textAlign={{ base: "center", md: "right" }} fontSize="1.6rem">Login</Link>
