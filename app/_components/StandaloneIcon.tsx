@@ -1,4 +1,4 @@
-
+"use client"
 import { Box, useStyleConfig, BoxProps } from "@chakra-ui/react"
 
 export default function StandAloneIcon(props: BoxProps & { variant?: string }) {
