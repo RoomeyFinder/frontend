@@ -28,7 +28,7 @@ export const BrandButton = defineStyleConfig({
     h: "unset",
     color: "white.main",
     fontWeight: "600",
-    _hover: { 
+    _hover: {
       filter: "brightness(115%)",
       textDecor: "none"
     },
