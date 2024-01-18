@@ -6,4 +6,12 @@ html{
 
 body{
   overflow: hidden;
+  background: white;
+}
+
+@media (prefers-color-scheme: dark){
+  html body{
+    background-color: white;
+    color: black;
+  }
 }
