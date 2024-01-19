@@ -18,6 +18,7 @@ const colors = {
   },
   brand: {
     main: "#3A86FF",
+    500: "#3A86FF",
     10: "#3A86FF1A",
     25: "#3A86FF40",
     50: "#3A86FF80",
