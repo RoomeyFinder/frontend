@@ -1,6 +1,5 @@
 import { defineStyleConfig } from "@chakra-ui/react"
-
-export const Button = defineStyleConfig({
+const Button = defineStyleConfig({
   baseStyle: {
     fontWeight: "600",
     borderRadius: "1rem",
@@ -63,6 +62,4 @@ export const Button = defineStyleConfig({
   },
 })
 
-export const Link = defineStyleConfig({
- 
-})
+export default Button

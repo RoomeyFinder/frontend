@@ -1,9 +1,9 @@
 
-import { defineStyleConfig, extendTheme } from "@chakra-ui/react"
-import * as components from "./chakra-components"
+import { extendTheme } from "@chakra-ui/react"
+import Button from "./chakra-components/Button"
 import * as customComponents from "./custom-chakra-components"
-import { inputAnatomy } from "@chakra-ui/anatomy"
-import { createMultiStyleConfigHelpers } from "@chakra-ui/react"
+import Input from "./chakra-components/Input"
+import Heading from "./chakra-components/Heading"
 
 const colors = {
   white: {
@@ -71,94 +71,15 @@ const breakpoints = {
   "2xl": "104em",
 }
 
-const headingTheme = defineStyleConfig({
-  baseStyle: {
-    color: "black",
-    fontSize: "2.4rem !important",
-    fontStyle: "normal",
-    fontWeight: 700,
-    lineHeight: "normal",
-  },
-  variants: {
-    "medium": {
-      fontSize: "3.2rem",
-      fontWeight: "600"
-    },
-    "bold": {
-      fontWeight: "700"
-    },
-  },
-  sizes: {
-    base: { 
-      fontSize: "2.4rem",
-    },
-    md: {
-      fontSize: "3.2rem"
-    },
-    xl: {
-      fontSize: "7.2rem"
-    }
-  },
-  defaultProps: {
-    colorScheme: "brand",
-    size: "base",
-    variant: "bold",
-  },
-})
-
-
-
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(inputAnatomy.keys)
-
-const baseStyle = definePartsStyle({
-  field: {
-    borderRadius: "1.2rem",
-    border: "1px solid",
-    fontSize: "1.6rem",
-    lineHeight: "150%",
-    color: "black",
-    height: "unset",
-    backgroundColor: "transparent",
-    _placeholder: {
-      color: "gray.100"
-    },
-  },
-})
-
-const filledInput = definePartsStyle({
-  field: {
-    bg: "white.300",
-    border: "1px solid",
-    borderColor: "gray.100",
-    py: { base: "1.4rem", md: "2rem" },
-    px: { base: "2rem", md: "2.7rem" },
-    _hover: {
-      background: "white.500"
-    },
-    _placeholder: {
-      fontSize: "1.6rem",
-      lineHeight: "150%"
-    }
-  },
-})
-
-export const inputTheme = defineMultiStyleConfig({ 
-  baseStyle, 
-  variants: {
-    filled: filledInput
-  }
-})
-
 const theme = extendTheme({ 
   colors, 
   fonts,
   fontSizes,
   breakpoints,
   components: {
-    Heading: headingTheme,
-    Input: inputTheme,
-    ...components,
+    Heading,
+    Input,
+    Button,
     ...customComponents
   }
 })
