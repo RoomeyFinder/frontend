@@ -2,7 +2,7 @@ import DropDownInput from "@/app/_components/DropDown"
 import useFilterStringListByText from "@/app/_hooks/useFilterStringListByText"
 import { Input } from "@chakra-ui/react"
 import { useRef, useEffect } from "react"
-import CustomDropDownList from "../_CustomDropDownList"
+import CustomDropDownList from "../_SharedComponents/_CustomDropDownList"
 
 
 export default function OccupationInput({ options, handleChange, isStudent, value }: {
