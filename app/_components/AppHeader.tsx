@@ -14,6 +14,7 @@ export default function AppHeader({ isAuthenticated }: {
       data-testid="header"
       as="header"
       position="sticky"
+      zIndex="100"
       top="0"
       height="7.4%"
       justifyContent="space-between"
@@ -21,6 +22,7 @@ export default function AppHeader({ isAuthenticated }: {
       border="1px solid"
       borderColor="white.100"
       boxShadow="0px 1px 1px 0px rgba(0, 0, 0, 0.25)"
+      bg="white.main"
     >
       <Flex href="/" as={Link}><AppLogo /></Flex>
       <Flex width={{ base: "60%", md: "75%" }} maxW="50rem" justifyContent="center" alignItems="center">
