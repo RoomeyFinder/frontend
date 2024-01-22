@@ -2,7 +2,7 @@ import { Popover, PopoverTrigger, PopoverContent, PopoverBody } from "@chakra-ui
 import { ReactNode, RefObject } from "react"
 
 
-export default function DropDownInput({
+export default function DropDown({
   trigger,
   children,
   initialFocusRef,
@@ -18,13 +18,13 @@ export default function DropDownInput({
   returnFocusOnClose?: boolean
 }) {
   return (
-    <Popover returnFocusOnClose={returnFocusOnClose || false} initialFocusRef={initialFocusRef} matchWidth trigger="click" closeOnBlur={closeOnBlur || true} closeOnEsc={closeOnEsc || true}>
+    <Popover returnFocusOnClose={returnFocusOnClose || false} initialFocusRef={initialFocusRef} matchWidth trigger="hover" closeOnBlur={closeOnBlur || true} closeOnEsc={closeOnEsc || true}>
       {({ isOpen, onClose }) => (
         <>
           <PopoverTrigger>
             {trigger}
           </PopoverTrigger>
-          <PopoverContent minW="100%" bg="white" p="0">
+          <PopoverContent w="100%" bg="white" p="0">
             <PopoverBody minW="100%" p="0">
               {children({ isOpen, onClose })}
             </PopoverBody>
