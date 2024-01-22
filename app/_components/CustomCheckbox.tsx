@@ -1,5 +1,5 @@
 "use client"
-import { Flex, Input, Text, useCheckbox, ScaleFade, chakra, TextProps } from "@chakra-ui/react"
+import { Flex, Input, Text, useCheckbox, chakra, TextProps } from "@chakra-ui/react"
 import { ReactNode } from "react"
 import CheckMarkFilled from "../_assets/CheckMarkFilled"
 
@@ -22,9 +22,7 @@ export default function CustomCheckbox({ children, labelProps = {} }: {
           borderColor="brand.main"
           justifyContent="center"
           alignItems="center" {...getCheckboxProps()}>
-          <ScaleFade initialScale={0.9} in={state.isChecked}>
-            <CheckMarkFilled />
-          </ScaleFade>
+          <CheckMarkFilled />
         </Flex>
         <Text {...labelProps} {...getLabelProps()}>{children}</Text>
       </Flex>
