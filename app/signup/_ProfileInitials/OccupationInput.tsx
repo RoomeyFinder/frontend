@@ -20,12 +20,12 @@ export default function OccupationInput({ options, handleChange, isStudent, valu
     <DropDownInput
       returnFocusOnClose={false} closeOnBlur={false} closeOnEsc={false} initialFocusRef={inputRef}
       trigger={
-        <Input ref={inputRef} variant="filled" placeholder={isStudent ? "University" : "Occupation"} value={text} name="gender" onChange={(e) => {
+        <Input ref={inputRef} autoComplete="off" variant="filled" placeholder={isStudent ? "University" : "Occupation"} value={text} name="gender" onChange={(e) => {
           if (value.length > 0) handleChange("")
           updateText(e.target.value)
         }} />}>
       {({ onClose }: { onClose: () => void }) => (
-        <CustomDropDownList list={filteredList as string[]} handleItemClick={(option: string) => {
+        <CustomDropDownList list={filteredList as never[]} handleItemClick={(option: string) => {
           handleChange(option)
           updateText(option)
           onClose()
