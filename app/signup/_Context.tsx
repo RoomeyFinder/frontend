@@ -99,7 +99,7 @@ export default function SignupProvider({ children }: {
     formData: {
       email: "",
       phone: "",
-      countryCode: "",
+      countryCode: "234",
       password: "",
       confirmPassword: ""
     }
@@ -118,7 +118,9 @@ export default function SignupProvider({ children }: {
       address: "",
       city: "",
       state: "",
-      country: ""
+      country: "",
+      placeId: "",
+      zipCode: "",
     }
   })
 
