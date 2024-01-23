@@ -1,12 +1,14 @@
 import { GridItem, Input, Link, SimpleGrid, Text } from "@chakra-ui/react"
 import AddressInput from "./AddressInput"
+import { getErrorProps } from "../utils"
 
 export default function AddressForm({
-  formData, sectionName, handleChange
+  formData, sectionName, handleChange, error
 }: {
   formData: { [x: string]: string | number | boolean }
   sectionName: string,
   handleChange: (stageName: string, name: string, value: string | number | boolean) => void
+  error: string[]
 }) {
   console.log(formData, "here")
   return (
@@ -14,7 +16,7 @@ export default function AddressForm({
       <GridItem>
         <AddressInput updateFormData={(fieldName: string, value: string) => {
           handleChange(sectionName, fieldName, value)
-        }} formValue={formData.address as string} />
+        }} formValue={formData.address as string} errorProps={{...getErrorProps("address", error)}} />
       </GridItem>
       <GridItem>
         <Input
@@ -22,6 +24,7 @@ export default function AddressForm({
           placeholder="City *"
           type="text"
           onChange={(e) => handleChange(sectionName, "city", e.target.value)}
+          {...getErrorProps("city", error)}
           name="city"
           value={formData.firstName as string}
         />
@@ -32,6 +35,7 @@ export default function AddressForm({
           variant="filled"
           placeholder="State *"
           name="state"
+          {...getErrorProps("state", error)}
           onChange={(e) => handleChange(sectionName, "state", e.target.value)}
           value={formData.firstName as string}
         />
@@ -43,6 +47,7 @@ export default function AddressForm({
           type="text"
           onChange={(e) => handleChange(sectionName, "country", e.target.value)}
           name="country"
+          {...getErrorProps("country", error)}
           value={formData.firstName as string}
         />
       </GridItem>

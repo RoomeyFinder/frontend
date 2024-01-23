@@ -5,9 +5,10 @@ import usePlacesAutocomplete from "use-places-autocomplete"
 import CustomDropDownList from "../_SharedComponents/_CustomDropDownList"
 
 
-export default function AddressInput({ updateFormData, formValue }: {
+export default function AddressInput({ updateFormData, formValue, errorProps }: {
   updateFormData: (fieldName: string, value: string) => void
-  formValue: string
+  formValue: string 
+  errorProps: {[x:string]: string }
 }) {
   const {
     ready,
@@ -56,6 +57,7 @@ export default function AddressInput({ updateFormData, formValue }: {
         autoComplete="off"
         placeholder="Address *"
         name="address"
+        {...errorProps}
         value={value}
         onChange={handleChange} />}>
       {({ onClose }) => (

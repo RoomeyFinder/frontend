@@ -8,9 +8,10 @@ import { FOURTEEN_YEARS_IN_MILLISECONDS } from "../_Context"
 
 
 export default
-function DobInput({ value, handleChange }: {
+function DobInput({ value, handleChange, errorProps }: {
     value: string,
     handleChange: (newValue: string) => void
+    errorProps: {[x:string]: string }
   }) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const today = useMemo(() => (new Date(Date.now() - FOURTEEN_YEARS_IN_MILLISECONDS)), [])
@@ -54,7 +55,7 @@ function DobInput({ value, handleChange }: {
           borderColor="gray.100"
           borderRadius="1.2rem"
           borderStyle="solid"
-          overflow="hidden">
+          overflow="hidden" {...errorProps}>
           <Input
             ref={inputRef}
             readOnly

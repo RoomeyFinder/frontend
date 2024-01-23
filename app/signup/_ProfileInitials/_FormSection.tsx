@@ -6,20 +6,24 @@ import universities from "@/app/_data/nigerian_universities.js"
 import DobInput from "./DobInput"
 import GenderInput from "./GenderInput"
 import OccupationInput from "./OccupationInput"
+import { getErrorProps } from "../utils"
 
 export default function ProfileInitialsForm({
-  formData, sectionName, handleChange
+  formData, sectionName, handleChange, error
 }: {
-  formData: { [x: string]: string | number | boolean }
+  formData: { [x: string]: string | number | boolean, }
   sectionName: string,
   handleChange: (stageName: string, name: string, value: string | number | boolean) => void
+  error: string[]
 }) {
   const [studentRadio, setStudentRadio] = useState("I am not a student")
+
   return (
     <Box pb={{ base: "3rem", md: "5rem" }}>
       <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={{ base: "1.8rem", sm: "3rem" }}>
         <GridItem>
           <Input
+            {...getErrorProps("firstName", error)}
             variant="filled"
             placeholder="First name *"
             name="firstName"
@@ -28,6 +32,7 @@ export default function ProfileInitialsForm({
         </GridItem>
         <GridItem>
           <Input
+            {...getErrorProps("lastName", error)}
             variant="filled"
             placeholder="Last name *"
             name="lastName" value={formData.lastName as string}
@@ -35,11 +40,13 @@ export default function ProfileInitialsForm({
         </GridItem>
         <GridItem>
           <DobInput 
+            errorProps={getErrorProps("dob", error)}
             value={formData.dob as string} 
             handleChange={(newValue: string) => handleChange(sectionName, "dob", newValue)} />
         </GridItem>
         <GridItem>
           <GenderInput 
+            errorProps={getErrorProps("gender", error)}
             value={formData.gender as string} 
             handleChange={(selection: string) => handleChange(sectionName, "gender", selection)} />
         </GridItem>
@@ -55,6 +62,7 @@ export default function ProfileInitialsForm({
         </GridItem>
         <GridItem>
           <OccupationInput
+            errorProps={{...getErrorProps("occupation", error), ...getErrorProps("university", error)}}
             options={formData.isStudent ? universities.map(x => x.name) : occupations}
             isStudent={formData.isStudent as boolean}
             value={(formData.isStudent ? formData.university : formData.occupation) as string}

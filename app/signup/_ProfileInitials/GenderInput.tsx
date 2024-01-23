@@ -6,9 +6,10 @@ import CustomDropDownList from "../_SharedComponents/_CustomDropDownList"
 
 
 export default
-function GenderInput({ handleChange, value }: {
+function GenderInput({ handleChange, value, errorProps }: {
     handleChange: (selection: string) => void
     value: string
+    errorProps: { [x: string]: string }
   }) {
   const { text, updateText, filteredList } = useFilterStringListByText(["male", "female"])
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -21,6 +22,7 @@ function GenderInput({ handleChange, value }: {
     <DropDownInput returnFocusOnClose={false} closeOnBlur={false} closeOnEsc={false} initialFocusRef={inputRef}
       trigger={
         <Input 
+          {...errorProps}
           ref={inputRef} 
           variant="filled" 
           placeholder="Gender *"

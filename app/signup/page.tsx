@@ -27,9 +27,12 @@ function SignupConsumer(){
     profileInitials,
     contactDetails,
     locationDetails,
-    handleFormDataChange
+    emailVerificationDetails,
+    handleFormDataChange,
+    error
   } = useContext(SignupContext)
 
+  console.log(error, "here")
   return (
     <Box py={{ base: "5rem", md: "" }}>
       <AuthFormLayout 
@@ -40,12 +43,12 @@ function SignupConsumer(){
         <Box as="form" onSubmit={(e: FormEvent) => {e.preventDefault()}}>
           <SignupProgress progressOnePercentage={profileAndContactFlow.progressInPercentage} progressTwoPercentage={emailVerificationAndAddressFlow.progressInPercentage} />
           <Stage currentStage={totalStages.currentStage} stage={1}>
-            <Stage currentStage={profileAndContactFlow.currentStage} stage={1}><ProfileInitialsForm handleChange={handleFormDataChange} formData={profileInitials.formData} sectionName={profileInitials.name} /></Stage>
-            <Stage currentStage={profileAndContactFlow.currentStage} stage={2}><ContactForm handleChange={handleFormDataChange} formData={contactDetails.formData} sectionName={contactDetails.name} /></Stage>
+            <Stage currentStage={profileAndContactFlow.currentStage} stage={1}><ProfileInitialsForm error={error} handleChange={handleFormDataChange} formData={profileInitials.formData} sectionName={profileInitials.name} /></Stage>
+            <Stage currentStage={profileAndContactFlow.currentStage} stage={2}><ContactForm error={error} handleChange={handleFormDataChange} formData={contactDetails.formData} sectionName={contactDetails.name} /></Stage>
           </Stage>
           <Stage currentStage={totalStages.currentStage} stage={2}>
-            <Stage currentStage={emailVerificationAndAddressFlow.currentStage} stage={1}><EmailVerficationForm /></Stage>
-            <Stage currentStage={emailVerificationAndAddressFlow.currentStage} stage={2}><AddressForm handleChange={handleFormDataChange} formData={locationDetails.formData} sectionName={locationDetails.name} /></Stage>
+            <Stage currentStage={emailVerificationAndAddressFlow.currentStage} stage={1}><EmailVerficationForm error={error} handleChange={handleFormDataChange} formData={emailVerificationDetails.formData} sectionName={emailVerificationDetails.name} /></Stage>
+            <Stage currentStage={emailVerificationAndAddressFlow.currentStage} stage={2}><AddressForm error={error} handleChange={handleFormDataChange} formData={locationDetails.formData} sectionName={locationDetails.name} /></Stage>
           </Stage>
         </Box>
       </AuthFormLayout>
