@@ -3,7 +3,6 @@ import { SignupValue } from "./_types"
 
 
 const SignupContext = createContext<SignupValue>({
-  isVerificationStage: false,
   loading: false,
   query: null,
   profileAndContactFlow: {
@@ -27,19 +26,23 @@ const SignupContext = createContext<SignupValue>({
   handleSubmitButtonClick: () => { },
   profileInitials: {
     name: "PROFILE-INITIALS",
-    formData: {}
+    formData: {},
+    validate: () => [false, []]
   },
   contactDetails: {
     name: "CONTACT",
-    formData: {}
+    formData: {},
+    validate: () => [false, []]
   },
   emailVerificationDetails: {
     name: "EMAIL-VERIFICATION",
-    formData: {}
+    formData: {},
+    validate: () => [false, []]
   },
   locationDetails: {
     name: "LOCATION",
-    formData: {}
+    formData: {},
+    validate: () => [false, []]
   },
   handleFormDataChange: () => { },
   formErrors: [],

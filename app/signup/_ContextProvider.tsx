@@ -36,7 +36,6 @@ export default function SignupProvider({ children }: {
   const { fetchData } = useAxios()
   const [loading, setLoading] = useState(false)
   const query = useSearchParams()
-  const isVerificationStage = useMemo(() => query.get("verifyEmail") === "true", [query])
   const totalStages = useManageStageFlow({ maxStage: 2, minStage: 1, start: 1 })
   const profileAndContactFlow = useManageStageFlow({ maxStage: 2, minStage: 1, start: 1 })
   const emailVerificationAndAddressFlow = useManageStageFlow({ maxStage: 2, minStage: 1, start: 0 })
@@ -130,7 +129,6 @@ export default function SignupProvider({ children }: {
   }, [totalStages, sendEmailVerificationCode, verifyEmail, profileAndContactFlow, profileInitials, contactDetails, emailVerificationAndAddressFlow, emailVerificationDetails, locationDetails, submitSignup])
 
   const signupContextValue = useMemo(() => ({
-    isVerificationStage,
     query,
     profileAndContactFlow,
     emailVerificationAndAddressFlow,
@@ -144,7 +142,7 @@ export default function SignupProvider({ children }: {
     formErrors,
     resendVerificationEmail,
     loading
-  }), [isVerificationStage, query, profileAndContactFlow, emailVerificationAndAddressFlow, totalStages, 
+  }), [query, profileAndContactFlow, emailVerificationAndAddressFlow, totalStages, 
     handleSubmitButtonClick, handleFormDataChange, profileInitials, contactDetails, emailVerificationDetails, 
     locationDetails, formErrors, resendVerificationEmail, loading])
 
