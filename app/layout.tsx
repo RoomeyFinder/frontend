@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ChakraUIProvider>
-          <GlobalLayout isAuthenticated={false}>
+          <GlobalLayout>
             {children}
           </GlobalLayout>
         </ChakraUIProvider >

@@ -62,13 +62,13 @@ export default function ProfileInitialsForm({
         </GridItem>
         <GridItem>
           <OccupationInput
-            errorProps={{...getErrorProps("occupation", error), ...getErrorProps("university", error)}}
+            errorProps={{...getErrorProps("occupation", error), ...getErrorProps("school", error)}}
             options={formData.isStudent ? universities.map(x => x.name) : occupations}
             isStudent={formData.isStudent as boolean}
-            value={(formData.isStudent ? formData.university : formData.occupation) as string}
+            value={(formData.isStudent ? formData.school : formData.occupation) as string}
             handleChange={
               (value: string) =>
-                handleChange(sectionName, formData.isStudent ? "university" : "occupation", value)
+                handleChange(sectionName, formData.isStudent ? "school" : "occupation", value)
             } />
         </GridItem>
       </SimpleGrid>

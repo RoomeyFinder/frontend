@@ -14,8 +14,12 @@ export default function useManageStageFlow({
     return (currentStage / maxStage) * 100
   }, [currentStage, maxStage])
 
+  const navigateToStage = useCallback((stage: number) => {
+    if(stage > maxStage || stage < minStage) return
+    setCurrentStage(stage)
+  }, [maxStage, minStage])
+
   const goToNextStage = useCallback(() => {
-    console.log("gt")
     setCurrentStage(prev => prev >= maxStage ? maxStage : prev + 1)
   }, [maxStage])
 
@@ -27,6 +31,7 @@ export default function useManageStageFlow({
     currentStage,
     goToNextStage,
     goToPrevStage,
+    navigateToStage,
     progressInPercentage,
   }
 }

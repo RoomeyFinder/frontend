@@ -9,7 +9,7 @@ const modeTexts = {
 }
 
 export default function AuthFormLayout({ 
-  children, submitButtonText, mode, heading, handleSubmit, submitButtonType, submitButtonVariant
+  children, submitButtonText, mode, heading, handleSubmit, submitButtonType, submitButtonVariant, loading
 }: {
   children: ReactNode | ReactNode[]
   submitButtonText: string
@@ -18,6 +18,7 @@ export default function AuthFormLayout({
   handleSubmit: () => void,
   submitButtonType?: "button" | "submit" | "reset" 
   submitButtonVariant?: string
+  loading?: boolean
 }){
   return (
     <>
@@ -42,7 +43,7 @@ export default function AuthFormLayout({
             <Text fontSize="1rem" fontWeight="normal" lineHeight="normal" textTransform="uppercase">or sign in with</Text>
             <AuthProviderMethods />
           </Flex>
-          <Button onClick={() => handleSubmit()} textTransform="capitalize" type={submitButtonType} variant={{ base: submitButtonVariant || "brand", sm: submitButtonVariant || "brand-secondary" }} minW={{ md: "19.8rem" }} lineHeight="150%" padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}>{submitButtonText}</Button>
+          <Button onClick={() => handleSubmit()} _loading={{ bg: "brand.main", color: "white", _hover: { bg: "brand.main", color: "white"} }} isLoading={loading} textTransform="capitalize" type={submitButtonType} variant={{ base: submitButtonVariant || "brand", sm: submitButtonVariant || "brand-secondary" }} minW={{ md: "19.8rem" }} lineHeight="150%" padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}>{submitButtonText}</Button>
         </Flex>
       </Box> 
     </>

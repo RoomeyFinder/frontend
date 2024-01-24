@@ -25,7 +25,7 @@ export default function OccupationInput({ options, handleChange, isStudent, valu
           ref={inputRef} 
           autoComplete="off" 
           variant="filled" 
-          placeholder={isStudent ? "University" : "Occupation"} 
+          placeholder={isStudent ? "School" : "Occupation"} 
           value={text} name="gender"
           {...errorProps} 
           onChange={(e) => {

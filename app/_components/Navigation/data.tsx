@@ -25,7 +25,7 @@ export const privateLinks = [
   },
   {
     name: "Interests",
-    href: "/interest",
+    href: "/interests",
     icon: HeartShineIcon,
     hideAbove: "base",
     showBelow: "",

@@ -48,6 +48,7 @@ export default function ContactForm({
           variant="filled"
           placeholder="Email address *"
           name="email"
+          type="email"
           {...getErrorProps("email", error)}
           value={formData.firstName as string}
           onChange={(e) => handleChange(sectionName, "email", e.target.value)} />
@@ -63,12 +64,12 @@ export default function ContactForm({
           <Input
             variant="filled"
             placeholder="Phone number *"
-            name="phone"
-            type="phone"
+            name="phoneNumber"
+            type="tel"
             max={16}
-            {...getErrorProps("phone", error)}
+            {...getErrorProps("phoneNumber", error)}
             value={formData.firstName as string}
-            onChange={(e) => handleChange(sectionName, "phone", e.target.value)} />
+            onChange={(e) => handleChange(sectionName, "phoneNumber", e.target.value)} />
         </InputGroup>
       </GridItem>
       <GridItem>
