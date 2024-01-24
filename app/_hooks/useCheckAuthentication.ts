@@ -10,15 +10,20 @@ const privatePaths = [
   "/favorites",
   "/interests",
   "/notifications",
-  "/"
+  "/",
 ]
+const authPaths = [
+  "/login",
+  "/signup"
+]
+
 export default function useCheckAuthentication(){
   const [token, setToken] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   useEffect(() => {
-    if(privatePaths.includes(pathname.toLowerCase()) && token === null) {
+    if((privatePaths.includes(pathname.toLowerCase()) || authPaths.includes(pathname.toLowerCase())) && token === null) {
       let tokenInStorage = localStorage.getItem("rftoken")
       if (!tokenInStorage) tokenInStorage = sessionStorage.getItem("rftoken")
       if (tokenInStorage) {
