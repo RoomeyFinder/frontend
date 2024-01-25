@@ -1,7 +1,7 @@
 "use client"
 import { Heading, Box, Text, Link, Button, Flex } from "@chakra-ui/react"
 import { ReactNode, useEffect } from "react"
-import AuthProviderMethods from "./AuthProviderMethods"
+// import AuthProviderMethods from "./AuthProviderMethods"
 import useCheckAuthentication from "@/app/_hooks/useCheckAuthentication"
 import { useRouter } from "next/navigation"
 
@@ -48,11 +48,11 @@ export default function AuthFormLayout({
         </Flex>
         <Box>{children}</Box>
         <Flex justifyContent="space-between" alignItems={{ base: "stretch", md: "end" }} gap="2rem" flexDir={{ base: "column-reverse", sm: "row"}}>
-          <Flex flexDir="column" justifyContent="start" gap="1rem" alignSelf={{ base: "center", sm: "end"}}>
+          {/* <Flex flexDir="column" justifyContent="start" gap="1rem" alignSelf={{ base: "center", sm: "end"}}>
             <Text fontSize="1rem" fontWeight="normal" lineHeight="normal" textTransform="uppercase">or sign in with</Text>
             <AuthProviderMethods />
-          </Flex>
-          <Button onClick={() => handleSubmit()} _loading={{ bg: "brand.main", color: "white", _hover: { bg: "brand.main", color: "white"} }} isLoading={loading} textTransform="capitalize" type={submitButtonType} variant={{ base: submitButtonVariant || "brand", sm: submitButtonVariant || "brand-secondary" }} minW={{ md: "19.8rem" }} lineHeight="150%" padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}>{submitButtonText}</Button>
+          </Flex> */}
+          <Button ml="auto" onClick={() => handleSubmit()} _loading={{ bg: "brand.main", color: "white", _hover: { bg: "brand.main", color: "white"} }} isLoading={loading} textTransform="capitalize" type={submitButtonType} variant={{ base: submitButtonVariant || "brand", sm: submitButtonVariant || "brand-secondary" }} minW={{ md: "19.8rem" }} lineHeight="150%" padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}>{submitButtonText}</Button>
         </Flex>
       </Box> 
     </>

@@ -98,7 +98,7 @@ export default function SignupProvider({ children }: {
       toast({ description: "Your account has been created successfully", status: "success" })
       sessionStorage.removeItem("unverifiedEmail")
       sessionStorage.setItem("rftoken", res.token)
-      sessionStorage.setItem("user", JSON.stringify(res.user))
+      sessionStorage.setItem("rfuser", JSON.stringify(res.user))
       router.push("/")
     } else toast({ description: "Something went wrong! Please try logging in.", status: "error"})
     setLoading(false)

@@ -30,7 +30,7 @@ export default function useCheckAuthentication(){
         setToken(tokenInStorage)
         setIsAuthenticated(true)
       }else{
-        pathname !== "/" && router.push("/")
+        if(!authPaths.includes(pathname) && pathname !== "/") router.push("/")
       }
     }
   }, [token, pathname, router])

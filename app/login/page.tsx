@@ -43,10 +43,10 @@ export default function Login() {
     }else if(res.statusCode === 200){
       if(loginData.keepSignedIn){
         localStorage.setItem("rftoken", res.token)
-        localStorage.setItem("user", JSON.stringify(res.user))
+        localStorage.setItem("rfuser", JSON.stringify(res.user))
       }else{
         sessionStorage.setItem("rftoken", res.token)
-        sessionStorage.setItem("user", JSON.stringify(res.user))
+        sessionStorage.setItem("rfuser", JSON.stringify(res.user))
       }
       toast({ status: "success", description: "You are signed in" })
       router.push("/")
