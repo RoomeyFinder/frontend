@@ -75,7 +75,7 @@ function MainPrivateNav({ toggleShowMore }: {
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
         <PrivateMenuItem>
-          <Flex as="span" w="100%" alignItems="center" justifyContent="space-between">
+          <Flex as={Link} _hover={{ textDecoration: "none" }} href="/profile" w="100%" alignItems="center" justifyContent="space-between">
             <Text as="span">Profile</Text>
             <Flex as="span" alignItems="center" gap=".4rem">
               <Text fontSize={{ base: "1rem", md: "1.4rem" }}>status:</Text>
