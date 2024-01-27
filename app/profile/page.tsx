@@ -1,24 +1,28 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import DragOverFileInput from "../_components/DragOverFileInput"
-import useHandleFilesUploadWithDragAndDrop from "../_hooks/useHandleFilesUploadWithDragAndDrop"
-import { useRef } from "react"
+import ProfileEditForm from "./_ProfileEditForm"
+import { Box, Flex, Spinner } from "@chakra-ui/react"
+import useGetFromStorage from "../_hooks/useGetFromStorage"
 
 
 
 export default function Profile(){
   const searchParams = useSearchParams()
-  const inputRef = useRef<HTMLInputElement | null>(null)
-  const { files, openFileExplorer, handleChange, handleDragOver, handleDrop, handleDragLeave, handleDragEnter, dragActive } = useHandleFilesUploadWithDragAndDrop(inputRef)
-  console.log(files, "here")
-  if(searchParams.get("edit") === "true"){
+  const { data: userData, loading } = useGetFromStorage("rfuser")
+
+  if (loading || userData === null) return (
+    <Flex justifyContent="center" alignItems="center">
+      <Spinner size="xl" thickness=".4rem" />
+    </Flex>
+  )
+  else if(searchParams.get("edit") === "true" && userData !== null){
     return (
-      <>edit profile</>
+      <Box>
+        <ProfileEditForm userData={userData} />
+      </Box>
     )
   }
   return (
-    <> 
-      <DragOverFileInput dragActive={dragActive} handleDragOver={handleDragOver} handleDrop={handleDrop} handleDragLeave={handleDragLeave} handleDragEnter={handleDragEnter} handleChange={handleChange} inputRef={inputRef} openFileExplorer={openFileExplorer} supportedFileTypes={["jpg", "png", "svg"]}/>
-    </>
+    <>View profile</>
   )
 }

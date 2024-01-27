@@ -32,7 +32,7 @@ export default function DragOverFileInput({
         opacity={dragActive ? ".7" : "1"}
         bg={dragActive ? "brand.10" : ""}
         m="0" 
-        fontSize={{ base: "1.3rem", md: "1.6rem" }} 
+        fontSize={{ base: "1.2rem", md: "1.6rem" }} 
         gap=".967rem" 
         px={{ base: ".8rem", md: "2.5rem" }} 
         py="7rem" 
