@@ -4,7 +4,6 @@ import { SignupValue } from "./_types"
 
 const SignupContext = createContext<SignupValue>({
   loading: false,
-  query: null,
   profileAndContactFlow: {
     currentStage: 1,
     goToNextStage: () => { },

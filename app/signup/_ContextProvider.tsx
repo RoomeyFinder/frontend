@@ -1,5 +1,5 @@
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import useManageStageFlow from "../_hooks/useManageStageFlow"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
@@ -35,7 +35,6 @@ export default function SignupProvider({ children }: {
   const toast = useToast({ containerStyle: { fontSize: "1.6rem", color: "white" }, position: "top" })
   const { fetchData } = useAxios()
   const [loading, setLoading] = useState(false)
-  const query = useSearchParams()
   const totalStages = useManageStageFlow({ maxStage: 2, minStage: 1, start: 1 })
   const profileAndContactFlow = useManageStageFlow({ maxStage: 2, minStage: 1, start: 1 })
   const emailVerificationAndAddressFlow = useManageStageFlow({ maxStage: 2, minStage: 1, start: 0 })
@@ -130,7 +129,6 @@ export default function SignupProvider({ children }: {
   }, [totalStages, sendEmailVerificationCode, verifyEmail, profileAndContactFlow, profileInitials, contactDetails, emailVerificationAndAddressFlow, emailVerificationDetails, locationDetails, submitSignup])
 
   const signupContextValue = useMemo(() => ({
-    query,
     profileAndContactFlow,
     emailVerificationAndAddressFlow,
     totalStages,
@@ -143,7 +141,7 @@ export default function SignupProvider({ children }: {
     formErrors,
     resendVerificationEmail,
     loading
-  }), [query, profileAndContactFlow, emailVerificationAndAddressFlow, totalStages, 
+  }), [profileAndContactFlow, emailVerificationAndAddressFlow, totalStages, 
     handleSubmitButtonClick, handleFormDataChange, profileInitials, contactDetails, emailVerificationDetails, 
     locationDetails, formErrors, resendVerificationEmail, loading])
 

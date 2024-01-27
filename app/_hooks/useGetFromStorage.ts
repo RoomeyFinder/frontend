@@ -16,8 +16,11 @@ export default function useGetFromStorage(key: string) {
       return true
     } else {
       try {
-        const value = await localforage.setItem(key, update)
-        setData(value)
+        localforage.ready(() => {
+          localforage.setItem(key, update).then(val => {
+            setData(val)
+          })
+        })
       } catch (err) {
         return false
       }
@@ -29,7 +32,11 @@ export default function useGetFromStorage(key: string) {
       sessionStorage.removeItem(key)
       return true
     }else{
-      await localforage.removeItem(key)
+      localforage.ready(() => {
+        localforage.removeItem(key).then(() => {
+          console.log("done")
+        })
+      })
       return true
     }
   }, [isSessionStorage, key])
@@ -38,13 +45,14 @@ export default function useGetFromStorage(key: string) {
     const dataInSessionStorage = sessionStorage.getItem(key)
     if (dataInSessionStorage === null) {
       setIsSessionStorage(false)
-      localforage.getItem(key).then(val => {
-        setData(val)
-      }).catch(err => {
-        console.log(err)
-      }).finally(() => {
-        setLoading(false)
-      })
+      localforage.ready(() => 
+        localforage.getItem(key).then(val => {
+          setData(val)
+        }).catch(err => {
+          console.log(err)
+        }).finally(() => {
+          setLoading(false)
+        }))
     } else {
       setData(JSON.parse(dataInSessionStorage))
       setLoading(false)

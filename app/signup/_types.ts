@@ -1,10 +1,8 @@
-import { ReadonlyURLSearchParams } from "next/navigation"
 
 
 export type SignupValue = {
   loading: boolean
   formErrors: string[]
-  query: ReadonlyURLSearchParams | null
   profileAndContactFlow: {
     currentStage: number
     goToNextStage: () => void

@@ -33,6 +33,13 @@ export default function useAxios(options?: {
       return await response.data
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }catch(err: any){
+      if (err.message === "Network Error"){
+        return {
+          message: err.message,
+          statusCode: 503,
+        }
+      }
+      console.log(err)
       return err.response.data
     }
   }, [])
