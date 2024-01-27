@@ -1,29 +1,27 @@
 "use client"
-import CountryCodeInput from "@/app/_components/CountryCodeInput"
-import { GridItem, Input, InputGroup, InputLeftAddon, SimpleGrid, useToast } from "@chakra-ui/react"
-import countryCodes from "@/app/_data/country_codes.json"
-import { useEffect, useState } from "react"
-import { getErrorProps } from "../utils"
+import { GridItem, Input, SimpleGrid, useToast } from "@chakra-ui/react"
+import { useEffect } from "react"
+import { getErrorProps } from "./utils"
+import PhoneNumberInput from "@/app/_components/PhoneNumberInput"
 
 
 export default function ContactForm({
   formData, sectionName, handleChange, error
 }: {
-  formData: { [x: string]: string  }
+  formData: { [x: string]: string }
   sectionName: string,
   handleChange: (stageName: string, name: string, value: string | number | boolean) => void
   error: string[]
 }) {
-  const [countryCodeSelection, setCountryCodeSelection] = useState("NG")
   const toast = useToast()
 
   useEffect(() => {
     const toastId = "password-toast"
     if (
       toast.isActive(toastId) === false &&
-      (error.includes("password") || error.includes("confirmPassword")) && 
+      (error.includes("password") || error.includes("confirmPassword")) &&
       (formData.password.length > 0 || formData.confirmPassword.length > 0)
-    ){
+    ) {
       toast({
         id: toastId,
         title: "Passwords must match and must be a minimum of 8 characters!",
@@ -54,23 +52,11 @@ export default function ContactForm({
           onChange={(e) => handleChange(sectionName, "email", e.target.value)} />
       </GridItem>
       <GridItem>
-        <InputGroup variant="filled" zIndex={10}>
-          <InputLeftAddon {...getErrorProps("countryCode", error)} flexBasis={{ base: "30%", md: "25%"}} borderLeft="1px solid" borderLeftColor="gray.100">
-            <CountryCodeInput optionSize={12} fullWidth searchable placeholder="+234" showSelectedLabel={true} className=" unset-country-code-flags" selectButtonClassName="unset-country-code-flags" selected={countryCodeSelection} onSelect={(code: string) => {
-              setCountryCodeSelection(code)
-              handleChange(sectionName, "countryCode", countryCodes[code as keyof typeof countryCodes])
-            }} />
-          </InputLeftAddon>
-          <Input
-            variant="filled"
-            placeholder="Phone number *"
-            name="phoneNumber"
-            type="tel"
-            max={16}
-            {...getErrorProps("phoneNumber", error)}
-            value={formData.firstName as string}
-            onChange={(e) => handleChange(sectionName, "phoneNumber", e.target.value)} />
-        </InputGroup>
+        <PhoneNumberInput
+          error={error}
+          handleCountryCodeChange={(val) => handleChange(sectionName, "countryCode", val)}
+          handlePhoneNumberChange={(val) => handleChange(sectionName, "phoneNumber", val)}
+          phoneNumber={formData.phoneNumber} inputVariant="filled" />
       </GridItem>
       <GridItem>
         <Input

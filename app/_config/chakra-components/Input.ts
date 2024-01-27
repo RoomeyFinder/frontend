@@ -9,14 +9,29 @@ const baseStyle = definePartsStyle({
   field: {
     borderRadius: "1.2rem",
     border: "1px solid",
+    borderColor: "gray.100",
     fontSize: "1.6rem",
     lineHeight: "150%",
     color: "black",
     height: "unset",
     backgroundColor: "transparent",
+    py: { base: "1.4rem", md: "2rem" },
+    px: { base: "1.6rem", md: "2rem" },
     _placeholder: {
       color: "gray.100"
     },
+  },
+  addon: {
+    _hover: {
+      bg: "white.500",
+    },
+    height: "unset",
+    border: "1px",
+    borderStyle: "solid",
+    borderColor: "gray.100",
+    borderRadius: "1rem",
+    borderLeft: "0px",
+    bg: "transparent",
   },
 })
 
@@ -39,10 +54,10 @@ const filledInput = definePartsStyle({
     },
   },
   addon: {
-    _hover: { 
-      bg: "white.500", 
-    }, 
-    height: "unset", 
+    _hover: {
+      bg: "white.500",
+    },
+    height: "unset",
     border: "1px",
     borderStyle: "solid",
     borderColor: "gray.100",
@@ -55,7 +70,11 @@ const filledInput = definePartsStyle({
 const Input = defineMultiStyleConfig({
   baseStyle,
   variants: {
-    filled: filledInput
+    filled: filledInput,
+    base: baseStyle
+  },
+  defaultProps: {
+    variant: "base"
   }
 })
 

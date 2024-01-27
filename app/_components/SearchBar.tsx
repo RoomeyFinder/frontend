@@ -38,7 +38,8 @@ function StyledSearchInput({ value, onChange, ...rest }: InputProps) {
       flexGrow="1"
       maxWidth={{ base: "50%", md: "65%" }}
       outline="none"
-      padding="0"
+      px="0"
+      py="0"
       borderRadius="0"
       _focus={{ boxShadow: "none", border: "0" }}
       placeholder="Type a location"

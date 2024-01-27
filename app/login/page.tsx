@@ -6,6 +6,7 @@ import { ChangeEventHandler, useCallback, useState } from "react"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
+import localforage from "localforage"
 
 
 export default function Login() {
@@ -42,8 +43,8 @@ export default function Login() {
       router.push("/signup")
     }else if(res.statusCode === 200){
       if(loginData.keepSignedIn){
-        localStorage.setItem("rftoken", res.token)
-        localStorage.setItem("rfuser", JSON.stringify(res.user))
+        localforage.setItem("rftoken", res.token)
+        localforage.setItem("rfuser", res.user)
       }else{
         sessionStorage.setItem("rftoken", res.token)
         sessionStorage.setItem("rfuser", JSON.stringify(res.user))

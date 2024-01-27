@@ -1,6 +1,6 @@
 "use client"
 
-import { useRadio, useRadioGroup, HStack, Box, RadioProps, Flex, ScaleFade, } from "@chakra-ui/react"
+import { useRadio, useRadioGroup, HStack, Box, RadioProps, Flex, ScaleFade, StackProps, } from "@chakra-ui/react"
 import CheckedRadioFill from "../_assets/CheckedRadioFill"
 
 function CustomRadio(props: RadioProps & { selectedValue: string }) {
@@ -32,11 +32,12 @@ function CustomRadio(props: RadioProps & { selectedValue: string }) {
   )
 }
 
-export default function CustomRadioGroup({ options, onChange, selectedValue, name }: {
+export default function CustomRadioGroup({ options, onChange, selectedValue, name, containerProps }: {
   options: string[],
   onChange: (selection: string) => void
   name: string
   selectedValue: string
+  containerProps?: StackProps
 }) {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name,
@@ -47,7 +48,7 @@ export default function CustomRadioGroup({ options, onChange, selectedValue, nam
   const group = getRootProps()
 
   return (
-    <HStack {...group} spacing={"3rem"} flexWrap="wrap" alignItems="center">
+    <HStack {...(containerProps || {})} {...group}>
       {options.map((value) => {
         return (
           <CustomRadio selectedValue={selectedValue} 

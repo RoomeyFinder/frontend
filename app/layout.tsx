@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import appendSharedMetaData from "./_metadata"
 import GlobalLayout from "./_components/GlobalLayout"
+import LocalForageProvider from "./_providers/localforage"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -14,11 +15,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ChakraUIProvider>
-          <GlobalLayout>
-            {children}
-          </GlobalLayout>
-        </ChakraUIProvider >
+        <LocalForageProvider>
+          <ChakraUIProvider>
+            <GlobalLayout>
+              {children}
+            </GlobalLayout>
+          </ChakraUIProvider >
+        </LocalForageProvider>
         <script
           defer
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}

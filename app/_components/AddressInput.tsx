@@ -2,17 +2,19 @@ import DropDown from "@/app/_components/DropDown"
 import { Button, Input, Text } from "@chakra-ui/react"
 import { ChangeEventHandler, useCallback, useEffect, useMemo, useRef } from "react"
 import usePlacesAutocomplete from "use-places-autocomplete"
-import CustomDropDownList from "../_SharedComponents/_CustomDropDownList"
+import CustomDropDownList from "./CustomDropDownList"
 
 
-export default function AddressInput({ updateFormData, formValue, errorProps }: {
-  updateFormData: (fieldName: string, value: string) => void
-  formValue: string 
-  errorProps: {[x:string]: string }
+export default function AddressInput({ handleSelection, value, errorProps, inputVariant, reset }: {
+  handleSelection: (selection: google.maps.places.AutocompletePrediction) => void
+  value: string
+  errorProps: { [x: string]: string }
+  inputVariant?: string
+  reset: () => void
 }) {
   const {
     ready,
-    value,
+    value: searchValue,
     suggestions: { status, data },
     clearSuggestions,
     setValue,
@@ -28,45 +30,38 @@ export default function AddressInput({ updateFormData, formValue, errorProps }: 
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setValue(e.target.value)
-    if(formValue.length > 0){
+    if (searchValue.length > 0) {
       clearSuggestions()
-      updateFormData("address", "")
-      updateFormData("placeId", "")
+      reset()
     }
-  }, [setValue, formValue.length, clearSuggestions, updateFormData])
-
-  const handleSelect = useCallback((option: google.maps.places.AutocompletePrediction) => {
-    const { structured_formatting, place_id } = option
-    updateFormData("address", structured_formatting.main_text)
-    updateFormData("placeId", place_id)
-  }, [updateFormData])
+  }, [setValue, searchValue.length, clearSuggestions, reset])
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    setValue(formValue, false)
-  }, [formValue, setValue])
+    setValue(value, false)
+  }, [value, setValue])
 
   return (
-    <DropDown 
+    <DropDown
       returnFocusOnClose={false} closeOnBlur={false} closeOnEsc={false} initialFocusRef={inputRef}
       trigger={<Input
         ref={inputRef}
-        variant="filled"
+        variant={inputVariant || "filled"}
         type="text"
         autoComplete="off"
         placeholder="Address *"
         name="address"
         {...errorProps}
-        value={value}
+        value={searchValue}
         onChange={handleChange} />}>
       {({ onClose }) => (
-        hasStartedSearch ? 
+        hasStartedSearch ?
           <CustomDropDownList
             list={data as never}
             ItemComponent={({ option, ...rest }: { option: google.maps.places.AutocompletePrediction }) => (
               (<Button {...rest} justifyContent="start" onClick={() => {
-                handleSelect(option)
+                handleSelection(option)
                 onClose()
               }}>
                 <Text textAlign="left" textOverflow="ellipsis" w="95%" overflow="hidden">{option.description}</Text>

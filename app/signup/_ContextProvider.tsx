@@ -88,8 +88,9 @@ export default function SignupProvider({ children }: {
     const latLng = await fetchLatLng(locationDetails.formData.placeId)
     const body: {[x:string]: string | number | undefined } = {
       ...locationDetails.formData,
-      latitude: latLng.lat,
-      longitude: latLng.lng,
+      currentAddress: locationDetails.formData.address,
+      currentLongitude: latLng.lat,
+      currentLatitude: latLng.lng,
       zipcode,
       email: contactDetails.formData.email
     }

@@ -38,7 +38,8 @@ export default function CustomDropDownList({
       spacing="1rem" p="1rem"
       fontSize="1.6rem"
       maxH="30rem"
-      overflow="auto">
+      overflow="auto" 
+      bg="white">
       {(list as string[]).map((opt: string | { [x: string]: unknown }, idx) => (
         <ListItem w="full" key={idx}>
           {renderItem(opt)}

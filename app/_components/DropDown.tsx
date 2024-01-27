@@ -24,7 +24,7 @@ export default function DropDown({
           <PopoverTrigger>
             {trigger}
           </PopoverTrigger>
-          <PopoverContent w="100%" bg="white" p="0">
+          <PopoverContent boxShadow="lg" w="100%" bg="white" p="0">
             <PopoverBody minW="100%" p="0">
               {children({ isOpen, onClose })}
             </PopoverBody>

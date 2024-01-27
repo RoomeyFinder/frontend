@@ -1,12 +1,8 @@
 import { Box, GridItem, Input, SimpleGrid } from "@chakra-ui/react"
-import CustomRadioGroup from "../../_components/CustomRadio"
-import { useState } from "react"
-import occupations from "@/app/_data/occupations.json"
-import universities from "@/app/_data/nigerian_universities.js"
-import DobInput from "./DobInput"
-import GenderInput from "./GenderInput"
-import OccupationInput from "./OccupationInput"
-import { getErrorProps } from "../utils"
+import DobInput from "../_components/DobInput"
+import { getErrorProps } from "./utils"
+import OccupationOrUniversityInput from "@/app/_components/OccupationOrUniversityInput"
+import SearchableInput from "../_components/SearchableInput"
 
 export default function ProfileInitialsForm({
   formData, sectionName, handleChange, error
@@ -16,7 +12,6 @@ export default function ProfileInitialsForm({
   handleChange: (stageName: string, name: string, value: string | number | boolean) => void
   error: string[]
 }) {
-  const [studentRadio, setStudentRadio] = useState("I am not a student")
 
   return (
     <Box pb={{ base: "3rem", md: "5rem" }}>
@@ -39,37 +34,29 @@ export default function ProfileInitialsForm({
             onChange={(e) => { handleChange(sectionName, "lastName", e.target.value) }} />
         </GridItem>
         <GridItem>
-          <DobInput 
+          <DobInput
             errorProps={getErrorProps("dob", error)}
-            value={formData.dob as string} 
+            value={formData.dob as string}
             handleChange={(newValue: string) => handleChange(sectionName, "dob", newValue)} />
         </GridItem>
         <GridItem>
-          <GenderInput 
+          <SearchableInput
+            inputName={"gender"}
+            inputPlaceholder="Gender"
+            inputVariant="filled"
+            value={formData.gender as string}
             errorProps={getErrorProps("gender", error)}
-            value={formData.gender as string} 
+            options={["male", "female"]}
             handleChange={(selection: string) => handleChange(sectionName, "gender", selection)} />
         </GridItem>
-        <GridItem alignSelf="center">
-          <CustomRadioGroup
-            name="isStudent"
-            selectedValue={studentRadio}
-            onChange={(val: string) => {
-              setStudentRadio(val)
-              handleChange(sectionName, "isStudent", val.toLowerCase() === "i am a student")
-            }}
-            options={["I am a student", "I am not a student"]} />
-        </GridItem>
-        <GridItem>
-          <OccupationInput
-            errorProps={{...getErrorProps("occupation", error), ...getErrorProps("school", error)}}
-            options={formData.isStudent ? universities.map(x => x.name) : occupations}
+        <GridItem colSpan={{ base: 1, sm: 2 }}>
+          <OccupationOrUniversityInput
+            errors={error}
+            inputName={formData.isStudent ? "school" : "occupation"}
+            inputValue={(formData.isStudent ? formData.school : formData.occupation) as string}
+            handleChange={(inputName, inputValue) => handleChange(sectionName, inputName, inputValue)}
             isStudent={formData.isStudent as boolean}
-            value={(formData.isStudent ? formData.school : formData.occupation) as string}
-            handleChange={
-              (value: string) =>
-                handleChange(sectionName, formData.isStudent ? "school" : "occupation", value)
-            } />
+            toggleIsStudent={(newVal) => handleChange(sectionName, "isStudent", newVal)} />
         </GridItem>
       </SimpleGrid>
     </Box>

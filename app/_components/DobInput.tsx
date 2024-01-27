@@ -4,15 +4,15 @@ import { generateYearsListBetweenYears, getCountOfDaysInMonthBasedOnYear } from 
 import { Box, Flex, Input, InputGroup, InputRightAddon, Select } from "@chakra-ui/react"
 import moment from "moment"
 import { useRef, useMemo, useState, ChangeEventHandler, useCallback } from "react"
-import { FOURTEEN_YEARS_IN_MILLISECONDS } from "../_ContextProvider"
+import { FOURTEEN_YEARS_IN_MILLISECONDS } from "../signup/_ContextProvider"
 
 
-export default
-function DobInput({ value, handleChange, errorProps }: {
-    value: string,
-    handleChange: (newValue: string) => void
-    errorProps: {[x:string]: string }
-  }) {
+export default function DobInput({ value, handleChange, errorProps, inputVariant }: {
+  value: string,
+  handleChange: (newValue: string) => void
+  errorProps: { [x: string]: string }
+  inputVariant?: string
+}) {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const today = useMemo(() => (new Date(Date.now() - FOURTEEN_YEARS_IN_MILLISECONDS)), [])
   const yearsOptions = useMemo(() =>
@@ -50,7 +50,7 @@ function DobInput({ value, handleChange, errorProps }: {
       trigger={
         <InputGroup
           _focusWithin={{ borderColor: "brand.main" }}
-          variant="filled"
+          variant={inputVariant || "filled"}
           border="1px"
           borderColor="gray.100"
           borderRadius="1.2rem"
