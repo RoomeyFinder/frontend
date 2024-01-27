@@ -32,7 +32,7 @@ export default function AuthFormLayout({
   return (
     <>
       <Box as="main" w="93dvw" maxW="85.9rem" mx="auto">
-        <Heading as="h1" w="max-content" mb="1rem" lineHeight="normal">{heading}</Heading>
+        <Heading as="h1" w="max-content" mb="1rem" size="base" variant="700">{heading}</Heading>
         <Flex as="p" gap="1rem" alignItems="center">
           <Text as="span" fontSize="1.6rem" lineHeight="150%">{modeTexts[mode].prompt} </Text>
           <Text 

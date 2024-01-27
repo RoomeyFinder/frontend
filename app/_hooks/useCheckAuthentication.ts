@@ -3,7 +3,6 @@ import localforage from "localforage"
 import { usePathname, useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
-
 const privatePaths = [
   "/profile",
   "/my-ads",
@@ -13,12 +12,9 @@ const privatePaths = [
   "/notifications",
   "/",
 ]
-const authPaths = [
-  "/login",
-  "/signup"
-]
+const authPaths = ["/login", "/signup"]
 
-export default function useCheckAuthentication(){
+export default function useCheckAuthentication() {
   const [token, setToken] = useState<string | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const router = useRouter()
@@ -28,30 +24,50 @@ export default function useCheckAuthentication(){
     if (!authPaths.includes(pathname) && pathname !== "/") router.push("/")
   }, [pathname, router])
 
-  useEffect(() => {
-    if((privatePaths.includes(pathname.toLowerCase()) || authPaths.includes(pathname.toLowerCase())) && token === null) {
-      let tokenInStorage = sessionStorage.getItem("rftoken")
-      if(!tokenInStorage){
-        localforage.getItem("rftoken").then((val) => {
+  const revokeAuth = useCallback(() => {
+    setIsAuthenticated(false)
+    setToken(null)
+  }, [])
+
+  const getTokenFromStorage = useCallback(() => {
+    let tokenInStorage = sessionStorage.getItem("rftoken")
+    if (!tokenInStorage) {
+      localforage
+        .getItem("rftoken")
+        .then((val) => {
           tokenInStorage = val as string
-          if(val){
-            setToken(val as string)
-            setIsAuthenticated(true)
-          }else{
-            redirect()
-          }
-        }).catch(() => {
-          redirect()
+          if (val) {
+            return val
+          } else return null
         })
-      }else {
-        setToken(tokenInStorage)
-        setIsAuthenticated(true)
+        .catch(() => {
+          return null
+        })
+    } else {
+      return tokenInStorage
+    }
+  }, [])
+
+  useEffect(() => {
+    const tokenInStorage = getTokenFromStorage()
+    if (tokenInStorage !== null) {
+      setToken(tokenInStorage as string)
+      setIsAuthenticated(true)
+    } else {
+      revokeAuth()
+      if (
+        (privatePaths.some((it) =>
+          pathname.toLowerCase().startsWith(it.toLowerCase())
+        ) ||
+          authPaths.includes(pathname.toLowerCase()))
+      ) {
+        redirect()
       }
     }
-  }, [token, pathname, redirect])
+  }, [getTokenFromStorage, pathname, redirect, revokeAuth])
 
   return {
-    isAuthenticated, 
+    isAuthenticated,
     token,
   }
 }

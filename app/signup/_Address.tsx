@@ -10,7 +10,6 @@ export default function AddressForm({
   handleChange: (stageName: string, name: string, value: string | number | boolean) => void
   error: string[]
 }) {
-  console.log(formData, "here")
   return (
     <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={{ base: "1.8rem", sm: "3rem" }} pb="1rem">
       <GridItem>

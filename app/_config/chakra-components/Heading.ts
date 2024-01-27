@@ -3,35 +3,73 @@ import { defineStyleConfig } from "@chakra-ui/react"
 const Heading = defineStyleConfig({
   baseStyle: {
     color: "black",
-    fontSize: "2.4rem !important",
+    fontSize: "2.4rem",
     fontStyle: "normal",
-    fontWeight: 700,
     lineHeight: "normal",
   },
   variants: {
-    "medium": {
-      fontSize: "3.2rem",
-      fontWeight: "600"
+    100: {
+      fontWeight: 100,
     },
-    "bold": {
-      fontWeight: "700"
+    200: {
+      fontWeight: 100,
+    },
+    300: {
+      fontWeight: 100,
+    },
+    400: {
+      fontWeight: 100,
+    },
+    500: {
+      fontWeight: 100,
+    },
+    600: {
+      fontWeight: 600,
+    },
+    700: {
+      fontWeight: 700,
+    },
+    800: {
+      fontWeight: 800,
+    },
+    900: {
+      fontWeight: 800,
     },
   },
   sizes: {
     base: {
-      fontSize: "2.4rem",
+      fontSize: {
+        base: "1.8rem",
+        md: "2.4rem"
+      },
+      lineHeight: "normal"
     },
-    md: {
-      fontSize: "3.2rem"
+    md: { 
+      fontSize: { 
+        base: "2.6rem",
+        md: "3.2rem"
+      },
+      lineHeight: "normal"
+    },
+    large: {
+      fontSize: {
+        base: "3.2rem",
+        md: "5rem"
+      },
+      lineHeight: "normal"
     },
     xl: {
-      fontSize: "7.2rem"
-    }
+      fontSize: {
+        base: "4.5rem",
+        md: "7.2rem"
+      },
+      lineHeight: "normal"
+    },
   },
   defaultProps: {
     colorScheme: "brand",
     size: "base",
-    variant: "bold",
+    variant: 700,
   },
 })
 
