@@ -5,7 +5,7 @@ const Button = defineStyleConfig({
     borderRadius: "1rem",
     cursor: "pointer",
     textAlign: "center",
-    h: "unset",
+    h: "auto",
   },
   sizes: {
     sm: {
@@ -19,6 +19,21 @@ const Button = defineStyleConfig({
     filled: {
       color: "white.main",
       background: "brand.main",
+    },
+    main: {
+      background: "white",
+      border: "1px solid black",
+      color: "black",
+      py: "1.7rem",
+      w: "full",
+      maxW: "18.5rem",
+      textAlign: "center",
+      h: "auto",
+      _hover: {
+        background: "brand.main",
+        color: "white.main",
+        borderColor: "brand.main"
+      }
     },
     brand: {
       display: "flex",

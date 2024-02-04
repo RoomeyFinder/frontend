@@ -16,7 +16,7 @@ const authPaths = ["/login", "/signup"]
 
 export default function useCheckAuthentication() {
   const [token, setToken] = useState<string | null>(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(undefined)
   const router = useRouter()
   const pathname = usePathname()
 
