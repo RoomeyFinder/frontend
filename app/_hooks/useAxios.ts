@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios"
+import useCheckAuthentication from "./useCheckAuthentication"
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -14,10 +15,11 @@ export default function useAxios(options?: {
   headers: AxiosHeaders
   baseURL?: string
 }) {
+  const { token } = useCheckAuthentication()
   const [response, setResponse] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setloading] = useState(true)
-
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
   const fetchData = useCallback(async ({ url, method, body, headers, baseURL }: {
     url: string,
     method: "get" | "post" | "put" | "delete"

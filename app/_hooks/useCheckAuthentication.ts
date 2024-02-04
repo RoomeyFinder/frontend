@@ -29,28 +29,19 @@ export default function useCheckAuthentication() {
     setToken(null)
   }, [])
 
-  const getTokenFromStorage = useCallback(() => {
-    let tokenInStorage = sessionStorage.getItem("rftoken")
+  const getTokenFromStorage = useCallback(async () => {
+    const tokenInStorage = sessionStorage.getItem("rftoken")
     if (!tokenInStorage) {
-      localforage
+      return await localforage
         .getItem("rftoken")
-        .then((val) => {
-          tokenInStorage = val as string
-          if (val) {
-            return val
-          } else return null
-        })
-        .catch(() => {
-          return null
-        })
     } else {
       return tokenInStorage
     }
   }, [])
 
-  useEffect(() => {
-    const tokenInStorage = getTokenFromStorage()
-    if (tokenInStorage !== null) {
+  const checkAuth = useCallback(async () => {
+    const tokenInStorage = await getTokenFromStorage()
+    if (typeof tokenInStorage === "string") {
       setToken(tokenInStorage as string)
       setIsAuthenticated(true)
     } else {
@@ -65,6 +56,10 @@ export default function useCheckAuthentication() {
       }
     }
   }, [getTokenFromStorage, pathname, redirect, revokeAuth])
+
+  useEffect(() => {
+    checkAuth()
+  }, [checkAuth])
 
   return {
     isAuthenticated,

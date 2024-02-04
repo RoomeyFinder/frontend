@@ -51,7 +51,7 @@ export default function Login() {
       }
       toast({ status: "success", description: "You are signed in" })
       router.push("/")
-    }else toast({ status: "error", description: res.message })
+    }else toast({ status: "error", description: res.message || "Something went wrong" })
     setLoading(false)
   }, [fetchData, loginData, router, toast])
 
