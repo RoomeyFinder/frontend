@@ -10,7 +10,6 @@ const privatePaths = [
   "/favorites",
   "/interests",
   "/notifications",
-  "/",
 ]
 const authPaths = ["/login", "/signup"]
 
@@ -47,6 +46,7 @@ export default function useCheckAuthentication() {
     } else {
       revokeAuth()
       if (
+        pathname !== "/" &&
         (privatePaths.some((it) =>
           pathname.toLowerCase().startsWith(it.toLowerCase())
         ) ||

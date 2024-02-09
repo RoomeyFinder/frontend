@@ -7,11 +7,11 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react"
-import { ReactNode } from "react"
 import PeopleGroup from "./_assets/PeopleGroup"
 import Handlens from "./_assets/Handlens"
 import ChatIcon from "./_assets/ChatIcon"
 import PublishAdClicker from "./_components/PublishAdClicker"
+import FeatureCard from "./_components/FeatureCard"
 
 export default function Home() {
   return (
@@ -55,6 +55,7 @@ function Hero() {
             color="gray.main"
             fontSize={{ base: "1.3rem", md: "1.675rem" }}
             lineHeight="0"
+            href="/help"
           >
             Info & Advice
           </Link>
@@ -114,43 +115,5 @@ function FeaturesSection() {
         </Box>
       </Flex>
     </>
-  )
-}
-
-function FeatureCard({
-  iconChild,
-  heading,
-  body,
-}: {
-  iconChild: ReactNode
-  heading: string
-  body: string
-}) {
-  return (
-    <Flex
-      as="article"
-      gap="3rem"
-      p={{ base: "2rem", md: "5rem" }}
-      flexDir="column"
-      alignItems="center"
-      maxW="47.3rem"
-      boxShadow="0px 0px 1px 0px #00000066"
-      rounded="1.2rem"
-    >
-      <Box>{iconChild}</Box>
-      <Flex gap="2rem" flexDir="column" alignItems="center">
-        <Heading as="h3" lineHeight="normal" fontSize="2rem" color="black">
-          {heading}
-        </Heading>
-        <Text
-          textAlign="left"
-          fontSize="1.6rem"
-          lineHeight="2.4rem"
-          color="gray.main"
-        >
-          {body}
-        </Text>
-      </Flex>
-    </Flex>
   )
 }
