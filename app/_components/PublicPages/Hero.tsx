@@ -24,11 +24,11 @@ export default function Hero({
             h="120%"
             left="0"
             right="0"
-            top="0"
+            top="-10%"
             bottom="0"
             bgColor="white"
             bgImage={`url(${bgImagePath})`}
-            bgPos="bottom"
+            bgPos="top right"
             bgSize="cover"
             mx="auto"
             bgRepeat="no-repeat"
@@ -36,7 +36,7 @@ export default function Hero({
             display={{ base: "none", sm: "block" }}
           />
           <Flex
-            minH="40dvh"
+            minH="45dvh"
             zIndex="2"
             pos="relative"
             mx="auto"
