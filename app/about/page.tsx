@@ -1,10 +1,4 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  Text,
-} from "@chakra-ui/react"
+import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import Hero from "../_components/PublicPages/Hero"
 import ChatIcon from "../_assets/ChatIcon"
 import Handlens from "../_assets/Handlens"
@@ -33,11 +27,10 @@ export default function Home() {
         </Text>
         <Divider borderColor="gray.100" />
       </Hero>
-      <FeaturesSection/>
+      <FeaturesSection />
     </>
   )
 }
-
 
 function FeaturesSection() {
   return (

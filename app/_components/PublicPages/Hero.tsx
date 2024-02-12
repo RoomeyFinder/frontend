@@ -11,9 +11,9 @@ export default function Hero({
   return (
     <>
       <Flex
-        minH="60rem"
+        minH={{ base: "55dvh", lg: "60rem" }}
         bgColor="#f5f9ff"
-        pt={{ base: "6remm", md: "10rem" }}
+        pt={{ base: "6rem", md: "10rem" }}
         pb={{ base: "8rem", md: "14.6rem" }}
         alignItems={{ base: "center", lg: "start" }}
         justifyContent="center"
@@ -21,7 +21,7 @@ export default function Hero({
         <Flex pos="relative" flexGrow="1">
           <Box
             pos="absolute"
-            h="120%"
+            h={{ lg: "120%" }}
             left="0"
             right="0"
             top="-10%"
@@ -36,7 +36,7 @@ export default function Hero({
             display={{ base: "none", sm: "block" }}
           />
           <Flex
-            minH="45dvh"
+            minH={{ lg: "45dvh" }}
             zIndex="2"
             pos="relative"
             mx="auto"

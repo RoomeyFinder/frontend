@@ -1,7 +1,15 @@
-import { Input, InputGroup, InputProps, InputRightAddon } from "@chakra-ui/react"
+import { Input, InputAddonProps, InputGroup, InputProps, InputRightAddon } from "@chakra-ui/react"
 import { ReactNode } from "react"
 
-export default function PageInput({ icon, inputProps }: { icon: ReactNode, inputProps: InputProps }) {
+export default function PageInput({
+  icon,
+  inputProps,
+  iconProps,
+}: {
+  icon: ReactNode
+  inputProps: InputProps
+  iconProps?: InputAddonProps
+}) {
   return (
     <InputGroup
       border="1px solid"
@@ -19,6 +27,8 @@ export default function PageInput({ icon, inputProps }: { icon: ReactNode, input
         border="0"
         bg="white.200"
         color="gray.main"
+        {...(iconProps || {})}
+        onClick={iconProps?.onClick}
       >
         {icon}
       </InputRightAddon>
