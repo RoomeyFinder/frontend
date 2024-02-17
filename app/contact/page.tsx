@@ -6,7 +6,6 @@ import {
   useRef,
   useCallback,
   ChangeEventHandler,
-  FormEventHandler,
 } from "react"
 import { HeroInput, ContactForm, SocialLinks } from "./_Components"
 import PageText from "../_components/PublicPages/Text"
