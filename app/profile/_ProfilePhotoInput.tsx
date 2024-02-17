@@ -1,6 +1,6 @@
 import { Flex, FormLabel, Show, Button, Text } from "@chakra-ui/react"
-import FilledPlusIcon from "../_assets/FilledPlusIcon"
-import PlaceHolderAvatar from "../_assets/PlaceHolderAvatar"
+import FilledPlusIcon from "../_assets/SVG/FilledPlusIcon"
+import PlaceHolderAvatar from "../_assets/SVG/PlaceHolderAvatar"
 
 
 

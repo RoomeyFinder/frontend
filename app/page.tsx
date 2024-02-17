@@ -1,3 +1,4 @@
+"use client"
 import {
   Box,
   Button,
@@ -7,16 +8,116 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react"
-import PeopleGroup from "./_assets/PeopleGroup"
-import Handlens from "./_assets/Handlens"
-import ChatIcon from "./_assets/ChatIcon"
 import PublishAdClicker from "./_components/PublishAdClicker"
 import FeatureCard from "./_components/FeatureCard"
-
+import RoomListingCard from "./_components/RoomListingCard"
+import ListingsGridLayout from "./_components/ListingsGridLayout"
+import ChatIcon from "./_assets/SVG/ChatIcon"
+import Handlens from "./_assets/SVG/Handlens"
+import PeopleGroup from "./_assets/SVG/PeopleGroup"
+const listOfRoomeys = [
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+  <RoomListingCard
+    isLocked
+    ownersName={"Milfred"}
+    isFavourite={false}
+    toggleIsFavourite={function (): void {}}
+    ownersOccupation={"Banker"}
+    city={""}
+    rentAmount={1500000}
+    rentDuration={"yearly"}
+    title={""}
+    images={[]}
+  />,
+]
 export default function Home() {
   return (
     <>
       <Hero />
+      <ListingsGridLayout list={listOfRoomeys} />
       <FeaturesSection />
     </>
   )

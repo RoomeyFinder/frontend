@@ -9,7 +9,7 @@ import FAQ from "../_components/FAQ"
 import QuestionCard from "../_components/QuestionCard"
 import Hero from "../_components/PublicPages/Hero"
 import PageInput from "../_components/PublicPages/Input"
-import SearchIcon from "../_assets/SearchIcon"
+import SearchIcon from "../_assets/SVG/SearchIcon"
 import PageText from "../_components/PublicPages/Text"
 
 export default function Home() {
@@ -19,11 +19,11 @@ export default function Home() {
         <Heading as="h1" variant="large" mb="2rem">
           Help
         </Heading>
-        <Divider borderColor="gray.100" />
-        <PageText>
-          Have any questions?
-        </PageText>
-        <Divider borderColor="gray.100" />
+        <VStack alignItems="start" gap="3rem">
+          <Divider borderColor="gray.100" />
+          <PageText>Have any questions?</PageText>
+          <Divider borderColor="gray.100" />
+        </VStack>
         <Box mt="3rem">
           <PageInput
             inputProps={{

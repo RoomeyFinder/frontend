@@ -1,5 +1,5 @@
 import { Flex, Image, Show } from "@chakra-ui/react"
-import LogoText from "../_assets/LogoText"
+import LogoText from "../_assets/SVG/LogoText"
 
 export default function AppLogo({ showTextLogo }: { showTextLogo?: string }) {
   return (

@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react"
-import NoFilesIcon from "../_assets/NoFilesIcon"
+import NoFilesIcon from "../_assets/SVG/NoFilesIcon"
 
 export default function Empty({ text }: { text?: string }) {
   return (

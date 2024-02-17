@@ -7,11 +7,11 @@ import {
   useCallback,
   useMemo,
 } from "react"
-import RightArrow from "../_assets/RightArrow"
+import RightArrow from "../_assets/SVG/RightArrow"
 import PageInput from "../_components/PublicPages/Input"
 import { socialMediaLinks } from "../_data/navLinks"
 import StandAloneIcon from "../_components/StandaloneIcon"
-import EmailIcon from "../_assets/EmailIcon"
+import EmailIcon from "../_assets/SVG/EmailIcon"
 
 export function ContactForm({
   formData,

@@ -1,7 +1,7 @@
 "use client"
 
 import { useRadio, useRadioGroup, HStack, Box, RadioProps, Flex, ScaleFade, StackProps, } from "@chakra-ui/react"
-import CheckedRadioFill from "../_assets/CheckedRadioFill"
+import CheckedRadioFill from "../_assets/SVG/CheckedRadioFill"
 
 function CustomRadio(props: RadioProps & { selectedValue: string }) {
   const { getInputProps, getRadioProps } = useRadio(props)

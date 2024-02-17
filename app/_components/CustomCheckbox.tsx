@@ -1,7 +1,7 @@
 "use client"
 import { Flex, Input, Text, useCheckbox, chakra, TextProps } from "@chakra-ui/react"
 import { ChangeEventHandler, ReactNode } from "react"
-import CheckMarkFilled from "../_assets/CheckMarkFilled"
+import CheckMarkFilled from "../_assets/SVG/CheckMarkFilled"
 
 
 export default function CustomCheckbox({ children, labelProps = {}, value, onChange, name }: {

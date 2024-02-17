@@ -1,5 +1,5 @@
 import { Popover, PopoverTrigger, Flex, PopoverContent, Box, FlexProps, } from "@chakra-ui/react"
-import DownChevron from "../_assets/DownChevron"
+import DownChevron from "../_assets/SVG/DownChevron"
 
 
 export default function DropDownWithChevron({ DropdownContent, DropdownTrigger, justifyTrigger = "center", triggerContainerProps }: {

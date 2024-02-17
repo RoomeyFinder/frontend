@@ -1,5 +1,5 @@
 import { VStack, Heading, Link, Text } from "@chakra-ui/react"
-import UserIcon from "../_assets/UserIcon"
+import UserIcon from "../_assets/SVG/UserIcon"
 
 export default function ProfileSettingsButton() {
   return (

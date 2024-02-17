@@ -1,5 +1,5 @@
 import { Flex, FormLabel, Text } from "@chakra-ui/react"
-import FileUploadIcon from "../_assets/FileUploadIcon"
+import FileUploadIcon from "../_assets/SVG/FileUploadIcon"
 import { ChangeEventHandler, DragEventHandler, MutableRefObject, ReactNode } from "react"
 
 

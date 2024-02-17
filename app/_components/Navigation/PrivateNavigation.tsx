@@ -1,11 +1,27 @@
 
-import BoltIcon from "@/assets/BoltIcon"
-import HamburgerIcon from "@/assets/HamburgerIcon"
-import LeftChevron from "@/assets/LeftChevron"
-import QuestionMarkCircled from "@/assets/QuestionMarkCircled"
-import { Avatar, Box, Text, Button, Flex, Icon, Link, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Show, chakra, useDisclosure } from "@chakra-ui/react"
-import MessageIcon from "@/assets/MessageIcon"
-import NotificationIcon from "@/assets/NotificationIcon"
+import BoltIcon from "@/app/_assets/SVG/BoltIcon"
+import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
+import LeftChevron from "@/app/_assets/SVG/LeftChevron"
+import QuestionMarkCircled from "@/app/_assets/SVG/QuestionMarkCircled"
+import {
+  Avatar,
+  Box,
+  Text,
+  Button,
+  Flex,
+  Icon,
+  Link,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+  Show,
+  chakra,
+  useDisclosure,
+} from "@chakra-ui/react"
+import MessageIcon from "@/app/_assets/SVG/MessageIcon"
+import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import SupportNav, { baseNavItemStyles } from "./SupportNavList"
 import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"

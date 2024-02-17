@@ -1,22 +1,22 @@
-import FacebookIcon from "@/app/_assets/FacebookIcon"
-import InstagramIcon from "@/app/_assets/InstagramIcon"
-import XIcon from "@/app/_assets/XIcon"
+import FacebookIcon from "@/app/_assets/SVG/FacebookIcon"
+import InstagramIcon from "@/app/_assets/SVG/InstagramIcon"
+import XIcon from "@/app/_assets/SVG/XIcon"
 import { Heading, Flex, Circle, Box, Text } from "@chakra-ui/react"
 import { FunctionComponent } from "react"
 
-
-export default function SocialAccountsSection(){
+export default function SocialAccountsSection() {
   return (
     <>
       <Box w="100%">
-        <Heading
-          variant="md"
-          as="h2"
-          mb={{ base: "1.5rem", lg: "3rem" }}
-        >
+        <Heading variant="md" as="h2" mb={{ base: "1.5rem", lg: "3rem" }}>
           Social accounts
         </Heading>
-        <Flex justifyContent={{ base: "center", sm: "start" }} w="100%" gap="3rem" flexWrap="wrap">
+        <Flex
+          justifyContent={{ base: "center", sm: "start" }}
+          w="100%"
+          gap="3rem"
+          flexWrap="wrap"
+        >
           <SocialMediaConnectCard name="Facebook" Icon={FacebookIcon} />
           <SocialMediaConnectCard name="Twitter" Icon={XIcon} />
           <SocialMediaConnectCard name="Instagram" Icon={InstagramIcon} />
@@ -26,10 +26,13 @@ export default function SocialAccountsSection(){
   )
 }
 
-function SocialMediaConnectCard({ name, Icon, }: {
+function SocialMediaConnectCard({
+  name,
+  Icon,
+}: {
   name: string
   Icon: FunctionComponent
-}){
+}) {
   return (
     <Flex
       boxShadow="0px 1px 1px 0px rgba(0, 0, 0, 0.25)"
