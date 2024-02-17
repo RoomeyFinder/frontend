@@ -32,8 +32,8 @@ const Button = defineStyleConfig({
       _hover: {
         background: "brand.main",
         color: "white.main",
-        borderColor: "brand.main"
-      }
+        borderColor: "brand.main",
+      },
     },
     brand: {
       display: "flex",
@@ -49,7 +49,7 @@ const Button = defineStyleConfig({
       color: "white.main",
       _hover: {
         filter: "brightness(115%)",
-        textDecor: "none"
+        textDecor: "none",
       },
     },
     "brand-secondary": {
@@ -68,12 +68,24 @@ const Button = defineStyleConfig({
         textDecor: "none",
         background: "brand.main",
         color: "white.main",
+        _disabled: {
+          background: "brand.50",
+        },
+      },
+      _focus: {
+        textDecor: "none",
+        background: "brand.main",
+        color: "white.main",
+      },
+      _disabled: {
+        textDecor: "none",
+        background: "brand.50",
+        color: "white.main",
       },
     },
-
   },
   defaultProps: {
-    size: "sm"
+    size: "sm",
   },
 })
 

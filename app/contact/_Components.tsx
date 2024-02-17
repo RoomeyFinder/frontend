@@ -17,14 +17,18 @@ export function ContactForm({
   formData,
   handleChange,
   formRef,
+  isLoading,
+  handleSubmit
 }: {
   formData: {
     name: string
     email: string
     message: string
   }
+  isLoading: boolean
   handleChange: ChangeEventHandler<HTMLInputElement>
   formRef: RefObject<HTMLDivElement>
+  handleSubmit: () => void
 }) {
   return (
     <>
@@ -49,6 +53,10 @@ export function ContactForm({
             as="form"
             maxW="60rem"
             mx="auto"
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSubmit()
+            }}
           >
             <Input
               placeholder="Your name"
@@ -77,7 +85,14 @@ export function ContactForm({
               rounded="1.2rem"
               borderColor="#7070704D"
             />
-            <Button variant="brand-secondary" w="full">
+            <Button
+              isLoading={isLoading}
+              loadingText="Sending Message..."
+              _loading={{ backgroundColor: "brand.secondary"}}
+              variant="brand-secondary"
+              w="full"
+              type="submit"
+            >
               Send Message
             </Button>
           </Flex>
