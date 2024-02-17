@@ -10,8 +10,7 @@ export default function SocialAccountsSection(){
     <>
       <Box w="100%">
         <Heading
-          size="md"
-          variant="700"
+          variant="md"
           as="h2"
           mb={{ base: "1.5rem", lg: "3rem" }}
         >
@@ -44,7 +43,8 @@ function SocialMediaConnectCard({ name, Icon, }: {
       flexDir="column"
       gap="2.5rem"
       bg="white.400"
-      w="22.4rem"
+      maxW="22.4rem"
+      w="90dvw"
     >
       <Circle bg="gray.main" minW="5rem" minH="5rem" color="white">
         <Icon />

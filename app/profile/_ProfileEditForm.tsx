@@ -19,7 +19,7 @@ import PhotosUploadSection from "./PhotosUploadSection"
 import LifestyleInput from "./_LifestyleInput"
 import User from "../_types/User"
 import ProfilePhotoInput from "./_ProfilePhotoInput"
-import ProfileSettingsButton from "./_ProfileSettingsButton"
+import LinkToProfileSettings from "./_LinkToProfileSettings"
 import InputLabel from "../_components/InputLabel"
 
 export default function ProfileEditForm({ userData }: { userData: User }) {
@@ -73,7 +73,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
             }
           />
 
-          <Heading variant="700" size="md" textAlign={{ base: "center", md: "left"}}>Personal info</Heading>
+          <Heading variant="md" textAlign={{ base: "center", md: "left"}}>Personal info</Heading>
 
           <InputGroup flexGrow="1" flexDir="column">
             <InputLabel>Full name</InputLabel>
@@ -246,7 +246,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
           md: "block",
         }}
       >
-        <ProfileSettingsButton />
+        <LinkToProfileSettings />
       </Box>
     </Flex>
   )

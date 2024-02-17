@@ -4,7 +4,7 @@ import UserIcon from "../_assets/UserIcon"
 export default function ProfileSettingsButton() {
   return (
     <VStack spacing="3rem" alignItems="flex-start">
-      <Heading size="md" variant="700">
+      <Heading variant="md">
         Settings
       </Heading>
       <VStack

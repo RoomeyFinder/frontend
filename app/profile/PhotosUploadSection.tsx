@@ -31,7 +31,7 @@ export default function PhotosUploadSection({
         overflow="hidden"
         whiteSpace="nowrap"
       >
-        <Heading variant="700" mb="3rem" size="md">More photos of me</Heading>
+        <Heading variant="md" mb="3rem" size="md">More photos of me</Heading>
 
         <Flex
         //  px={{ base: show ? "2rem" : "", md: "3rem" }} 
