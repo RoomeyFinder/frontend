@@ -1,12 +1,12 @@
-import EditIcon from "../../_assets/EditIcon"
-import FacebookIcon from "../../_assets/FacebookIcon"
-import GrowthIcon from "../../_assets/GrowthIcon"
-import HeartIcon from "../../_assets/HeartIcon"
-import HeartShineIcon from "../../_assets/HeartShineIcon"
-import InstagramIcon from "../../_assets/InstagramIcon"
-import MessageIcon from "../../_assets/MessageIcon"
-import NotificationIcon from "../../_assets/NotificationIcon"
-import XIcon from "../../_assets/XIcon"
+import EditIcon from "../_assets/EditIcon"
+import FacebookIcon from "../_assets/FacebookIcon"
+import GrowthIcon from "../_assets/GrowthIcon"
+import HeartIcon from "../_assets/HeartIcon"
+import HeartShineIcon from "../_assets/HeartShineIcon"
+import InstagramIcon from "../_assets/InstagramIcon"
+import MessageIcon from "../_assets/MessageIcon"
+import NotificationIcon from "../_assets/NotificationIcon"
+import XIcon from "../_assets/XIcon"
 
 export const privateLinks = [
   {
@@ -35,14 +35,14 @@ export const privateLinks = [
     href: "/chats",
     icon: MessageIcon,
     hideAbove: "md",
-    showBelow: "md"
+    showBelow: "md",
   },
   {
     name: "Notifications",
     href: "/notifications",
     icon: NotificationIcon,
     hideAbove: "md",
-    showBelow: "md"
+    showBelow: "md",
   },
   {
     name: "Premium",
@@ -75,38 +75,38 @@ export const supportLinks = [
 export const footerLinks = [
   {
     name: "Home",
-    href: "/"
+    href: "/",
   },
   {
     name: "About",
-    href: "/about"
+    href: "/about",
   },
   {
     name: "Contact",
-    href: "/contact"
+    href: "/contact",
   },
   {
     name: "Legal",
-    href: "/legal"
+    href: "/legal",
   },
   {
     name: "Help Center",
-    href: "/help"
+    href: "/help",
   },
   {
     name: "Testimonials",
-    href: "/testimonials"
+    href: "/testimonials",
   },
 ]
 
 export const footerSubLinks = [
   {
     name: "Privacy Policy",
-    href: "/privacy-policy"
+    href: "/privacy-policy",
   },
   {
     name: "Blog",
-    href: "/blog"
+    href: "/blog",
   },
 ]
 

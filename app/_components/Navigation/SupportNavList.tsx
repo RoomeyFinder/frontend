@@ -1,5 +1,5 @@
 import { BoxProps, ChakraComponent, Flex, SystemStyleObject, chakra, Box } from "@chakra-ui/react"
-import { supportLinks } from "./data"
+import { supportLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 
 

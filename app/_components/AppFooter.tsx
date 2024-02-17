@@ -1,7 +1,11 @@
 "use client"
 import { Box, Divider, Flex, Link, LinkProps, List, ListItem, Text } from "@chakra-ui/react"
 import CopyrightIcon from "../_assets/CopyrightIcon"
-import { footerLinks, footerSubLinks, socialMediaLinks } from "./Navigation/data"
+import {
+  footerLinks,
+  footerSubLinks,
+  socialMediaLinks,
+} from "../_data/navLinks"
 import ListItemMarker from "../_assets/ListItemMarker"
 import StandAloneIcon from "./StandaloneIcon"
 

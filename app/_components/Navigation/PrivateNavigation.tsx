@@ -7,7 +7,7 @@ import { Avatar, Box, Text, Button, Flex, Icon, Link, Menu, MenuButton, MenuDivi
 import MessageIcon from "@/assets/MessageIcon"
 import NotificationIcon from "@/assets/NotificationIcon"
 import SupportNav, { baseNavItemStyles } from "./SupportNavList"
-import { privateLinks } from "./data"
+import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 

@@ -12,7 +12,7 @@ export default function GlobalLayout({ children }: {
   const { isAuthenticated } = useCheckAuthentication()
   return(
     <Box h="100dvh" overflow="auto">
-      <AppHeader isAuthenticated={isAuthenticated} />
+      <AppHeader isAuthenticated={isAuthenticated ? true : false} />
       <Flex justifyContent="center" alignItems="center" minH={{ base: "calc(100dvh - 30%)", sm: "calc(100dvh - 23%)" }}>
         <Box flexGrow="1">{children}</Box>
       </Flex>

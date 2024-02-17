@@ -33,7 +33,7 @@ export default function Hero({
             mx="auto"
             bgRepeat="no-repeat"
             zIndex="1"
-            display={{ base: "none", sm: "block" }}
+            opacity={{ base: ".2", md: "1" }}
           />
           <Flex
             minH={{ lg: "45dvh" }}
@@ -43,6 +43,7 @@ export default function Hero({
             textAlign="left"
             as="main"
             w={{ base: "95dvw", md: "79%" }}
+            backdropFilter={{ base: "blur(.3rem)", md: "unset"}}
           >
             <Box maxW="70rem" w="full">
               {children}
