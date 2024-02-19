@@ -38,7 +38,7 @@ export default function Carousel() {
             objectFit="cover"
             objectPosition="center"
             src={imgOne.src}
-            width={283}
+            width={{ base: 320, sm: 283 }}
             height={277}
             alt=""
           />

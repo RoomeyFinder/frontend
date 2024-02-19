@@ -24,8 +24,8 @@ export default function RoomeyListingCard({
   return (
     <Flex
       py="2rem"
-      w="100%"
-      maxW="28.3rem"
+      w="95dvw"
+      maxW={{ base: "95dvw", md: "28.3rem" }}
       alignItems="center"
       flexDir="column"
       gap="1.5rem"

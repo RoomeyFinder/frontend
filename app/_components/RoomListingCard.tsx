@@ -31,7 +31,7 @@ export default function RoomListingCard({
   return (
     <Flex
       w="100%"
-      maxW="28.3rem"
+      maxW={{ base: "32rem", sm: "28.3rem" }}
       alignItems="start"
       flexDir="column"
       gap=".5rem"
