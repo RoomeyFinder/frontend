@@ -8,22 +8,33 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react"
-import { useCallback, useRef, useState } from "react"
+import { FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import useHandleFilesUploadWithDragAndDrop from "../_hooks/useHandleFilesUploadWithDragAndDrop"
 import PhoneNumberInput from "../_components/PhoneNumberInput"
 import DobInput from "../_components/DobInput"
 import AddressInput from "../_components/AddressInput"
 import SearchableInput from "../_components/SearchableInput"
 import OccupationOrUniversityInput from "../_components/OccupationOrUniversityInput"
-import PhotosUploadSection from "./PhotosUploadSection"
+import PhotosUploadSection from "./_PhotosUploadSection"
 import LifestyleInput from "./_LifestyleInput"
 import User from "../_types/User"
 import ProfilePhotoInput from "./_ProfilePhotoInput"
 import LinkToProfileSettings from "./_LinkToProfileSettings"
 import InputLabel from "../_components/InputLabel"
+import { PreviewablePhoto } from "../_types"
+import useAxios from "../_hooks/useAxios"
 
 export default function ProfileEditForm({ userData }: { userData: User }) {
+  const { isFetching, fetchData, } = useAxios()
+  const [pendingUpdateData, setPendingUpdateData] = useState<{
+    profileImage: File | undefined
+    existingPhotos: User["photos"]
+    updatedUserData: User
+    lifestyleTags: { value: string, category: string}[]
+    files: File[]
+  } | null>(null)
   const inputRef = useRef<HTMLInputElement | null>(null)
+  const [profileImage, setProfileImage] = useState<File | undefined>(pendingUpdateData?.profileImage)
   const {
     files,
     openFileExplorer,
@@ -32,24 +43,94 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
     handleDrop,
     handleDragLeave,
     handleDragEnter,
+    removeFile,
     dragActive,
-  } = useHandleFilesUploadWithDragAndDrop(inputRef)
+    isMaximumCount,
+  } = useHandleFilesUploadWithDragAndDrop(pendingUpdateData?.files || [], inputRef, 4 - userData.photos.length)
+  const [existingPhotos, setExistingPhotos] = useState(pendingUpdateData?.existingPhotos || userData.photos)
   const [showMobilePhotosUploader, setShowMobilePhotosUploader] =
     useState(false)
-  const [formData, setFormData] = useState<User>(userData)
+  const [updatedUserData, setUpdatedUserData] = useState<User>(pendingUpdateData?.updatedUserData || userData)
+  const removePhoto = useCallback((url: string, fileName: string) => {
+    if (url && url.startsWith("blob:")) {
+      URL.revokeObjectURL(url)
+      removeFile(fileName)
+    } else
+      setExistingPhotos((prev) => prev.filter((it) => it.secure_url !== url))
+  }, [])
+  const previewFiles = useMemo<PreviewablePhoto[]>(
+    () => [
+      ...existingPhotos.map((photo) => ({
+        file: null,
+        preview: photo.secure_url,
+        id: photo.id,
+        _id: photo._id,
+      })),
+      ...files.map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+        id: Math.random().toString(),
+        _id: Math.random().toString(),
+      })),
+    ],
+    [userData.photos, files]
+  )
   const [lifestyleTags, setLifestyleTags] = useState(
-    formData.lifestyleTags || []
+    pendingUpdateData?.lifestyleTags || updatedUserData.lifestyleTags || []
   )
 
   const handleInputChange = useCallback(
     (name: string, value: string | boolean) => {
-      setFormData((prev) => ({ ...prev, [name]: value }))
+      setUpdatedUserData((prev) => ({ ...prev, [name]: value }))
     },
     []
   )
 
+  useEffect(() => {
+    localStorage.setItem("pendingUpdateData", JSON.stringify({
+      profileImage, existingPhotos, updatedUserData, lifestyleTags, files, 
+    }))
+  }, [profileImage, updatedUserData, lifestyleTags, files, existingPhotos])
+
+  useEffect(() => {
+    const pendingUpdateData = localStorage.getItem("pendingUpdateData")
+    if(pendingUpdateData){
+      setPendingUpdateData(JSON.parse(pendingUpdateData))
+    }
+  }, [])
+
+  const formHasChanges = useMemo(
+    () =>
+      files.length > 0 ||
+      userData.photos.length !== existingPhotos.length ||
+      profileImage !== undefined ||
+      JSON.stringify(userData) !== JSON.stringify(updatedUserData),
+    [files, userData?.photos.length, existingPhotos.length, profileImage, userData, updatedUserData]
+  )
+  const handleSubmit: FormEventHandler = useCallback((e) => {
+    e.preventDefault()     
+  console.log(JSON.stringify(userData), JSON.stringify(updatedUserData))
+  console.log(formHasChanges)
+  console.log({
+      profileImage,
+      existingPhotos,
+      updatedUserData,
+      lifestyleTags,
+      files,
+    })
+  }, [profileImage, updatedUserData, lifestyleTags, files, existingPhotos, formHasChanges])
+
   return (
-    <Flex flexDir="column" alignItems="start" gap="5rem" w={{ base: "90%", lg: "80%" }} mx="auto" py="5rem">
+    <Flex
+      flexDir="column"
+      alignItems="start"
+      gap="5rem"
+      w={{ base: "90%", lg: "80%" }}
+      mx="auto"
+      py="5rem"
+      as="form"
+      onSubmit={handleSubmit}
+    >
       <Flex
         gap={{ base: 0, md: "5rem" }}
         alignItems="start"
@@ -68,12 +149,17 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
           position="relative"
         >
           <ProfilePhotoInput
+            placeholder={userData.profileImage?.secure_url}
+            file={profileImage}
+            updateFile={(f) => setProfileImage(f)}
             toggleShowAdditionalPhotos={() =>
               setShowMobilePhotosUploader((prev) => !prev)
             }
           />
 
-          <Heading variant="md" textAlign={{ base: "center", md: "left"}}>Personal info</Heading>
+          <Heading variant="md" textAlign={{ base: "center", md: "left" }}>
+            Personal info
+          </Heading>
 
           <InputGroup flexGrow="1" flexDir="column">
             <InputLabel>Full name</InputLabel>
@@ -85,7 +171,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
                 onChange={(e) =>
                   handleInputChange(e.target.name, e.target.value)
                 }
-                value={formData.firstName}
+                value={updatedUserData.firstName}
               />
               <Input
                 flexBasis="48%"
@@ -94,7 +180,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
                 onChange={(e) =>
                   handleInputChange(e.target.name, e.target.value)
                 }
-                value={formData.lastName}
+                value={updatedUserData.lastName}
               />
             </Flex>
           </InputGroup>
@@ -102,8 +188,9 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
           <Flex flexGrow="1" flexDir="column">
             <InputLabel>Phone number</InputLabel>
             <PhoneNumberInput
-              phoneNumber={formData.phoneNumber}
+              phoneNumber={updatedUserData.phoneNumber}
               error={[]}
+              isDisabled={true}
               handleCountryCodeChange={(update) => {
                 handleInputChange("countryCode", update)
               }}
@@ -118,7 +205,8 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
             <Input
               placeholder="Email address"
               readOnly
-              value={formData.email}
+              isDisabled
+              value={updatedUserData.email}
             />
           </InputGroup>
 
@@ -126,7 +214,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
             <InputLabel>Date of birth</InputLabel>
             <DobInput
               inputVariant="base"
-              value={formData.dob}
+              value={updatedUserData.dob}
               handleChange={(update) => {
                 handleInputChange("dob", update)
               }}
@@ -141,7 +229,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
               handleChange={(selection) => {
                 handleInputChange("gender", selection)
               }}
-              value={formData.gender}
+              value={updatedUserData.gender}
               errorProps={{}}
               options={["male", "female"]}
               inputName="gender"
@@ -154,11 +242,13 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
             <OccupationOrUniversityInput
               columns={1}
               spacing={3}
-              isStudent={formData.isStudent}
+              isStudent={updatedUserData.isStudent}
               inputVariant="base"
-              inputName={formData.isStudent ? "school" : "occupation"}
+              inputName={updatedUserData.isStudent ? "school" : "occupation"}
               inputValue={
-                formData.isStudent ? formData.school : formData.occupation
+                updatedUserData.isStudent
+                  ? updatedUserData.school
+                  : updatedUserData.occupation
               }
               handleChange={(inputName, newValue) => {
                 handleInputChange(inputName, newValue)
@@ -178,7 +268,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
               handleSelection={(option) => {
                 handleInputChange("currentAddress", option.description)
               }}
-              value={formData.currentAddress}
+              value={updatedUserData.currentAddress}
               reset={() => handleInputChange("currentAddress", "")}
             />
           </Flex>
@@ -208,7 +298,7 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
           <InputGroup flexGrow="1" flexDir="column">
             <InputLabel>About you</InputLabel>
             <Textarea
-              value={formData.about}
+              value={updatedUserData.about}
               name="about"
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
               h="30rem"
@@ -220,12 +310,13 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
             />
           </InputGroup>
 
-          <Button variant="brand-secondary" maxW="18.5rem">
+          <Button isDisabled={!formHasChanges} isLoading={isFetching} loadingText={"Saving..."} type="submit" variant="brand-secondary" maxW="18.5rem">
             Save Changes
           </Button>
         </Flex>
 
         <PhotosUploadSection
+          removeFile={removePhoto}
           toggleShow={() => setShowMobilePhotosUploader(false)}
           show={showMobilePhotosUploader}
           dragActive={dragActive}
@@ -236,7 +327,8 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
           handleChange={handleChange}
           inputRef={inputRef}
           openFileExplorer={openFileExplorer}
-          files={files}
+          photos={previewFiles}
+          isDisabled={isMaximumCount}
         />
       </Flex>
 
@@ -251,4 +343,3 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
     </Flex>
   )
 }
-

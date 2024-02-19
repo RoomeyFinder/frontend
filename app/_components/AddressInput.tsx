@@ -60,7 +60,7 @@ export default function AddressInput({ handleSelection, value, errorProps, input
           <CustomDropDownList
             list={data as never}
             ItemComponent={({ option, ...rest }: { option: google.maps.places.AutocompletePrediction }) => (
-              (<Button {...rest} justifyContent="start" onClick={() => {
+              (<Button type="button" {...rest} justifyContent="start" onClick={() => {
                 handleSelection(option)
                 onClose()
               }}>

@@ -35,3 +35,8 @@ body{
 .swiper-button-next::after, .swiper-button-prev::after {
     content: "" !important;
 }
+
+.ReactFlagsSelect-module_disabledBtn__3A4GF{
+  background-color: transparent !important;
+  cursor: not-allowed !important;
+}

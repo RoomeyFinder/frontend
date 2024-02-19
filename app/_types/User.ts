@@ -2,6 +2,11 @@
 
 
 export default interface User {
+  profileImage: {
+    secure_url: string
+    id: string
+    _id: string
+  },
   firstName: string
   lastName: string
   dob: string
@@ -13,6 +18,11 @@ export default interface User {
   school: string
   occupation: string
   currentAddress: string
-  lifestyleTags?: {value: string, category: string}[]
+  lifestyleTags?: { value: string; category: string }[]
   about: string
+  photos: {
+    secure_url: string
+    id: string
+    _id: string
+  }[]
 }
