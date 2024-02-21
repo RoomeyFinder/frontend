@@ -1,4 +1,4 @@
-import { Avatar, AvatarProps, Box, Flex } from "@chakra-ui/react"
+import { Avatar, AvatarProps, Box, Flex, ResponsiveValue } from "@chakra-ui/react"
 import PlaceHolderAvatar from "../_assets/SVG/PlaceHolderAvatar"
 import VerifiedBadge from "../_assets/SVG/VerifiedBadge"
 import { useState } from "react"
@@ -11,12 +11,14 @@ export default function ProfileAvatar({
   showVerifiedBadge,
   isDeletable = false,
   defaultShowRemoveIcon,
-  size
+  name,
+  size,
 }: {
   showVerifiedBadge?: boolean
   imageSrc?: string
   isDeletable?: boolean
   defaultShowRemoveIcon?: boolean
+  size?: ResponsiveValue<string | "small" | "large"> | "small" | "large"
 } & AvatarProps) {
   const [showRemoveIcon, setShowRemoveIcon] = useState(false)
 
@@ -37,13 +39,13 @@ export default function ProfileAvatar({
       {imageSrc ? (
         <Avatar
           fontSize="4rem"
-          name="lorainee"
+          name={name}
           width={width}
           height={height}
           src={imageSrc}
         />
       ) : (
-        <PlaceHolderAvatar size="large" />
+        <PlaceHolderAvatar size={size as any || "large"} />
       )}
       {showVerifiedBadge && (
         <Box

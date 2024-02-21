@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react"
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios"
 import useCheckAuthentication from "./useCheckAuthentication"
+import localforage from "localforage"
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -29,7 +30,10 @@ export default function useAxios() {
       setIsFetching(true)
       try {
         const response = await axios[method](url, body, {
-          ...headers,
+          headers: {
+            ...headers,
+            authorization: `Bearer ${sessionStorage.getItem("rftoken") || await localforage.getItem("rftoken")}`
+          },
           baseURL: baseURL || process.env.NEXT_PUBLIC_SERVER_URL,
         })
         return await response.data

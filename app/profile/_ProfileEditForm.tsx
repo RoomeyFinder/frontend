@@ -8,7 +8,14 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react"
-import { FormEventHandler, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import useHandleFilesUploadWithDragAndDrop from "../_hooks/useHandleFilesUploadWithDragAndDrop"
 import PhoneNumberInput from "../_components/PhoneNumberInput"
 import DobInput from "../_components/DobInput"
@@ -23,18 +30,36 @@ import LinkToProfileSettings from "./_LinkToProfileSettings"
 import InputLabel from "../_components/InputLabel"
 import { PreviewablePhoto } from "../_types"
 import useAxios from "../_hooks/useAxios"
+import useAppToast from "../_hooks/useAppToast"
+import useWarnBeforeExit from "../_hooks/useWarnBeforeExit"
 
-export default function ProfileEditForm({ userData }: { userData: User }) {
-  const { isFetching, fetchData, } = useAxios()
-  const [pendingUpdateData, setPendingUpdateData] = useState<{
-    profileImage: File | undefined
-    existingPhotos: User["photos"]
-    updatedUserData: User
-    lifestyleTags: { value: string, category: string}[]
-    files: File[]
-  } | null>(null)
+export default function ProfileEditForm({
+  userData,
+  setUserData,
+}: {
+  userData: User
+  setUserData: (data: User) => void
+}) {
+  const toast = useAppToast()
+  const updatePendingUpdateData = useCallback(
+    (update: {
+      existingPhotos?: User["photos"]
+      updatedUserData?: User
+      lifestyleTags?: { value: string; category: string }[]
+      files?: File[]
+    }) => {
+      let pendingUpdateData = localStorage.getItem("pendingUpdateData") || "{}"
+      if (pendingUpdateData) {
+        pendingUpdateData = JSON.parse(pendingUpdateData)
+        let upd = { ...(pendingUpdateData as any), ...update }
+        localStorage.setItem("pendingUpdateData", JSON.stringify(upd))
+      }
+    },
+    []
+  )
+  const { isFetching, fetchData } = useAxios()
   const inputRef = useRef<HTMLInputElement | null>(null)
-  const [profileImage, setProfileImage] = useState<File | undefined>(pendingUpdateData?.profileImage)
+  const [profileImage, setProfileImage] = useState<File | undefined>()
   const {
     files,
     openFileExplorer,
@@ -46,18 +71,27 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
     removeFile,
     dragActive,
     isMaximumCount,
-  } = useHandleFilesUploadWithDragAndDrop(pendingUpdateData?.files || [], inputRef, 4 - userData.photos.length)
-  const [existingPhotos, setExistingPhotos] = useState(pendingUpdateData?.existingPhotos || userData.photos)
+    setFiles,
+  } = useHandleFilesUploadWithDragAndDrop(inputRef, 4 - userData.photos.length)
+  const [existingPhotos, setExistingPhotos] = useState(userData.photos)
   const [showMobilePhotosUploader, setShowMobilePhotosUploader] =
     useState(false)
-  const [updatedUserData, setUpdatedUserData] = useState<User>(pendingUpdateData?.updatedUserData || userData)
-  const removePhoto = useCallback((url: string, fileName: string) => {
-    if (url && url.startsWith("blob:")) {
-      URL.revokeObjectURL(url)
-      removeFile(fileName)
-    } else
-      setExistingPhotos((prev) => prev.filter((it) => it.secure_url !== url))
-  }, [])
+  const [updatedUserData, setUpdatedUserData] = useState<User>(userData)
+  const removePhoto = useCallback(
+    (url: string, fileName: string, _id?: string) => {
+      if (url && url.startsWith("blob:")) {
+        URL.revokeObjectURL(url)
+        removeFile(fileName)
+      } else {
+        const updatedExistingPhotos = existingPhotos.filter(
+          (it) => it.secure_url !== url
+        )
+        setExistingPhotos(updatedExistingPhotos)
+        updatePendingUpdateData({ existingPhotos: updatedExistingPhotos })
+      }
+    },
+    [existingPhotos, updatePendingUpdateData]
+  )
   const previewFiles = useMemo<PreviewablePhoto[]>(
     () => [
       ...existingPhotos.map((photo) => ({
@@ -73,52 +107,161 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
         _id: Math.random().toString(),
       })),
     ],
-    [userData.photos, files]
+    [existingPhotos, files]
   )
-  const [lifestyleTags, setLifestyleTags] = useState(
-    pendingUpdateData?.lifestyleTags || updatedUserData.lifestyleTags || []
+  const [lifestyleTags, setLifestyleTags] = useState<User["lifestyleTags"]>(
+    userData.lifestyleTags || []
   )
 
   const handleInputChange = useCallback(
     (name: string, value: string | boolean) => {
-      setUpdatedUserData((prev) => ({ ...prev, [name]: value }))
+      const update = { ...updatedUserData, [name]: value }
+      setUpdatedUserData(update)
+      updatePendingUpdateData({ updatedUserData: update })
     },
-    []
+    [updatedUserData, updatePendingUpdateData]
   )
 
-  useEffect(() => {
-    localStorage.setItem("pendingUpdateData", JSON.stringify({
-      profileImage, existingPhotos, updatedUserData, lifestyleTags, files, 
-    }))
-  }, [profileImage, updatedUserData, lifestyleTags, files, existingPhotos])
+  const handleSelectLifestyleTag = useCallback(
+    (item: { value: string; category: string }) => {
+      const update = [...(lifestyleTags || []), item]
+      setLifestyleTags(update)
+      updatePendingUpdateData({ lifestyleTags: update })
+    },
+    [lifestyleTags, updatePendingUpdateData]
+  )
 
   useEffect(() => {
     const pendingUpdateData = localStorage.getItem("pendingUpdateData")
-    if(pendingUpdateData){
-      setPendingUpdateData(JSON.parse(pendingUpdateData))
+    if (pendingUpdateData) {
+      const data = JSON.parse(pendingUpdateData)
+      if (data) {
+        setUpdatedUserData(data.updatedUserData || { ...userData })
+        setLifestyleTags(data.lifestyleTags || userData.lifestyleTags || [])
+        setExistingPhotos(data.existingPhotos || userData.photos || [])
+        setFiles(data.files || [])
+      }
     }
-  }, [])
+  }, [userData])
 
-  const formHasChanges = useMemo(
-    () =>
-      files.length > 0 ||
-      userData.photos.length !== existingPhotos.length ||
-      profileImage !== undefined ||
-      JSON.stringify(userData) !== JSON.stringify(updatedUserData),
-    [files, userData?.photos.length, existingPhotos.length, profileImage, userData, updatedUserData]
+  const formHasChanges = useMemo(() => {
+    const {
+      isStudent: userDataIsStudent,
+      occupation: userDataOccupation,
+      school: userDataSchool,
+      ...restOfUserData
+    } = userData
+    const {
+      isStudent: updatedUserDataIsStudent,
+      occupation: updatedUserDataOccupation,
+      school: updatedUserDataSchool,
+      ...restOfUpdatedUserData
+    } = updatedUserData
+    const hasUpdatedUserData =
+      updatedUserDataIsStudent !== userDataIsStudent
+        ? userDataSchool !== updatedUserDataSchool
+        : userDataOccupation !== updatedUserDataOccupation ||
+          JSON.stringify(restOfUserData) !==
+            JSON.stringify(restOfUpdatedUserData)
+    const hasUpdatedFiles = files.length > 0
+    const hasUpdatedExistingPhotos =
+      userData.photos.length !== existingPhotos.length
+    const hasUpdatedLifestyleTags =
+      userData.lifestyleTags !== undefined &&
+      lifestyleTags?.length !== userData.lifestyleTags.length
+    const hasUpdatedProfileImage = profileImage !== undefined
+
+    return hasUpdatedFiles ||
+      hasUpdatedLifestyleTags ||
+      hasUpdatedExistingPhotos ||
+      hasUpdatedProfileImage ||
+      hasUpdatedUserData
+      ? true
+      : false
+  }, [
+    files,
+    userData?.photos.length,
+    existingPhotos.length,
+    profileImage,
+    userData,
+    updatedUserData,
+    lifestyleTags,
+  ])
+
+  useWarnBeforeExit(formHasChanges, () =>
+    localStorage.removeItem("pendingUpdateData")
   )
-  const handleSubmit: FormEventHandler = useCallback((e) => {
-    e.preventDefault()     
-  console.log(JSON.stringify(userData), JSON.stringify(updatedUserData))
-  console.log(formHasChanges)
-  console.log({
+
+  const canBeSubmtted = useMemo(() => {
+    return updatedUserData.currentAddress.length > 0 &&
+      updatedUserData.firstName.length > 0 &&
+      updatedUserData.lastName.length > 0 &&
+      (updatedUserData.isStudent
+        ? updatedUserData.school.length > 0
+        : updatedUserData.occupation.length > 0) &&
+      updatedUserData.gender.length > 0 &&
+      updatedUserData.dob.length > 0
+      ? true
+      : false
+  }, [updatedUserData])
+
+  const handleSubmit: FormEventHandler = useCallback(
+    async (e) => {
+      e.preventDefault()
+      if (formHasChanges === false) {
+        toast.closeAll()
+        toast({ status: "info", title: "No changes to save" })
+      }
+      const body = new FormData()
+      for (const key in updatedUserData) {
+        if (key !== "lifestyleTags" && key !== "photos")
+          body.set(
+            key,
+            updatedUserData[key as keyof typeof updatedUserData] as any
+          )
+      }
+      if (lifestyleTags?.length)
+        lifestyleTags?.forEach((tag) => {
+          body.append("lifestyleTags", JSON.stringify(tag))
+        })
+      files.forEach((file) => {
+        body.append("newPhotos", file)
+      })
+      existingPhotos.forEach((photo) => {
+        body.append("photosToKeep", JSON.stringify(photo))
+      })
+      userData.photos
+        .filter(
+          (it) => JSON.stringify(existingPhotos).includes(it._id) === false
+        )
+        .forEach((photo) => {
+          body.set("photosToDelete", JSON.stringify(photo))
+        })
+      const res = await fetchData({
+        url: `/users/${userData._id}`,
+        method: "put",
+        body,
+      })
+      if (res.statusCode === 200) {
+        toast({ title: "Saved successfully", status: "success" })
+        localStorage.removeItem("pendingUpdateData")
+        setUserData(res.user)
+        setUpdatedUserData(res.user)
+        setLifestyleTags(res.user.lifestyleTags)
+        setExistingPhotos(res.user.photos)
+        setFiles([])
+        setProfileImage(undefined)
+      } else toast({ status: "error", title: res.message })
+    },
+    [
       profileImage,
-      existingPhotos,
       updatedUserData,
       lifestyleTags,
       files,
-    })
-  }, [profileImage, updatedUserData, lifestyleTags, files, existingPhotos, formHasChanges])
+      existingPhotos,
+      formHasChanges,
+    ]
+  )
 
   return (
     <Flex
@@ -150,8 +293,9 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
         >
           <ProfilePhotoInput
             placeholder={userData.profileImage?.secure_url}
+            name={updatedUserData.firstName}
             file={profileImage}
-            updateFile={(f) => setProfileImage(f)}
+            updateFile={async (f) => setProfileImage(f)}
             toggleShowAdditionalPhotos={() =>
               setShowMobilePhotosUploader((prev) => !prev)
             }
@@ -281,17 +425,15 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
               </Text>
             </InputLabel>
             <LifestyleInput
-              handleSelectItem={(item) =>
-                setLifestyleTags((prev) => [...prev, item])
-              }
-              selectedItems={lifestyleTags}
-              handleRemoveItem={(item) =>
-                setLifestyleTags((prev) =>
-                  prev?.filter(
-                    (it) => it.value.toLowerCase() !== item.value.toLowerCase()
-                  )
+              handleSelectItem={handleSelectLifestyleTag}
+              selectedItems={lifestyleTags || []}
+              handleRemoveItem={(item) => {
+                const updatedLifestyleTags = lifestyleTags?.filter(
+                  (it) => it.value.toLowerCase() !== item.value.toLowerCase()
                 )
-              }
+                setLifestyleTags(updatedLifestyleTags)
+                updatePendingUpdateData({ lifestyleTags: updatedLifestyleTags })
+              }}
             />
           </InputGroup>
 
@@ -310,7 +452,14 @@ export default function ProfileEditForm({ userData }: { userData: User }) {
             />
           </InputGroup>
 
-          <Button isDisabled={!formHasChanges} isLoading={isFetching} loadingText={"Saving..."} type="submit" variant="brand-secondary" maxW="18.5rem">
+          <Button
+            isDisabled={!formHasChanges || !canBeSubmtted}
+            isLoading={isFetching}
+            loadingText={"Saving..."}
+            type="submit"
+            variant="brand-secondary"
+            maxW="18.5rem"
+          >
             Save Changes
           </Button>
         </Flex>

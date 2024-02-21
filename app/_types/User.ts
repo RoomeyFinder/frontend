@@ -25,4 +25,5 @@ export default interface User {
     id: string
     _id: string
   }[]
+  _id: string
 }

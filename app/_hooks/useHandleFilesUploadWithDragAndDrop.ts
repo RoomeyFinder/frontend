@@ -7,12 +7,11 @@ import {
 } from "react"
 
 export default function useHandleFilesUploadWithDragAndDrop(
-  initialState: File[],
   inputRef: MutableRefObject<HTMLInputElement | null>,
   maxFilesCount: number
 ) {
   const [dragActive, setDragActive] = useState<boolean>(false)
-  const [files, setFiles] = useState<File[]>(initialState)
+  const [files, setFiles] = useState<File[]>([])
   const [isMaximumCount, setIsMaximumCount] = useState<boolean>(
     files.length >= maxFilesCount
   )
@@ -88,5 +87,6 @@ export default function useHandleFilesUploadWithDragAndDrop(
     removeFile,
     openFileExplorer,
     isMaximumCount,
+    setFiles: (files: File[]) => setFiles(files)
   }
 }

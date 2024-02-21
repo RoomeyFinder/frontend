@@ -44,7 +44,7 @@ export default function LifestyleInput({
   })
 
   const lifestylesList = useCallback(() => {
-    return Object.keys(categorizedList).map((key) => (
+    return Object.keys(categorizedList).map((key, idx) => (
       <LifestyleCategory
         handleItemClick={(val) => {
           if (selectedItems.length >= 10) return
@@ -52,7 +52,7 @@ export default function LifestyleInput({
           inputRef.current?.focus()
           handleSelectItem(val)
         }}
-        key={key}
+        key={idx}
         name={key}
         options={
           categorizedList[key as keyof typeof lifestyleCategories] as {
@@ -87,9 +87,9 @@ export default function LifestyleInput({
           flexWrap="nowrap"
           gap=".5rem"
         >
-          {selectedItems.map((item) => (
+          {selectedItems.map((item, idx) => (
             <LifestyleTag
-              key={item.value}
+              key={idx}
               item={item}
               handleRemoveItem={handleRemoveItem}
             />
@@ -165,12 +165,12 @@ function LifestyleCategory({
       >
         {name}
       </Text>
-      {options.map((opt) => (
+      {options.map((opt, idx) => (
         <ListItem
           _hover={{ color: "brand.main" }}
           cursor="pointer"
           onClick={() => handleItemClick(opt)}
-          key={opt.value}
+          key={idx}
           py={{ base: "1rem", lg: "0" }}
           mb=".5rem"
           ml="2rem"
@@ -203,7 +203,6 @@ function LifestyleTag({
       justifyContent="center"
       gap=".4rem"
       fontSize="1.2rem"
-      key={item.value}
       py=".6rem"
       px=".9rem"
       bg="brand.10"

@@ -9,11 +9,13 @@ export default function ProfilePhotoInput({
   file,
   updateFile,
   placeholder,
+  name
 }: {
   toggleShowAdditionalPhotos: () => void
   file?: File
   updateFile: (file?: File) => void
   placeholder?: string
+  name: string
 }) {
   const imageSrc = useMemo(
     () => (file ? URL.createObjectURL(file) : ""),
@@ -45,6 +47,7 @@ export default function ProfilePhotoInput({
             width={120}
             height={120}
             isDeletable
+            name={name}
             imageSrc={imageSrc || placeholder}
           />
         ) : (

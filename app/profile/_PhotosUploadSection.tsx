@@ -37,7 +37,7 @@ export default function PhotosUploadSection({
   handleDrop: DragEventHandler
   handleDragLeave: DragEventHandler
   handleDragEnter: DragEventHandler
-  removeFile: (url: string, fileName: string) => void
+  removeFile: (url: string, fileName: string, _id?: string) => void
   dragActive: boolean
   show: boolean
   photos: PreviewablePhoto[]
@@ -125,7 +125,7 @@ function UploadedPhotosSection({
   removeFile,
 }: {
   photos: PreviewablePhoto[]
-  removeFile: (url: string, fileName: string) => void
+  removeFile: (url: string, fileName: string, _id?: string) => void
 }) {
   return (
     <Flex
@@ -135,7 +135,7 @@ function UploadedPhotosSection({
       flexWrap="wrap"
     >
       {photos.map((p) => (
-        <Flex key={p.id}>
+        <Flex key={p._id}>
           <Popover matchWidth preventOverflow={false} placement="left">
             {({ isOpen, onClose }) => (
               <>
@@ -147,6 +147,7 @@ function UploadedPhotosSection({
                       height={{ base: "9rem", md: "13.8rem" }}
                       imageSrc={p.preview as string}
                       isDeletable={true}
+                      size="small"
                       defaultShowRemoveIcon={isOpen}
                     />
                   </Box>
@@ -164,7 +165,7 @@ function UploadedPhotosSection({
                     <ConfirmAction
                       confirmText={"Delete this photo"}
                       confirm={() => {
-                        removeFile(p.preview as string, p.file?.name || p.preview as string)
+                        removeFile(p.preview as string, p.file?.name || p.preview as string, p._id)
                       }}
                       cancel={onClose}
                       variant={"warning"}

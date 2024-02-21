@@ -18,7 +18,7 @@ export default function Profile(){
 }
 
 function Renderer(){
-  const { data: userData, loading } = useGetFromStorage("rfuser")
+  const { data: userData, loading, updateData } = useGetFromStorage("rfuser")
   const searchParams = useSearchParams()
   if(loading) {
     return (
@@ -30,7 +30,7 @@ function Renderer(){
   if (searchParams.get("edit") === "true" && userData !== null) {
     return (
       <Box>
-        <ProfileEditForm userData={userData} />
+        <ProfileEditForm setUserData={updateData} userData={userData} />
       </Box>
     )
   }
