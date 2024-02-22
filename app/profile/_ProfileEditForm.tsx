@@ -157,10 +157,12 @@ export default function ProfileEditForm({
       school: updatedUserDataSchool,
       ...restOfUpdatedUserData
     } = updatedUserData
-    const hasUpdatedUserData =
-      updatedUserDataIsStudent !== userDataIsStudent
-        ? userDataSchool !== updatedUserDataSchool
-        : userDataOccupation !== updatedUserDataOccupation ||
+    const hasUpdatedUserData = 
+    updatedUserDataIsStudent !== userDataIsStudent ||
+      // updatedUserDataIsStudent !== userDataIsStudent
+         userDataSchool !== updatedUserDataSchool
+        || userDataOccupation !== updatedUserDataOccupation
+        //  ||
           JSON.stringify(restOfUserData) !==
             JSON.stringify(restOfUpdatedUserData)
     const hasUpdatedFiles = files.length > 0
@@ -236,7 +238,7 @@ export default function ProfileEditForm({
           (it) => JSON.stringify(existingPhotos).includes(it._id) === false
         )
         .forEach((photo) => {
-          body.append("photosToDelete", JSON.stringify(photo))
+          body.set("photosToDelete", JSON.stringify(photo))
         })
       const res = await fetchData({
         url: `/users/${userData._id}`,
