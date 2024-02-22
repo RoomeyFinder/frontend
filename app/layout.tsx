@@ -4,6 +4,8 @@ import "./globals.css"
 import appendSharedMetaData from "./_metadata"
 import GlobalLayout from "./_components/GlobalLayout"
 import LocalForageProvider from "./_providers/localforage"
+import AuthProvider from "./_providers/AuthContext"
+import UserProvider from "./_providers/UserProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -16,11 +18,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <LocalForageProvider>
-          <ChakraUIProvider>
-            <GlobalLayout>
-              {children}
-            </GlobalLayout>
-          </ChakraUIProvider >
+          <AuthProvider>
+            <UserProvider>
+              <ChakraUIProvider>
+                <GlobalLayout>{children}</GlobalLayout>
+              </ChakraUIProvider>
+            </UserProvider>
+          </AuthProvider>
         </LocalForageProvider>
         <script
           defer

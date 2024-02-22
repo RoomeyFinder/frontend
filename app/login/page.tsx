@@ -2,11 +2,13 @@
 "use client"
 import LoginForm from "./_Form"
 import AuthFormLayout from "../_components/Auth/AuthFormLayout"
-import { ChangeEventHandler, useCallback, useState } from "react"
+import { ChangeEventHandler, useCallback, useContext, useState } from "react"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import localforage from "localforage"
+import { UserContext } from "../_providers/UserProvider"
+import { AuthContext } from "../_providers/AuthContext"
 
 
 export default function Login() {
@@ -26,6 +28,9 @@ export default function Login() {
     setLoginData((prev) => ({...prev, [e.target.name]: value}))
   }, [])
 
+  const { updateUser } = useContext(UserContext)
+  const { updateToken } = useContext(AuthContext)
+
   const handleSubmit = useCallback(async () => {
     const invalids = ["email", "password"].filter(it => Boolean(loginData[it as keyof typeof loginData]) === false) 
     if(invalids.length > 0){
@@ -43,11 +48,15 @@ export default function Login() {
       router.push("/signup")
     }else if(res.statusCode === 200){
       if(loginData.keepSignedIn){
-        localforage.setItem("rftoken", res.token)
-        localforage.setItem("rfuser", res.user)
+        updateToken(res.token, false)
+        updateUser(res.user, false)
+        // localforage.setItem("RF_TOKEN", res.token)
+        // localforage.setItem("RF_USER", res.user)
       }else{
-        sessionStorage.setItem("rftoken", res.token)
-        sessionStorage.setItem("rfuser", JSON.stringify(res.user))
+                updateToken(res.token, true)
+                updateUser(res.user, true)
+        // sessionStorage.setItem("RF_TOKEN", JSON.stringify(res.token))
+        // sessionStorage.setItem("RF_USER", JSON.stringify(res.user))
       }
       toast({ status: "success", description: "You are signed in" })
       router.push("/")

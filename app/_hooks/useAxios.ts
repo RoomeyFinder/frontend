@@ -1,16 +1,16 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useContext } from "react"
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios"
-import useCheckAuthentication from "./useCheckAuthentication"
 import localforage from "localforage"
+import { AuthContext } from "../_providers/AuthContext"
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL
 
 export type RequestBody = AxiosRequestConfig["data"]
 
 export default function useAxios() {
-  const { token } = useCheckAuthentication()
+  const { token } = useContext(AuthContext)
   const [isFetching, setIsFetching] = useState(false)
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
   const fetchData = useCallback(
@@ -32,7 +32,7 @@ export default function useAxios() {
         const response = await axios[method](url, body, {
           headers: {
             ...headers,
-            authorization: `Bearer ${sessionStorage.getItem("rftoken") || await localforage.getItem("rftoken")}`
+            authorization: `Bearer ${sessionStorage.getItem("RF_TOKEN") || (await localforage.getItem("RF_TOKEN"))}`,
           },
           baseURL: baseURL || process.env.NEXT_PUBLIC_SERVER_URL,
         })

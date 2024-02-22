@@ -18,8 +18,8 @@ export default function ProfilePhotoInput({
   name: string
 }) {
   const imageSrc = useMemo(
-    () => (file ? URL.createObjectURL(file) : ""),
-    [file]
+    () => (file ? URL.createObjectURL(file) :  placeholder || ""),
+    [file, placeholder]
   )
 
   useEffect(() => {
@@ -27,6 +27,7 @@ export default function ProfilePhotoInput({
       URL.revokeObjectURL(imageSrc)
     }
   }, [imageSrc])
+
   return (
     <Flex
       flexDir="column"
@@ -42,12 +43,16 @@ export default function ProfilePhotoInput({
           type="file"
           onChange={(e) => updateFile(e.target.files?.[0])}
         />
-        {file ? (
+        {imageSrc ? (
           <ProfileAvatar
             width={120}
             height={120}
             isDeletable
             name={name}
+            bg="brand.10"
+            fontSize="2xl"
+            fontWeight="600"
+            color="white"
             imageSrc={imageSrc || placeholder}
           />
         ) : (

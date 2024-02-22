@@ -13,6 +13,7 @@ export default function ProfileAvatar({
   defaultShowRemoveIcon,
   name,
   size,
+  ...rest
 }: {
   showVerifiedBadge?: boolean
   imageSrc?: string
@@ -43,6 +44,7 @@ export default function ProfileAvatar({
           width={width}
           height={height}
           src={imageSrc}
+          {...rest}
         />
       ) : (
         <PlaceHolderAvatar size={size as any || "large"} />

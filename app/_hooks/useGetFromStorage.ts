@@ -6,15 +6,17 @@ import { useCallback, useEffect, useState } from "react"
 export default function useGetFromStorage(key: string) {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<any>(null)
-  const [isSessionStorage, setIsSessionStorage] = useState(false)
+  const [isSessionStorage, setIsSessionStorage] = useState<undefined | boolean>(
+    undefined
+  )
 
   const updateData = useCallback(
-    async (update: any) => {
-      if (isSessionStorage) {
+    async (update: any, useSessionStorage?: boolean) => {
+      if (isSessionStorage === true || useSessionStorage === true) {
         sessionStorage.setItem(key, JSON.stringify(update))
         setData(update)
         return true
-      } else {
+      } else if (isSessionStorage === false || useSessionStorage === false) {
         try {
           localforage.ready(() => {
             localforage.setItem(key, update).then((val) => {
@@ -31,27 +33,30 @@ export default function useGetFromStorage(key: string) {
   )
 
   const deleteData = useCallback(async () => {
-    if (isSessionStorage) {
+    if (isSessionStorage === true) {
       sessionStorage.removeItem(key)
       return true
-    } else {
+    } else if (isSessionStorage === false) {
       localforage.ready(() => {
-        localforage.removeItem(key).then(() => {
-        })
+        localforage.removeItem(key).then(() => {})
       })
       return true
     }
   }, [isSessionStorage, key])
 
-  useEffect(() => {
+  const getDataFromWebStore = useCallback(() => {
     const dataInSessionStorage = sessionStorage.getItem(key)
-    if (dataInSessionStorage === null) {
-      setIsSessionStorage(false)
+    if (dataInSessionStorage) {
+      setIsSessionStorage(true)
+      setData(JSON.parse(dataInSessionStorage))
+      setLoading(false)
+    } else {
       localforage.ready(() =>
         localforage
           .getItem(key)
           .then((val) => {
             setData(val)
+            setIsSessionStorage(false)
           })
           .catch((err) => {
             console.log(err)
@@ -60,12 +65,20 @@ export default function useGetFromStorage(key: string) {
             setLoading(false)
           })
       )
-    } else {
-      setIsSessionStorage(true)
-      setData(JSON.parse(dataInSessionStorage))
-      setLoading(false)
     }
   }, [key])
 
-  return { data, updateData, deleteData, loading }
+  useEffect(() => {
+    getDataFromWebStore()
+  }, [getDataFromWebStore])
+
+  return {
+    data,
+    updateData,
+    deleteData,
+    loading,
+    isSessionStorage,
+    updateLoading: (val?: boolean) =>
+      setLoading((prev) => (val !== undefined ? val : !prev)),
+  }
 }

@@ -1,9 +1,9 @@
 "use client"
 import { Heading, Box, Text, Link, Button, Flex } from "@chakra-ui/react"
-import { ReactNode, useEffect } from "react"
+import { ReactNode, useContext, useEffect } from "react"
 // import AuthProviderMethods from "./AuthProviderMethods"
-import useCheckAuthentication from "@/app/_hooks/useCheckAuthentication"
 import { useRouter } from "next/navigation"
+import { AuthContext } from "@/app/_providers/AuthContext"
 
 const modeTexts = {
   "signin": {prompt: "New to Roomeyfinder?", link: "signup", linkText: "Create Account"},
@@ -22,12 +22,12 @@ export default function AuthFormLayout({
   submitButtonVariant?: string
   loading?: boolean
 }){
-  const { isAuthenticated } = useCheckAuthentication()
+  const { isAuthorized } = useContext(AuthContext)
   const router = useRouter()
 
   useEffect(() => {
-    if (isAuthenticated) router.push("/")
-  }, [isAuthenticated, router])
+    if (isAuthorized) router.push("/")
+  }, [isAuthorized, router])
 
   return (
     <>

@@ -35,10 +35,10 @@ import useWarnBeforeExit from "../_hooks/useWarnBeforeExit"
 
 export default function ProfileEditForm({
   userData,
-  setUserData,
+  updateUser,
 }: {
   userData: User
-  setUserData: (data: User) => void
+  updateUser: (data: User) => void
 }) {
   const toast = useAppToast()
   const updatePendingUpdateData = useCallback(
@@ -96,9 +96,9 @@ export default function ProfileEditForm({
     () => [
       ...existingPhotos.map((photo) => ({
         file: null,
-        preview: photo.secure_url,
-        id: photo.id,
-        _id: photo._id,
+        preview: photo?.secure_url,
+        id: photo?.id,
+        _id: photo?._id,
       })),
       ...files.map((file) => ({
         file,
@@ -214,12 +214,13 @@ export default function ProfileEditForm({
       }
       const body = new FormData()
       for (const key in updatedUserData) {
-        if (key !== "lifestyleTags" && key !== "photos")
+        if (key !== "lifestyleTags" && key !== "photos" && key !== "profileImage")
           body.set(
             key,
             updatedUserData[key as keyof typeof updatedUserData] as any
           )
       }
+      if(profileImage) body.set("profileImage", profileImage)
       if (lifestyleTags?.length)
         lifestyleTags?.forEach((tag) => {
           body.append("lifestyleTags", JSON.stringify(tag))
@@ -235,7 +236,7 @@ export default function ProfileEditForm({
           (it) => JSON.stringify(existingPhotos).includes(it._id) === false
         )
         .forEach((photo) => {
-          body.set("photosToDelete", JSON.stringify(photo))
+          body.append("photosToDelete", JSON.stringify(photo))
         })
       const res = await fetchData({
         url: `/users/${userData._id}`,
@@ -245,7 +246,7 @@ export default function ProfileEditForm({
       if (res.statusCode === 200) {
         toast({ title: "Saved successfully", status: "success" })
         localStorage.removeItem("pendingUpdateData")
-        setUserData(res.user)
+        updateUser(res.user)
         setUpdatedUserData(res.user)
         setLifestyleTags(res.user.lifestyleTags)
         setExistingPhotos(res.user.photos)

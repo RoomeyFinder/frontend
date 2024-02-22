@@ -1,8 +1,8 @@
 "use client"
 import { Box } from "@chakra-ui/react"
-import { ReactNode, useCallback } from "react"
-import useCheckAuthentication from "../_hooks/useCheckAuthentication"
+import { ReactNode, useCallback, useContext } from "react"
 import { useRouter } from "next/navigation"
+import { AuthContext } from "../_providers/AuthContext"
 
 export default function PublishAdClicker({
   children,
@@ -10,12 +10,12 @@ export default function PublishAdClicker({
   children: ReactNode | ReactNode[]
 }) {
   const router = useRouter()
-  const { isAuthenticated } = useCheckAuthentication()
+  const { isAuthorized } = useContext(AuthContext)
 
   const handlePublishAd = useCallback(() => {
-    if (isAuthenticated === true) router.push("/my-ads?new=true")
-    else if (isAuthenticated === false) router.push("/signup")
-  }, [isAuthenticated, router])
+    if (isAuthorized === true) router.push("/my-ads?new=true")
+    else if (isAuthorized === false) router.push("/signup?next=/my-ads?new=true")
+  }, [isAuthorized, router])
 
   return (
     <>

@@ -21,6 +21,7 @@ export default function ProfileInitialsForm({
             {...getErrorProps("firstName", error)}
             variant="filled"
             placeholder="First name *"
+            min={4}
             name="firstName"
             value={formData.firstName as string}
             onChange={(e) => handleChange(sectionName, "firstName", e.target.value)} />
@@ -30,6 +31,7 @@ export default function ProfileInitialsForm({
             {...getErrorProps("lastName", error)}
             variant="filled"
             placeholder="Last name *"
+            min={4}
             name="lastName" value={formData.lastName as string}
             onChange={(e) => { handleChange(sectionName, "lastName", e.target.value) }} />
         </GridItem>
