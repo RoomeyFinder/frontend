@@ -12,8 +12,7 @@ export default function ProfileSettings() {
       flexDir="column"
       gap={{ base: "3.8rem", lg: "5rem" }}
       as="main"
-      w="90dvw"
-      maxW="79.2%"
+      w={{ base: "95dvw",md: "79.2%"}}
       mx="auto"
       my="5rem"
     >

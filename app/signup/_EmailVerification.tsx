@@ -1,7 +1,7 @@
-import { Box, HStack, Text } from "@chakra-ui/react"
+import { Box, Text } from "@chakra-ui/react"
 import Countdown, { CountdownRendererFn } from "react-countdown"
-import { PinInput, PinInputField } from "@chakra-ui/react"
 import { useCallback, useEffect, useRef, useState } from "react"
+import PinInputElement from "../_components/PinInputElement"
 
 export default function EmailVerficationForm({
   formData, sectionName, handleChange, error, resendVerificationEmail
@@ -18,19 +18,15 @@ export default function EmailVerficationForm({
 
   return (
     <Box pb={{ base: "3rem", md: "4.7rem" }}>
-      <Text color="gray.100" fontSize={{ base: "1.4rem", md: "1.6rem" }}>Enter the code from your email</Text>
-      <HStack mt="2rem">
-        <PinInput onChange={(value) => handleChange(sectionName, "verificationToken", value)} value={formData.verificationToken as string} autoFocus placeholder="" aria-label="Please enter the code sent to your email">
-          <PinInputField borderColor={error.includes("verificationToken") ? "red" : "gray.100"} mr={{ base: ".8rem", md: "2rem" }} w={{ base: "5rem", md: "6.5rem" }} h={{ base: "5rem", md: "6.5rem" }} rounded="1.2rem" bg="white.300" fontSize="2rem" />
-          <PinInputField borderColor={error.includes("verificationToken") ? "red" : "gray.100"} mr={{ base: ".8rem", md: "2rem" }} w={{ base: "5rem", md: "6.5rem" }} h={{ base: "5rem", md: "6.5rem" }} rounded="1.2rem" bg="white.300" fontSize="2rem" />
-          <PinInputField borderColor={error.includes("verificationToken") ? "red" : "gray.100"} mr={{ base: ".8rem", md: "2rem" }} w={{ base: "5rem", md: "6.5rem" }} h={{ base: "5rem", md: "6.5rem" }} rounded="1.2rem" bg="white.300" fontSize="2rem" />
-          <PinInputField borderColor={error.includes("verificationToken") ? "red" : "gray.100"} mr={{ base: ".8rem", md: "2rem" }} w={{ base: "5rem", md: "6.5rem" }} h={{ base: "5rem", md: "6.5rem" }} rounded="1.2rem" bg="white.300" fontSize="2rem" />
-          <PinInputField borderColor={error.includes("verificationToken") ? "red" : "gray.100"} mr={{ base: ".8rem", md: "2rem" }} w={{ base: "5rem", md: "6.5rem" }} h={{ base: "5rem", md: "6.5rem" }} rounded="1.2rem" bg="white.300" fontSize="2rem" />
-          <PinInputField borderColor={error.includes("verificationToken") ? "red" : "gray.100"} mr={{ base: ".8rem", md: "2rem" }} w={{ base: "5rem", md: "6.5rem" }} h={{ base: "5rem", md: "6.5rem" }} rounded="1.2rem" bg="white.300" fontSize="2rem" />
-        </PinInput>
-      </HStack>
+      <Text color="gray.100" fontSize={{ base: "1.4rem", md: "1.6rem" }} mb="2rem">
+        Enter the code from your email
+      </Text>
+      <PinInputElement
+        hasError={error.includes("verificationToken")}
+        handleChange={val => handleChange(sectionName, "verificationToken", val)}
+        value={formData.verificationToken as string}
+      />
       <ResendCodeButton onClick={handleResendClick} />
-
     </Box>
   )
 }

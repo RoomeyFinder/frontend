@@ -21,8 +21,7 @@ export default function PageHeading(){
       <Heading
         as="h1"
         mt={{ base: "1.5rem", lg: "3rem" }}
-        variant="700"
-        size="large"
+        variant="large"
       >
         Password & account
       </Heading>
