@@ -40,3 +40,8 @@ body{
   background-color: transparent !important;
   cursor: not-allowed !important;
 }
+
+input:checked ~ .custom-toggle-dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}

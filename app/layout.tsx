@@ -16,21 +16,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <LocalForageProvider>
-          <AuthProvider>
-            <UserProvider>
-              <ChakraUIProvider>
+        <body>
+      <ChakraUIProvider>
+          <LocalForageProvider>
+            <AuthProvider>
+              <UserProvider>
                 <GlobalLayout>{children}</GlobalLayout>
-              </ChakraUIProvider>
-            </UserProvider>
-          </AuthProvider>
-        </LocalForageProvider>
-        <script
-          defer
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
-        ></script>
-      </body>
+              </UserProvider>
+            </AuthProvider>
+          </LocalForageProvider>
+          <script
+            defer
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
+          ></script>
+      </ChakraUIProvider>
+        </body>
     </html>
   )
 }

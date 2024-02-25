@@ -11,16 +11,25 @@ export default function AddressForm({
   error: string[]
 }) {
   return (
-    <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={{ base: "1.8rem", sm: "3rem" }} pb="1rem">
+    <SimpleGrid
+      columns={{ base: 1, sm: 2 }}
+      spacing={{ base: "1.8rem", sm: "3rem" }}
+      pb="1rem"
+    >
       <GridItem>
-        <AddressInput reset={() => {
-          handleChange(sectionName, "address", "")
-          handleChange(sectionName, "placeId", "")
-        }} handleSelection={(selection) => {
-          console.log(selection)
-          handleChange(sectionName, "address", selection.description)
-          handleChange(sectionName, "placeId", selection.place_id)
-        }} value={formData.address as string} errorProps={{ ...getErrorProps("address", error) }} />
+        <AddressInput
+          reset={() => {
+            handleChange(sectionName, "address", "")
+            handleChange(sectionName, "placeId", "")
+          }}
+          handleSelection={(selection) => {
+            console.log(selection)
+            handleChange(sectionName, "address", selection.description)
+            handleChange(sectionName, "placeId", selection.place_id)
+          }}
+          value={formData.address as string}
+          errorProps={{ ...getErrorProps("address", error) }}
+        />
       </GridItem>
       <GridItem>
         <Input
@@ -57,9 +66,16 @@ export default function AddressForm({
       </GridItem>
       <GridItem colSpan={{ base: 1, sm: 2 }}>
         <Text textAlign="right" lineHeight="normal">
-          By clicking complete, I agree to Roomeyfinder&apos;s
-          <Link fontWeight="600" color="#0433FF" href="/terms-of-service"> Terms of Service</Link> and
-          <Link fontWeight="600" color="#0433FF" href="/privacy-policy"> Privacy Policy</Link>
+          By clicking complete, I agree to Roomeyfinder's
+          <Link fontWeight="600" color="#0433FF" href="/terms-of-service">
+            {" "}
+            Terms of Service
+          </Link>{" "}
+          and
+          <Link fontWeight="600" color="#0433FF" href="/privacy-policy">
+            {" "}
+            Privacy Policy
+          </Link>
         </Text>
       </GridItem>
     </SimpleGrid>

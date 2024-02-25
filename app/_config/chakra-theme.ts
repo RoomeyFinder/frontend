@@ -4,6 +4,7 @@ import Button from "./chakra-components/Button"
 import * as customComponents from "./custom-chakra-components"
 import Input from "./chakra-components/Input"
 import Heading from "./chakra-components/Heading"
+import Switch from "./chakra-components/Switch"
 
 const colors = {
   white: {
@@ -79,6 +80,7 @@ const theme = extendTheme({
   components: {
     Heading,
     Input,
+    Switch,
     Button,
     ...customComponents
   }

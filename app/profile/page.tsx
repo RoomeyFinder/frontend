@@ -1,10 +1,11 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import ProfileEditForm from "./_ProfileEditForm"
+import ProfileEditForm from "./_components/ProfileEditForm"
 import { Box, Flex, Spinner } from "@chakra-ui/react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import { Suspense, useContext } from "react"
 import { UserContext } from "../_providers/UserProvider"
+import ProfileView from "./_components/ProfileView"
 
 export default function Profile() {
   return (
@@ -37,5 +38,15 @@ function Renderer() {
       </Box>
     )
   }
-  return <>View profile</>
+  if (user)
+    return (
+      <>
+        <ProfileView userData={user} isOwner={true} />
+      </>
+    )
+  return (
+    <Flex justifyContent="center" alignItems="center">
+      <Spinner size="xl" thickness=".4rem" />
+    </Flex>
+  )
 }

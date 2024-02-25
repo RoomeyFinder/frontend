@@ -10,10 +10,10 @@ import {
   PopoverTrigger,
 } from "@chakra-ui/react"
 import { MutableRefObject, ChangeEventHandler, DragEventHandler } from "react"
-import DragOverFileInput from "../_components/DragOverFileInput"
-import ConfirmAction from "../_components/ConfirmAction"
-import ProfileAvatar from "../_components/ProfileAvatar"
-import { PreviewablePhoto } from "../_types"
+import DragOverFileInput from "../../_components/DragOverFileInput"
+import ConfirmAction from "../../_components/ConfirmAction"
+import ProfileAvatar from "../../_components/ProfileAvatar"
+import { PreviewablePhoto } from "../../_types"
 
 export default function PhotosUploadSection({
   inputRef,
@@ -165,7 +165,11 @@ function UploadedPhotosSection({
                     <ConfirmAction
                       confirmText={"Delete this photo"}
                       confirm={() => {
-                        removeFile(p.preview as string, p.file?.name || p.preview as string, p._id)
+                        removeFile(
+                          p.preview as string,
+                          p.file?.name || (p.preview as string),
+                          p._id
+                        )
                       }}
                       cancel={onClose}
                       variant={"warning"}

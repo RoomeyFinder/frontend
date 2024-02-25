@@ -12,7 +12,7 @@ export default function PageHeading(){
         fontWeight="400"
       >
         <BreadcrumbItem>
-          <BreadcrumbLink href="/profile?edit=true">Profile</BreadcrumbLink>
+          <BreadcrumbLink href="/profile">Profile</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
           <BreadcrumbLink href="#">Password & account</BreadcrumbLink>

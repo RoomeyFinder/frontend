@@ -16,22 +16,22 @@ import {
   useRef,
   useState,
 } from "react"
-import useHandleFilesUploadWithDragAndDrop from "../_hooks/useHandleFilesUploadWithDragAndDrop"
-import PhoneNumberInput from "../_components/PhoneNumberInput"
-import DobInput from "../_components/DobInput"
-import AddressInput from "../_components/AddressInput"
-import SearchableInput from "../_components/SearchableInput"
-import OccupationOrUniversityInput from "../_components/OccupationOrUniversityInput"
-import PhotosUploadSection from "./_PhotosUploadSection"
-import LifestyleInput from "./_LifestyleInput"
-import User from "../_types/User"
-import ProfilePhotoInput from "./_ProfilePhotoInput"
-import LinkToProfileSettings from "./_LinkToProfileSettings"
-import InputLabel from "../_components/InputLabel"
-import { PreviewablePhoto } from "../_types"
-import useAxios from "../_hooks/useAxios"
-import useAppToast from "../_hooks/useAppToast"
-import useWarnBeforeExit from "../_hooks/useWarnBeforeExit"
+import useHandleFilesUploadWithDragAndDrop from "../../_hooks/useHandleFilesUploadWithDragAndDrop"
+import PhoneNumberInput from "../../_components/PhoneNumberInput"
+import DobInput from "../../_components/DobInput"
+import AddressInput from "../../_components/AddressInput"
+import SearchableInput from "../../_components/SearchableInput"
+import OccupationOrUniversityInput from "../../_components/OccupationOrUniversityInput"
+import PhotosUploadSection from "./PhotosUploadSection"
+import LifestyleInput from "./LifestyleInput"
+import User from "../../_types/User"
+import ProfilePhotoInput from "./ProfilePhotoInput"
+import LinkToProfileSettings from "./LinkToProfileSettings"
+import InputLabel from "../../_components/InputLabel"
+import { PreviewablePhoto } from "../../_types"
+import useAxios from "../../_hooks/useAxios"
+import useAppToast from "../../_hooks/useAppToast"
+import useWarnBeforeExit from "../../_hooks/useWarnBeforeExit"
 
 export default function ProfileEditForm({
   userData,
@@ -157,14 +157,13 @@ export default function ProfileEditForm({
       school: updatedUserDataSchool,
       ...restOfUpdatedUserData
     } = updatedUserData
-    const hasUpdatedUserData = 
-    updatedUserDataIsStudent !== userDataIsStudent ||
+    const hasUpdatedUserData =
+      updatedUserDataIsStudent !== userDataIsStudent ||
       // updatedUserDataIsStudent !== userDataIsStudent
-         userDataSchool !== updatedUserDataSchool
-        || userDataOccupation !== updatedUserDataOccupation
-        //  ||
-          JSON.stringify(restOfUserData) !==
-            JSON.stringify(restOfUpdatedUserData)
+      userDataSchool !== updatedUserDataSchool ||
+      userDataOccupation !== updatedUserDataOccupation
+    //  ||
+    JSON.stringify(restOfUserData) !== JSON.stringify(restOfUpdatedUserData)
     const hasUpdatedFiles = files.length > 0
     const hasUpdatedExistingPhotos =
       userData.photos.length !== existingPhotos.length
@@ -216,13 +215,17 @@ export default function ProfileEditForm({
       }
       const body = new FormData()
       for (const key in updatedUserData) {
-        if (key !== "lifestyleTags" && key !== "photos" && key !== "profileImage")
+        if (
+          key !== "lifestyleTags" &&
+          key !== "photos" &&
+          key !== "profileImage"
+        )
           body.set(
             key,
             updatedUserData[key as keyof typeof updatedUserData] as any
           )
       }
-      if(profileImage) body.set("profileImage", profileImage)
+      if (profileImage) body.set("profileImage", profileImage)
       if (lifestyleTags?.length)
         lifestyleTags?.forEach((tag) => {
           body.append("lifestyleTags", JSON.stringify(tag))

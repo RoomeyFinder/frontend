@@ -1,7 +1,7 @@
 import { Flex, FormLabel, Show, Button, Text } from "@chakra-ui/react"
-import FilledPlusIcon from "../_assets/SVG/FilledPlusIcon"
-import PlaceHolderAvatar from "../_assets/SVG/PlaceHolderAvatar"
-import ProfileAvatar from "../_components/ProfileAvatar"
+import FilledPlusIcon from "../../_assets/SVG/FilledPlusIcon"
+import PlaceHolderAvatar from "../../_assets/SVG/PlaceHolderAvatar"
+import ProfileAvatar from "../../_components/ProfileAvatar"
 import { useEffect, useMemo } from "react"
 
 export default function ProfilePhotoInput({
@@ -9,7 +9,7 @@ export default function ProfilePhotoInput({
   file,
   updateFile,
   placeholder,
-  name
+  name,
 }: {
   toggleShowAdditionalPhotos: () => void
   file?: File
@@ -18,7 +18,7 @@ export default function ProfilePhotoInput({
   name: string
 }) {
   const imageSrc = useMemo(
-    () => (file ? URL.createObjectURL(file) :  placeholder || ""),
+    () => (file ? URL.createObjectURL(file) : placeholder || ""),
     [file, placeholder]
   )
 

@@ -1,11 +1,12 @@
 import { Box, Heading, Text } from "@chakra-ui/react"
 
 export default function DeactivateAccountSection(){
-  return (
+  return null &&
+   (
     <Box>
       <Heading
         size="md"
-        variant="700"
+        variant="md"
         as="h2"
         mb="3rem"
       >

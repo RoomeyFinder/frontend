@@ -27,8 +27,6 @@ export default function ProfileAvatar({
     <Flex
       rounded="50%"
       position="relative"
-      // w="18rem"
-      // h="18rem"
       alignItems="center"
       justifyContent="center"
       boxShadow={!isDeletable ? "0px 0px 3px 0px #00000029" : ""}

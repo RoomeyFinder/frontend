@@ -74,13 +74,13 @@ function Answer() {
     >
       <Text as="h6">Is Roomeyfinder free to use?</Text>
       <Flex gap={{ base: "1rem", lg: "2rem" }} flexDir="column">
-        <Text>Yes! It&apos;s free to create an account Roomi for personal use.</Text>
+        <Text>Yes! It's free to create an account Roomi for personal use.</Text>
         <Text>
-          If you&apos;re looking to rent out your room, you can have up to two active
+          If you're looking to rent out your room, you can have up to two active
           listings at one time and connect with up to 5 people per day for
-          free.If you&apos;re looking for a roommate or a place to move, you can
+          free.If you're looking for a roommate or a place to move, you can
           message up to 5 people per day for free.If you want to get verified,
-          create more listings, or message more people, you&apos;ll need to upgrade
+          create more listings, or message more people, you'll need to upgrade
           your account by purchasing the Safety Bundle, Solo Agent, or
           Unlimited.
         </Text>

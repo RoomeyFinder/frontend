@@ -31,8 +31,9 @@ const Heading = defineStyleConfig({
     },
     "xl": {
       fontSize: {
-        base: "4.5rem",
-        md: "7.2rem"
+        base: "2.5rem",
+        sm: "4.5rem",
+        xl: "7.2rem"
       },
       lineHeight: "normal"
     },

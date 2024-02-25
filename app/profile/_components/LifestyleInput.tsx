@@ -10,8 +10,8 @@ import {
   Heading,
 } from "@chakra-ui/react"
 import { useCallback, useMemo, useRef } from "react"
-import useFilterListByText from "../_hooks/useFilterStringListByText"
-import useCategorizeListOfObjects from "../_hooks/useCategorizeListOfObjects"
+import useFilterListByText from "../../_hooks/useFilterStringListByText"
+import useCategorizeListOfObjects from "../../_hooks/useCategorizeListOfObjects"
 
 export default function LifestyleInput({
   selectedItems,
@@ -186,15 +186,17 @@ function LifestyleCategory({
   )
 }
 
-function LifestyleTag({
+export function LifestyleTag({
   handleRemoveItem,
   item,
+  editable,
 }: {
   item: {
     category: string
     value: string
   }
-  handleRemoveItem: (item: { category: string; value: string }) => void
+  editable?: boolean
+  handleRemoveItem?: (item: { category: string; value: string }) => void
 }) {
   return (
     <Flex
@@ -209,9 +211,15 @@ function LifestyleTag({
       rounded=".5rem"
     >
       <Text whiteSpace="nowrap">{item.value} </Text>
-      <Text as="span" w="min-content">
-        <CloseButton onClick={() => handleRemoveItem(item)} />
-      </Text>
+      {editable && (
+        <Text as="span" w="min-content">
+          <CloseButton
+            onClick={() =>
+              typeof handleRemoveItem === "function" && handleRemoveItem(item)
+            }
+          />
+        </Text>
+      )}
     </Flex>
   )
 }

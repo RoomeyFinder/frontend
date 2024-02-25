@@ -145,9 +145,9 @@ function Hero() {
             mb="4.9rem"
             lineHeight="2.2rem"
           >
-            Whether you&apos;re a student searching for a cozy apartment, a
+            Whether you're a student searching for a cozy apartment, a
             professional seeking a shared living space, or a homeowner looking
-            for a compatible roommate, we&apos;ve got you covered.
+            for a compatible roommate, we've got you covered.
           </Text>
           <Button display="block" mx="auto" variant="main" mb="4.5rem">
             <PublishAdClicker>Publish Your Ad</PublishAdClicker>

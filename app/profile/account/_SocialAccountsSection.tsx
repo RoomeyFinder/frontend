@@ -5,7 +5,7 @@ import { Heading, Flex, Circle, Box, Text } from "@chakra-ui/react"
 import { FunctionComponent } from "react"
 
 export default function SocialAccountsSection() {
-  return (
+  return null && (
     <>
       <Box w="100%">
         <Heading variant="md" as="h2" mb={{ base: "1.5rem", lg: "3rem" }}>

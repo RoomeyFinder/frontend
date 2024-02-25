@@ -64,7 +64,7 @@ export default function ContactPage() {
           <Divider borderColor="gray.100" />
           <PageText>
             Connect with us easily, whether you have questions, feedback, or
-            just want to say hello, we&apos;re here and ready to hear from you
+            just want to say hello, we're here and ready to hear from you
           </PageText>
           <SocialLinks />
           <Divider borderColor="gray.100" />
