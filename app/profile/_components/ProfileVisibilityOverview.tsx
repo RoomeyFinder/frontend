@@ -33,6 +33,7 @@ export default function ProfileVisibilityOverview() {
           size="lg"
           id="showcase-profile"
           checked={user.isVisible}
+          isChecked={user.isVisible}
           isDisabled={isFetching}
           onChange={(e) => toggleProfileStatus(e.target.checked)}
         />
