@@ -2,7 +2,6 @@ import User from "@/app/_types/User"
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Heading,
   Image,
@@ -10,14 +9,10 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
   VStack,
 } from "@chakra-ui/react"
-import { useRef, useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Swiper as SwiperType } from "swiper"
 import { Navigation, Pagination } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/pagination"

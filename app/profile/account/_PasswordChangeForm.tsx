@@ -87,7 +87,7 @@ export default function PasswordChangeForm() {
       if (newPassword !== confirmNewPassword) return setError(true)
       navigateToStage(3)
     },
-    [confirmNewPassword, newPassword, oldPassword, sendRequest]
+    [confirmNewPassword, newPassword, navigateToStage]
   )
 
   const handleSubmitNewPasswordAndConfirmationCode: FormEventHandler =
@@ -111,7 +111,7 @@ export default function PasswordChangeForm() {
         }
         setLoading(false)
       },
-      [newPassword, oldPassword, sendRequest, passwordResetCode]
+      [newPassword, oldPassword, sendRequest, passwordResetCode, confirmNewPassword, navigateToStage]
     )
 
   const handleSubmitOldPassword: FormEventHandler = useCallback(
@@ -127,7 +127,7 @@ export default function PasswordChangeForm() {
       } else setError(true)
       setLoading(false)
     },
-    [oldPassword, sendRequest]
+    [oldPassword, sendRequest, navigateToStage]
   )
 
   const handleSubmit: FormEventHandler = useCallback(

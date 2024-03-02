@@ -16,8 +16,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-        <body>
-      <ChakraUIProvider>
+      <body>
+        <ChakraUIProvider>
           <LocalForageProvider>
             <AuthProvider>
               <UserProvider>
@@ -29,8 +29,8 @@ export default function RootLayout({
             defer
             src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
           ></script>
-      </ChakraUIProvider>
-        </body>
+        </ChakraUIProvider>
+      </body>
     </html>
   )
 }

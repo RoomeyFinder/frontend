@@ -1,10 +1,7 @@
-import User from "@/app/_types/User";
-import { Heading, Text, VStack } from "@chakra-ui/react";
+import User from "@/app/_types/User"
+import { Heading, Text, VStack } from "@chakra-ui/react"
 
-
-export default function AboutOverview({ userData }:{
-  userData: User
-}) {
+export default function AboutOverview({ userData }: { userData: User }) {
   return (
     <VStack alignItems="start">
       <Heading fontSize={{ base: "1.8rem", md: "2.2rem" }}>About me</Heading>

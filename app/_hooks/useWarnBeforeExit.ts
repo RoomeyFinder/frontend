@@ -14,5 +14,5 @@ export default function useWarnBeforeExit(shouldWarn: boolean, onExit: () => voi
     return () => {
       window.removeEventListener("beforeunload", handleWindowClose)
     }
-  }, [shouldWarn])
+  }, [shouldWarn, onExit])
 }

@@ -167,6 +167,7 @@ export default function SignupProvider({
     toast,
     router,
     contactDetails.formData.email,
+    updateToken, updateUser
   ])
 
   const handleSubmitButtonClick = useCallback(() => {

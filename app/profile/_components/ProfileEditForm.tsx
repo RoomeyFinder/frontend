@@ -51,7 +51,7 @@ export default function ProfileEditForm({
       let pendingUpdateData = localStorage.getItem("pendingUpdateData") || "{}"
       if (pendingUpdateData) {
         pendingUpdateData = JSON.parse(pendingUpdateData)
-        let upd = { ...(pendingUpdateData as any), ...update }
+        const upd = { ...(pendingUpdateData as any), ...update }
         localStorage.setItem("pendingUpdateData", JSON.stringify(upd))
       }
     },
@@ -60,6 +60,7 @@ export default function ProfileEditForm({
   const { isFetching, fetchData } = useAxios()
   const inputRef = useRef<HTMLInputElement | null>(null)
   const [profileImage, setProfileImage] = useState<File | undefined>()
+  const [existingPhotos, setExistingPhotos] = useState(userData.photos)
   const {
     files,
     openFileExplorer,
@@ -70,18 +71,19 @@ export default function ProfileEditForm({
     handleDragEnter,
     removeFile,
     dragActive,
-    isMaximumCount,
     setFiles,
-  } = useHandleFilesUploadWithDragAndDrop(inputRef, 4 - userData.photos.length)
-  const [existingPhotos, setExistingPhotos] = useState(userData.photos)
+  } = useHandleFilesUploadWithDragAndDrop({
+    inputRef,
+    maxFilesCount: 4 - existingPhotos.length,
+  })
   const [showMobilePhotosUploader, setShowMobilePhotosUploader] =
     useState(false)
   const [updatedUserData, setUpdatedUserData] = useState<User>(userData)
   const removePhoto = useCallback(
-    (url: string, fileName: string, _id?: string) => {
+    (url: string, index: number) => {
       if (url && url.startsWith("blob:")) {
         URL.revokeObjectURL(url)
-        removeFile(fileName)
+        removeFile(index)
       } else {
         const updatedExistingPhotos = existingPhotos.filter(
           (it) => it.secure_url !== url
@@ -90,7 +92,7 @@ export default function ProfileEditForm({
         updatePendingUpdateData({ existingPhotos: updatedExistingPhotos })
       }
     },
-    [existingPhotos, updatePendingUpdateData]
+    [existingPhotos, updatePendingUpdateData, removeFile]
   )
   const previewFiles = useMemo<PreviewablePhoto[]>(
     () => [
@@ -100,11 +102,12 @@ export default function ProfileEditForm({
         id: photo?.id,
         _id: photo?._id,
       })),
-      ...files.map((file) => ({
+      ...files.map((file, index) => ({
         file,
         preview: URL.createObjectURL(file),
         id: Math.random().toString(),
         _id: Math.random().toString(),
+        index,
       })),
     ],
     [existingPhotos, files]
@@ -142,7 +145,7 @@ export default function ProfileEditForm({
         setFiles(data.files || [])
       }
     }
-  }, [userData])
+  }, [])
 
   const formHasChanges = useMemo(() => {
     const {
@@ -159,11 +162,9 @@ export default function ProfileEditForm({
     } = updatedUserData
     const hasUpdatedUserData =
       updatedUserDataIsStudent !== userDataIsStudent ||
-      // updatedUserDataIsStudent !== userDataIsStudent
       userDataSchool !== updatedUserDataSchool ||
-      userDataOccupation !== updatedUserDataOccupation
-    //  ||
-    JSON.stringify(restOfUserData) !== JSON.stringify(restOfUpdatedUserData)
+      userDataOccupation !== updatedUserDataOccupation ||
+      JSON.stringify(restOfUserData) !== JSON.stringify(restOfUpdatedUserData)
     const hasUpdatedFiles = files.length > 0
     const hasUpdatedExistingPhotos =
       userData.photos.length !== existingPhotos.length
@@ -181,7 +182,6 @@ export default function ProfileEditForm({
       : false
   }, [
     files,
-    userData?.photos.length,
     existingPhotos.length,
     profileImage,
     userData,
@@ -194,14 +194,14 @@ export default function ProfileEditForm({
   )
 
   const canBeSubmtted = useMemo(() => {
-    return updatedUserData.currentAddress.length > 0 &&
-      updatedUserData.firstName.length > 0 &&
-      updatedUserData.lastName.length > 0 &&
+    return updatedUserData.currentAddress &&
+      updatedUserData.firstName &&
+      updatedUserData.lastName &&
       (updatedUserData.isStudent
-        ? updatedUserData.school.length > 0
-        : updatedUserData.occupation.length > 0) &&
-      updatedUserData.gender.length > 0 &&
-      updatedUserData.dob.length > 0
+        ? updatedUserData.school
+        : updatedUserData.occupation) &&
+      updatedUserData.gender &&
+      updatedUserData.dob
       ? true
       : false
   }, [updatedUserData])
@@ -266,6 +266,12 @@ export default function ProfileEditForm({
       files,
       existingPhotos,
       formHasChanges,
+      fetchData,
+      setFiles,
+      toast,
+      updateUser,
+      userData._id,
+      userData.photos,
     ]
   )
 
@@ -483,7 +489,7 @@ export default function ProfileEditForm({
           inputRef={inputRef}
           openFileExplorer={openFileExplorer}
           photos={previewFiles}
-          isDisabled={isMaximumCount}
+          isDisabled={previewFiles.length === 4}
         />
       </Flex>
 

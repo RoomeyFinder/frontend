@@ -1,7 +1,6 @@
-import { Box, BoxProps } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react"
 
-
-export default function DotSeparator(props: BoxProps){
+export default function DotSeparator(props: BoxProps) {
   return (
     <Box
       as="span"

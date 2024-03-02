@@ -66,7 +66,7 @@ export default function AddressForm({
       </GridItem>
       <GridItem colSpan={{ base: 1, sm: 2 }}>
         <Text textAlign="right" lineHeight="normal">
-          By clicking complete, I agree to Roomeyfinder's
+          By clicking complete, I agree to Roomeyfinder&apos;s
           <Link fontWeight="600" color="#0433FF" href="/terms-of-service">
             {" "}
             Terms of Service

@@ -1,11 +1,11 @@
 "use client"
-import { Box, Flex, InputProps, Show, Text } from "@chakra-ui/react"
+import { Box, Flex, InputProps } from "@chakra-ui/react"
 import { Input } from "@chakra-ui/react"
 import SearchIcon from "../_assets/SVG/SearchIcon"
-import { ReactNode, useMemo, useState } from "react"
+import { useState } from "react"
 import PersonIcon from "../_assets/SVG/PersonIcon"
 import HouseIcon from "../_assets/SVG/HouseIcon"
-import DropDownWithChevron from "./DropDownWithChevron"
+import CustomSelect from "../my-ads/_components/CustomSelect"
 
 export default function SearchBar() {
   const [lookingFor, setLookingFor] = useState<"rooms" | "roomies" | "">("")
@@ -22,11 +22,26 @@ export default function SearchBar() {
       borderStyle="solid"
       borderColor="white.200"
       borderRadius="1rem"
-      p=".5rem">
-      <SearchOptionsDropDown selectedValue={lookingFor} handleSelect={(value) => { setLookingFor(value) }} />
+      p=".5rem"
+    >
+      <Box maxW={{ base: "15%", md: "25%" }} flexBasis="100%">
+        <CustomSelect
+          name="Find"
+          options={lookingForOptions}
+          selectedValue={lookingFor}
+          handleSelect={(value) => {
+            setLookingFor(value)
+          }}
+          triggerStyles={{
+            justifyContent: "center",
+            p: { base: "1rem", md: "0" },
+          }}
+        />
+      </Box>
       <StyledSearchInput />
-      <Flex as="span" ml="auto"
-        maxW={{ base: "auto", md: "11.6%" }}><SearchIconButton /></Flex>
+      <Flex as="span" ml="auto" maxW={{ base: "auto", md: "11.6%" }}>
+        <SearchIconButton />
+      </Flex>
     </Flex>
   )
 }
@@ -45,7 +60,10 @@ function StyledSearchInput({ value, onChange, ...rest }: InputProps) {
       placeholder="Type a location"
       fontSize={{ base: "1.2rem", md: "1.6rem" }}
       color="black"
-      _placeholder={{ color: "gray.100", fontSize: { base: "1.2rem", md: "1.6rem" } }}
+      _placeholder={{
+        color: "gray.100",
+        fontSize: { base: "1.2rem", md: "1.6rem" },
+      }}
       value={value}
       onChange={onChange}
       {...rest}
@@ -69,72 +87,23 @@ function SearchIconButton() {
       transition="all 500ms ease"
       _hover={{
         bg: "brand.main",
-        color: "white.main"
-      }}>
+        color: "white.main",
+      }}
+    >
       <SearchIcon />
     </Flex>
   )
 }
 
-const lookingForOptions = {
-  rooms: <HouseIcon />,
-  roomies: <PersonIcon />
-}
-
-function SearchOptionsDropDown({
-  selectedValue, handleSelect
-}: {
-  selectedValue: "rooms" | "roomies" | "",
-  handleSelect: (value: "rooms" | "roomies") => void
-}) {
-  const options = useMemo(() => Object.entries(lookingForOptions), [])
-  return (
-    <Box maxW={{ base: "15%", md: "25%" }} flexBasis="100%">
-      <DropDownWithChevron
-        DropdownTrigger={() =>
-          (<Show above="md">
-            <Text height={{ base: "auto", md: "3rem" }} display="flex" alignItems="center" as="span" fontSize="1.6rem" textTransform="capitalize" textAlign="right">{selectedValue.length ? <>{selectedValue}</> : <>Find</>}</Text>
-          </Show>)}
-        DropdownContent={({ onClose }) => (
-          <Flex
-            bg="white.main"
-            width="fit-content"
-            padding="1rem 2.4rem"
-            borderRadius=".8rem" maxW="12.5rem"
-            boxShadow="0px 0px 0.5px 0px rgba(0, 0, 0, 0.11)"
-            flexDir="column" justifyContent="center"
-            alignItems="start" gap=".91rem">
-            {options.map(([lookingFor, icon]) => (
-              <LookingForOption 
-                key={lookingFor} 
-                onClick={() => {
-                  handleSelect(lookingFor as "rooms" | "roomies")
-                  onClose()
-                }}
-                lookingFor={lookingFor} 
-                icon={icon}/>
-            ))}
-          </Flex>
-        )}
-      />
-    </Box>
-  )
-}
-
-function LookingForOption({ lookingFor, icon, onClick }: {
-  lookingFor: string
-  icon: ReactNode
-  onClick: () => void
-}){
-  return (
-    <Flex color="gray.100" _hover={{ color: "black" }} as="button"
-      onClick={onClick}
-      type="button" alignItems="center" gap=".5rem" key={lookingFor}>
-      <Box as="span">{icon}</Box>
-      <Box
-        as="span" lineHeight="1" fontSize="1.6rem"
-        fontWeight="600" textTransform="capitalize">
-        {lookingFor} </Box>
-    </Flex>
-  )
-}
+const lookingForOptions = [
+  {
+    icon: <HouseIcon />,
+    value: "rooms",
+    displayValue: "rooms",
+  },
+  {
+    value: "roomies",
+    displayValue: "roomies",
+    icon: <PersonIcon />,
+  },
+]

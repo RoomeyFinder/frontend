@@ -8,12 +8,19 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  BoxProps,
 } from "@chakra-ui/react"
-import { MutableRefObject, ChangeEventHandler, DragEventHandler } from "react"
+import {
+  MutableRefObject,
+  ChangeEventHandler,
+  DragEventHandler,
+  ReactNode,
+} from "react"
 import DragOverFileInput from "../../_components/DragOverFileInput"
 import ConfirmAction from "../../_components/ConfirmAction"
 import ProfileAvatar from "../../_components/ProfileAvatar"
 import { PreviewablePhoto } from "../../_types"
+import TimesIcon from "@/app/_assets/SVG/TimesIcon"
 
 export default function PhotosUploadSection({
   inputRef,
@@ -37,7 +44,7 @@ export default function PhotosUploadSection({
   handleDrop: DragEventHandler
   handleDragLeave: DragEventHandler
   handleDragEnter: DragEventHandler
-  removeFile: (url: string, fileName: string, _id?: string) => void
+  removeFile: (url: string, index: number) => void
   dragActive: boolean
   show: boolean
   photos: PreviewablePhoto[]
@@ -125,7 +132,7 @@ function UploadedPhotosSection({
   removeFile,
 }: {
   photos: PreviewablePhoto[]
-  removeFile: (url: string, fileName: string, _id?: string) => void
+  removeFile: (url: string, index: number) => void
 }) {
   return (
     <Flex
@@ -135,52 +142,89 @@ function UploadedPhotosSection({
       flexWrap="wrap"
     >
       {photos.map((p) => (
-        <Flex key={p._id}>
-          <Popover matchWidth preventOverflow={false} placement="left">
-            {({ isOpen, onClose }) => (
-              <>
-                <PopoverTrigger>
-                  <Box>
-                    <ProfileAvatar
-                      showVerifiedBadge={false}
-                      width={{ base: "8.8rem", md: "12.8rem" }}
-                      height={{ base: "9rem", md: "13.8rem" }}
-                      imageSrc={p.preview as string}
-                      isDeletable={true}
-                      size="small"
-                      defaultShowRemoveIcon={isOpen}
-                    />
-                  </Box>
-                </PopoverTrigger>
-                <PopoverContent
-                  boxShadow="0"
-                  bg="transparent"
-                  m="0"
-                  minW="max-content"
-                  border="0"
-                  p="1rem"
-                  _focusVisible={{ boxShadow: 0, outline: 0 }}
-                >
-                  <PopoverBody m="0" p="0" minW="full">
-                    <ConfirmAction
-                      confirmText={"Delete this photo"}
-                      confirm={() => {
-                        removeFile(
-                          p.preview as string,
-                          p.file?.name || (p.preview as string),
-                          p._id
-                        )
-                      }}
-                      cancel={onClose}
-                      variant={"warning"}
-                    />
-                  </PopoverBody>
-                </PopoverContent>
-              </>
-            )}
-          </Popover>
-        </Flex>
+        <DeletablePhoto
+          key={p._id}
+          photo={
+            <ProfileAvatar
+              showVerifiedBadge={false}
+              width={{ base: "8.8rem", md: "12.8rem" }}
+              height={{ base: "9rem", md: "13.8rem" }}
+              imageSrc={p.preview as string}
+              isDeletable
+              size="small"
+            />
+          }
+          onConfirm={() => {
+            removeFile(
+              p.preview as string,
+              p.index as number,
+            )
+          }}
+          containerProps={{ rounded: "3em", overflow: "hidden" }}
+        />
       ))}
+    </Flex>
+  )
+}
+
+export function DeletablePhoto({
+  photo,
+  onConfirm,
+  containerProps = {},
+}: {
+  photo: ReactNode
+  onConfirm: () => void
+  containerProps?: BoxProps
+}) {
+  return (
+    <Flex flexShrink={0}>
+      <Popover matchWidth preventOverflow={false} placement="left">
+        {({ isOpen, onClose }) => (
+          <>
+            <PopoverTrigger>
+              <Box pos="relative" {...containerProps}>
+                <Box filter={isOpen ? "brightness(50%)" : "brightness(100%)"}>
+                  {photo}
+                </Box>
+                {isOpen && (
+                  <Flex
+                    cursor="pointer"
+                    as="button"
+                    type="button"
+                    name="remove this photo"
+                    pos="absolute"
+                    inset="0"
+                    justifyContent="center"
+                    alignItems="center"
+                    rounded="50%"
+                    transition="all 500ms ease"
+                  >
+                    <TimesIcon />
+                  </Flex>
+                )}
+              </Box>
+            </PopoverTrigger>
+            <PopoverContent
+              boxShadow="0"
+              bg="transparent"
+              m="0"
+              minW="max-content"
+              border="0"
+              p="1rem"
+              _focusVisible={{ boxShadow: 0, outline: 0 }}
+            >
+              <PopoverBody m="0" p="0" minW="full">
+                <ConfirmAction
+                  confirmText={"Delete this photo"}
+                  confirm={onConfirm}
+                  cancel={onClose}
+                  variant={"warning"}
+                />
+              </PopoverBody>
+            </PopoverContent>
+          </>
+        )}
+      </Popover>
     </Flex>
   )
 }

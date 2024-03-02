@@ -1,16 +1,17 @@
 import DropDown from "@/app/_components/DropDown"
-import { Button, Input, Text } from "@chakra-ui/react"
+import { Button, Input, InputProps, Text } from "@chakra-ui/react"
 import { ChangeEventHandler, useCallback, useEffect, useMemo, useRef } from "react"
 import usePlacesAutocomplete from "use-places-autocomplete"
 import CustomDropDownList from "./CustomDropDownList"
 
 
-export default function AddressInput({ handleSelection, value, errorProps, inputVariant, reset }: {
+export default function AddressInput({ handleSelection, value, errorProps, inputVariant, reset, inputProps ={} }: {
   handleSelection: (selection: google.maps.places.AutocompletePrediction) => void
   value: string
   errorProps: { [x: string]: string }
   inputVariant?: string
   reset: () => void
+  inputProps?: InputProps
 }) {
   const {
     ready,
@@ -30,11 +31,11 @@ export default function AddressInput({ handleSelection, value, errorProps, input
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
     setValue(e.target.value)
-    if (searchValue.length > 0) {
+    if (searchValue?.length > 0) {
       clearSuggestions()
       reset()
     }
-  }, [setValue, searchValue.length, clearSuggestions, reset])
+  }, [setValue, searchValue?.length, clearSuggestions, reset])
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -52,6 +53,7 @@ export default function AddressInput({ handleSelection, value, errorProps, input
         autoComplete="off"
         placeholder="Address *"
         name="address"
+        {...inputProps}
         {...errorProps}
         value={searchValue}
         onChange={handleChange} />}>

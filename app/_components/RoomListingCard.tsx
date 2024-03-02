@@ -10,7 +10,7 @@ export default function RoomListingCard({
   isLocked = false,
   ownersName,
   ownersOccupation,
-  city,
+  // city,
   isFavourite,
   toggleIsFavourite,
   rentAmount,

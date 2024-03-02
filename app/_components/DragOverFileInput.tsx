@@ -20,6 +20,7 @@ export default function DragOverFileInput({
   fileTypePrefix,
   multiple,
   isDisabled,
+  maxFileSize
 }: {
   supportedFileTypes: string[]
   inputRef: MutableRefObject<HTMLInputElement | null>
@@ -33,6 +34,7 @@ export default function DragOverFileInput({
   fileTypePrefix: string
   multiple?: boolean
   isDisabled: boolean
+  maxFileSize?: number
 }) {
   return (
     <>
@@ -58,19 +60,17 @@ export default function DragOverFileInput({
         opacity={dragActive ? ".7" : "1"}
         bg={dragActive ? "brand.10" : ""}
         m="0"
-        fontSize={{ base: "1.2rem", md: "1.6rem" }}
+        fontSize={{ base: "1.2rem", md: "1.4rem" }}
         gap=".967rem"
-        px={{ base: ".8rem", md: "2.5rem" }}
-        py="7rem"
+        px={{ base: "2rem", md: "2.5rem" }}
+        py={{ sm: "4rem", md: "3rem" }}
         justifyContent="center"
         alignItems="center"
         w="100%"
         maxW="33.7rem"
-        minH="35rem"
-        border=".5rem"
-        borderColor="gray.200"
-        borderStyle="dashed"
-        borderRadius="3rem"
+        minH={{ base: "12rem", lg: "28rem" }}
+        border={{ sm: ".1rem solid #D9D9D9", md: ".5rem dashed #D9D9D9" }}
+        borderRadius={{ base: "1.2rem", md: "3rem" }}
         lineHeight="normal"
       >
         <FileUploadIcon />
@@ -91,7 +91,7 @@ export default function DragOverFileInput({
         </Text>
         <Text>
           Max file size:
-          <BoldTag> {20}MB </BoldTag>
+          <BoldTag> {(maxFileSize || 5)}MB </BoldTag>
           Max File Upload:
           <BoldTag> {4} </BoldTag>
         </Text>

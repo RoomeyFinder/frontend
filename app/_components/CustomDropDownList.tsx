@@ -13,38 +13,60 @@ const itemProps = {
   textTransform: "capitalize",
 }
 export default function CustomDropDownList({
-  list, handleItemClick,
+  list,
+  handleItemClick,
   ItemComponent,
-  ItemComponentProps
+  ItemComponentProps,
 }: {
   list: never[]
   handleItemClick?: (selection: string) => void
   ItemComponent?: ({ option }: { option: never }) => JSX.Element
   ItemComponentProps?: { [x: string]: never }
 }) {
-
-  const renderItem = useCallback((option: string | { [x: string]: unknown }) => {
-    if (ItemComponent) return <ItemComponent option={option as never} {...itemProps} {...(ItemComponentProps ? ItemComponentProps : {})} />
-    else return (
-      <Button onClick={() => handleItemClick && handleItemClick(option as string)} {...(itemProps as ButtonProps)}>
-        {option as string}
-      </Button>
-    )
-  }, [ItemComponent, ItemComponentProps, handleItemClick])
+  const renderItem = useCallback(
+    (option: string | { [x: string]: unknown }) => {
+      if (ItemComponent)
+        return (
+          <ItemComponent
+            option={option as never}
+            {...itemProps}
+            {...(ItemComponentProps ? ItemComponentProps : {})}
+          />
+        )
+      else
+        return (
+          <Button
+            onClick={() => handleItemClick && handleItemClick(option as string)}
+            {...(itemProps as ButtonProps)}
+          >
+            {option as string}
+          </Button>
+        )
+    },
+    [ItemComponent, ItemComponentProps, handleItemClick]
+  )
 
   return (
-    <VStack as={List}
+    <VStack
+      as={List}
       _focusWithin={{ border: "1px solid", borderColor: "brand.main" }}
-      spacing="1rem" p="1rem"
+      spacing="1rem"
+      p="1rem"
       fontSize="1.6rem"
       maxH="30rem"
-      overflow="auto" 
-      bg="white">
+      overflow="auto"
+      bg="white"
+    >
       {(list as string[]).map((opt: string | { [x: string]: unknown }, idx) => (
         <ListItem w="full" key={idx}>
           {renderItem(opt)}
-        </ListItem>))}
-      {list.length === 0 && <ListItem p="1rem" textTransform="capitalize" >No matches found</ListItem>}
+        </ListItem>
+      ))}
+      {/* {list.length === 0 && (
+        <ListItem p="1rem" textTransform="capitalize">
+          No matches found
+        </ListItem>
+      )} */}
     </VStack>
   )
 }

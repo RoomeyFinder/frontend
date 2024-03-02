@@ -4,18 +4,26 @@ import {
   useCallback,
   DragEventHandler,
   ChangeEventHandler,
+  useMemo,
 } from "react"
 
-export default function useHandleFilesUploadWithDragAndDrop(
-  inputRef: MutableRefObject<HTMLInputElement | null>,
+const ONE_MEGABYTE_IN_BYTES = 1048576
+
+export default function useHandleFilesUploadWithDragAndDrop({
+  inputRef,
+  maxFilesCount,
+  maxFileSizeInMegaBytes = 5,
+}: {
+  inputRef: MutableRefObject<HTMLInputElement | null>
   maxFilesCount: number
-) {
+  maxFileSizeInMegaBytes?: number
+}) {
   const [dragActive, setDragActive] = useState<boolean>(false)
   const [files, setFiles] = useState<File[]>([])
-  const [isMaximumCount, setIsMaximumCount] = useState<boolean>(
-    files.length >= maxFilesCount
+  const hasReachedUploadLimit = useMemo(
+    () => files.length >= maxFilesCount,
+    [files.length, maxFilesCount]
   )
-
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       e.preventDefault()
@@ -23,16 +31,19 @@ export default function useHandleFilesUploadWithDragAndDrop(
       if (eventFiles && eventFiles[0]) {
         const currentFiles = [...files]
         for (let i = 0; i < eventFiles["length"]; i++) {
-          if(currentFiles.length >= maxFilesCount) {
-            setIsMaximumCount(true)
+          if (currentFiles.length >= maxFilesCount) {
             break
-          };
-          currentFiles.push(eventFiles[i])
+          }
+          if (
+            eventFiles[i].size <=
+            maxFileSizeInMegaBytes * ONE_MEGABYTE_IN_BYTES
+          )
+            currentFiles.push(eventFiles[i])
         }
         setFiles(currentFiles)
       }
     },
-    [maxFilesCount, files.length]
+    [maxFilesCount, files]
   )
 
   const handleDrop: DragEventHandler = useCallback((e) => {
@@ -64,9 +75,8 @@ export default function useHandleFilesUploadWithDragAndDrop(
     setDragActive(true)
   }, [])
 
-  const removeFile = useCallback((fileName: string) => {
-    setIsMaximumCount(false)
-    setFiles((prev) => prev.filter((it) => it.name !== fileName))
+  const removeFile = useCallback((index: number) => {
+    setFiles((prev) => prev.filter((it, idx) => index !== idx))
   }, [])
 
   const openFileExplorer = useCallback(() => {
@@ -86,7 +96,7 @@ export default function useHandleFilesUploadWithDragAndDrop(
     handleDragEnter,
     removeFile,
     openFileExplorer,
-    isMaximumCount,
-    setFiles: (files: File[]) => setFiles(files)
+    hasReachedUploadLimit,
+    setFiles: (files: File[]) => setFiles(files),
   }
 }

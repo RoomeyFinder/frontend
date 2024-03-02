@@ -66,17 +66,17 @@ export default function DobInput({
         value.length > 0 ? value : today.toISOString()
       )
       switch (e.target.name) {
-        case "year":
-          updatedDate.setFullYear(Number(e.target.value))
-          break
-        case "month":
-          updatedDate.setMonth(monthOptions.indexOf(e.target.value))
-          break
-        case "date":
-          updatedDate.setDate(Number(e.target.value))
-          break
-        default:
-          break
+      case "year":
+        updatedDate.setFullYear(Number(e.target.value))
+        break
+      case "month":
+        updatedDate.setMonth(monthOptions.indexOf(e.target.value))
+        break
+      case "date":
+        updatedDate.setDate(Number(e.target.value))
+        break
+      default:
+        break
       }
       setDob({
         date: `${updatedDate.getDate()}`,

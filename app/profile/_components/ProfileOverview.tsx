@@ -69,7 +69,7 @@ export default function ProfileOverview({
             textAlign={{ base: "left", md: "left" }}
           >
             <Heading variant="xl">
-              {!isOwner && <>Hi, I'm </>}
+              {!isOwner && <>Hi, I&apos;m </>}
               {userData.firstName} {isOwner && userData.lastName}
             </Heading>
             {isOwner && (
@@ -217,7 +217,7 @@ function ProfileCTA({
         onClick: handleSendInterest,
       }
     }
-  }, [isOwner, hasSentInterest])
+  }, [isOwner, hasSentInterest, handleSendInterest])
 
   return (
     <Button

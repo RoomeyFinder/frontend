@@ -10,114 +10,14 @@ import {
 } from "@chakra-ui/react"
 import PublishAdClicker from "./_components/PublishAdClicker"
 import FeatureCard from "./_components/FeatureCard"
-import RoomListingCard from "./_components/RoomListingCard"
-import ListingsGridLayout from "./_components/ListingsGridLayout"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
 import PeopleGroup from "./_assets/SVG/PeopleGroup"
-const listOfRoomeys = [
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-  <RoomListingCard
-    isLocked
-    ownersName={"Milfred"}
-    isFavourite={false}
-    toggleIsFavourite={function (): void {}}
-    ownersOccupation={"Banker"}
-    city={""}
-    rentAmount={1500000}
-    rentDuration={"yearly"}
-    title={""}
-    images={[]}
-  />,
-]
+
 export default function Home() {
   return (
     <>
       <Hero />
-      <ListingsGridLayout list={listOfRoomeys} />
       <FeaturesSection />
     </>
   )
@@ -145,9 +45,9 @@ function Hero() {
             mb="4.9rem"
             lineHeight="2.2rem"
           >
-            Whether you're a student searching for a cozy apartment, a
+            Whether you&apos;re a student searching for a cozy apartment, a
             professional seeking a shared living space, or a homeowner looking
-            for a compatible roommate, we've got you covered.
+            for a compatible roommate, we&apos;ve got you covered.
           </Text>
           <Button display="block" mx="auto" variant="main" mb="4.5rem">
             <PublishAdClicker>Publish Your Ad</PublishAdClicker>
