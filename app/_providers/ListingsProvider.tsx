@@ -8,19 +8,19 @@ import {
 } from "react"
 import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
-import User from "../_types/User"
+import User from "../_types/Listings"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 
-export const UserContext = createContext<{
-  user: User | null
-  updateUser: (data: User, useSession?: boolean) => void
-  deleteUser: () => void
+export const ListingsContext = createContext<{
+  listings: User | null
+  updateListings: (data: User, useSession?: boolean) => void
+  deleteListings: () => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
     }>({
-      user: null,
-      updateUser: () => {},
-      deleteUser: () => {},
+      listings: null,
+      updateListings: () => {},
+      deleteListings: () => {},
       updateLoading: () => {},
       loading: true,
     })
@@ -32,44 +32,50 @@ export default function UserProvider({
 }) {
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
-    data: user,
-    updateData: updateUser,
-    deleteData: deleteUser,
+    data: listings,
+    updateData: updateListings,
+    deleteData: deleteListings,
     loading,
     updateLoading,
-  } = useGetFromStorage("RF_USER")
+  } = useGetFromStorage("RF_USER_LISTINGS")
 
   const { fetchData } = useAxios()
 
-  const fetchUser = useCallback(async () => {
-    if (user || !isAuthorized) return
+  const fetchListings = useCallback(async () => {
+    if (listings || !isAuthorized) return
     updateLoading(true)
     const res = await fetchData({
-      url: "/users/me",
+      url: "/listings/me",
       method: "get",
     })
     console.log(res)
-    if (res.statusCode === 200) updateUser(res.user)
+    if (res.statusCode === 200) updateListings(res.listings)
     else if (res.statusCode === 403) resetAuthorization()
     updateLoading(false)
   }, [
     fetchData,
     resetAuthorization,
-    user,
-    updateUser,
+    listings,
+    updateListings,
     updateLoading,
     isAuthorized,
   ])
 
   useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
+    fetchListings()
+  }, [fetchListings])
 
   return (
-    <UserContext.Provider
-      value={{ user, updateUser, deleteUser, loading, updateLoading }}
+    <ListingsContext.Provider
+      value={{
+        listings,
+        updateListings,
+        deleteListings,
+        loading,
+        updateLoading,
+      }}
     >
       {children}
-    </UserContext.Provider>
+    </ListingsContext.Provider>
   )
 }

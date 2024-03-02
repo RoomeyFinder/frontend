@@ -23,11 +23,13 @@ export default interface User {
   lifestyleTags?: { value: string; category: string }[]
   about: string
   interestCount: number
-  photos: {
-    secure_url: string
-    id: string
-    _id: string
-  }[]
+  photos: Photo[]
   _id: string
   isVisible: boolean
+}
+
+export type Photo = {
+  secure_url: string
+  id: string
+  _id: string
 }

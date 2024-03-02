@@ -1,13 +1,7 @@
 "use client"
-import localforage from "localforage"
 import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
-import {
-  ReactNode,
-  createContext,
-  useCallback,
-  useMemo,
-} from "react"
+import { ReactNode, createContext, useCallback, useMemo } from "react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 
 export const AuthContext = createContext<{
@@ -18,15 +12,15 @@ export const AuthContext = createContext<{
   resetAuthorization: () => void
   deleteToken: () => void
   loading: boolean
-}>({
-  token: null,
-  isAuthorized: false,
-  updateToken: (newToken: string) => {},
-  isSessionStorage: undefined,
-  resetAuthorization: () => {},
-  deleteToken: () => {},
-  loading: true
-})
+    }>({
+      token: null,
+      isAuthorized: false,
+      updateToken: () => {},
+      isSessionStorage: undefined,
+      resetAuthorization: () => {},
+      deleteToken: () => {},
+      loading: true,
+    })
 
 const privatePaths = [
   "/profile",
