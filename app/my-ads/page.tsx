@@ -3,6 +3,8 @@ import { useSearchParams } from "next/navigation"
 import { Box, Flex, Spinner } from "@chakra-ui/react"
 import { Suspense } from "react"
 import ListingForm from "./_components/ListingForm"
+import MyAdsHeader from "./_components/PageHeader"
+import Empty from "../_components/Empty"
 
 export default function Profile() {
   return (
@@ -27,5 +29,10 @@ function Renderer() {
       </Box>
     )
   }
-  // return <><Listings listings={[]} isOwner={true} /></>
+  return (
+    <Box pos="relative" h="calc(100dvh - 23%)">
+      <MyAdsHeader />
+      <Empty text="No Ads"/>
+    </Box>
+  )
 }
