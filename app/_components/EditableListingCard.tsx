@@ -52,25 +52,19 @@ export default function EditableListingCard() {
           </Heading>
           <Flex gap={{ base: ".6rem", md: "1rem" }} alignItems="center">
             <Text fontSize="1.4rem" fontWeight="600" color="gray.main">
-              <Text
-                as="span"
-                fontSize="1.4rem"
-                fontWeight="600"
-                color="gray.main"
-              >
-                5&nbsp;
-              </Text>
+              <Show below="md">
+                <Text
+                  as="span"
+                  fontSize="1.4rem"
+                  fontWeight="600"
+                  color="gray.main"
+                >
+                  5&nbsp;
+                </Text>
+              </Show>
               Features
             </Text>
-            <HStack gap="1.2rem">
-              {/* <FeatureTag
-                item={{ category: "", value: "Air conditioner" }}
-                editable={false}
-                bg="#D9D9D9"
-                padding="1rem 2rem"
-                rounded=".5rem"
-              /> */}
-            </HStack>
+            <ListingFeatures />
             <Flex as={Text} alignItems="center" fontSize="1.4rem" gap=".8rem">
               <EyeIcon />0
             </Flex>
@@ -137,5 +131,35 @@ function TextButton({
     <Text fontSize="1.6rem" fontWeight="600" lineHeight="1.6rem" {...rest}>
       {children}
     </Text>
+  )
+}
+
+function ListingFeatures() {
+  return (
+    <Show above="md">
+      <HStack gap="1.2rem">
+        <FeatureTag
+          item={{ category: "", value: "Air conditioner" }}
+          editable={false}
+          bg="#D9D9D9"
+          padding="1rem 2rem"
+          rounded=".5rem"
+        />
+        <FeatureTag
+          item={{ category: "", value: "Air conditioner" }}
+          editable={false}
+          bg="#D9D9D9"
+          padding="1rem 2rem"
+          rounded=".5rem"
+        />
+        <FeatureTag
+          item={{ category: "", value: "Air conditioner" }}
+          editable={false}
+          bg="#D9D9D9"
+          padding="1rem 2rem"
+          rounded=".5rem"
+        />
+      </HStack>
+    </Show>
   )
 }
