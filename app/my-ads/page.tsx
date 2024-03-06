@@ -1,10 +1,11 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import { Box, Flex, Spinner } from "@chakra-ui/react"
+import { Box, Flex, Spinner, VStack } from "@chakra-ui/react"
 import { Suspense } from "react"
 import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "./_components/PageHeader"
 import Empty from "../_components/Empty"
+import EditableListingCard from "../_components/EditableListingCard"
 
 export default function Profile() {
   return (
@@ -30,9 +31,24 @@ function Renderer() {
     )
   }
   return (
-    <Box pos="relative" h="calc(100dvh - 23%)">
+    <Box pos="relative" minH="80dvh">
       <MyAdsHeader />
-      <Empty text="No Ads"/>
+      {/* <Empty text="No Ads"/> */}
+      <VStack
+        py="5rem"
+        alignItems="start"
+        w="90dvw"
+        maxW={{ lg: "80%" }}
+        mx="auto"
+        justifyContent="center"
+        gap="1.8rem"
+      >
+        {/* <EditableListingCard />
+        <EditableListingCard />
+        <EditableListingCard />
+        <EditableListingCard /> */}
+        <EditableListingCard />
+      </VStack>
     </Box>
   )
 }

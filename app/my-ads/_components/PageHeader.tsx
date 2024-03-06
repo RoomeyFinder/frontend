@@ -14,18 +14,14 @@ import { useCallback, useMemo, useState } from "react"
 function Tab({
   onClick,
   isActive,
-  href,
   name,
 }: {
   onClick: () => void
   isActive: boolean
-  href: string
   name: string
 }) {
   return (
     <Text
-      as={Link}
-      href={href}
       onClick={onClick}
       color={isActive ? "black" : "gray.main"}
       borderBottom=".3rem solid"
@@ -39,6 +35,7 @@ function Tab({
   )
 }
 export default function MyAdsHeader() {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const [currentDisplay, setCurrentDisplay] = useState<
     "active" | "drafts" | "deactivated"
@@ -46,7 +43,8 @@ export default function MyAdsHeader() {
 
   const toggleDisplay = useCallback((newDisplay: typeof currentDisplay) => {
     setCurrentDisplay(newDisplay)
-  }, [])
+    router.push(`/my-ads?filter=${newDisplay}`)
+  }, [router])
 
   return (
     <Flex
@@ -75,19 +73,16 @@ export default function MyAdsHeader() {
         alignItems="end"
       >
         <Tab
-          href="/my-ads?filter=active"
           onClick={() => toggleDisplay("active")}
           isActive={currentDisplay === "active"}
           name={`Active`}
         />
         <Tab
-          href="/my-ads?filter=drafts"
           onClick={() => toggleDisplay("drafts")}
           isActive={currentDisplay === "drafts"}
           name={`Drafts`}
         />
         <Tab
-          href="/my-ads?filter=deactivated"
           onClick={() => toggleDisplay("deactivated")}
           isActive={currentDisplay === "deactivated"}
           name={`Deactivated`}

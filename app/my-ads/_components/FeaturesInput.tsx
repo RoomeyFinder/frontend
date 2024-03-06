@@ -194,6 +194,9 @@ export function FeatureTag({
   handleRemoveItem,
   item,
   editable = false,
+  bg,
+  padding,
+  rounded
 }: {
   item: {
     category: string
@@ -201,16 +204,19 @@ export function FeatureTag({
   }
   editable?: boolean
   handleRemoveItem?: (item: { category: string; value: string }) => void
+  bg?: string
+  padding?: string
+  rounded?: string
 }) {
   return (
     <Flex
       gap="1rem"
-      p="2rem"
+      p={padding || "2rem"}
       alignItems="center"
       boxShadow={editable ? "" : "0px 0px 1px 0px #00000066"}
       borderColor="gray.100"
-      rounded="1.2rem"
-      bg={editable ? "brand.10" : "transparent"}
+      rounded={rounded || "1.2rem"}
+      bg={editable ? "brand.10" : bg || "transparent"}
     >
       <Text> {icons[item.value as keyof typeof icons]}</Text>
       <Text
