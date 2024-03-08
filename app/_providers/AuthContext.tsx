@@ -1,7 +1,13 @@
 "use client"
 import { usePathname } from "next/navigation"
 import { useRouter } from "next/navigation"
-import { ReactNode, createContext, useCallback, useMemo } from "react"
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 
 export const AuthContext = createContext<{
@@ -12,15 +18,15 @@ export const AuthContext = createContext<{
   resetAuthorization: () => void
   deleteToken: () => void
   loading: boolean
-    }>({
-      token: null,
-      isAuthorized: false,
-      updateToken: () => {},
-      isSessionStorage: undefined,
-      resetAuthorization: () => {},
-      deleteToken: () => {},
-      loading: true,
-    })
+}>({
+  token: null,
+  isAuthorized: false,
+  updateToken: () => {},
+  isSessionStorage: undefined,
+  resetAuthorization: () => {},
+  deleteToken: () => {},
+  loading: true,
+})
 
 const privatePaths = [
   "/profile",
@@ -49,20 +55,31 @@ export default function AuthProvider({
 
   const resetAuthorization = useCallback(
     (saveUrlState = false) => {
-      updateToken(null)
       const currentUrl = window.location.pathname
       if (
         pathname !== "/" &&
         privatePaths.some((path) =>
-          path.toLowerCase().startsWith(pathname.toLowerCase())
+          pathname.toLowerCase().startsWith(path.toLowerCase())
         )
       ) {
-        if (saveUrlState) router.push(`/login?next=${currentUrl}`)
+        if (saveUrlState)
+          router.push(`/login?next=${currentUrl + window.location.search}`)
         else router.push("/login")
       }
     },
     [updateToken, pathname, router]
   )
+
+  useEffect(() => {
+    if (
+      !loading &&
+      isAuthorized === false &&
+      privatePaths.some((path) =>
+        pathname.toLowerCase().startsWith(path.toLowerCase())
+      )
+    )
+      resetAuthorization(true)
+  }, [pathname, resetAuthorization, isAuthorized, loading])
 
   return (
     <AuthContext.Provider

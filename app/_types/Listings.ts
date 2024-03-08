@@ -30,5 +30,5 @@ export interface Listing {
 export default interface Listings {
   active: Listing[]
   drafts: Listing[]
-  deactivated: Listing
+  deactivated: Listing[]
 }

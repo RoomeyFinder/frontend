@@ -8,24 +8,28 @@ import {
 } from "react"
 import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
-import User from "../_types/Listings"
+import User, { Listing } from "../_types/Listings"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 
 export const ListingsContext = createContext<{
-  listings: User | null
+  listings: {
+    active: Listing[]
+    drafts: Listing[]
+    deactivated: Listing[]
+  } | null
   updateListings: (data: User, useSession?: boolean) => void
   deleteListings: () => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
-    }>({
-      listings: null,
-      updateListings: () => {},
-      deleteListings: () => {},
-      updateLoading: () => {},
-      loading: true,
-    })
+}>({
+  listings: null,
+  updateListings: () => {},
+  deleteListings: () => {},
+  updateLoading: () => {},
+  loading: true,
+})
 
-export default function UserProvider({
+export default function ListingsProvider({
   children,
 }: {
   children: ReactNode | ReactNode
@@ -48,7 +52,6 @@ export default function UserProvider({
       url: "/listings/me",
       method: "get",
     })
-    console.log(res)
     if (res.statusCode === 200) updateListings(res.listings)
     else if (res.statusCode === 403) resetAuthorization()
     updateLoading(false)

@@ -8,6 +8,13 @@ import { AuthContext } from "../_providers/AuthContext"
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL
 
 export type RequestBody = AxiosRequestConfig["data"]
+export type FetchOptions = {
+  url: string
+  method: "get" | "post" | "put" | "delete"
+  headers?: AxiosHeaders
+  baseURL?: string
+  body?: RequestBody
+}
 
 export default function useAxios() {
   const { token } = useContext(AuthContext)
@@ -20,13 +27,7 @@ export default function useAxios() {
       body,
       headers,
       baseURL,
-    }: {
-      url: string
-      method: "get" | "post" | "put" | "delete"
-      headers?: AxiosHeaders
-      baseURL?: string
-      body?: RequestBody
-    }) => {
+    }: FetchOptions) => {
       setIsFetching(true)
       try {
         const response = await axios[method](url, body, {

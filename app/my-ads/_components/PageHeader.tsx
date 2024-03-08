@@ -1,15 +1,13 @@
 "use client"
 import {
-  Box,
   Button,
   Flex,
   Heading,
   Link,
   Text,
-  VStack,
 } from "@chakra-ui/react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useMemo, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useCallback, useState } from "react"
 
 function Tab({
   onClick,
@@ -28,7 +26,8 @@ function Tab({
       borderBottomColor={isActive ? "black" : "transparent"}
       pb="1rem"
       textDecor="none"
-      _hover={{ textDecor: "none" }}
+      _hover={{ textDecor: "none", color: "black"}}
+      as="button"
     >
       {name}
     </Text>

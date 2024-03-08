@@ -1,11 +1,12 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { Box, Flex, Spinner, VStack } from "@chakra-ui/react"
-import { Suspense } from "react"
+import { Suspense, useContext, useMemo, useState } from "react"
 import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "./_components/PageHeader"
 import Empty from "../_components/Empty"
 import EditableListingCard from "../_components/EditableListingCard"
+import { ListingsContext } from "../_providers/ListingsProvider"
 
 export default function Profile() {
   return (
@@ -23,6 +24,12 @@ export default function Profile() {
 
 function Renderer() {
   const searchParams = useSearchParams()
+  const { listings, loading } = useContext(ListingsContext)
+  const currentDisplay = useMemo(
+    () => (searchParams.get("filter") || "active") as "active" | "drafts" | "deactivated",
+    [searchParams]
+  )
+
   if (searchParams.get("new") === "true") {
     return (
       <Box>
@@ -33,22 +40,25 @@ function Renderer() {
   return (
     <Box pos="relative" minH="80dvh">
       <MyAdsHeader />
-      {/* <Empty text="No Ads"/> */}
-      <VStack
-        py="5rem"
-        alignItems="start"
-        w="90dvw"
-        maxW={{ lg: "80%" }}
-        mx="auto"
-        justifyContent="center"
-        gap="1.8rem"
-      >
-        {/* <EditableListingCard />
-        <EditableListingCard />
-        <EditableListingCard />
-        <EditableListingCard /> */}
-        <EditableListingCard />
-      </VStack>
+      {(!listings || listings[currentDisplay].length === 0) && !loading && (
+        <Empty text="No Ads" />
+      )}
+      {listings && listings[currentDisplay].length > 0 && !loading && (
+        <VStack
+          py="5rem"
+          alignItems="start"
+          w="90dvw"
+          maxW={{ xl: "80%" }}
+          mx="auto"
+          justifyContent="center"
+          gap="1.8rem"
+        >
+          {listings[currentDisplay].map((listing) => (
+            <EditableListingCard listing={listing} key={listing._id} />
+          ))}
+        </VStack>
+      )}
+      {loading && <Spinner />}
     </Box>
   )
 }

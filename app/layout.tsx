@@ -6,6 +6,7 @@ import GlobalLayout from "./_components/GlobalLayout"
 import LocalForageProvider from "./_providers/localforage"
 import AuthProvider from "./_providers/AuthContext"
 import UserProvider from "./_providers/UserProvider"
+import ListingsProvider from "./_providers/ListingsProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -21,7 +22,9 @@ export default function RootLayout({
           <LocalForageProvider>
             <AuthProvider>
               <UserProvider>
-                <GlobalLayout>{children}</GlobalLayout>
+                <ListingsProvider>
+                  <GlobalLayout>{children}</GlobalLayout>
+                </ListingsProvider>
               </UserProvider>
             </AuthProvider>
           </LocalForageProvider>

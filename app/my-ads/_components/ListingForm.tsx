@@ -2,7 +2,14 @@
 import useHandleFilesUploadWithDragAndDrop from "@/app/_hooks/useHandleFilesUploadWithDragAndDrop"
 import PhotosUploadSection from "./PhotosUploadSection"
 import { VStack, Heading, Flex } from "@chakra-ui/react"
-import { FormEventHandler, useCallback, useMemo, useRef, useState } from "react"
+import {
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import FormDetailsSection from "./FormDetailsSection"
 import PhotosPreviewSection from "./PhotosPreviewSection"
 import { Listing } from "@/app/_types/Listings"
@@ -11,6 +18,7 @@ import useAxios from "@/app/_hooks/useAxios"
 import useAppToast from "@/app/_hooks/useAppToast"
 import { useRouter } from "next/navigation"
 import { PreviewablePhoto } from "@/app/_types"
+import { ListingsContext } from "@/app/_providers/ListingsProvider"
 
 const initialListingState: Listing = {
   photos: [],
@@ -40,6 +48,7 @@ export default function ListingForm({
   listingId: string | null
 }) {
   const router = useRouter()
+  const { updateListings, listings } = useContext(ListingsContext)
   const toast = useAppToast()
   const { fetchData } = useAxios()
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -87,7 +96,7 @@ export default function ListingForm({
 
   const hasEdits = useMemo(() => {
     return files.length > 0 ||
-    listingData.lookingFor.length > 0 || 
+      listingData.lookingFor.length > 0 ||
       listingData.apartmentType?.length ||
       listingData.streetAddress.length > 0 ||
       listingData.isStudioApartment ||
@@ -137,8 +146,11 @@ export default function ListingForm({
       }
       formData.set("isActive", (isDraft === false).toString())
       formData.set("isDrag", isDraft.toString())
+      features.forEach((feature) =>
+        formData.append("features", JSON.stringify(feature))
+      )
       files.forEach((file) => formData.append("photos", file))
-      if(isDraft) setIsSavingDraft(true)
+      if (isDraft) setIsSavingDraft(true)
       else setIsSavingListing(true)
       const res = await fetchData({
         url: "/listings",
@@ -151,11 +163,20 @@ export default function ListingForm({
           status: "success",
           title: isDraft ? "Draft saved!" : "Ad created successfully",
         })
+        if (isDraft)
+          updateListings({
+            ...(listings || {}),
+            drafts: [...(listings?.drafts || []), res.listing],
+          } as any)
+        else
+          updateListings({
+            ...(listings || {}),
+            active: [...(listings?.active || []), res.listing],
+          } as any)
         router.push(isDraft ? `/my-ads?filter=drafts` : `/my-ads?filter=active`)
       } else {
         toast({
-          description: res.message,
-          title: "Something went wrong",
+          title: res.message,
           status: "error",
         })
       }
@@ -170,6 +191,8 @@ export default function ListingForm({
       fetchData,
       isSavingDraft,
       isSavingListing,
+      features,
+      updateListings,
     ]
   )
 

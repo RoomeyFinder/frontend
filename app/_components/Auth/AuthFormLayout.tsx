@@ -1,60 +1,108 @@
 "use client"
 import { Heading, Box, Text, Link, Button, Flex } from "@chakra-ui/react"
-import { ReactNode, useContext, useEffect } from "react"
+import { ReactNode, useContext, useEffect, useMemo } from "react"
 // import AuthProviderMethods from "./AuthProviderMethods"
-import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { AuthContext } from "@/app/_providers/AuthContext"
 
 const modeTexts = {
-  "signin": {prompt: "New to Roomeyfinder?", link: "signup", linkText: "Create Account"},
-  "signup": {prompt: "Already have an account?", link: "/login", linkText: "Sign In"}
+  signin: {
+    prompt: "New to Roomeyfinder?",
+    link: "signup",
+    linkText: "Create Account",
+  },
+  signup: {
+    prompt: "Already have an account?",
+    link: "/login",
+    linkText: "Sign In",
+  },
 }
 
-export default function AuthFormLayout({ 
-  children, submitButtonText, mode, heading, handleSubmit, submitButtonType, submitButtonVariant, loading
+export default function AuthFormLayout({
+  children,
+  submitButtonText,
+  mode,
+  heading,
+  handleSubmit,
+  submitButtonType,
+  submitButtonVariant,
+  loading,
 }: {
   children: ReactNode | ReactNode[]
   submitButtonText: string
   mode: "signin" | "signup"
   heading: string
-  handleSubmit: () => void,
-  submitButtonType?: "button" | "submit" | "reset" 
+  handleSubmit: () => void
+  submitButtonType?: "button" | "submit" | "reset"
   submitButtonVariant?: string
   loading?: boolean
-}){
+}) {
   const { isAuthorized } = useContext(AuthContext)
-  const router = useRouter()
+
+  const searchParams = useSearchParams()
+  const nextRoute = useMemo(() => searchParams.get("next"), [searchParams])
 
   useEffect(() => {
-    if (isAuthorized) router.push("/")
-  }, [isAuthorized, router])
+    if (isAuthorized)  window.location.replace(nextRoute || "/")
+  }, [isAuthorized, nextRoute])
 
   return (
     <>
       <Box as="main" w="93dvw" maxW="85.9rem" mx="auto">
-        <Heading as="h1" w="max-content" mb="1rem" size="base" variant="700">{heading}</Heading>
+        <Heading as="h1" w="max-content" mb="1rem" size="base" variant="700">
+          {heading}
+        </Heading>
         <Flex as="p" gap="1rem" alignItems="center">
-          <Text as="span" fontSize="1.6rem" lineHeight="150%">{modeTexts[mode].prompt} </Text>
-          <Text 
-            as={Link} 
-            href={modeTexts[mode].link} 
-            fontSize="1.4rem" color="gray.100" 
-            textTransform="uppercase" 
+          <Text as="span" fontSize="1.6rem" lineHeight="150%">
+            {modeTexts[mode].prompt}{" "}
+          </Text>
+          <Text
+            as={Link}
+            href={modeTexts[mode].link}
+            fontSize="1.4rem"
+            color="gray.100"
+            textTransform="uppercase"
             fontWeight="700"
             transition="all 250ms ease"
-            _hover={{ color: "gray.300" }}>
+            _hover={{ color: "gray.300" }}
+          >
             {modeTexts[mode].linkText}
           </Text>
         </Flex>
         <Box>{children}</Box>
-        <Flex justifyContent="space-between" alignItems={{ base: "stretch", md: "end" }} gap="2rem" flexDir={{ base: "column-reverse", sm: "row"}}>
+        <Flex
+          justifyContent="space-between"
+          alignItems={{ base: "stretch", md: "end" }}
+          gap="2rem"
+          flexDir={{ base: "column-reverse", sm: "row" }}
+        >
           {/* <Flex flexDir="column" justifyContent="start" gap="1rem" alignSelf={{ base: "center", sm: "end"}}>
             <Text fontSize="1rem" fontWeight="normal" lineHeight="normal" textTransform="uppercase">or sign in with</Text>
             <AuthProviderMethods />
           </Flex> */}
-          <Button ml="auto" onClick={() => handleSubmit()} _loading={{ bg: "brand.main", color: "white", _hover: { bg: "brand.main", color: "white"} }} isLoading={loading} textTransform="capitalize" type={submitButtonType} variant={{ base: submitButtonVariant || "brand", sm: submitButtonVariant || "brand-secondary" }} minW={{ md: "19.8rem" }} lineHeight="150%" padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}>{submitButtonText}</Button>
+          <Button
+            ml="auto"
+            onClick={() => handleSubmit()}
+            _loading={{
+              bg: "brand.main",
+              color: "white",
+              _hover: { bg: "brand.main", color: "white" },
+            }}
+            isLoading={loading}
+            textTransform="capitalize"
+            type={submitButtonType}
+            variant={{
+              base: submitButtonVariant || "brand",
+              sm: submitButtonVariant || "brand-secondary",
+            }}
+            minW={{ md: "19.8rem" }}
+            lineHeight="150%"
+            padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}
+          >
+            {submitButtonText}
+          </Button>
         </Flex>
-      </Box> 
+      </Box>
     </>
   )
 }
