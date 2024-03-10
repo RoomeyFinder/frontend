@@ -18,15 +18,15 @@ export const AuthContext = createContext<{
   resetAuthorization: () => void
   deleteToken: () => void
   loading: boolean
-}>({
-  token: null,
-  isAuthorized: false,
-  updateToken: () => {},
-  isSessionStorage: undefined,
-  resetAuthorization: () => {},
-  deleteToken: () => {},
-  loading: true,
-})
+    }>({
+      token: null,
+      isAuthorized: false,
+      updateToken: () => {},
+      isSessionStorage: undefined,
+      resetAuthorization: () => {},
+      deleteToken: () => {},
+      loading: true,
+    })
 
 const privatePaths = [
   "/profile",
@@ -67,7 +67,7 @@ export default function AuthProvider({
         else router.push("/login")
       }
     },
-    [updateToken, pathname, router]
+    [pathname, router]
   )
 
   useEffect(() => {

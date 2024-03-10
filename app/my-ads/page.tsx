@@ -1,7 +1,7 @@
 "use client"
 import { useSearchParams } from "next/navigation"
 import { Box, Flex, Spinner, VStack } from "@chakra-ui/react"
-import { Suspense, useContext, useMemo, useState } from "react"
+import { Suspense, useContext, useMemo } from "react"
 import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "./_components/PageHeader"
 import Empty from "../_components/Empty"

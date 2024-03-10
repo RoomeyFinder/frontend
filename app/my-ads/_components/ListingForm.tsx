@@ -24,7 +24,6 @@ const initialListingState: Listing = {
   photos: [],
   rentDuration: "",
   lookingFor: "",
-  owner: "",
   isStudioApartment: false,
   numberOfBedrooms: 0,
   streetAddress: "",
@@ -134,11 +133,11 @@ export default function ListingForm({
         ...listingData,
         isDraft,
       }
-      let formData = new FormData()
+      const formData = new FormData()
       if (locationPlaceId) {
-        let { lat: latitude, lng: longitude } =
+        const { lat: latitude, lng: longitude } =
           await fetchLatLng(locationPlaceId)
-        let zipcode = await fetchZipCode(locationPlaceId)
+        const zipcode = await fetchZipCode(locationPlaceId)
         body = { ...body, latitude, longitude, zipcode }
       }
       for (const key in body) {
@@ -173,7 +172,7 @@ export default function ListingForm({
             ...(listings || {}),
             active: [...(listings?.active || []), res.listing],
           } as any)
-        router.push(isDraft ? `/my-ads?filter=drafts` : `/my-ads?filter=active`)
+        router.push(isDraft ? "/my-ads?filter=drafts" : "/my-ads?filter=active")
       } else {
         toast({
           title: res.message,
@@ -193,6 +192,9 @@ export default function ListingForm({
       isSavingListing,
       features,
       updateListings,
+      listings,
+      router,
+      toast,
     ]
   )
 

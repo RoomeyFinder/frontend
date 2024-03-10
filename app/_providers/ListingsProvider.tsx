@@ -21,13 +21,13 @@ export const ListingsContext = createContext<{
   deleteListings: () => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
-}>({
-  listings: null,
-  updateListings: () => {},
-  deleteListings: () => {},
-  updateLoading: () => {},
-  loading: true,
-})
+    }>({
+      listings: null,
+      updateListings: () => {},
+      deleteListings: () => {},
+      updateLoading: () => {},
+      loading: true,
+    })
 
 export default function ListingsProvider({
   children,

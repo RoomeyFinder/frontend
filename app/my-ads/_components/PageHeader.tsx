@@ -74,17 +74,17 @@ export default function MyAdsHeader() {
         <Tab
           onClick={() => toggleDisplay("active")}
           isActive={currentDisplay === "active"}
-          name={`Active`}
+          name={"Active"}
         />
         <Tab
           onClick={() => toggleDisplay("drafts")}
           isActive={currentDisplay === "drafts"}
-          name={`Drafts`}
+          name={"Drafts"}
         />
         <Tab
           onClick={() => toggleDisplay("deactivated")}
           isActive={currentDisplay === "deactivated"}
-          name={`Deactivated`}
+          name={"Deactivated"}
         />
       </Flex>
     </Flex>

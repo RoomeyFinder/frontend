@@ -43,7 +43,7 @@ export default function useHandleFilesUploadWithDragAndDrop({
         setFiles(currentFiles)
       }
     },
-    [maxFilesCount, files]
+    [maxFilesCount, files, maxFileSizeInMegaBytes]
   )
 
   const handleDrop: DragEventHandler = useCallback((e) => {

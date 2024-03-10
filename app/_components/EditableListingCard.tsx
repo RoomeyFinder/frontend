@@ -6,7 +6,6 @@ import {
   Heading,
   IconButton,
   Image,
-  Link,
   LinkProps,
   Popover,
   PopoverBody,
@@ -34,6 +33,7 @@ const actionBasedOnStatus = {
 }
 
 export default function EditableListingCard({ listing }: { listing: Listing }) {
+  const router = useRouter()
   const status = useMemo(() => {
     if (listing.isActive) return "active"
     if (listing.isDraft) return "draft"
@@ -41,10 +41,12 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       return "deactivated"
     return "active"
   }, [listing])
+
   const isActive = useMemo(
     () => !listing.isDraft && listing.isActive,
     [listing.isDraft, listing.isActive]
   )
+
   return (
     <Flex
       justifyContent="space-between"
@@ -54,11 +56,16 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       w="100%"
       px={{ base: "1rem", md: "2rem" }}
       py="1rem"
-      {...(isActive ? { as: Link, href: `/my-ads/${listing._id}` } : {})}
+      onClick={() => {
+        if (isActive) {
+          router.push(`/my-ads/${listing._id}`)
+        }
+      }}
       _hover={{ textDecor: "none", boxShadow: isActive ? "md" : "" }}
     >
       <Flex alignItems="center" gap="1rem">
         <Image
+          alt=""
           w={{ base: "5rem", md: "7rem" }}
           h={{ base: "5rem", md: "7rem" }}
           rounded="1.2rem"
@@ -156,7 +163,7 @@ function ListingActions({
           })
       }
     },
-    [toast, listings, updateListings, listingId, router]
+    [toast, listings, updateListings, listingId, router, fetchData]
   )
 
   const renderButtons = useCallback(() => {
@@ -199,6 +206,9 @@ function ListingActions({
         <Popover placement="bottom-start">
           <PopoverTrigger>
             <IconButton
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
               color="gray.main"
               _hover={{ color: "brand.main", bg: "transparent" }}
               p="1rem"
@@ -240,14 +250,14 @@ const getActionFetchOptions = (
   listingId: string
 ): FetchOptions => {
   switch (primaryActionText) {
-    case "Activate":
-      return { url: `/listings/${listingId}/activate`, method: "put" }
-    case "Deactivate":
-      return { url: `/listings/${listingId}/deactivate`, method: "put" }
-    case "Delete":
-      return { url: `/listings/${listingId}`, method: "delete" }
-    default:
-      return { url: `/`, method: "get" }
+  case "Activate":
+    return { url: `/listings/${listingId}/activate`, method: "put" }
+  case "Deactivate":
+    return { url: `/listings/${listingId}/deactivate`, method: "put" }
+  case "Delete":
+    return { url: `/listings/${listingId}`, method: "delete" }
+  default:
+    return { url: "/", method: "get" }
   }
 }
 
@@ -256,7 +266,13 @@ function TextButton({
   ...rest
 }: TextProps & LinkProps & ButtonProps) {
   return (
-    <Text as="button" fontSize="1.6rem" fontWeight="600" lineHeight="1.6rem" {...rest}>
+    <Text
+      as="button"
+      fontSize="1.6rem"
+      fontWeight="600"
+      lineHeight="1.6rem"
+      {...rest}
+    >
       {children}
     </Text>
   )

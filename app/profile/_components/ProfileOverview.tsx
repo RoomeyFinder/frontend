@@ -110,7 +110,7 @@ export default function ProfileOverview({
               </Text>
             </VStack>
             <HStack alignItems="center" gap="2rem" mt="1.5rem">
-              <ProfileCTA
+              <InterestButton
                 isOwner={isOwner as boolean}
                 hasSentInterest={hasSentInterest}
                 handleSendInterest={handleSendInterest}
@@ -161,14 +161,16 @@ export default function ProfileOverview({
   )
 }
 
-function ProfileCTA({
+export function InterestButton({
   isOwner,
   hasSentInterest,
   handleSendInterest,
+  variant
 }: {
   isOwner: boolean
   hasSentInterest: boolean
   handleSendInterest?: () => void
+  variant?: string
 }) {
   const display = useMemo(() => {
     if (isOwner)
@@ -224,7 +226,7 @@ function ProfileCTA({
       fontWeight="400"
       display="flex"
       alignItems="end"
-      variant="brand-secondary"
+      variant={variant || "brand-secondary"}
       minW={{ md: "18.5rem" }}
       {...isOwnerProps}
     >

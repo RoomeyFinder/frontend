@@ -59,7 +59,7 @@ export default function FeatureInput({
         }
       />
     ))
-  }, [categorizedList, handleSelectItem, updateText, selectedItems.length])
+  }, [categorizedList, handleSelectItem, updateText])
 
   return (
     <>

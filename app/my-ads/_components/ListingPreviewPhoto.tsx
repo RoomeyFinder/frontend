@@ -8,6 +8,7 @@ export default function ListingPreviewPhoto({ src }: ImageProps) {
       objectFit="cover"
       objectPosition="center"
       src={src}
+      alt=""
     />
   )
 }

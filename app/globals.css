@@ -45,3 +45,9 @@ input:checked ~ .custom-toggle-dot {
   transform: translateX(100%);
   background-color: #48bb78;
 }
+
+.masonry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: masonry;
+}

@@ -27,18 +27,20 @@ export default function ProfileAvatar({
       boxShadow={!isDeletable ? "0px 0px 3px 0px #00000029" : ""}
       border={!isDeletable ? "3px solid" : ""}
       borderColor={!isDeletable ? "white.200" : ""}
+      // width={width}
+      // height={height}
     >
       {imageSrc ? (
         <Avatar
-          fontSize="4rem"
-          name={name}
           width={width}
           height={height}
+          fontSize="4rem"
+          name={name}
           src={imageSrc}
           {...rest}
         />
       ) : (
-        <PlaceHolderAvatar size={size as any || "large"} />
+        <PlaceHolderAvatar size={(size as any) || "large"} />
       )}
       {showVerifiedBadge && (
         <Box

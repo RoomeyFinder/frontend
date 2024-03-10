@@ -1,11 +1,10 @@
-import { Photo } from "./User"
+import User, { Photo } from "./User"
 
 export interface Listing {
   _id?: string
   rentDuration: "annually" | "biannually" | "quarterly" | "monthly" | ""
   photos: Array<Photo>
   lookingFor: string
-  owner?: string
   isStudioApartment: boolean
   numberOfBedrooms: number | string
   location?: {
@@ -25,6 +24,7 @@ export interface Listing {
   features: Array<{ value: string; category: string }>
   isActive: boolean
   isDraft: boolean
+  owner?: User
 }
 
 export default interface Listings {
