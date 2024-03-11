@@ -22,7 +22,7 @@ export default function ListingPhotos({
   }, [])
   return (
     <>
-      <Box w="100dvw" maxW={{ md: "100%" }}>
+      <Box w={{ base: "100dvw", sm: "100%" }} overflowX="hidden">
         <Show below="sm">
           <Carousel
             slides={photos}

@@ -5,11 +5,12 @@ import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useContext, useEffect, useMemo } from "react"
 import ListingHeading from "./_components/ListingHeading"
 import ListingPhotos from "./_components/ListingPhotos"
-import ListingOwnerOverview from "./ListingOwnerOverview"
+import ListingOwnerOverview from "./_components/ListingOwnerOverview"
 import ListingFeatures from "./_components/ListingFeatures"
 import ListingAbout from "./_components/ListingAbout"
 import ListingMap from "./_components/ListingMap"
 import ListingCTAs from "./_components/ListingCTAs"
+import { UserContext } from "@/app/_providers/UserProvider"
 
 export default function ListingPage() {
   const router = useRouter()
@@ -26,6 +27,11 @@ export default function ListingPage() {
     () => listings?.active.find((it) => it._id === listingId),
     [listings?.active, listingId]
   )
+  const { user } = useContext(UserContext)
+  const isOwnListing = useMemo(
+    () => user?._id === listing?.owner?._id,
+    [user?._id, listing?.owner?._id]
+  )
 
   useEffect(() => {
     if (!listing && !loading) router.push("/my-ads")
@@ -41,18 +47,17 @@ export default function ListingPage() {
         w="100dvw"
         maxW={{ sm: "95%", xl: "160rem" }}
         mx="auto"
-        overflowX="hidden"
         pt={{ base: "4rem", md: "6rem" }}
         pb={{ base: "8rem", md: "12rem" }}
       >
         <HStack>
           <VStack gap="1rem" alignItems="start">
-            <ListingHeading listing={listing} />
+            <ListingHeading isOwnListing={isOwnListing} listing={listing} />
             <ListingPhotos photos={listing?.photos} />
           </VStack>
           <HStack></HStack>
         </HStack>
-        <ListingOwnerOverview listing={listing} />
+        <ListingOwnerOverview listing={listing} isOwnListing={isOwnListing} />
         <Divider
           border={{
             base: ".15rem solid #3A86FF1A",
@@ -74,9 +79,11 @@ export default function ListingPage() {
           </Box>
         </Hide>
       </VStack>
-      <Hide above="sm">
-        <ListingCTAs />
-      </Hide>
+      {!isOwnListing && (
+        <Hide above="sm">
+          <ListingCTAs />
+        </Hide>
+      )}
     </>
   )
 }

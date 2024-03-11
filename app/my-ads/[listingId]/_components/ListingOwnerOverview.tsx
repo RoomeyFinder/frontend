@@ -20,11 +20,17 @@ import { ReactNode } from "react"
 
 export default function ListingOwnerOverview({
   listing,
+  isOwnListing
 }: {
   listing: Listing
+  isOwnListing: boolean
 }) {
   return (
-    <HStack pos="sticky" alignItems="center" w="full" px={{ base: "1rem", md: 0}}>
+    <HStack
+      pos="sticky"
+      alignItems="center"
+      px={{ base: "1rem", md: 0 }}
+    >
       <HStack gap="2rem">
         <ProfileAvatar
           size="small"
@@ -63,17 +69,19 @@ export default function ListingOwnerOverview({
           </Flex>
         </VStack>
       </HStack>
-      <Box
-        ml="auto"
-        alignSelf={{ sm: "end", md: "center" }}
-        display={{ base: "none", sm: "block" }}
-      >
-        <InterestButton
-          hasSentInterest={false}
-          isOwner={false}
-          handleSendInterest={() => {}}
-        />
-      </Box>
+      {!isOwnListing && (
+        <Box
+          ml="auto"
+          alignSelf={{ sm: "end", md: "center" }}
+          display={{ base: "none", sm: "block" }}
+        >
+          <InterestButton
+            hasSentInterest={false}
+            isOwner={false}
+            handleSendInterest={() => {}}
+          />
+        </Box>
+      )}
     </HStack>
   )
 }
