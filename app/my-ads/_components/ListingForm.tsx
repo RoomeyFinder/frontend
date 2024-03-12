@@ -1,11 +1,12 @@
 "use client"
 import useHandleFilesUploadWithDragAndDrop from "@/app/_hooks/useHandleFilesUploadWithDragAndDrop"
 import PhotosUploadSection from "./PhotosUploadSection"
-import { VStack, Heading, Flex } from "@chakra-ui/react"
+import { VStack, Heading, Flex, list } from "@chakra-ui/react"
 import {
   FormEventHandler,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -27,7 +28,6 @@ const initialListingState: Listing = {
   isStudioApartment: false,
   numberOfBedrooms: 0,
   streetAddress: "",
-  apartmentType: "",
   city: "",
   state: "",
   country: "",
@@ -42,11 +42,15 @@ const initialListingState: Listing = {
 }
 export default function ListingForm({
   edit,
+  listing,
 }: {
   edit: boolean
-  listingId: string | null
+  listing?: Listing
 }) {
   const router = useRouter()
+  useEffect(() => {
+    if (edit && !listing) router.back()
+  }, [edit, listing])
   const { updateListings, listings } = useContext(ListingsContext)
   const toast = useAppToast()
   const { fetchData } = useAxios()
@@ -70,6 +74,10 @@ export default function ListingForm({
     maxFilesCount: 5,
     maxFileSizeInMegaBytes: 4,
   })
+  const [photosToDelete, setPhotosToDelete] = useState<Listing["photos"]>([])
+  const [photosToKeep, setPhotosToKeep] = useState<Listing["photos"]>(
+    listing?.photos || []
+  )
   const previewFiles = useMemo<PreviewablePhoto[]>(
     () => [
       ...files.map((file, index) => ({
@@ -79,12 +87,25 @@ export default function ListingForm({
         _id: Math.random().toString(),
         index,
       })),
+      ...(edit && listing
+        ? (photosToKeep || []).map((photo, index) => ({
+            photo,
+            preview: photo.secure_url,
+            id: photo._id,
+            _id: photo._id,
+            index,
+          }))
+        : []),
     ],
-    [files]
+    [files, photosToKeep]
   )
-  const [listingData, setListingData] = useState<Listing>(initialListingState)
+  const [listingData, setListingData] = useState<Listing>(
+    edit ? () => ({ ...listing }) as Listing : initialListingState
+  )
   const [locationPlaceId, setLocationPlaceId] = useState("")
-  const [features, setFeatures] = useState<Listing["features"]>([])
+  const [features, setFeatures] = useState<Listing["features"]>(
+    edit ? listing?.features || [] : []
+  )
 
   const handleListingDataChange = useCallback(
     (name: keyof typeof listingData, value: any) => {
@@ -96,7 +117,6 @@ export default function ListingForm({
   const hasEdits = useMemo(() => {
     return files.length > 0 ||
       listingData.lookingFor.length > 0 ||
-      listingData.apartmentType?.length ||
       listingData.streetAddress.length > 0 ||
       listingData.isStudioApartment ||
       +listingData.numberOfBedrooms > 0 ||
@@ -109,8 +129,9 @@ export default function ListingForm({
   }, [files, listingData, features])
 
   const canBeSubmitted = useMemo(() => {
-    return files.length > 0 &&
-      listingData.apartmentType &&
+    return (edit
+      ? photosToKeep.length > 0 || files.length > 0
+      : files.length > 0) &&
       listingData.streetAddress.length > 0 &&
       (listingData.isStudioApartment || +listingData.numberOfBedrooms > 0) &&
       listingData.description.length > 0 &&
@@ -121,14 +142,45 @@ export default function ListingForm({
       : false
   }, [listingData, files])
 
-  const uploadListing = useCallback(
+  const getFormDataForEditedListing = useCallback(
     async (isDraft: boolean) => {
-      if (!isDraft && files.length < 3)
-        return toast({
-          status: "error",
-          title: "At least 3 photos are required",
-        })
-      if ((isDraft === false && !canBeSubmitted) || isSavingDraft) return
+      let body: { [x: string]: any } = {
+        ...listingData,
+        isDraft,
+        longitude: listingData.location?.coordinates?.[0],
+        latitude: listingData.location?.coordinates?.[1],
+      }
+      console.log(body.longitude, body.latitude)
+      const formData = new FormData()
+      if (locationPlaceId) {
+        const { lat: latitude, lng: longitude } =
+          await fetchLatLng(locationPlaceId)
+        const zipcode = await fetchZipCode(locationPlaceId)
+        body = { ...body, latitude, longitude, zipcode }
+        console.log(longitude, latitude)
+      }
+      for (const key in body) {
+        formData.set(key, body[key])
+      }
+      formData.set("isActive", (isDraft === false).toString())
+      formData.set("isDraft", isDraft.toString())
+      features.forEach((feature) =>
+        formData.append("features", JSON.stringify(feature))
+      )
+      photosToKeep.forEach((photo) =>
+        formData.append("photosToKeep", JSON.stringify(photo))
+      )
+      photosToDelete.forEach((photo) =>
+        formData.append("photosToDelete", JSON.stringify(photo))
+      )
+      files.forEach((file: string | Blob) => formData.append("newPhotos", file))
+      return formData
+    },
+    [files, listingData, previewFiles, photosToDelete, photosToKeep]
+  )
+
+  const getFormDataForNewListing = useCallback(
+    async (isDraft: boolean) => {
       let body: { [x: string]: any } = {
         ...listingData,
         isDraft,
@@ -144,13 +196,35 @@ export default function ListingForm({
         formData.set(key, body[key])
       }
       formData.set("isActive", (isDraft === false).toString())
-      formData.set("isDrag", isDraft.toString())
+      formData.set("isDraft", isDraft.toString())
       features.forEach((feature) =>
         formData.append("features", JSON.stringify(feature))
       )
-      files.forEach((file) => formData.append("photos", file))
+      files.forEach((file: string | Blob) => formData.append("photos", file))
+      return formData
+    },
+    [files, listingData]
+  )
+
+  const uploadListing = useCallback(
+    async (isDraft: boolean) => {
+      if (!isDraft && files.length < 3 && photosToKeep.length < 3)
+        return toast({
+          status: "error",
+          title: "At least 3 photos are required",
+        })
+      if (previewFiles.length > 10)
+        return toast({
+          status: "error",
+          title: "A maximum 10 photos is allowed",
+        })
+      if ((isDraft === false && !canBeSubmitted) || isSavingDraft) return
       if (isDraft) setIsSavingDraft(true)
       else setIsSavingListing(true)
+      let formData
+      if (edit === false) formData = getFormDataForNewListing(isDraft)
+      else formData = getFormDataForEditedListing(isDraft)
+      return
       const res = await fetchData({
         url: "/listings",
         method: "post",
@@ -195,6 +269,9 @@ export default function ListingForm({
       listings,
       router,
       toast,
+      previewFiles,
+      edit,
+      photosToKeep,
     ]
   )
 
@@ -240,7 +317,20 @@ export default function ListingForm({
               isDisabled={hasReachedUploadLimit}
             />
           </Flex>
-          <PhotosPreviewSection removeFile={removeFile} files={previewFiles} />
+          <PhotosPreviewSection
+            removeFile={(idx) => {
+              const currentFile = previewFiles[idx].photo
+              if (typeof currentFile?.secure_url === "string") {
+                setPhotosToDelete((prev) => [...prev, currentFile])
+                setPhotosToKeep((prev) =>
+                  prev.filter(
+                    (photo) => photo.secure_url !== currentFile?.secure_url
+                  )
+                )
+              } else removeFile(idx)
+            }}
+            files={previewFiles}
+          />
         </Flex>
         <FormDetailsSection
           saveAsDraft={() => uploadListing(true)}
@@ -254,8 +344,18 @@ export default function ListingForm({
             )
           }
           updateLocationPlaceId={(placeId) => setLocationPlaceId(placeId)}
-          canBeSubmitted={canBeSubmitted}
-          hasEdits={hasEdits}
+          canBeSubmitted={
+            (JSON.stringify(listing) !== JSON.stringify(listingData) ||
+              JSON.stringify(listing?.features) !== JSON.stringify(features) ||
+              listing?.photos?.length !== photosToKeep.length) &&
+            canBeSubmitted
+          }
+          hasEdits={
+            (JSON.stringify(listing) !== JSON.stringify(listingData) ||
+              JSON.stringify(listing?.features) !== JSON.stringify(features) ||
+              listing?.photos?.length !== photosToKeep.length) &&
+            hasEdits
+          }
           isSavingDraft={isSavingDraft}
           isSavingListing={isSavingListing}
         />

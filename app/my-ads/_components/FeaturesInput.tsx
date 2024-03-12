@@ -32,10 +32,11 @@ export default function FeatureInput({
         (it) =>
           !JSON.stringify(selectedItems)
             .toLowerCase()
-            .includes(JSON.stringify(it).toLowerCase())
+            .includes(JSON.stringify((it as any).value).toLowerCase())
       ),
     [filteredList, selectedItems]
   )
+
   const categorizedList = useCategorizeListOfObjects({
     list: adFeaturesFiltered as Record<string | number | symbol, unknown>[],
     keyToCategorizeBy: "category",

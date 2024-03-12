@@ -33,7 +33,7 @@ export default function FormDetailsSection({
   saveAsDraft,
   hasEdits,
   isSavingDraft,
-  isSavingListing
+  isSavingListing,
 }: {
   listingData: Listing
   handleChange: (name: keyof typeof listingData, value: any) => void
@@ -108,10 +108,10 @@ export default function FormDetailsSection({
             options={apartmentTypeOptions}
             optionsContainerVariant="primary"
             showOptionDividers
-            selectedValue={listingData.apartmentType || ""}
+            selectedValue={listingData.isStudioApartment ? "studio" : "bedroom"}
             handleSelect={(val) => {
               handleChange("isStudioApartment", val.toLowerCase() === "studio")
-              handleChange("apartmentType", val)
+              handleChange("isStudioApartment", val.toLowerCase() === "studio")
             }}
           />
         </InputGroup>
@@ -264,7 +264,7 @@ export default function FormDetailsSection({
             onClick={saveAsDraft}
             isLoading={isSavingDraft}
             bg="transparent"
-            _hover={{ bg:"transparent", textDecor:"underline"}}
+            _hover={{ bg: "transparent", textDecor: "underline" }}
           >
             Save for later
           </Text>

@@ -11,6 +11,7 @@ import ListingAbout from "./_components/ListingAbout"
 import ListingMap from "./_components/ListingMap"
 import ListingCTAs from "./_components/ListingCTAs"
 import { UserContext } from "@/app/_providers/UserProvider"
+import ListingForm from "../_components/ListingForm"
 
 export default function ListingPage() {
   const router = useRouter()
@@ -35,9 +36,17 @@ export default function ListingPage() {
 
   useEffect(() => {
     if (!listing && !loading) router.push("/my-ads")
-  }, [listing, loading, router])
+    if (!isOwnListing && isEditing && !loading) router.push(`/ads/${listing?._id}`)
+  }, [listing, loading, router, isOwnListing, isEditing])
 
-  if (isEditing) return <>edit = true</>
+  if (isEditing && listing)
+    return (
+      <>
+        <Box>
+          <ListingForm edit={true} listing={listing} />
+        </Box>
+      </>
+    )
   if (!listing) return <></>
   return (
     <>

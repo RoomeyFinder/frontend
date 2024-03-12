@@ -11,7 +11,6 @@ export interface Listing {
     type: "Point"
     coordinates: Array<number>
   }
-  apartmentType?: "Studio" | "Bedroom" | ""
   streetAddress: string
   city: string
   state: string

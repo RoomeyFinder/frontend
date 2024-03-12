@@ -1,5 +1,8 @@
+import { Photo } from "./User"
+
 export type PreviewablePhoto = {
-  file: File | null
+  file?: File | null
+  photo?: Photo,
   preview: string | null
   _id: string
   id: string
