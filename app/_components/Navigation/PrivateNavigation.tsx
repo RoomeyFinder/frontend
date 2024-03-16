@@ -90,33 +90,45 @@ function MainPrivateNav({ toggleShowMore }: {
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
-        <PrivateMenuItem>
-          <Flex as={Link} _hover={{ textDecoration: "none" }} href="/profile" w="100%" alignItems="center" justifyContent="space-between">
+        <PrivateMenuItem onClick={() => router.push("/profile")}>
+          <Flex
+            _hover={{ textDecoration: "none" }}
+            w="100%"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Text as="span">Profile</Text>
             <Flex as="span" alignItems="center" gap=".4rem">
               <Text fontSize={{ base: "1rem", md: "1.4rem" }}>status:</Text>
-              <Text rounded=".3rem" lineHeight={1} px=".5rem" color="white.main" bg="brand.main" fontSize={{ base: "1rem", md: "1.4rem" }}>Incomplete</Text>
+              <Text
+                rounded=".3rem"
+                lineHeight={1}
+                px=".5rem"
+                color="white.main"
+                bg="brand.main"
+                fontSize={{ base: "1rem", md: "1.4rem" }}
+              >
+                Incomplete
+              </Text>
             </Flex>
           </Flex>
         </PrivateMenuItem>
         <PrivateMenuDivider />
-        {
-          privateLinks.map((link, idx, arr) => (
-            <Show key={link.name} below={link.showBelow}>
-              <PrivateMenuItem onClick={() => router.push(link.href)}>
-                <PrivateMenuIcon as={link.icon} />
-                {link.name}
-              </PrivateMenuItem>
-              {idx < arr.length - 1 && <PrivateMenuDivider />}
-            </Show>
-          ))
-        }
+        {privateLinks.map((link, idx, arr) => (
+          <Show key={link.name} below={link.showBelow}>
+            <PrivateMenuItem onClick={() => router.push(link.href)}>
+              <PrivateMenuIcon as={link.icon} />
+              {link.name}
+            </PrivateMenuItem>
+            {idx < arr.length - 1 && <PrivateMenuDivider />}
+          </Show>
+        ))}
         <PrivateMenuItem closeOnSelect={false} onClick={toggleShowMore}>
           <PrivateMenuIcon as={QuestionMarkCircled} />
           More
         </PrivateMenuItem>
       </Flex>
-      <InterestsAccessCount/>
+      <InterestsAccessCount />
     </>
   )
 }

@@ -48,7 +48,6 @@ export default function UserProvider({
       url: "/users/me",
       method: "get",
     })
-    console.log(res)
     if (res.statusCode === 200) updateUser(res.user)
     else if (res.statusCode === 403) resetAuthorization()
     updateLoading(false)

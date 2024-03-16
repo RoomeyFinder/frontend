@@ -6,9 +6,7 @@ import Link from "next/link"
 
 
 
-export default function AppHeader({ isAuthenticated }: {
-  isAuthenticated: boolean
-}) {
+export default function AppHeader() {
   return (
     <Flex
       data-testid="header"
@@ -35,7 +33,7 @@ export default function AppHeader({ isAuthenticated }: {
       >
         <SearchBar />
       </Flex>
-      <Navigation isAuthenticated={isAuthenticated} />
+      <Navigation />
     </Flex>
   )
 }

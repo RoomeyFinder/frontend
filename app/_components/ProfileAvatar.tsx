@@ -27,8 +27,8 @@ export default function ProfileAvatar({
       boxShadow={!isDeletable ? "0px 0px 3px 0px #00000029" : ""}
       border={!isDeletable ? "3px solid" : ""}
       borderColor={!isDeletable ? "white.200" : ""}
-      // width={width}
-      // height={height}
+      width={width}
+      height={height}
     >
       {imageSrc ? (
         <Avatar
