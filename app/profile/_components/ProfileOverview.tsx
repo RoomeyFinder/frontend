@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react"
 import { ReactNode, useCallback, useMemo, useState } from "react"
 import ProfilePhotos, { ProfilePhotosModal } from "./ProfilePhotos"
+import { useRouter } from "next/navigation"
 
 const genderMapping = {
   female: "F",
@@ -172,6 +173,7 @@ export function InterestButton({
   handleSendInterest?: () => void
   variant?: string
 }) {
+  const router = useRouter()
   const display = useMemo(() => {
     if (isOwner)
       return (
@@ -198,8 +200,7 @@ export function InterestButton({
   const isOwnerProps = useMemo(() => {
     if (isOwner)
       return {
-        as: Link,
-        href: "/profile?edit=true",
+        onClick: () => router.push("/profile?edit=true"),
       }
     else {
       if (hasSentInterest)
