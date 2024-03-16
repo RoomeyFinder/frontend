@@ -20,11 +20,12 @@ import { FeatureTag } from "../my-ads/_components/FeaturesInput"
 import EyeIcon from "../_assets/SVG/EyeIcon"
 import ThreeDotIcon from "../_assets/SVG/ThreeDotIcon"
 import { Listing } from "../_types/Listings"
-import { useCallback, useContext, useMemo } from "react"
+import { Fragment, useCallback, useContext, useMemo } from "react"
 import useAxios, { FetchOptions } from "../_hooks/useAxios"
 import useAppToast from "../_hooks/useAppToast"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import { useRouter } from "next/navigation"
+import { pluralizeText } from "../_utils"
 
 const actionBasedOnStatus = {
   active: "Deactivate",
@@ -132,7 +133,8 @@ function ListingActions({
       const res = await fetchData(options)
       toast({
         status: res.statusCode >= 400 ? "error" : "success",
-        title: options.method === "delete" ? "Deleted successfully": res.message,
+        title:
+          options.method === "delete" ? "Deleted successfully" : res.message,
       })
       if (options.method === "delete") {
         deleteListing(listingId)
@@ -255,24 +257,34 @@ function TextButton({
   )
 }
 
-function ListingFeatures({
-  features,
-}: {
-  features: { category: string; value: string }[]
-}) {
+function ListingFeatures({ features }: { features: Listing["features"] }) {
+  const additionalFeatures = useMemo(() => {
+    if (features) {
+      if (features.length >= 5) return features.length - 3
+    }
+  }, [features])
   return (
     <Show above="lg">
       <HStack gap="1.2rem">
-        {features.map((feature) => (
-          <FeatureTag
-            key={feature.value}
-            item={feature}
-            editable={false}
-            bg="#D9D9D9"
-            padding="1rem 2rem"
-            rounded=".5rem"
-          />
+        {features?.map((feature, idx) => (
+          <Fragment key={feature._id}>
+            {idx < 3 && (
+              <FeatureTag
+                item={feature}
+                editable={false}
+                bg="#D9D9D9"
+                padding="1rem 2rem"
+                rounded=".5rem"
+              />
+            )}
+          </Fragment>
         ))}
+        {additionalFeatures && (
+          <Text fontWeight="semibold" fontSize="1.2rem" color="gray.main">
+            +{additionalFeatures}{" "}
+            {pluralizeText("more feature", additionalFeatures, "s")}
+          </Text>
+        )}
       </HStack>
     </Show>
   )
