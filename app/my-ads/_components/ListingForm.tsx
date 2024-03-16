@@ -20,6 +20,7 @@ import useAppToast from "@/app/_hooks/useAppToast"
 import { useRouter } from "next/navigation"
 import { PreviewablePhoto } from "@/app/_types"
 import { ListingsContext } from "@/app/_providers/ListingsProvider"
+import AdLimitModal from "@/app/_components/AdLimitModal"
 
 const initialListingState: Listing = {
   photos: [],
@@ -51,7 +52,8 @@ export default function ListingForm({
   useEffect(() => {
     if (edit && !listing) router.back()
   }, [edit, listing])
-  const { updateListing, listings } = useContext(ListingsContext)
+  const { updateListing, listings, addNewListing } = useContext(ListingsContext)
+  const [showAdLimitModal, setShowAdLimitModal] = useState(false)
   const toast = useAppToast()
   const { fetchData } = useAxios()
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -246,9 +248,12 @@ export default function ListingForm({
             res.message ||
             (isDraft ? "Draft saved!" : "Ad created successfully"),
         })
-        console.log(res)
-        updateListing(res.listing)
+        res.statusCode === 200
+          ? updateListing(res.listing)
+          : addNewListing(res.listing)
         router.push(isDraft ? "/my-ads?filter=drafts" : "/my-ads?filter=active")
+      } else if (res.statusCode === 403) {
+        setShowAdLimitModal(true)
       } else {
         toast({
           title: res.message,
@@ -277,6 +282,7 @@ export default function ListingForm({
       getFormDataForEditedListing,
       getFormDataForNewListing,
       listing?._id,
+      addNewListing,
     ]
   )
 
@@ -338,7 +344,7 @@ export default function ListingForm({
           />
         </Flex>
         <FormDetailsSection
-          saveAsDraft={() => uploadListing(true)}
+          saveAsDraft={() => !isSavingListing && uploadListing(true)}
           listingData={listingData}
           handleChange={handleListingDataChange}
           features={features || []}
@@ -354,7 +360,8 @@ export default function ListingForm({
               JSON.stringify(listing?.features) !== JSON.stringify(features) ||
               listing?.photos?.length !== photosToKeep?.length ||
               files.length >= 3) &&
-            canBeSubmitted
+            canBeSubmitted &&
+            !isSavingDraft
           }
           hasEdits={
             (JSON.stringify(listing) !== JSON.stringify(listingData) ||
@@ -367,6 +374,10 @@ export default function ListingForm({
           isSavingListing={isSavingListing}
         />
       </VStack>
+      <AdLimitModal
+        show={showAdLimitModal}
+        onClose={() => setShowAdLimitModal(false)}
+      />
     </>
   )
 }

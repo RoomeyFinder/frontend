@@ -61,7 +61,7 @@ export default function MyAdsHeader() {
       </Heading>
       <Button
         as={Link}
-        href="/my-ads?new=true"
+        onClick={() => router.push("/my-ads?new=true")}
         variant="brand-secondary"
         minW={{ md: "18.5rem" }}
         ml="auto"
