@@ -18,7 +18,7 @@ export default function ContactForm({
   useEffect(() => {
     const toastId = "password-toast"
     if (
-      toast.isActive(toastId) === false &&
+      toast.isActivated(toastId) === false &&
       (error.includes("password") || error.includes("confirmPassword")) &&
       (formData.password.length > 0 || formData.confirmPassword.length > 0)
     ) {
@@ -33,8 +33,8 @@ export default function ContactForm({
         containerStyle: {
           color: "white",
           fontSize: "1.6rem",
-          textAlign: "center"
-        }
+          textAlign: "center",
+        },
       })
     }
   }, [error, formData.confirmPassword.length, formData.password.length, toast])

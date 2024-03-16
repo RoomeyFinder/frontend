@@ -23,7 +23,7 @@ export default function ListingHeading({
       <Heading as="h1" display="flex" flexDir="column" gap=".6rem">
         <Text as="span">
           <Text as="span" color="brand.main" fontSize="2.4rem" fontWeight="700">
-            {listing.rentAmount.toLocaleString("en-us", {
+            {listing.rentAmount?.toLocaleString("en-us", {
               style: "currency",
               currency: "ngn",
               currencyDisplay: "narrowSymbol",
@@ -42,7 +42,7 @@ export default function ListingHeading({
         <Text as="span" display="block" fontSize="2.4rem" fontWeight="600">
           {listing.isStudioApartment
             ? "Studio Apartment"
-            : (+listing.numberOfBedrooms > 1
+            : (Number(listing.numberOfBedrooms) > 1
                 ? listing.numberOfBedrooms
                 : "Single") + " bedroom apartment"}
         </Text>

@@ -25,8 +25,11 @@ export default function ListingPage() {
   )
 
   const listing = useMemo(
-    () => listings?.active.find((it) => it._id === listingId),
-    [listings?.active, listingId]
+    () =>
+      listings?.active.find((it) => it._id === listingId) ||
+      listings?.deactivated.find((it) => it._id === listingId) ||
+      listings?.drafts.find((it) => it._id === listingId),
+    [listings?.active, listings?.deactivated, listings?.drafts, listingId]
   )
   const { user } = useContext(UserContext)
   const isOwnListing = useMemo(
@@ -34,9 +37,11 @@ export default function ListingPage() {
     [user?._id, listing?.owner?._id]
   )
 
+  console.log(!isOwnListing , isEditing , !loading, listing)
+
   useEffect(() => {
     if (!listing && !loading) router.push("/my-ads")
-    if (!isOwnListing && isEditing && !loading) router.push(`/ads/${listing?._id}`)
+    // if (!isOwnListing && isEditing && !loading) router.push(`/ads/${listing?._id}`)
   }, [listing, loading, router, isOwnListing, isEditing])
 
   if (isEditing && listing)
@@ -59,8 +64,8 @@ export default function ListingPage() {
         pt={{ base: "4rem", md: "6rem" }}
         pb={{ base: "8rem", md: "12rem" }}
       >
-        <HStack>
-          <VStack gap="1rem" alignItems="start">
+        <HStack w="full">
+          <VStack gap="1rem" alignItems="start" w="full">
             <ListingHeading isOwnListing={isOwnListing} listing={listing} />
             <ListingPhotos photos={listing?.photos} />
           </VStack>

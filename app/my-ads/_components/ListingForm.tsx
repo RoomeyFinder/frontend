@@ -15,7 +15,7 @@ import FormDetailsSection from "./FormDetailsSection"
 import PhotosPreviewSection from "./PhotosPreviewSection"
 import { Listing } from "@/app/_types/Listings"
 import { fetchLatLng, fetchZipCode } from "@/app/_utils"
-import useAxios from "@/app/_hooks/useAxios"
+import useAxios, { FetchOptions } from "@/app/_hooks/useAxios"
 import useAppToast from "@/app/_hooks/useAppToast"
 import { useRouter } from "next/navigation"
 import { PreviewablePhoto } from "@/app/_types"
@@ -37,7 +37,7 @@ const initialListingState: Listing = {
   viewsCount: "",
   likesCount: 0,
   features: [],
-  isActive: false,
+  isActivated: false,
   isDraft: false,
 }
 export default function ListingForm({
@@ -79,25 +79,26 @@ export default function ListingForm({
     listing?.photos || []
   )
   const previewFiles = useMemo<PreviewablePhoto[]>(
-    () => [
-      ...files.map((file, index) => ({
-        file,
-        preview: URL.createObjectURL(file),
-        id: Math.random().toString(),
-        _id: Math.random().toString(),
-        index,
-      })),
-      ...(edit && listing
-        ? (photosToKeep || []).map((photo, index) => ({
-            photo,
-            preview: photo.secure_url,
-            id: photo._id,
-            _id: photo._id,
-            index,
-          }))
-        : []),
-    ],
-    [files, photosToKeep]
+    () =>
+      [
+        ...files.map((file, index) => ({
+          file,
+          preview: URL.createObjectURL(file),
+          id: Math.random().toString(),
+          _id: Math.random().toString(),
+          index,
+        })),
+        ...(edit && listing
+          ? (photosToKeep || []).map((photo, index) => ({
+              photo,
+              preview: photo.secure_url,
+              id: photo._id,
+              _id: photo._id,
+              index,
+            }))
+          : []),
+      ].map((it, index) => ({ ...it, index })),
+    [files, photosToKeep, edit, listing]
   )
   const [listingData, setListingData] = useState<Listing>(
     edit ? () => ({ ...listing }) as Listing : initialListingState
@@ -116,31 +117,33 @@ export default function ListingForm({
 
   const hasEdits = useMemo(() => {
     return files.length > 0 ||
-      listingData.lookingFor.length > 0 ||
-      listingData.streetAddress.length > 0 ||
+      Number(listingData.lookingFor?.length) > 0 ||
+      Number(listingData.streetAddress?.length) > 0 ||
       listingData.isStudioApartment ||
-      +listingData.numberOfBedrooms > 0 ||
-      listingData.description.length > 0 ||
-      +listingData.rentAmount > 0 ||
+      Number(listingData.numberOfBedrooms) > 0 ||
+      Number(listingData.description?.length) > 0 ||
+      Number(listingData.rentAmount) > 0 ||
       Number(listingData.currentOccupancyCount) > 0 ||
-      features.length > 0
+      Number(features?.length) > 0
       ? true
       : false
   }, [files, listingData, features])
 
   const canBeSubmitted = useMemo(() => {
     return (edit
-      ? photosToKeep.length > 0 || files.length > 0
+      ? Number(photosToKeep?.length) > 0 || files.length > 0
       : files.length > 0) &&
-      listingData.streetAddress.length > 0 &&
-      (listingData.isStudioApartment || +listingData.numberOfBedrooms > 0) &&
-      listingData.description.length > 0 &&
-      +listingData.rentAmount > 0 &&
+      Number(listingData.streetAddress?.length) > 0 &&
+      (listingData.isStudioApartment ||
+        Number(listingData.numberOfBedrooms) > 0) &&
+      Number(listingData.description?.length) > 0 &&
+      Number(listingData.rentAmount) > 0 &&
+      Number(listingData.lookingFor?.length) > 0 &&
       typeof Number(listingData.currentOccupancyCount) === "number" &&
       !isNaN(Number(listingData.currentOccupancyCount))
       ? true
       : false
-  }, [listingData, files])
+  }, [listingData, files, edit, listing, photosToKeep?.length])
 
   const getFormDataForEditedListing = useCallback(
     async (isDraft: boolean) => {
@@ -150,33 +153,36 @@ export default function ListingForm({
         longitude: listingData.location?.coordinates?.[0],
         latitude: listingData.location?.coordinates?.[1],
       }
-      console.log(body.longitude, body.latitude)
       const formData = new FormData()
       if (locationPlaceId) {
         const { lat: latitude, lng: longitude } =
           await fetchLatLng(locationPlaceId)
         const zipcode = await fetchZipCode(locationPlaceId)
         body = { ...body, latitude, longitude, zipcode }
-        console.log(longitude, latitude)
       }
       for (const key in body) {
-        formData.set(key, body[key])
+        if (key !== "features" && key !== "photos") formData.set(key, body[key])
       }
-      formData.set("isActive", (isDraft === false).toString())
+      formData.set("isActivated", (isDraft === false).toString())
       formData.set("isDraft", isDraft.toString())
-      features.forEach((feature) =>
+      features?.forEach((feature) => {
         formData.append("features", JSON.stringify(feature))
-      )
-      photosToKeep.forEach((photo) =>
-        formData.append("photosToKeep", JSON.stringify(photo))
-      )
-      photosToDelete.forEach((photo) =>
+      })
+      photosToDelete?.forEach((photo) =>
         formData.append("photosToDelete", JSON.stringify(photo))
       )
-      files.forEach((file: string | Blob) => formData.append("newPhotos", file))
+      files.forEach((file: string | Blob) => formData.append("photos", file))
       return formData
     },
-    [files, listingData, previewFiles, photosToDelete, photosToKeep]
+    [
+      files,
+      listingData,
+      previewFiles,
+      photosToDelete,
+      photosToKeep,
+      features,
+      locationPlaceId,
+    ]
   )
 
   const getFormDataForNewListing = useCallback(
@@ -195,20 +201,20 @@ export default function ListingForm({
       for (const key in body) {
         formData.set(key, body[key])
       }
-      formData.set("isActive", (isDraft === false).toString())
+      formData.set("isActivated", (isDraft === false).toString())
       formData.set("isDraft", isDraft.toString())
-      features.forEach((feature) =>
+      features?.forEach((feature) =>
         formData.append("features", JSON.stringify(feature))
       )
       files.forEach((file: string | Blob) => formData.append("photos", file))
       return formData
     },
-    [files, listingData]
+    [files, listingData, features, locationPlaceId]
   )
 
   const uploadListing = useCallback(
     async (isDraft: boolean) => {
-      if (!isDraft && files.length < 3 && photosToKeep.length < 3)
+      if (!isDraft && files.length + Number(photosToKeep?.length) < 3)
         return toast({
           status: "error",
           title: "At least 3 photos are required",
@@ -221,31 +227,50 @@ export default function ListingForm({
       if ((isDraft === false && !canBeSubmitted) || isSavingDraft) return
       if (isDraft) setIsSavingDraft(true)
       else setIsSavingListing(true)
-      let formData
-      if (edit === false) formData = getFormDataForNewListing(isDraft)
-      else formData = getFormDataForEditedListing(isDraft)
-      return
-      const res = await fetchData({
-        url: "/listings",
-        method: "post",
-        body: formData,
-      })
-      if (res.statusCode === 201) {
+      let body
+      if (edit === false) body = await getFormDataForNewListing(isDraft)
+      else body = await getFormDataForEditedListing(isDraft)
+      const requestOptions: FetchOptions = {
+        url: edit === true ? `/listings/${listing?._id}` : "/listings",
+        method: edit === true ? `put` : "post",
+        body,
+      }
+      const res = await fetchData(requestOptions)
+      if (res.statusCode === 201 || res.statusCode === 200) {
         setListingData(initialListingState)
         toast({
           status: "success",
-          title: isDraft ? "Draft saved!" : "Ad created successfully",
+          title:
+            res.message ||
+            (isDraft ? "Draft saved!" : "Ad created successfully"),
         })
-        if (isDraft)
-          updateListings({
-            ...(listings || {}),
-            drafts: [...(listings?.drafts || []), res.listing],
-          } as any)
-        else
-          updateListings({
-            ...(listings || {}),
-            active: [...(listings?.active || []), res.listing],
-          } as any)
+        if (edit === true) {
+          if (isDraft)
+            updateListings({
+              ...(listings || {}),
+              drafts: (listings?.drafts || []).map((listing) =>
+                listing?._id === res.listing?._id ? res.listing : listing
+              ),
+            } as any)
+          else
+            updateListings({
+              ...(listings || {}),
+              active: (listings?.active || []).map((listing) =>
+                listing?._id === res.listing?._id ? res.listing : listing
+              ),
+            } as any)
+        } else {
+          if (isDraft)
+            updateListings({
+              ...(listings || {}),
+              drafts: [...(listings?.drafts || []), res.listing],
+            } as any)
+          else
+            updateListings({
+              ...(listings || {}),
+              active: [...(listings?.active || []), res.listing],
+            } as any)
+        }
         router.push(isDraft ? "/my-ads?filter=drafts" : "/my-ads?filter=active")
       } else {
         toast({
@@ -272,6 +297,9 @@ export default function ListingForm({
       previewFiles,
       edit,
       photosToKeep,
+      getFormDataForEditedListing,
+      getFormDataForNewListing,
+      listing?._id,
     ]
   )
 
@@ -321,9 +349,9 @@ export default function ListingForm({
             removeFile={(idx) => {
               const currentFile = previewFiles[idx].photo
               if (typeof currentFile?.secure_url === "string") {
-                setPhotosToDelete((prev) => [...prev, currentFile])
+                setPhotosToDelete((prev) => [...(prev || []), currentFile])
                 setPhotosToKeep((prev) =>
-                  prev.filter(
+                  prev?.filter(
                     (photo) => photo.secure_url !== currentFile?.secure_url
                   )
                 )
@@ -336,7 +364,7 @@ export default function ListingForm({
           saveAsDraft={() => uploadListing(true)}
           listingData={listingData}
           handleChange={handleListingDataChange}
-          features={features}
+          features={features || []}
           addFeature={(item) => setFeatures((prev = []) => [...prev, item])}
           removeFeature={(item) =>
             setFeatures((prev) =>
@@ -347,13 +375,15 @@ export default function ListingForm({
           canBeSubmitted={
             (JSON.stringify(listing) !== JSON.stringify(listingData) ||
               JSON.stringify(listing?.features) !== JSON.stringify(features) ||
-              listing?.photos?.length !== photosToKeep.length) &&
+              listing?.photos?.length !== photosToKeep?.length ||
+              files.length >= 3) &&
             canBeSubmitted
           }
           hasEdits={
             (JSON.stringify(listing) !== JSON.stringify(listingData) ||
               JSON.stringify(listing?.features) !== JSON.stringify(features) ||
-              listing?.photos?.length !== photosToKeep.length) &&
+              listing?.photos?.length !== photosToKeep?.length ||
+              files.length > 0) &&
             hasEdits
           }
           isSavingDraft={isSavingDraft}

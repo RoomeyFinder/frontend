@@ -11,22 +11,22 @@ import { useCallback, useState } from "react"
 
 function Tab({
   onClick,
-  isActive,
+  isActivated,
   name,
 }: {
   onClick: () => void
-  isActive: boolean
+  isActivated: boolean
   name: string
 }) {
   return (
     <Text
       onClick={onClick}
-      color={isActive ? "black" : "gray.main"}
+      color={isActivated ? "black" : "gray.main"}
       borderBottom=".3rem solid"
-      borderBottomColor={isActive ? "black" : "transparent"}
+      borderBottomColor={isActivated ? "black" : "transparent"}
       pb="1rem"
       textDecor="none"
-      _hover={{ textDecor: "none", color: "black"}}
+      _hover={{ textDecor: "none", color: "black" }}
       as="button"
     >
       {name}
@@ -59,7 +59,13 @@ export default function MyAdsHeader() {
       <Heading variant="md" textTransform="capitalize">
         {currentDisplay}
       </Heading>
-      <Button as={Link} href="/my-ads?new=true" variant="brand-secondary" minW={{ md: "18.5rem"}} ml="auto">
+      <Button
+        as={Link}
+        href="/my-ads?new=true"
+        variant="brand-secondary"
+        minW={{ md: "18.5rem" }}
+        ml="auto"
+      >
         Create ad
       </Button>
       <Flex
@@ -73,17 +79,17 @@ export default function MyAdsHeader() {
       >
         <Tab
           onClick={() => toggleDisplay("active")}
-          isActive={currentDisplay === "active"}
+          isActivated={currentDisplay === "active"}
           name={"Active"}
         />
         <Tab
           onClick={() => toggleDisplay("drafts")}
-          isActive={currentDisplay === "drafts"}
+          isActivated={currentDisplay === "drafts"}
           name={"Drafts"}
         />
         <Tab
           onClick={() => toggleDisplay("deactivated")}
-          isActive={currentDisplay === "deactivated"}
+          isActivated={currentDisplay === "deactivated"}
           name={"Deactivated"}
         />
       </Flex>

@@ -35,16 +35,16 @@ const actionBasedOnStatus = {
 export default function EditableListingCard({ listing }: { listing: Listing }) {
   const router = useRouter()
   const status = useMemo(() => {
-    if (listing.isActive) return "active"
+    if (listing.isActivated) return "active"
     if (listing.isDraft) return "draft"
-    if (listing.isActive === false && listing.isDraft === false)
+    if (listing.isActivated === false && listing.isDraft === false)
       return "deactivated"
     return "active"
   }, [listing])
 
-  const isActive = useMemo(
-    () => !listing.isDraft && listing.isActive,
-    [listing.isDraft, listing.isActive]
+  const isActivated = useMemo(
+    () => !listing.isDraft && listing.isActivated,
+    [listing.isDraft, listing.isActivated]
   )
 
   return (
@@ -57,11 +57,11 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       px={{ base: "1rem", md: "2rem" }}
       py="1rem"
       onClick={() => {
-        if (isActive) {
+        if (isActivated) {
           router.push(`/my-ads/${listing._id}`)
         }
       }}
-      _hover={{ textDecor: "none", boxShadow: isActive ? "md" : "" }}
+      _hover={{ textDecor: "none", boxShadow: isActivated ? "md" : "" }}
     >
       <Flex alignItems="center" gap="1rem">
         <Image
@@ -142,7 +142,7 @@ function ListingActions({
         })
       }
       if (res.statusCode === 200 && res.listing) {
-        if (res.listing.isActive)
+        if (res.listing.isActivated)
           updateListings({
             ...(listings as any),
             active: [...(listings?.active || []), res.listing],
@@ -154,7 +154,7 @@ function ListingActions({
             drafts: [...(listings?.drafts || []), res.listing],
             active: listings?.active.filter(removeIt),
           })
-        else if (!res.listing.isDraft && !res.listing.isActive)
+        else if (!res.listing.isDraft && !res.listing.isActivated)
           updateListings({
             ...(listings as any),
             active: listings?.active.filter(removeIt),
