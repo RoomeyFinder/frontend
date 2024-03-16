@@ -34,7 +34,7 @@ export default function ListingOwnerOverview({
       <HStack gap="2rem">
         <ProfileAvatar
           size="small"
-          imageSrc={listing.photos[0]?.secure_url}
+          imageSrc={listing.photos?.[0]?.secure_url}
           width={{ base: "6rem", md: "9.4rem" }}
           height={{ base: "6rem", md: "9.4rem" }}
           showVerifiedBadge={true}
@@ -61,7 +61,7 @@ export default function ListingOwnerOverview({
             <OwnerFeature
               icon={<PeopleGroupSmall />}
               text={`${listing.currentOccupancyCount} 
-                ${pluralizeText("Occupant", listing.currentOccupancyCount, "s")}`}
+                ${pluralizeText("Occupant", listing.currentOccupancyCount as number, "s")}`}
             />
             {listing.owner?.isStudent && (
               <OwnerFeature icon={<GradCap />} text={"Student"} />
@@ -88,7 +88,7 @@ export default function ListingOwnerOverview({
 
 function OwnerFeature({ icon, text }: { icon: ReactNode; text: ReactNode }) {
   return (
-    <Flex alignItems="center" gap=".5rem">
+    <Flex as="span" alignItems="center" gap=".5rem">
       <Hide above="sm">
         <DotSeparator />
       </Hide>

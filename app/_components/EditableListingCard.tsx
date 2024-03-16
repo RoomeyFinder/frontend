@@ -69,7 +69,7 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
           w={{ base: "5rem", md: "7rem" }}
           h={{ base: "5rem", md: "7rem" }}
           rounded="1.2rem"
-          src={listing.photos[0]?.secure_url}
+          src={listing.photos?.[0]?.secure_url}
         />
         <Box>
           <Heading
@@ -95,7 +95,7 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
               </Show>
               Features
             </Text>
-            <ListingFeatures features={listing.features} />
+            <ListingFeatures features={listing?.features || []} />
             <Flex as={Text} alignItems="center" fontSize="1.4rem" gap=".8rem">
               <EyeIcon />
               {listing.viewsCount}
@@ -119,7 +119,8 @@ function ListingActions({
   listingId: string
 }) {
   const router = useRouter()
-  const { updateListings, listings } = useContext(ListingsContext)
+  const { updateListing, deleteListing, addNewListing, listings } =
+    useContext(ListingsContext)
   const toast = useAppToast()
   const { fetchData } = useAxios()
 
@@ -131,39 +132,15 @@ function ListingActions({
       const res = await fetchData(options)
       toast({
         status: res.statusCode >= 400 ? "error" : "success",
-        title: res.message,
+        title: options.method === "delete" ? "Deleted successfully": res.message,
       })
-      const removeIt = (it: Listing) => it._id !== listingId
       if (options.method === "delete") {
-        updateListings({
-          drafts: listings?.drafts.filter(removeIt) || [],
-          active: listings?.active.filter(removeIt) || [],
-          deactivated: listings?.deactivated.filter(removeIt) || [],
-        })
+        deleteListing(listingId)
       }
-      if (res.statusCode === 200 && res.listing) {
-        if (res.listing.isActivated)
-          updateListings({
-            ...(listings as any),
-            active: [...(listings?.active || []), res.listing],
-            deactivated: listings?.deactivated.filter(removeIt),
-          })
-        else if (res.listing.isDraft)
-          updateListings({
-            ...(listings as any),
-            drafts: [...(listings?.drafts || []), res.listing],
-            active: listings?.active.filter(removeIt),
-          })
-        else if (!res.listing.isDraft && !res.listing.isActivated)
-          updateListings({
-            ...(listings as any),
-            active: listings?.active.filter(removeIt),
-            deactivated: [...(listings?.deactivated || []), res.listing],
-            drafts: listings?.drafts.filter(removeIt),
-          })
-      }
+      if (res.statusCode === 200 && res.listing)
+        updateListing(res.listing as Listing)
     },
-    [toast, listings, updateListings, listingId, router, fetchData]
+    [toast, listings, updateListing, listingId, router, fetchData]
   )
 
   const renderButtons = useCallback(() => {
@@ -250,14 +227,14 @@ const getActionFetchOptions = (
   listingId: string
 ): FetchOptions => {
   switch (primaryActionText) {
-  case "Activate":
-    return { url: `/listings/${listingId}/activate`, method: "put" }
-  case "Deactivate":
-    return { url: `/listings/${listingId}/deactivate`, method: "put" }
-  case "Delete":
-    return { url: `/listings/${listingId}`, method: "delete" }
-  default:
-    return { url: "/", method: "get" }
+    case "Activate":
+      return { url: `/listings/${listingId}/activate`, method: "put" }
+    case "Deactivate":
+      return { url: `/listings/${listingId}/deactivate`, method: "put" }
+    case "Delete":
+      return { url: `/listings/${listingId}`, method: "delete" }
+    default:
+      return { url: "/", method: "get" }
   }
 }
 

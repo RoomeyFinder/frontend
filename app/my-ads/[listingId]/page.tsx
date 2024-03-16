@@ -25,19 +25,14 @@ export default function ListingPage() {
   )
 
   const listing = useMemo(
-    () =>
-      listings?.active.find((it) => it._id === listingId) ||
-      listings?.deactivated.find((it) => it._id === listingId) ||
-      listings?.drafts.find((it) => it._id === listingId),
-    [listings?.active, listings?.deactivated, listings?.drafts, listingId]
+    () => listings?.find((it) => it._id === listingId),
+    [listings, listingId]
   )
   const { user } = useContext(UserContext)
   const isOwnListing = useMemo(
     () => user?._id === listing?.owner?._id,
     [user?._id, listing?.owner?._id]
   )
-
-  console.log(!isOwnListing , isEditing , !loading, listing)
 
   useEffect(() => {
     if (!listing && !loading) router.push("/my-ads")
@@ -69,7 +64,6 @@ export default function ListingPage() {
             <ListingHeading isOwnListing={isOwnListing} listing={listing} />
             <ListingPhotos photos={listing?.photos} />
           </VStack>
-          <HStack></HStack>
         </HStack>
         <ListingOwnerOverview listing={listing} isOwnListing={isOwnListing} />
         <Divider

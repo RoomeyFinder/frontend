@@ -76,7 +76,7 @@ export default function FormDetailsSection({
           </Text>
           <Input
             name="lookingFor"
-            value={listingData.lookingFor}
+            value={listingData.lookingFor || ""}
             onChange={(e) => handleChange("lookingFor", e.target.value)}
             p="0 !important"
             flexGrow="1"
@@ -215,7 +215,7 @@ export default function FormDetailsSection({
             handleChange("country", country)
             updateLocationPlaceId(val.place_id)
           }}
-          value={listingData.streetAddress}
+          value={listingData?.streetAddress || ""}
           inputVariant="transparent"
           inputProps={{ borderColor: "#7070704D" }}
           errorProps={{}}

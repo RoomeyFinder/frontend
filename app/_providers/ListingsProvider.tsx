@@ -12,22 +12,20 @@ import User, { Listing } from "../_types/Listings"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 
 export const ListingsContext = createContext<{
-  listings: {
-    active: Listing[]
-    drafts: Listing[]
-    deactivated: Listing[]
-  } | null
-  updateListings: (data: User, useSession?: boolean) => void
-  deleteListings: () => void
+  listings: Listing[] | null
+  addNewListing: (data: Listing, useSession?: boolean) => void
+  updateListing: (data: Listing, useSession?: boolean) => void
+  deleteListing: (_id: string, useSession?: boolean) => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
-    }>({
-      listings: null,
-      updateListings: () => {},
-      deleteListings: () => {},
-      updateLoading: () => {},
-      loading: true,
-    })
+}>({
+  listings: [] ,
+  updateListing: () => {},
+  deleteListing: () => {},
+  addNewListing: () => {},
+  updateLoading: () => {},
+  loading: true,
+})
 
 export default function ListingsProvider({
   children,
@@ -37,7 +35,7 @@ export default function ListingsProvider({
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
     data: listings,
-    updateData: updateListings,
+    updateData: updateAllListings,
     deleteData: deleteListings,
     loading,
     updateLoading,
@@ -52,14 +50,14 @@ export default function ListingsProvider({
       url: "/listings/me",
       method: "get",
     })
-    if (res.statusCode === 200) updateListings(res.listings)
+    if (res.statusCode === 200) updateAllListings(res.listings)
     else if (res.statusCode === 403) resetAuthorization()
     updateLoading(false)
   }, [
     fetchData,
     resetAuthorization,
     listings,
-    updateListings,
+    updateAllListings,
     updateLoading,
     isAuthorized,
   ])
@@ -68,12 +66,36 @@ export default function ListingsProvider({
     fetchListings()
   }, [fetchListings])
 
+  const updateListing = useCallback(
+    (listing: Listing, useSession?: boolean) => {
+      updateAllListings(
+        listings.map((it: Listing) => (it._id === listing._id ? listing : it)),
+        useSession
+      )
+    },
+    [listings, updateAllListings]
+  )
+  const deleteListing = useCallback(
+    (id: string, useSession?: boolean) => {
+      updateAllListings(
+        listings.filter((it: Listing) => (it._id !== id)),
+        useSession
+      )
+    },
+    [listings, updateAllListings]
+  )
+
+  const addNewListing = useCallback((listing: Listing) => {
+    updateAllListings([...listings, listing])
+  }, [listings, updateAllListings])
+
   return (
     <ListingsContext.Provider
       value={{
         listings,
-        updateListings,
-        deleteListings,
+        updateListing,
+        deleteListing,
+        addNewListing,
         loading,
         updateLoading,
       }}

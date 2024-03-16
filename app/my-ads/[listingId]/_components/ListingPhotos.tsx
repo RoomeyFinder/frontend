@@ -44,24 +44,22 @@ export default function ListingPhotos({
           <Flex
             justifyContent="center"
             gap="1.5rem"
-            maxH={photos.length % 2 === 1 ? "50rem" : "30rem"}
+            maxH="50rem"
             margin="0 auto"
           >
-            {photos.length % 2 === 1 && (
-              <Flex
-                flexGrow="1"
-                flexShrink="0"
-                maxW={{ sm: "50rem", md: "70rem", lg: "55%" }}
-              >
-                <Image
-                  w="100%"
-                  borderRadius="xl"
-                  display="inline-block"
-                  src={photos[0]?.secure_url}
-                  alt="Alt"
-                />
-              </Flex>
-            )}
+            <Flex
+              flexGrow="1"
+              flexShrink="0"
+              maxW={{ sm: "50rem", md: "70rem", lg: "55%" }}
+            >
+              <Image
+                w="100%"
+                borderRadius="xl"
+                display="inline-block"
+                src={photos?.[0]?.secure_url}
+                alt="Alt"
+              />
+            </Flex>
 
             <Flex
               flexGrow="1"
@@ -74,7 +72,7 @@ export default function ListingPhotos({
               gap="1.5rem"
             >
               {photos
-                .filter((_, idx) => idx >= 0)
+                ?.filter((_, idx) => idx >= 0)
                 .map((src) => (
                   <Flex key={src.secure_url} flexGrow="1">
                     <ImageItem src={src.secure_url} />

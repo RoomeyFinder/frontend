@@ -51,7 +51,7 @@ export default function ListingForm({
   useEffect(() => {
     if (edit && !listing) router.back()
   }, [edit, listing])
-  const { updateListings, listings } = useContext(ListingsContext)
+  const { updateListing, listings } = useContext(ListingsContext)
   const toast = useAppToast()
   const { fetchData } = useAxios()
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -230,6 +230,8 @@ export default function ListingForm({
       let body
       if (edit === false) body = await getFormDataForNewListing(isDraft)
       else body = await getFormDataForEditedListing(isDraft)
+      console.log(body.get("isDraft"), body.get("isActivated"), isDraft)
+      // return
       const requestOptions: FetchOptions = {
         url: edit === true ? `/listings/${listing?._id}` : "/listings",
         method: edit === true ? `put` : "post",
@@ -244,33 +246,8 @@ export default function ListingForm({
             res.message ||
             (isDraft ? "Draft saved!" : "Ad created successfully"),
         })
-        if (edit === true) {
-          if (isDraft)
-            updateListings({
-              ...(listings || {}),
-              drafts: (listings?.drafts || []).map((listing) =>
-                listing?._id === res.listing?._id ? res.listing : listing
-              ),
-            } as any)
-          else
-            updateListings({
-              ...(listings || {}),
-              active: (listings?.active || []).map((listing) =>
-                listing?._id === res.listing?._id ? res.listing : listing
-              ),
-            } as any)
-        } else {
-          if (isDraft)
-            updateListings({
-              ...(listings || {}),
-              drafts: [...(listings?.drafts || []), res.listing],
-            } as any)
-          else
-            updateListings({
-              ...(listings || {}),
-              active: [...(listings?.active || []), res.listing],
-            } as any)
-        }
+        console.log(res)
+        updateListing(res.listing)
         router.push(isDraft ? "/my-ads?filter=drafts" : "/my-ads?filter=active")
       } else {
         toast({
@@ -290,7 +267,7 @@ export default function ListingForm({
       isSavingDraft,
       isSavingListing,
       features,
-      updateListings,
+      updateListing,
       listings,
       router,
       toast,

@@ -26,24 +26,38 @@ function Renderer() {
   const searchParams = useSearchParams()
   const { listings, loading } = useContext(ListingsContext)
   const currentDisplay = useMemo(
-    () => (searchParams.get("filter") || "active") as "active" | "drafts" | "deactivated",
+    () =>
+      (searchParams.get("filter") || "active") as
+        | "active"
+        | "drafts"
+        | "deactivated",
     [searchParams]
   )
+
+  const listingsToDisplay = useMemo(() => {
+    if (!listings) return []
+    if (currentDisplay === "active")
+      return listings.filter((it) => it.isActivated === true)
+    else if (currentDisplay === "drafts")
+      return listings.filter((it) => it.isDraft === true)
+    else
+      return listings.filter(
+        (it) => it.isActivated === false && it.isDraft === false
+      )
+  }, [listings, currentDisplay])
 
   if (searchParams.get("new") === "true") {
     return (
       <Box>
-        <ListingForm edit={false} listingId={null} />
+        <ListingForm edit={false} />
       </Box>
     )
   }
   return (
     <Box pos="relative" minH="80dvh">
       <MyAdsHeader />
-      {(!listings || listings[currentDisplay].length === 0) && !loading && (
-        <Empty text="No Ads" />
-      )}
-      {listings && listings[currentDisplay].length > 0 && !loading && (
+      {listingsToDisplay.length === 0 && !loading && <Empty text="No Ads" />}
+      {listingsToDisplay.length > 0 && !loading && (
         <VStack
           py="5rem"
           alignItems="start"
@@ -53,7 +67,7 @@ function Renderer() {
           justifyContent="center"
           gap="1.8rem"
         >
-          {listings[currentDisplay].map((listing) => (
+          {listingsToDisplay.map((listing) => (
             <EditableListingCard listing={listing} key={listing._id} />
           ))}
         </VStack>
