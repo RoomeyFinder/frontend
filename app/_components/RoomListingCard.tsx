@@ -50,7 +50,10 @@ export default function RoomListingCard({
         />
       )}
       <Box w="full" pos="relative">
-        <ListingCardImageCarousel />
+        <ListingCardImageCarousel
+          slides={[]}
+          swiperSlideContent={() => <>d</>}
+        />
       </Box>
       <OwnersInfo ownersName={ownersName} />
       <AboutSection
@@ -111,7 +114,7 @@ function AboutSection({
   location,
   apartmentType,
   rentAmount,
-  rentDuration
+  rentDuration,
 }: {
   title: string
   ownersOccupation: string
@@ -141,7 +144,8 @@ function AboutSection({
         {location}
       </Text>
       <Text as="b" fontSize="1.6rem" lineHeight="1.8rem">
-        ₦{rentAmount.toLocaleString("en-us")}/{rentDurationMapping[rentDuration]}
+        ₦{rentAmount.toLocaleString("en-us")}/
+        {rentDurationMapping[rentDuration]}
       </Text>
     </Flex>
   )
