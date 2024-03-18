@@ -1,14 +1,14 @@
 "use client"
-import { useSearchParams } from "next/navigation"
-import { Box, Flex, Spinner, VStack } from "@chakra-ui/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import ListingForm from "./_components/ListingForm"
-import MyAdsHeader from "./_components/PageHeader"
+import MyAdsHeader from "../_components/PageHeader"
 import Empty from "../_components/Empty"
 import EditableListingCard from "../_components/EditableListingCard"
 import { ListingsContext } from "../_providers/ListingsProvider"
 
-export default function Profile() {
+export default function MyAds() {
   return (
     <Suspense
       fallback={
@@ -24,6 +24,7 @@ export default function Profile() {
 
 function Renderer() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const { listings, loading } = useContext(ListingsContext)
   const currentDisplay = useMemo(
     () =>
@@ -55,7 +56,16 @@ function Renderer() {
   }
   return (
     <Box pos="relative" minH="80dvh">
-      <MyAdsHeader />
+      <MyAdsHeader pathname="/my-ads" filters={["active", "drafts", "deactivated"]}>
+        <Button
+          onClick={() => router.push(`/my-ads?new=true`)}
+          variant="brand-secondary"
+          minW={{ md: "18.5rem" }}
+          ml="auto"
+        >
+          Create ad
+        </Button>
+      </MyAdsHeader>
       {listingsToDisplay.length === 0 && !loading && <Empty text="No Ads" />}
       {listingsToDisplay.length > 0 && !loading && (
         <VStack
