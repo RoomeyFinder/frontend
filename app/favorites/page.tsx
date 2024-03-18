@@ -6,6 +6,8 @@ import Empty from "../_components/Empty"
 import EditableListingCard from "../_components/EditableListingCard"
 import FavoritesHeader from "../_components/PageHeader"
 import { ListingsContext } from "../_providers/ListingsProvider"
+import { FavoritesContext } from "../_providers/FavoritesProvider"
+import ListingsGridLayout from "../_components/ListingsGridLayout"
 
 export default function Favorites() {
   return (
@@ -22,6 +24,12 @@ export default function Favorites() {
 }
 
 function Renderer() {
+  const searchParams = useSearchParams()
+  const filter = useMemo(() => {
+    return searchParams.get("filter")
+  }, [searchParams])
+  const { favorites, loading } = useContext(FavoritesContext)
+
   return (
     <Box pos="relative" minH="80dvh">
       <FavoritesHeader
@@ -30,6 +38,18 @@ function Renderer() {
         heading="Favorites"
         isDisplayDynamic={false}
       />
+      {!loading && (!favorites || favorites.length === 0) && (
+        <Empty
+          text={`${!filter || filter === "rooms" ? "Rooms" : "Roomies"}  you favorite will appear here.`}
+        />
+      )}
+
+      {loading && (
+        <Flex justifyContent="center" alignItems="center" minH="40dvh">
+          <Spinner size="xl" color="brand.main" />
+        </Flex>
+      )}
+      {favorites && favorites.length > 0 && <ListingsGridLayout list={["dfjka"]} />}
     </Box>
   )
 }

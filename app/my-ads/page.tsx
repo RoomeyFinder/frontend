@@ -66,7 +66,7 @@ function Renderer() {
           Create ad
         </Button>
       </MyAdsHeader>
-      {listingsToDisplay.length === 0 && !loading && <Empty text="No Ads" />}
+      {listingsToDisplay.length === 0 && !loading && <Empty heading="No Ads" />}
       {listingsToDisplay.length > 0 && !loading && (
         <VStack
           py="5rem"

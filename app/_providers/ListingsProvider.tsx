@@ -8,7 +8,7 @@ import {
 } from "react"
 import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
-import User, { Listing } from "../_types/Listings"
+import { Listing } from "../_types/Listings"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 
 export const ListingsContext = createContext<{
@@ -16,14 +16,16 @@ export const ListingsContext = createContext<{
   addNewListing: (data: Listing, useSession?: boolean) => void
   updateListing: (data: Listing, useSession?: boolean) => void
   deleteListing: (_id: string, useSession?: boolean) => void
+  deleteAllListings: (_id: string, useSession?: boolean) => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
 }>({
-  listings: [] ,
+  listings: [],
   updateListing: () => {},
   deleteListing: () => {},
   addNewListing: () => {},
   updateLoading: () => {},
+  deleteAllListings: () => {},
   loading: true,
 })
 
@@ -36,7 +38,7 @@ export default function ListingsProvider({
   const {
     data: listings,
     updateData: updateAllListings,
-    deleteData: deleteListings,
+    deleteData: deleteAllListings,
     loading,
     updateLoading,
   } = useGetFromStorage("RF_USER_LISTINGS")
@@ -78,16 +80,19 @@ export default function ListingsProvider({
   const deleteListing = useCallback(
     (id: string, useSession?: boolean) => {
       updateAllListings(
-        listings.filter((it: Listing) => (it._id !== id)),
+        listings.filter((it: Listing) => it._id !== id),
         useSession
       )
     },
     [listings, updateAllListings]
   )
 
-  const addNewListing = useCallback((listing: Listing) => {
-    updateAllListings([...listings, listing])
-  }, [listings, updateAllListings])
+  const addNewListing = useCallback(
+    (listing: Listing) => {
+      updateAllListings([...listings, listing])
+    },
+    [listings, updateAllListings]
+  )
 
   return (
     <ListingsContext.Provider
@@ -98,6 +103,7 @@ export default function ListingsProvider({
         addNewListing,
         loading,
         updateLoading,
+        deleteAllListings,
       }}
     >
       {children}
