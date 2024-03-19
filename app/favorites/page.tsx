@@ -8,6 +8,7 @@ import FavoritesHeader from "../_components/PageHeader"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import { FavoritesContext } from "../_providers/FavoritesProvider"
 import ListingsGridLayout from "../_components/ListingsGridLayout"
+import CenteredSpinner from "../_components/CenteredSpinner"
 
 export default function Favorites() {
   return (
@@ -44,12 +45,10 @@ function Renderer() {
         />
       )}
 
-      {loading && (
-        <Flex justifyContent="center" alignItems="center" minH="40dvh">
-          <Spinner size="xl" color="brand.main" />
-        </Flex>
+      {loading && <CenteredSpinner />}
+      {favorites && favorites.length > 0 && (
+        <ListingsGridLayout list={["dfjka"]} />
       )}
-      {favorites && favorites.length > 0 && <ListingsGridLayout list={["dfjka"]} />}
     </Box>
   )
 }

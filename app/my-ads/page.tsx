@@ -7,6 +7,7 @@ import MyAdsHeader from "../_components/PageHeader"
 import Empty from "../_components/Empty"
 import EditableListingCard from "../_components/EditableListingCard"
 import { ListingsContext } from "../_providers/ListingsProvider"
+import CenteredSpinner from "../_components/CenteredSpinner"
 
 export default function MyAds() {
   return (
@@ -56,7 +57,11 @@ function Renderer() {
   }
   return (
     <Box pos="relative" minH="80dvh">
-      <MyAdsHeader pathname="/my-ads" filters={["active", "drafts", "deactivated"]}>
+      <MyAdsHeader
+        pathname="/my-ads"
+        heading={`${currentDisplay} ads`}
+        filters={["active", "drafts", "deactivated"]}
+      >
         <Button
           onClick={() => router.push(`/my-ads?new=true`)}
           variant="brand-secondary"
@@ -82,7 +87,7 @@ function Renderer() {
           ))}
         </VStack>
       )}
-      {loading && <Spinner />}
+      {loading && <CenteredSpinner />}
     </Box>
   )
 }
