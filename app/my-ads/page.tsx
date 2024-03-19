@@ -59,7 +59,7 @@ function Renderer() {
     <Box pos="relative" minH="80dvh">
       <MyAdsHeader
         pathname="/my-ads"
-        heading={`${currentDisplay} ads`}
+        heading={`${currentDisplay} ${!currentDisplay.toLowerCase().includes("drafts") ? "ads" : ""}`}
         filters={["active", "drafts", "deactivated"]}
       >
         <Button
