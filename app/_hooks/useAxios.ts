@@ -17,23 +17,19 @@ export type FetchOptions = {
 }
 
 export default function useAxios() {
-  const { token } = useContext(AuthContext)
   const [isFetching, setIsFetching] = useState(false)
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
   const fetchData = useCallback(
-    async ({
-      url,
-      method,
-      body,
-      headers,
-      baseURL,
-    }: FetchOptions) => {
+    async ({ url, method, body, headers, baseURL }: FetchOptions) => {
       setIsFetching(true)
+      let token =
+        sessionStorage.getItem("RF_TOKEN") ||
+        (await localforage.getItem("RF_TOKEN"))
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
       try {
         const response = await axios[method](url, body, {
           headers: {
             ...headers,
-            authorization: `Bearer ${sessionStorage.getItem("RF_TOKEN") || (await localforage.getItem("RF_TOKEN"))}`,
+            authorization: `Bearer ${token}`,
           },
           baseURL: baseURL || process.env.NEXT_PUBLIC_SERVER_URL,
         })

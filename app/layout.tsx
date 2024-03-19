@@ -8,6 +8,7 @@ import AuthProvider from "./_providers/AuthContext"
 import UserProvider from "./_providers/UserProvider"
 import ListingsProvider from "./_providers/ListingsProvider"
 import FavoritesProvider from "./_providers/FavoritesProvider"
+import SearchProvider from "./_providers/SearchProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -23,11 +24,13 @@ export default function RootLayout({
           <LocalForageProvider>
             <AuthProvider>
               <UserProvider>
-                <ListingsProvider>
-                  <FavoritesProvider>
-                    <GlobalLayout>{children}</GlobalLayout>
-                  </FavoritesProvider>
-                </ListingsProvider>
+                <SearchProvider>
+                  <ListingsProvider>
+                    <FavoritesProvider>
+                      <GlobalLayout>{children}</GlobalLayout>
+                    </FavoritesProvider>
+                  </ListingsProvider>{" "}
+                </SearchProvider>
               </UserProvider>
             </AuthProvider>
           </LocalForageProvider>

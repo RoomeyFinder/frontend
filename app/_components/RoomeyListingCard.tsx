@@ -3,6 +3,7 @@ import ProfileAvatar from "./ProfileAvatar"
 import FavouriteIcon from "../_assets/SVG/Favourite"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import DotSeparator from "./DotSeparator"
+import { Photo } from "../_types/User"
 
 export default function RoomeyListingCard({
   variant,
@@ -12,6 +13,7 @@ export default function RoomeyListingCard({
   about,
   isFavourite,
   toggleIsFavourite,
+  profileImage,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
@@ -20,12 +22,13 @@ export default function RoomeyListingCard({
   about: string
   isFavourite: boolean
   toggleIsFavourite: () => void
+  profileImage?: Photo
 }) {
   return (
     <Flex
       py="2rem"
       w="95dvw"
-      maxW={{ base: "95dvw", md: "28.3rem" }}
+      maxW={{ base: "95dvw", sm: "28.3rem" }}
       alignItems="center"
       flexDir="column"
       gap="1.5rem"
@@ -42,7 +45,12 @@ export default function RoomeyListingCard({
           handleToggleFavourite={toggleIsFavourite}
         />
       )}
-      <ProfileAvatar width={180} height={180} showVerifiedBadge />
+      <ProfileAvatar
+        imageSrc={profileImage?.secure_url}
+        width={180}
+        height={180}
+        showVerifiedBadge
+      />
       <NameAndAge name={name} ageInYears={ageInYears} />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
       <AboutSection about={about} />

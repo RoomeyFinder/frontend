@@ -13,12 +13,20 @@ import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
 import PeopleGroup from "./_assets/SVG/PeopleGroup"
+import { useContext } from "react"
+import { SearchContext } from "./_providers/SearchProvider"
+import ListingsGridLayout from "./_components/ListingsGridLayout"
+import RoomeyListingCard from "./_components/RoomeyListingCard"
+import RoomListingCard from "./_components/RoomListingCard"
+import User from "./_types/User"
+import { Listing } from "./_types/Listings"
 
 export default function Home() {
   return (
     <>
       <Hero />
       <FeaturesSection />
+      <ListingsSection />
     </>
   )
 }
@@ -116,5 +124,58 @@ function FeaturesSection() {
         </Box>
       </Flex>
     </>
+  )
+}
+
+function ListingsSection() {
+  const { roomies, rooms } = useContext(SearchContext)
+  return (
+    <>
+      <Box>
+        <RoomiesList roomies={roomies} />
+        <RoomsList rooms={rooms} />
+      </Box>
+    </>
+  )
+}
+
+function RoomiesList({ roomies }: { roomies: User[] }) {
+  return (
+    <ListingsGridLayout
+      list={roomies.map((roomey) => (
+        <RoomeyListingCard
+          key={roomey._id}
+          name={roomey.firstName}
+          ageInYears={
+            new Date().getFullYear() - new Date(roomey.dob).getFullYear()
+          }
+          about={roomey.about}
+          isFavourite={false}
+          toggleIsFavourite={() => {}}
+          profileImage={roomey.profileImage}
+        />
+      ))}
+    ></ListingsGridLayout>
+  )
+}
+
+function RoomsList({ rooms }: { rooms: Listing[] }) {
+  return (
+    <ListingsGridLayout
+      list={rooms.map((room) => (
+        <RoomListingCard
+          key={room._id}
+          ownersName={room.owner?.firstName as string}
+          ownersOccupation={room.owner?.occupation as string}
+          city={room.city as string}
+          isFavourite={false}
+          toggleIsFavourite={() => {}}
+          rentAmount={room.rentAmount as number}
+          rentDuration={room.rentDuration as any}
+          title={room.lookingFor as string}
+          images={room.photos as []}
+        />
+      ))}
+    ></ListingsGridLayout>
   )
 }

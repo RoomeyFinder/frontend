@@ -1,9 +1,11 @@
-import { Avatar, Box, Flex, Heading, Text } from "@chakra-ui/react"
+import { Avatar, Box, Flex, Heading, Image, Text } from "@chakra-ui/react"
 import FavouriteIcon from "../_assets/SVG/Favourite"
 import imgOne from "../_assets/images/sample.png"
 import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
+import { Listing } from "../_types/Listings"
+import { Photo } from "../_types/User"
 
 export default function RoomListingCard({
   variant,
@@ -15,6 +17,7 @@ export default function RoomListingCard({
   toggleIsFavourite,
   rentAmount,
   rentDuration,
+  images,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
@@ -26,7 +29,7 @@ export default function RoomListingCard({
   rentAmount: number
   rentDuration: "yearly" | "monthly" | "biannually"
   title: string
-  images: string[]
+  images: Photo[]
 }) {
   return (
     <Flex
@@ -51,8 +54,17 @@ export default function RoomListingCard({
       )}
       <Box w="full" pos="relative">
         <ListingCardImageCarousel
-          slides={[]}
-          swiperSlideContent={() => <>d</>}
+          slides={images}
+          swiperSlideContent={({ slide }) => (
+            <Image
+              key={slide.secure_url}
+              src={slide.secure_url}
+              w="100%"
+              h="100%"
+              minH="22.7rem"
+              rounded="1.2rem"
+            />
+          )}
         />
       </Box>
       <OwnersInfo ownersName={ownersName} />
@@ -137,11 +149,15 @@ function AboutSection({
         gap=".8rem"
         alignItems="center"
       >
-        {apartmentType}
+        <Text as="span" noOfLines={1}>
+          {apartmentType}
+        </Text>
         <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
-        {ownersOccupation}
+        <Text as="span" noOfLines={1}>
+          {ownersOccupation}
+        </Text>
         <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
-        {location}
+        <Text as="span" noOfLines={1}>{location}</Text>
       </Text>
       <Text as="b" fontSize="1.6rem" lineHeight="1.8rem">
         ₦{rentAmount.toLocaleString("en-us")}/
