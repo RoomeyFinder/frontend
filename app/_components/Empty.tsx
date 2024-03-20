@@ -1,15 +1,22 @@
 import { Flex, Text } from "@chakra-ui/react"
 import NoFilesIcon from "../_assets/SVG/NoFilesIcon"
+import { ReactNode } from "react"
 
 export default function Empty({
   heading,
   text,
 }: {
-  heading?: string
-  text?: string
+  heading?: ReactNode
+  text?: ReactNode
 }) {
   return (
-    <Flex justifyContent="center" alignItems="center" w="full" minH="70dvh" px="2rem">
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      w="full"
+      minH="70dvh"
+      px="2rem"
+    >
       <Flex gap="1rem" alignItems="center">
         <NoFilesIcon />
         <Flex

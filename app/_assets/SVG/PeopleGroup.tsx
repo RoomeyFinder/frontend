@@ -12,11 +12,11 @@ export default function PeopleGroup(){
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <g clipPath="url(#clip0_4183_6654)">
-        <rect x="0.666748" width="70" height="70" fill="url(#pattern0)" />
+        <rect x="0.666748" width="70" height="70" fill="url(#pattern100)" />
       </g>
       <defs>
         <pattern
-          id="pattern0"
+          id="pattern100"
           patternContentUnits="objectBoundingBox"
           width="1"
           height="1"

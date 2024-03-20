@@ -28,13 +28,18 @@ import RoomListingCard from "./_components/RoomListingCard"
 import User from "./_types/User"
 import { Listing } from "./_types/Listings"
 import { AuthContext } from "./_providers/AuthContext"
+import Empty from "./_components/Empty"
 
 export default function Home() {
+  const { roomies, rooms } = useContext(SearchContext)
   return (
     <>
       <Hero />
-      <FeaturesSection />
-      <ListingsSection />
+      {rooms.length >= 12 && roomies.length >= 12 ? (
+        <ListingsSection />
+      ) : (
+        <FeaturesSection />
+      )}
     </>
   )
 }
@@ -155,16 +160,18 @@ function ListingsSection() {
   const allListingsRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (focus === "rooms") roomsSectionRef.current?.firstElementChild?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    })
-    if (focus === "roomies") roomiesSectionRef.current?.firstElementChild?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    })
+    if (focus === "rooms")
+      roomsSectionRef.current?.firstElementChild?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      })
+    if (focus === "roomies")
+      roomiesSectionRef.current?.firstElementChild?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      })
   }, [focus])
 
   const [roomiesFilteredBySearch, filteredRoomsBySearch] = useMemo(() => {
@@ -185,10 +192,22 @@ function ListingsSection() {
       <Box ref={allListingsRef}>
         <ListSectionContainer sectionRef={roomiesSectionRef}>
           <Heading variant="md">Latest Roomies</Heading>
-          <RoomiesList
-            lockProfiles={!isAuthorized}
-            roomies={roomiesFilteredBySearch}
-          />
+          {roomiesFilteredBySearch.length === 0 ? (
+            <Empty
+              heading="Oops"
+              text={
+                <>
+                  No roomies found for the search term
+                  {<Text as="b"> {search}</Text>}
+                </>
+              }
+            />
+          ) : (
+            <RoomiesList
+              lockProfiles={!isAuthorized}
+              roomies={roomiesFilteredBySearch}
+            />
+          )}
           <ContinueExploring
             text="roomies"
             onClick={() => loadMoreRoomies()}
@@ -197,10 +216,22 @@ function ListingsSection() {
         </ListSectionContainer>
         <ListSectionContainer sectionRef={roomsSectionRef}>
           <Heading variant="md">Latest Rooms</Heading>
-          <RoomsList
-            rooms={filteredRoomsBySearch}
-            allowFavoriting={isAuthorized}
-          />
+          {filteredRoomsBySearch.length === 0 ? (
+            <Empty
+              heading="Oops"
+              text={
+                <>
+                  No rooms found for the search term
+                  {<Text as="b"> {search}</Text>}
+                </>
+              }
+            />
+          ) : (
+            <RoomsList
+              rooms={filteredRoomsBySearch}
+              allowFavoriting={isAuthorized}
+            />
+          )}
           <ContinueExploring
             text="rooms"
             onClick={() => loadMoreRooms()}
