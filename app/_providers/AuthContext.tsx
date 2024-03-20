@@ -30,7 +30,7 @@ export const AuthContext = createContext<{
 
 const privatePaths = [
   "/profile",
-  "/my-ads",
+  "/ads",
   "/chats",
   "/favorites",
   "/interests",

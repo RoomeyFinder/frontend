@@ -16,7 +16,7 @@ import {
   TextProps,
   VStack,
 } from "@chakra-ui/react"
-import { FeatureTag } from "../my-ads/_components/FeaturesInput"
+import { FeatureTag } from "../ads/_components/FeaturesInput"
 import EyeIcon from "../_assets/SVG/EyeIcon"
 import ThreeDotIcon from "../_assets/SVG/ThreeDotIcon"
 import { Listing } from "../_types/Listings"
@@ -59,7 +59,7 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       py="1rem"
       onClick={() => {
         if (isActivated) {
-          router.push(`/my-ads/${listing._id}`)
+          router.push(`/ads/${listing._id}`)
         }
       }}
       _hover={{ textDecor: "none", boxShadow: isActivated ? "md" : "" }}
@@ -127,8 +127,7 @@ function ListingActions({
 
   const handleAction = useCallback(
     async (options: FetchOptions) => {
-      if (options.url === "/")
-        return router.push(`/my-ads/${listingId}?edit=true`)
+      if (options.url === "/") return router.push(`/ads/${listingId}?edit=true`)
       toast.closeAll()
       const res = await fetchData(options)
       toast({

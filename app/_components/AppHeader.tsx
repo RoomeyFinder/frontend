@@ -24,7 +24,7 @@ export default function AppHeader() {
       bg="white.main"
     >
       <Flex href="/" as={Link}>
-        <AppLogo />
+        <AppLogo showTextLogoAlways={pathname !== "/"} />
       </Flex>
       {pathname === "/" && (
         <Flex

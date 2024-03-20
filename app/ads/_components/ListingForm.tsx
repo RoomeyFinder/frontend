@@ -251,7 +251,7 @@ export default function ListingForm({
         res.statusCode === 200
           ? updateListing(res.listing)
           : addNewListing(res.listing)
-        router.push(isDraft ? "/my-ads?filter=drafts" : "/my-ads?filter=active")
+        router.push(isDraft ? "/ads?filter=drafts" : "/ads?filter=active")
       } else if (res.statusCode === 403) {
         setShowAdLimitModal(true)
       } else {

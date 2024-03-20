@@ -1,4 +1,3 @@
-
 import BoltIcon from "@/app/_assets/SVG/BoltIcon"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
 import LeftChevron from "@/app/_assets/SVG/LeftChevron"
@@ -27,54 +26,96 @@ import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 
-
-
-export default function PrivateNavigation() {
+export default function PrivateNavigation({
+  showHamburgerAlways,
+}: {
+  showHamburgerAlways?: boolean
+}) {
   return (
     <Flex alignItems="center" gap="2rem">
       <Show above="md">
         <Flex gap="2rem">
-          <Link href="/chat"><StandAloneIcon><MessageIcon /></StandAloneIcon></Link>
-          <Link href="/notifications"><StandAloneIcon><NotificationIcon /></StandAloneIcon></Link>
+          <Link href="/chat">
+            <StandAloneIcon>
+              <MessageIcon />
+            </StandAloneIcon>
+          </Link>
+          <Link href="/notifications">
+            <StandAloneIcon>
+              <NotificationIcon />
+            </StandAloneIcon>
+          </Link>
         </Flex>
       </Show>
-      <PrivateNavigationDropDown />
+      <PrivateNavigationDropDown showHamburgerAlways={showHamburgerAlways} />
     </Flex>
   )
 }
 
-function PrivateNavigationDropDown() {
-  const { isOpen: showSupportNav, onToggle: onToggleShowSupportNav } = useDisclosure()
+function PrivateNavigationDropDown({
+  showHamburgerAlways,
+}: {
+  showHamburgerAlways?: boolean
+}) {
+  const { isOpen: showSupportNav, onToggle: onToggleShowSupportNav } =
+    useDisclosure()
   return (
     <>
       <Menu>
-        {({ isOpen, }) => (
+        {({ isOpen }) => (
           <>
-            <MenuButton onClick={() => console.log("clicker")} cursor="pointer" as={Button} p="0"
-              bg={isOpen ? "white.main" : "transparent"} data-testid="profile-toggle"
-              h="unset" _active={{ bg: "white.main" }} _hover={{ bg: "transparent" }}>
+            <MenuButton
+              cursor="pointer"
+              as={Button}
+              p="0"
+              bg={isOpen ? "white.main" : "transparent"}
+              data-testid="profile-toggle"
+              h="unset"
+              _active={{ bg: "white.main" }}
+              _hover={{ bg: "transparent" }}
+            >
               <Flex
                 as="span"
-                boxShadow={isOpen ? "" : "0px 0px 1.5px 0px rgba(0, 0, 0, 0.05)"}
+                boxShadow={
+                  isOpen ? "" : "0px 0px 1.5px 0px rgba(0, 0, 0, 0.05)"
+                }
                 rounded="1rem"
                 gap="2rem"
                 py=".5rem"
                 px="1rem"
                 border="1px solid"
                 borderColor="white.100"
-                alignItems="center" color={isOpen ? "brand.main" : "black"} >
-                <Show above="md">
+                alignItems="center"
+                color={isOpen ? "brand.main" : "black"}
+              >
+                <Text
+                  display={
+                    showHamburgerAlways
+                      ? "inline"
+                      : { base: "none", md: "inline" }
+                  }
+                >
                   <Icon as={HamburgerIcon} />
-                </Show>
+                </Text>
                 <Avatar name="Brandon" background="brand.main" />
               </Flex>
             </MenuButton>
             <MenuList
-              overflow="hidden" w="95dvw" maxW="30rem" rounded="1rem" boxShadow="md" border="none" padding="0" borderTop="1px solid" borderTopColor="white.200" >
-              {showSupportNav ?
-                <SubPrivateNav toggleHideMore={onToggleShowSupportNav}/>
-                :
-                <MainPrivateNav toggleShowMore={onToggleShowSupportNav} />}
+              overflow="hidden"
+              w="95dvw"
+              maxW="30rem"
+              rounded="1rem"
+              boxShadow="md"
+              border="none"
+              padding="0"
+              borderTop="1px solid"
+              borderTopColor="white.200"
+            >
+              {showSupportNav ? (
+                <SubPrivateNav toggleHideMore={onToggleShowSupportNav} />
+              ) : (
+                <MainPrivateNav toggleShowMore={onToggleShowSupportNav} />
+              )}
             </MenuList>
           </>
         )}
@@ -83,9 +124,7 @@ function PrivateNavigationDropDown() {
   )
 }
 
-function MainPrivateNav({ toggleShowMore }: {
-  toggleShowMore: () => void
-}) {
+function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
   const router = useRouter()
   return (
     <>
@@ -133,19 +172,36 @@ function MainPrivateNav({ toggleShowMore }: {
   )
 }
 
-function SubPrivateNav({ toggleHideMore }: {
-  toggleHideMore: () => void
-}){
+function SubPrivateNav({ toggleHideMore }: { toggleHideMore: () => void }) {
   return (
     <>
       <Flex justifyContent="center" alignItems="center" p="2rem">
-        <MenuItem autoFocus w="fit-content" closeOnSelect={false} onClick={toggleHideMore} _focus={{ bg: "brand.10", color: "brand.main" }} >
+        <MenuItem
+          autoFocus
+          w="fit-content"
+          closeOnSelect={false}
+          onClick={toggleHideMore}
+          _focus={{ bg: "brand.10", color: "brand.main" }}
+        >
           <Icon as={LeftChevron} />
         </MenuItem>
-        <Text fontSize={{ base: "1.4rem", md: "1.6rem" }} fontWeight="600" as="span" display="block" flexGrow="1" textAlign="center" ml="auto" mr="2rem">Support</Text>
+        <Text
+          fontSize={{ base: "1.4rem", md: "1.6rem" }}
+          fontWeight="600"
+          as="span"
+          display="block"
+          flexGrow="1"
+          textAlign="center"
+          ml="auto"
+          mr="2rem"
+        >
+          Support
+        </Text>
       </Flex>
-      <PrivateMenuDivider mb="2rem"/>
-      <Box w="100%" maxW="28rem" mx="auto"><SupportNav navItemComponent={MenuItem as typeof Box} /></Box>
+      <PrivateMenuDivider mb="2rem" />
+      <Box w="100%" maxW="28rem" mx="auto">
+        <SupportNav navItemComponent={MenuItem as typeof Box} />
+      </Box>
     </>
   )
 }
@@ -153,20 +209,46 @@ function SubPrivateNav({ toggleHideMore }: {
 export function ProfileThrustAd() {
   return (
     <Flex flexDir="column" gap=".949rem" bg="brand.10" p="1rem" rounded="1rem">
-      <Flex _hover={{ textDecorationColor: "brand.main", textDecor: "underline" }} as={MenuItem} gap="10px" w="fit-content" p="0" bg="transparent">
-        <Icon as={BoltIcon} /><Text fontSize="1.4rem" color="brand.main"> Profile Thrust</Text>
+      <Flex
+        _hover={{ textDecorationColor: "brand.main", textDecor: "underline" }}
+        as={MenuItem}
+        gap="10px"
+        w="fit-content"
+        p="0"
+        bg="transparent"
+      >
+        <Icon as={BoltIcon} />
+        <Text fontSize="1.4rem" color="brand.main">
+          {" "}
+          Profile Thrust
+        </Text>
       </Flex>
-      <Text fontSize="1.2rem" color="black">Push your profile to the top and get people to see you first</Text>
+      <Text fontSize="1.2rem" color="black">
+        Push your profile to the top and get people to see you first
+      </Text>
     </Flex>
   )
 }
 
-function InterestsAccessCount(){
-  return(
+function InterestsAccessCount() {
+  return (
     <Box bg="white.400" p="2rem">
-      <Flex fontSize="1.4rem" fontWeight={700} color="brand.main" flexDir="column" justifyContent="center" alignItems="center" gap="1rem" bg="brand.10" p="1rem" rounded="1rem">
+      <Flex
+        fontSize="1.4rem"
+        fontWeight={700}
+        color="brand.main"
+        flexDir="column"
+        justifyContent="center"
+        alignItems="center"
+        gap="1rem"
+        bg="brand.10"
+        p="1rem"
+        rounded="1rem"
+      >
         <Text lineHeight="1">Interest Access</Text>
-        <Text lineHeight="1" color="black">20 Listings</Text>
+        <Text lineHeight="1" color="black">
+          20 Listings
+        </Text>
       </Flex>
     </Box>
   )
@@ -174,21 +256,20 @@ function InterestsAccessCount(){
 
 const PrivateMenuItem = chakra(MenuItem, {
   baseStyle: {
-    ...baseNavItemStyles
+    ...baseNavItemStyles,
   },
 })
 
 const PrivateMenuDivider = chakra(MenuDivider, {
   baseStyle: {
     margin: "0",
-    borderBottomColor: "white.200"
+    borderBottomColor: "white.200",
   },
 })
 const PrivateMenuIcon = chakra(StandAloneIcon, {
   baseStyle: {
     padding: "1.3rem",
     color: "gray.main",
-    fontSize: { base: "1.4rem", md: "1.6rem" }
+    fontSize: { base: "1.4rem", md: "1.6rem" },
   },
 })
-

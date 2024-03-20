@@ -58,12 +58,12 @@ function Renderer() {
   return (
     <Box pos="relative" minH="80dvh">
       <MyAdsHeader
-        pathname="/my-ads"
+        pathname="/ads"
         heading={`${currentDisplay} ${!currentDisplay.toLowerCase().includes("drafts") ? "ads" : ""}`}
         filters={["active", "drafts", "deactivated"]}
       >
         <Button
-          onClick={() => router.push(`/my-ads?new=true`)}
+          onClick={() => router.push(`/ads?new=true`)}
           variant="brand-secondary"
           minW={{ md: "18.5rem" }}
           ml="auto"

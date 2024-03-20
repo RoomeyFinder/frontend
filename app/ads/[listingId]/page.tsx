@@ -35,7 +35,7 @@ export default function ListingPage() {
   )
 
   useEffect(() => {
-    if (!listing && !loading) router.push("/my-ads")
+    if (!listing && !loading) router.push("/ads")
     // if (!isOwnListing && isEditing && !loading) router.push(`/ads/${listing?._id}`)
   }, [listing, loading, router, isOwnListing, isEditing])
 

@@ -11,7 +11,7 @@ import XIcon from "../_assets/SVG/XIcon"
 export const privateLinks = [
   {
     name: "My Ads",
-    href: "/my-ads",
+    href: "/ads",
     icon: EditIcon,
     hideAbove: "",
     showBelow: "",

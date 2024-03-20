@@ -13,8 +13,8 @@ export default function PublishAdClicker({
   const { isAuthorized } = useContext(AuthContext)
 
   const handlePublishAd = useCallback(() => {
-    if (isAuthorized === true) router.push("/my-ads?new=true")
-    else if (isAuthorized === false) router.push("/signup?next=/my-ads?new=true")
+    if (isAuthorized === true) router.push("/ads?new=true")
+    else if (isAuthorized === false) router.push("/signup?next=/ads?new=true")
   }, [isAuthorized, router])
 
   return (

@@ -1,7 +1,11 @@
-import { Flex, Image, Show } from "@chakra-ui/react"
+import { Flex, Image, Show, Text } from "@chakra-ui/react"
 import LogoText from "../_assets/SVG/LogoText"
 
-export default function AppLogo({ showTextLogo }: { showTextLogo?: string }) {
+export default function AppLogo({
+  showTextLogoAlways,
+}: {
+  showTextLogoAlways?: boolean
+}) {
   return (
     <Flex gap="1rem" alignItems="center">
       <Image
@@ -10,9 +14,11 @@ export default function AppLogo({ showTextLogo }: { showTextLogo?: string }) {
         height="3rem"
         alt="RoomeyFinder Logo - Two magnifying glasses upside down connected by their handles forming an acute angle"
       />
-      <Show above={showTextLogo || "md"}>
+      <Text
+        display={showTextLogoAlways ? "inline" : { base: "none", md: "block" }}
+      >
         <LogoText />
-      </Show>
+      </Text>
     </Flex>
   )
 }
