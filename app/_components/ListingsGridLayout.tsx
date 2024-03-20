@@ -4,7 +4,7 @@ import { ReactNode } from "react"
 export default function ListingsGridLayout({ list }: { list: ReactNode[] }) {
   return (
     <Grid
-      w="93%"
+      w="full"
       maxW="180rem"
       mx="auto"
       as="ul"
@@ -22,7 +22,7 @@ export default function ListingsGridLayout({ list }: { list: ReactNode[] }) {
       alignContent="center"
     >
       {list.map((item, idx) => (
-        <GridItem display="flex" justifyContent="center" key={idx}>
+        <GridItem display="flex" w="full" justifyContent="center" key={idx}>
           {item}
         </GridItem>
       ))}

@@ -9,11 +9,19 @@ export const SearchContext = createContext<{
   rooms: Listing[]
   loadingRooms: boolean
   loadingRoomies: boolean
+  loadMoreRoomies: () => void
+  loadMoreRooms: () => void
+  hasMoreRoomies: boolean
+  hasMoreRooms: boolean
 }>({
   roomies: [],
   rooms: [],
   loadingRooms: false,
   loadingRoomies: false,
+  loadMoreRoomies: () => {},
+  loadMoreRooms: () => {},
+  hasMoreRoomies: true,
+  hasMoreRooms: true,
 })
 
 export default function SearchProvider({
@@ -38,6 +46,10 @@ export default function SearchProvider({
         rooms: rooms["listings"] as Listing[],
         loadingRoomies: roomies.loading,
         loadingRooms: rooms.loading,
+        loadMoreRoomies: roomies.goToNextPage,
+        loadMoreRooms: rooms.goToNextPage,
+        hasMoreRoomies: roomies.hasMore,
+        hasMoreRooms: rooms.hasMore,
       }}
     >
       {children}

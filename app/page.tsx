@@ -13,13 +13,15 @@ import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
 import PeopleGroup from "./_assets/SVG/PeopleGroup"
-import { useContext } from "react"
+import { ReactNode, useContext } from "react"
 import { SearchContext } from "./_providers/SearchProvider"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
 import RoomeyListingCard from "./_components/RoomeyListingCard"
 import RoomListingCard from "./_components/RoomListingCard"
 import User from "./_types/User"
 import { Listing } from "./_types/Listings"
+import { AuthContext } from "./_providers/AuthContext"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 export default function Home() {
   return (
@@ -128,54 +130,159 @@ function FeaturesSection() {
 }
 
 function ListingsSection() {
-  const { roomies, rooms } = useContext(SearchContext)
+  const { isAuthorized } = useContext(AuthContext)
+  const {
+    roomies,
+    rooms,
+    hasMoreRoomies,
+    hasMoreRooms,
+    loadMoreRoomies,
+    loadMoreRooms,
+  } = useContext(SearchContext)
+
   return (
     <>
       <Box>
-        <RoomiesList roomies={roomies} />
-        <RoomsList rooms={rooms} />
+        <ListSectionContainer>
+          <Heading variant="md">Latest Roomies</Heading>
+          <RoomiesList lockProfiles={!isAuthorized} roomies={roomies} />
+          <ContinueExploring
+            text="roomies"
+            onClick={() => loadMoreRoomies()}
+            show={hasMoreRoomies}
+          />
+        </ListSectionContainer>
+        <ListSectionContainer>
+          <Heading variant="md">Latest Rooms</Heading>
+          <RoomsList rooms={rooms} allowFavoriting={isAuthorized} />
+          <ContinueExploring
+            text="rooms"
+            onClick={() => loadMoreRooms()}
+            show={hasMoreRooms}
+          />
+        </ListSectionContainer>
       </Box>
     </>
   )
 }
 
-function RoomiesList({ roomies }: { roomies: User[] }) {
+function ListSectionContainer({
+  children,
+}: {
+  children: ReactNode | ReactNode[]
+}) {
   return (
-    <ListingsGridLayout
-      list={roomies.map((roomey) => (
-        <RoomeyListingCard
-          key={roomey._id}
-          name={roomey.firstName}
-          ageInYears={
-            new Date().getFullYear() - new Date(roomey.dob).getFullYear()
-          }
-          about={roomey.about}
-          isFavourite={false}
-          toggleIsFavourite={() => {}}
-          profileImage={roomey.profileImage}
-        />
-      ))}
-    ></ListingsGridLayout>
+    <Box
+      w={{ base: "95dvw", md: "full" }}
+      maxW={{ md: "84%" }}
+      mx="auto"
+      display="flex"
+      flexDir="column"
+      gap="3rem"
+      py={{ base: "3rem", md: "6rem" }}
+    >
+      {children}
+    </Box>
+  )
+}
+function RoomiesList({
+  roomies,
+  lockProfiles,
+}: {
+  roomies: User[]
+  lockProfiles: boolean
+}) {
+  return (
+    <>
+      <ListingsGridLayout
+        list={roomies.map((roomey) => (
+          <RoomeyListingCard
+            key={roomey._id}
+            isLocked={lockProfiles}
+            name={roomey.firstName}
+            ageInYears={
+              new Date().getFullYear() - new Date(roomey.dob).getFullYear()
+            }
+            about={roomey.about}
+            isFavourite={false}
+            toggleIsFavourite={() => {}}
+            profileImage={roomey.profileImage}
+          />
+        ))}
+      ></ListingsGridLayout>
+    </>
   )
 }
 
-function RoomsList({ rooms }: { rooms: Listing[] }) {
+function RoomsList({
+  rooms,
+  allowFavoriting,
+}: {
+  rooms: Listing[]
+  allowFavoriting: boolean
+}) {
   return (
-    <ListingsGridLayout
-      list={rooms.map((room) => (
-        <RoomListingCard
-          key={room._id}
-          ownersName={room.owner?.firstName as string}
-          ownersOccupation={room.owner?.occupation as string}
-          city={room.city as string}
-          isFavourite={false}
-          toggleIsFavourite={() => {}}
-          rentAmount={room.rentAmount as number}
-          rentDuration={room.rentDuration as any}
-          title={room.lookingFor as string}
-          images={room.photos as []}
-        />
-      ))}
-    ></ListingsGridLayout>
+    <>
+      <ListingsGridLayout
+        list={rooms.map((room) => (
+          <RoomListingCard
+            key={room._id}
+            ownersName={room.owner?.firstName as string}
+            ownersOccupation={room.owner?.occupation as string}
+            city={room.city as string}
+            isFavourite={false}
+            toggleIsFavourite={() => {}}
+            rentAmount={room.rentAmount as number}
+            rentDuration={room.rentDuration as any}
+            title={room.lookingFor as string}
+            images={room.photos as []}
+            showFavoriteButton={allowFavoriting}
+          />
+        ))}
+      ></ListingsGridLayout>
+    </>
+  )
+}
+
+function ContinueExploring({
+  text,
+  onClick,
+  show
+}: {
+  text: ReactNode
+  onClick: () => void
+  show: boolean
+}) {
+  if(!show) return null
+  return (
+    <Text
+      color={{ base: "black", md: "brand.main" }}
+      fontWeight={{ base: "600", md: "400" }}
+      fontSize={{ base: "1.6rem", md: "1.9rem" }}
+      display="flex"
+      flexDir={{ base: "column", md: "row" }}
+      justifyContent={{ base: "center", md: "start" }}
+      alignItems={{ base: "center", md: "baseline" }}
+      gap="1.6rem"
+      p="0"
+      h="unset"
+    >
+      Continue exploring {text}
+      <Button
+        onClick={onClick}
+        fontSize={{ base: "1.4rem", md: "1.6rem" }}
+        variant="brand-secondary"
+        bgColor={{ md: "transparent !important" }}
+        color={{ md: "gray.main !important" }}
+        fontWeight={{ md: "400" }}
+        padding={{ md: "0" }}
+        _hover={{
+          md: { bg: "transparent", color: "black", textDecor: "underline" },
+        }}
+        _active={{ bg: "transparent" }}
+      >
+        Show more
+      </Button>
+    </Text>
   )
 }

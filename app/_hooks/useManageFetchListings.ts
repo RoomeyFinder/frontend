@@ -6,10 +6,12 @@ export default function useManageFetchListings<T>({
   url,
   method,
   resultKey = "results",
+  limit = 100,
 }: {
   url: string
   method: RequestBody["method"]
   resultKey?: string
+  limit?: number
 }) {
   const [fetchedPages, setFetchedPages] = useState<number[]>([])
   const [page, setPage] = useState(1)
@@ -17,6 +19,15 @@ export default function useManageFetchListings<T>({
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState<T[]>([])
   const { fetchData } = useAxios()
+
+  const goToNextPage = useCallback(() => {
+    if (hasFetchedAll) return
+    setPage((prev) => prev + 1)
+  }, [hasFetchedAll])
+
+  const goToPrevPage = useCallback(() => {
+    setPage((prev) => (prev > 1 ? prev - 1 : prev))
+  }, [])
 
   const concatQueryObjectToSearchString = useCallback(
     (pathnameWithSearchQuery: string, query: { [x: string]: any }) => {
@@ -37,7 +48,7 @@ export default function useManageFetchListings<T>({
       if (fetchedPages.includes(page) || hasFetchedAll) return
       const { searchStr, pathname } = concatQueryObjectToSearchString(url, {
         page,
-        limit: 100,
+        limit: limit,
       })
       const res = await fetchData({
         url: `${pathname}${searchStr}`,
@@ -48,11 +59,11 @@ export default function useManageFetchListings<T>({
         const stringifiedResultList = JSON.stringify(res[resultKey])
         setResults((prev) => [
           ...res[resultKey],
-          ...prev.filter((it) =>
-            !stringifiedResultList.includes((it as any)._id)
+          ...prev.filter(
+            (it) => !stringifiedResultList.includes((it as any)._id)
           ),
         ])
-        if (res[resultKey].length < 100) setHasFetchedAll(true)
+        if (res[resultKey].length < limit) setHasFetchedAll(true)
       }
       setLoading(false)
     },
@@ -71,5 +82,11 @@ export default function useManageFetchListings<T>({
     if (fetchedPages.includes(page) === false) fetchResults(page)
   }, [page, fetchedPages, fetchResults])
 
-  return { [resultKey]: results, loading }
+  return {
+    [resultKey]: results,
+    loading,
+    goToNextPage,
+    goToPrevPage,
+    hasMore: hasFetchedAll === false,
+  }
 }

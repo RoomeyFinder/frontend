@@ -71,7 +71,7 @@ function FavouriteButton({
       as="button"
       pos="absolute"
       top="1rem"
-      left="1.04rem"
+      right="1.04rem"
     >
       <FavouriteIcon isFilled={isFavourite} />
     </Box>

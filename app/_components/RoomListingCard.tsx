@@ -4,12 +4,11 @@ import imgOne from "../_assets/images/sample.png"
 import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
-import { Listing } from "../_types/Listings"
 import { Photo } from "../_types/User"
 
 export default function RoomListingCard({
   variant,
-  isLocked = false,
+  showFavoriteButton = false,
   ownersName,
   ownersOccupation,
   // city,
@@ -20,7 +19,7 @@ export default function RoomListingCard({
   images,
 }: {
   variant?: "outlined" | "default"
-  isLocked?: boolean
+  showFavoriteButton?: boolean
   ownersName: string
   ownersOccupation: string
   city: string
@@ -33,7 +32,7 @@ export default function RoomListingCard({
 }) {
   return (
     <Flex
-      w="100%"
+      w="95dvw"
       maxW={{ base: "32rem", sm: "28.3rem" }}
       alignItems="start"
       flexDir="column"
@@ -45,7 +44,7 @@ export default function RoomListingCard({
       cursor="pointer"
       _hover={{ background: "white" }}
     >
-      {isLocked && (
+      {showFavoriteButton && (
         <FavouriteButton
           color="white"
           isFavourite={isFavourite}
@@ -61,7 +60,7 @@ export default function RoomListingCard({
               src={slide.secure_url}
               w="100%"
               h="100%"
-              minH="22.7rem"
+              minH="27.7rem"
               rounded="1.2rem"
             />
           )}
@@ -97,7 +96,7 @@ function FavouriteButton({
       color={color || "inherit"}
       top="1rem"
       zIndex={"10"}
-      left="1.04rem"
+      right="1.04rem"
     >
       <FavouriteIcon isFilled={isFavourite} />
     </Box>
@@ -144,20 +143,22 @@ function AboutSection({
         fontSize="1.6rem"
         lineHeight="1.8rem"
         color="gray.main"
-        noOfLines={1}
+        // noOfLines={1}
         display="flex"
-        gap=".8rem"
+        gap="1rem"
         alignItems="center"
       >
-        <Text as="span" noOfLines={1}>
+        <Text as="span" whiteSpace="nowrap">
           {apartmentType}
         </Text>
+
         <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
-        <Text as="span" noOfLines={1}>
+        <Text as="span" noOfLines={1} maxW="6.7rem">
           {ownersOccupation}
         </Text>
+
         <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
-        <Text as="span" noOfLines={1}>{location}</Text>
+        <Text as="span">{location}</Text>
       </Text>
       <Text as="b" fontSize="1.6rem" lineHeight="1.8rem">
         ₦{rentAmount.toLocaleString("en-us")}/
