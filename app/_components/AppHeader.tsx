@@ -1,12 +1,12 @@
-import { Flex, } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 import AppLogo from "./Logo"
 import SearchBar from "./SearchBar"
 import Navigation from "./Navigation/Navigation"
 import Link from "next/link"
-
-
+import { usePathname } from "next/navigation"
 
 export default function AppHeader() {
+  const pathname = usePathname()
   return (
     <Flex
       data-testid="header"
@@ -14,7 +14,8 @@ export default function AppHeader() {
       position="sticky"
       zIndex="100"
       top="0"
-      height="7.4%"
+      h="9dvh"
+      minH="8rem"
       justifyContent={{ base: "space-between", "2xl": "space-around" }}
       px={{ base: "3.125%", md: "3.125%" }}
       border="1px solid"
@@ -25,14 +26,16 @@ export default function AppHeader() {
       <Flex href="/" as={Link}>
         <AppLogo />
       </Flex>
-      <Flex
-        width={{ base: "60%", md: "75%" }}
-        maxW="50rem"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <SearchBar />
-      </Flex>
+      {pathname === "/" && (
+        <Flex
+          width={{ base: "60%", md: "75%" }}
+          maxW="50rem"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <SearchBar />
+        </Flex>
+      )}
       <Navigation />
     </Flex>
   )

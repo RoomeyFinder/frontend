@@ -13,7 +13,14 @@ import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
 import PeopleGroup from "./_assets/SVG/PeopleGroup"
-import { ReactNode, useContext } from "react"
+import {
+  LegacyRef,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react"
 import { SearchContext } from "./_providers/SearchProvider"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
 import RoomeyListingCard from "./_components/RoomeyListingCard"
@@ -21,7 +28,6 @@ import RoomListingCard from "./_components/RoomListingCard"
 import User from "./_types/User"
 import { Listing } from "./_types/Listings"
 import { AuthContext } from "./_providers/AuthContext"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 export default function Home() {
   return (
@@ -138,23 +144,63 @@ function ListingsSection() {
     hasMoreRooms,
     loadMoreRoomies,
     loadMoreRooms,
+    loadingRoomies,
+    loadingRooms,
+    search,
+    focus,
   } = useContext(SearchContext)
+
+  const roomsSectionRef = useRef<HTMLDivElement | null>(null)
+  const roomiesSectionRef = useRef<HTMLDivElement | null>(null)
+  const allListingsRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    if (focus === "rooms") roomsSectionRef.current?.firstElementChild?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    })
+    if (focus === "roomies") roomiesSectionRef.current?.firstElementChild?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    })
+  }, [focus])
+
+  const [roomiesFilteredBySearch, filteredRoomsBySearch] = useMemo(() => {
+    if (!search) return [roomies, rooms]
+    else {
+      const isMatch = (obj: { [x: string]: any }) =>
+        JSON.stringify(Object.values(obj))
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      const roomiesFiltered = roomies.filter((roomey) => isMatch(roomey))
+      const roomsFiltered = rooms.filter((room) => isMatch(room))
+      return [roomiesFiltered, roomsFiltered]
+    }
+  }, [roomies, rooms, search])
 
   return (
     <>
-      <Box>
-        <ListSectionContainer>
+      <Box ref={allListingsRef}>
+        <ListSectionContainer sectionRef={roomiesSectionRef}>
           <Heading variant="md">Latest Roomies</Heading>
-          <RoomiesList lockProfiles={!isAuthorized} roomies={roomies} />
+          <RoomiesList
+            lockProfiles={!isAuthorized}
+            roomies={roomiesFilteredBySearch}
+          />
           <ContinueExploring
             text="roomies"
             onClick={() => loadMoreRoomies()}
             show={hasMoreRoomies}
           />
         </ListSectionContainer>
-        <ListSectionContainer>
+        <ListSectionContainer sectionRef={roomsSectionRef}>
           <Heading variant="md">Latest Rooms</Heading>
-          <RoomsList rooms={rooms} allowFavoriting={isAuthorized} />
+          <RoomsList
+            rooms={filteredRoomsBySearch}
+            allowFavoriting={isAuthorized}
+          />
           <ContinueExploring
             text="rooms"
             onClick={() => loadMoreRooms()}
@@ -168,8 +214,10 @@ function ListingsSection() {
 
 function ListSectionContainer({
   children,
+  sectionRef,
 }: {
   children: ReactNode | ReactNode[]
+  sectionRef?: LegacyRef<HTMLDivElement>
 }) {
   return (
     <Box
@@ -180,6 +228,7 @@ function ListSectionContainer({
       flexDir="column"
       gap="3rem"
       py={{ base: "3rem", md: "6rem" }}
+      ref={sectionRef}
     >
       {children}
     </Box>
@@ -247,13 +296,13 @@ function RoomsList({
 function ContinueExploring({
   text,
   onClick,
-  show
+  show,
 }: {
   text: ReactNode
   onClick: () => void
   show: boolean
 }) {
-  if(!show) return null
+  if (!show) return null
   return (
     <Text
       color={{ base: "black", md: "brand.main" }}

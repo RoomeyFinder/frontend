@@ -54,6 +54,7 @@ export default function useManageFetchListings<T>({
         url: `${pathname}${searchStr}`,
         method,
       })
+      console.log("fetched")
       if (res.statusCode === 200) {
         setFetchedPages((prev) => [...prev, page])
         const stringifiedResultList = JSON.stringify(res[resultKey])

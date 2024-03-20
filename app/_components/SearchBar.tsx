@@ -2,16 +2,26 @@
 import { Box, Flex, InputProps } from "@chakra-ui/react"
 import { Input } from "@chakra-ui/react"
 import SearchIcon from "../_assets/SVG/SearchIcon"
-import { useState } from "react"
+import { useCallback, useContext } from "react"
 import PersonIcon from "../_assets/SVG/PersonIcon"
 import HouseIcon from "../_assets/SVG/HouseIcon"
 import CustomSelect from "../my-ads/_components/CustomSelect"
+import { usePathname, useRouter } from "next/navigation"
+import { SearchContext } from "../_providers/SearchProvider"
 
 export default function SearchBar() {
-  const [lookingFor, setLookingFor] = useState<"rooms" | "roomies" | "">("")
-
+  const pathname = usePathname()
+  const router = useRouter()
+  const { focus, search, setSearch, setFocus } = useContext(SearchContext)
+  const goToHomePage = useCallback(() => {
+    if (pathname !== "/") router.push("/")
+  }, [router, pathname])
   return (
     <Flex
+      onSubmit={(e) => {
+        e.preventDefault()
+        goToHomePage()
+      }}
       as="form"
       alignItems="center"
       justifyContent=""
@@ -28,9 +38,10 @@ export default function SearchBar() {
         <CustomSelect
           name="Find"
           options={lookingForOptions}
-          selectedValue={lookingFor}
+          selectedValue={focus}
           handleSelect={(value) => {
-            setLookingFor(value)
+            setFocus(value)
+            goToHomePage()
           }}
           triggerStyles={{
             justifyContent: "center",
@@ -38,7 +49,10 @@ export default function SearchBar() {
           }}
         />
       </Box>
-      <StyledSearchInput />
+      <StyledSearchInput
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
       <Flex as="span" ml="auto" maxW={{ base: "auto", md: "11.6%" }}>
         <SearchIconButton />
       </Flex>

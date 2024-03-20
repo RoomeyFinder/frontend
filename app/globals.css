@@ -12,7 +12,7 @@ html{
 }
 
 body{
-  overflow: hidden;
+  /* overflow: hidden; */
   background: white;
   color: white;
 }
@@ -46,8 +46,3 @@ input:checked ~ .custom-toggle-dot {
   background-color: #48bb78;
 }
 
-.masonry {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: masonry;
-}
