@@ -5,9 +5,11 @@ import { ReactNode } from "react"
 export default function Empty({
   heading,
   text,
+  icon,
 }: {
   heading?: ReactNode
   text?: ReactNode
+  icon?: ReactNode
 }) {
   return (
     <Flex
@@ -17,8 +19,8 @@ export default function Empty({
       minH="70dvh"
       px="2rem"
     >
-      <Flex gap="1rem" alignItems="center">
-        <NoFilesIcon />
+      <Flex gap="1rem" alignItems="start">
+        {icon || <NoFilesIcon />}
         <Flex
           alignItems="start"
           flexDir="column"

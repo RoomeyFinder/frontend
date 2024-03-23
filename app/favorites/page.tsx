@@ -1,6 +1,6 @@
 "use client"
 import { useSearchParams } from "next/navigation"
-import { Box, Flex, Spinner, VStack } from "@chakra-ui/react"
+import { Box, Button, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import Empty from "../_components/Empty"
 import FavoritesHeader from "../_components/PageHeader"
@@ -12,6 +12,7 @@ import RoomeyListingCard from "../_components/RoomeyListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import User from "../_types/User"
 import { Listing } from "../_types/Listings"
+import NoWifi from "../_assets/SVG/NoWifi"
 
 export default function Favorites() {
   return (
@@ -32,7 +33,8 @@ function Renderer() {
   const filter = useMemo(() => {
     return searchParams.get("filter")
   }, [searchParams])
-  const { favorites, loading } = useContext(FavoritesContext)
+  const { favorites, loading, retriesCount, hasInitialized, retryInitialize } =
+    useContext(FavoritesContext)
   const favoritesToDisplay = useMemo(
     () =>
       (favorites || []).filter((it) => {
@@ -49,9 +51,31 @@ function Renderer() {
         heading="Favorites"
         isDisplayDynamic={false}
       />
-      {!loading && (!favoritesToDisplay || favoritesToDisplay.length === 0) && (
+      {!loading &&
+        hasInitialized &&
+        (!favoritesToDisplay || favoritesToDisplay.length === 0) && (
+          <Empty
+            text={`${!filter || filter === "rooms" ? "Rooms" : "Roomies"}  you favorite will appear here.`}
+          />
+        )}
+      {retriesCount === 10 && !hasInitialized && (
         <Empty
-          text={`${!filter || filter === "rooms" ? "Rooms" : "Roomies"}  you favorite will appear here.`}
+          heading="Oops!"
+          text={
+            <VStack as="span" alignItems="start" justifyContent="start" gap="2rem">
+              <Text as="span">
+                An error was encountered while trying to load your favorites
+              </Text>
+              <Button
+                variant="brand-secondary"
+                minW="16rem"
+                onClick={() => retryInitialize()}
+              >
+                retry
+              </Button>
+            </VStack>
+          }
+          icon={<NoWifi />}
         />
       )}
 
@@ -61,24 +85,26 @@ function Renderer() {
         py={{ base: "3rem", md: "5rem" }}
         w="full"
       >
-        {favoritesToDisplay && favoritesToDisplay.length > 0 && (
-          <ListingsGridLayout
-            list={favoritesToDisplay.map((favorite) => (
-              <FavoriteComponent
-                document={favorite.doc}
-                key={favorite._id}
-                filter={filter}
-              />
-            ))}
-            justifyContent="start"
-            templateColumns={{
-              base: "repeat(1, 1fr)",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-              xl: "repeat(4, 1fr)",
-            }}
-          />
-        )}
+        {hasInitialized &&
+          favoritesToDisplay &&
+          favoritesToDisplay.length > 0 && (
+            <ListingsGridLayout
+              list={favoritesToDisplay.map((favorite) => (
+                <FavoriteComponent
+                  document={favorite.doc}
+                  key={favorite._id}
+                  filter={filter}
+                />
+              ))}
+              justifyContent="start"
+              templateColumns={{
+                base: "repeat(1, 1fr)",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+                xl: "repeat(4, 1fr)",
+              }}
+            />
+          )}
       </Box>
     </Box>
   )

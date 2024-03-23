@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useState,
 } from "react"
 import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
@@ -19,6 +20,9 @@ export const FavoritesContext = createContext<{
   deleteAllFavorites: (_id: string, useSession?: boolean) => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
+  hasInitialized: boolean
+  retriesCount: number
+  retryInitialize: () => void
 }>({
   favorites: [],
   removeFavorite: () => {},
@@ -26,6 +30,9 @@ export const FavoritesContext = createContext<{
   updateLoading: () => {},
   deleteAllFavorites: () => {},
   loading: true,
+  retriesCount: 0,
+  hasInitialized: false,
+  retryInitialize: () => {},
 })
 
 export default function FavoritesProvider({
@@ -33,6 +40,7 @@ export default function FavoritesProvider({
 }: {
   children: ReactNode | ReactNode
 }) {
+  const [retriesCount, setRetriesCount] = useState(0)
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
     data: favorites,
@@ -41,7 +49,7 @@ export default function FavoritesProvider({
     loading,
     updateLoading,
   } = useGetFromStorage("RF_USER_FAVORITES")
-
+  const [hasInitialized, setHasInitialized] = useState(false)
   const { fetchData } = useAxios()
 
   const fetchFavorites = useCallback(async () => {
@@ -51,10 +59,15 @@ export default function FavoritesProvider({
       url: "/favorites/me",
       method: "get",
     })
-    if (res.statusCode === 200) updateAllFavorites(res.favorites)
-    else if (res.statusCode === 403) resetAuthorization()
-    updateLoading(false)
-    
+    if (res.statusCode === 200) {
+      updateAllFavorites(res.favorites)
+      setHasInitialized(true)
+      updateLoading(false)
+    } else if (res.statusCode === 403) resetAuthorization()
+    else {
+      setRetriesCount(retriesCount + 1)
+      if (retriesCount === 9) updateLoading(false)
+    }
   }, [
     fetchData,
     resetAuthorization,
@@ -62,11 +75,26 @@ export default function FavoritesProvider({
     updateAllFavorites,
     updateLoading,
     isAuthorized,
+    retriesCount,
   ])
 
-  useEffect(() => {
-    fetchFavorites()
+  const retryInitialize = useCallback(() => {
+    setRetriesCount(0)
+    updateLoading(true)
   }, [])
+
+  useEffect(() => {
+    const initializeInterval = setInterval(() => {
+      if (hasInitialized === false && retriesCount < 10) fetchFavorites()
+    }, 3000)
+    return () => {
+      clearInterval(initializeInterval)
+    }
+  }, [fetchFavorites, hasInitialized, retriesCount])
+
+  useEffect(() => {
+    if (favorites !== null && hasInitialized === false) setHasInitialized(true)
+  }, [favorites, hasInitialized])
 
   const removeFavorite = useCallback(
     (id: string, useSession?: boolean) => {
@@ -94,6 +122,9 @@ export default function FavoritesProvider({
         loading,
         updateLoading,
         deleteAllFavorites,
+        retriesCount,
+        hasInitialized,
+        retryInitialize,
       }}
     >
       {children}
