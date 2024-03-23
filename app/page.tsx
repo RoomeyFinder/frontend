@@ -29,13 +29,17 @@ import User from "./_types/User"
 import { Listing } from "./_types/Listings"
 import { AuthContext } from "./_providers/AuthContext"
 import Empty from "./_components/Empty"
+import {
+  RoomeyListingCardSkeleton,
+  RoomListingCardSkeleton,
+} from "./_components/Skeletons/ListingCardSkeleton"
 
 export default function Home() {
   const { roomies, rooms } = useContext(SearchContext)
   return (
     <>
       <Hero />
-      {rooms.length >= 12 && roomies.length >= 12 ? (
+      {rooms.length <= 12 && roomies.length <= 12 ? (
         <ListingsSection />
       ) : (
         <FeaturesSection />
@@ -192,51 +196,45 @@ function ListingsSection() {
       <Box ref={allListingsRef}>
         <ListSectionContainer sectionRef={roomiesSectionRef}>
           <Heading variant="md">Latest Roomies</Heading>
-          {roomiesFilteredBySearch.length === 0 ? (
-            <Empty
-              heading="Oops"
-              text={
-                <>
-                  No roomies found for the search term
-                  {<Text as="b"> {search}</Text>}
-                </>
-              }
-            />
-          ) : (
-            <RoomiesList
-              lockProfiles={!isAuthorized}
-              roomies={roomiesFilteredBySearch}
+          <RoomiesList
+            lockProfiles={!isAuthorized}
+            roomies={roomiesFilteredBySearch}
+            loading={loadingRoomies}
+            emptyTextValue={
+              <>
+                No roomies found
+                {search && <Text as="b"> {search}</Text>}
+              </>
+            }
+          />
+          {roomies.length > 0 && (
+            <ContinueExploring
+              text="roomies"
+              onClick={() => loadMoreRoomies()}
+              show={hasMoreRoomies}
             />
           )}
-          <ContinueExploring
-            text="roomies"
-            onClick={() => loadMoreRoomies()}
-            show={hasMoreRoomies}
-          />
         </ListSectionContainer>
         <ListSectionContainer sectionRef={roomsSectionRef}>
           <Heading variant="md">Latest Rooms</Heading>
-          {filteredRoomsBySearch.length === 0 ? (
-            <Empty
-              heading="Oops"
-              text={
-                <>
-                  No rooms found for the search term
-                  {<Text as="b"> {search}</Text>}
-                </>
-              }
-            />
-          ) : (
-            <RoomsList
-              rooms={filteredRoomsBySearch}
-              allowFavoriting={isAuthorized}
+          <RoomsList
+            rooms={filteredRoomsBySearch}
+            allowFavoriting={isAuthorized}
+            loading={loadingRooms}
+            emptyTextValue={
+              <>
+                No roomies found
+                {search && <Text as="b"> {search}</Text>}
+              </>
+            }
+          />
+          {rooms.length > 0 && (
+            <ContinueExploring
+              text="rooms"
+              onClick={() => loadMoreRooms()}
+              show={hasMoreRooms}
             />
           )}
-          <ContinueExploring
-            text="rooms"
-            onClick={() => loadMoreRooms()}
-            show={hasMoreRooms}
-          />
         </ListSectionContainer>
       </Box>
     </>
@@ -268,10 +266,24 @@ function ListSectionContainer({
 function RoomiesList({
   roomies,
   lockProfiles,
+  loading,
+  emptyTextValue,
 }: {
   roomies: User[]
   lockProfiles: boolean
+  loading: boolean
+  emptyTextValue: ReactNode
 }) {
+  if (loading)
+    return (
+      <ListingsGridLayout
+        list={new Array(12).fill(1).map((_, idx) => (
+          <RoomeyListingCardSkeleton key={idx} />
+        ))}
+      />
+    )
+  if (roomies.length === 0 && !loading)
+    return <Empty heading="Oops" text={emptyTextValue} />
   return (
     <>
       <ListingsGridLayout
@@ -297,10 +309,24 @@ function RoomiesList({
 function RoomsList({
   rooms,
   allowFavoriting,
+  loading,
+  emptyTextValue,
 }: {
   rooms: Listing[]
   allowFavoriting: boolean
+  loading: boolean
+  emptyTextValue: ReactNode
 }) {
+  if (loading)
+    return (
+      <ListingsGridLayout
+        list={new Array(12)
+          .fill(1)
+          .map((_, idx) => <RoomListingCardSkeleton key={idx} />)}
+      />
+    )
+  if (rooms.length === 0 && !loading)
+    return <Empty heading="Oops" text={emptyTextValue} />
   return (
     <>
       <ListingsGridLayout
@@ -311,12 +337,12 @@ function RoomsList({
             ownersOccupation={room.owner?.occupation as string}
             city={room.city as string}
             isFavourite={false}
-            toggleIsFavourite={() => {}}
             rentAmount={room.rentAmount as number}
             rentDuration={room.rentDuration as any}
             title={room.lookingFor as string}
             images={room.photos as []}
             showFavoriteButton={allowFavoriting}
+            listingId={room._id as string}
           />
         ))}
       ></ListingsGridLayout>

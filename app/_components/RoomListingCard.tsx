@@ -5,6 +5,10 @@ import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
 import { Photo } from "../_types/User"
+import { useCallback, useContext } from "react"
+import { FavoriteType } from "../_types/Favorites"
+import useAxios from "../_hooks/useAxios"
+import { FavoritesContext } from "../_providers/FavoritesProvider"
 
 export default function RoomListingCard({
   variant,
@@ -13,10 +17,10 @@ export default function RoomListingCard({
   ownersOccupation,
   // city,
   isFavourite,
-  toggleIsFavourite,
   rentAmount,
   rentDuration,
   images,
+  listingId,
 }: {
   variant?: "outlined" | "default"
   showFavoriteButton?: boolean
@@ -24,11 +28,11 @@ export default function RoomListingCard({
   ownersOccupation: string
   city: string
   isFavourite: boolean
-  toggleIsFavourite: () => void
   rentAmount: number
   rentDuration: "yearly" | "monthly" | "biannually"
   title: string
   images: Photo[]
+  listingId: string
 }) {
   return (
     <Flex
@@ -48,7 +52,9 @@ export default function RoomListingCard({
         <FavouriteButton
           color="white"
           isFavourite={isFavourite}
-          handleToggleFavourite={toggleIsFavourite}
+          onToggleFavorite={() => {}}
+          listingId={listingId}
+          type={FavoriteType.LISTING}
         />
       )}
       <Box w="full" pos="relative">
@@ -81,13 +87,27 @@ export default function RoomListingCard({
 
 function FavouriteButton({
   isFavourite,
-  handleToggleFavourite,
   color,
+  onToggleFavorite,
+  type,
+  listingId
 }: {
   isFavourite: boolean
-  handleToggleFavourite: () => void
   color?: string
+  onToggleFavorite?: () => void
+  listingId: string
+  type: FavoriteType
 }) {
+  const { addNewFavorite } = useContext(FavoritesContext)
+  const { fetchData } = useAxios()
+  const handleToggleFavourite = useCallback(async () => {
+    const body = {
+      doc: listingId,
+      type,
+    }
+    const res = await fetchData({ url: "/me", method: "post", body })
+    console.log(res)
+  }, [type, fetchData,])
   return (
     <Box
       onClick={handleToggleFavourite}

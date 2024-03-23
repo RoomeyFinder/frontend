@@ -46,6 +46,7 @@ export default function useManageFetchListings<T>({
   const fetchResults = useCallback(
     async (page: number) => {
       if (fetchedPages.includes(page) || hasFetchedAll) return
+      setLoading(true)
       const { searchStr, pathname } = concatQueryObjectToSearchString(url, {
         page,
         limit: limit,
