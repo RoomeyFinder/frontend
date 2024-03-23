@@ -1,7 +1,7 @@
 import User, { Photo } from "./User"
 
 export interface Listing {
-  _id?: string
+  _id: string
   rentDuration?: "annually" | "biannually" | "quarterly" | "monthly" | ""
   photos?: Array<Photo>
   lookingFor?: string

@@ -1,9 +1,10 @@
-import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
+import { Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
-import FavouriteIcon from "../_assets/SVG/Favourite"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import DotSeparator from "./DotSeparator"
 import { Photo } from "../_types/User"
+import { FavouriteButton } from "./RoomListingCard"
+import { FavoriteType } from "../_types/Favorites"
 
 export default function RoomeyListingCard({
   variant,
@@ -12,8 +13,8 @@ export default function RoomeyListingCard({
   ageInYears,
   about,
   isFavourite,
-  toggleIsFavourite,
   profileImage,
+  userId,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
@@ -21,8 +22,8 @@ export default function RoomeyListingCard({
   ageInYears: number
   about: string
   isFavourite: boolean
-  toggleIsFavourite: () => void
   profileImage?: Photo
+  userId: string
 }) {
   return (
     <Flex
@@ -42,7 +43,8 @@ export default function RoomeyListingCard({
       {!isLocked && (
         <FavouriteButton
           isFavourite={isFavourite}
-          handleToggleFavourite={toggleIsFavourite}
+          listingId={userId}
+          type={FavoriteType.USER}
         />
       )}
       <ProfileAvatar
@@ -55,26 +57,6 @@ export default function RoomeyListingCard({
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
       <AboutSection about={about} />
     </Flex>
-  )
-}
-
-function FavouriteButton({
-  isFavourite,
-  handleToggleFavourite,
-}: {
-  isFavourite: boolean
-  handleToggleFavourite: () => void
-}) {
-  return (
-    <Box
-      onClick={handleToggleFavourite}
-      as="button"
-      pos="absolute"
-      top="1rem"
-      right="1.04rem"
-    >
-      <FavouriteIcon isFilled={isFavourite} />
-    </Box>
   )
 }
 

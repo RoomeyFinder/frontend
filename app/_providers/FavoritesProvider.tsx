@@ -66,7 +66,7 @@ export default function FavoritesProvider({
 
   useEffect(() => {
     fetchFavorites()
-  }, [fetchFavorites])
+  }, [])
 
   const removeFavorite = useCallback(
     (id: string, useSession?: boolean) => {
@@ -80,7 +80,7 @@ export default function FavoritesProvider({
 
   const addNewFavorite = useCallback(
     (favorite: Favorite) => {
-      updateAllFavorites([...favorites, favorite])
+      updateAllFavorites([...(favorites || []), favorite])
     },
     [favorites, updateAllFavorites]
   )

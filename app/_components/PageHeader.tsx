@@ -63,7 +63,7 @@ export default function MyAdsHeader({
       h="19rem"
       justifyContent="start"
       alignItems="center"
-      zIndex="10"
+      zIndex="12"
       bg="white.400"
     >
       <Heading variant="md" textTransform="capitalize">

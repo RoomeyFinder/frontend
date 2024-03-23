@@ -1,14 +1,24 @@
-import { Avatar, Box, Flex, Heading, Image, Text } from "@chakra-ui/react"
+import {
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  Image,
+  Spinner,
+  Text,
+} from "@chakra-ui/react"
 import FavouriteIcon from "../_assets/SVG/Favourite"
 import imgOne from "../_assets/images/sample.png"
 import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
 import { Photo } from "../_types/User"
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useState } from "react"
 import { FavoriteType } from "../_types/Favorites"
 import useAxios from "../_hooks/useAxios"
 import { FavoritesContext } from "../_providers/FavoritesProvider"
+import useAppToast from "../_hooks/useAppToast"
+import { Listing } from "../_types/Listings"
 
 export default function RoomListingCard({
   variant,
@@ -29,7 +39,7 @@ export default function RoomListingCard({
   city: string
   isFavourite: boolean
   rentAmount: number
-  rentDuration: "yearly" | "monthly" | "biannually"
+  rentDuration: Listing["rentDuration"]
   title: string
   images: Photo[]
   listingId: string
@@ -37,6 +47,7 @@ export default function RoomListingCard({
   return (
     <Flex
       w="95dvw"
+      padding={variant === "outlined" ? "1rem": "0"}
       maxW={{ base: "32rem", sm: "28.3rem" }}
       alignItems="start"
       flexDir="column"
@@ -85,12 +96,12 @@ export default function RoomListingCard({
   )
 }
 
-function FavouriteButton({
+export function FavouriteButton({
   isFavourite,
   color,
   onToggleFavorite,
   type,
-  listingId
+  listingId,
 }: {
   isFavourite: boolean
   color?: string
@@ -98,27 +109,37 @@ function FavouriteButton({
   listingId: string
   type: FavoriteType
 }) {
-  const { addNewFavorite } = useContext(FavoritesContext)
+  const toast = useAppToast()
+  const { addNewFavorite, favorites } = useContext(FavoritesContext)
   const { fetchData } = useAxios()
+  const [loading, setLoading] = useState(false)
   const handleToggleFavourite = useCallback(async () => {
+    setLoading(true)
     const body = {
       doc: listingId,
       type,
     }
-    const res = await fetchData({ url: "/me", method: "post", body })
-    console.log(res)
-  }, [type, fetchData,])
+    const res = await fetchData({ url: "/favorites/me", method: "post", body })
+    if(res.statusCode === 201){
+      addNewFavorite(res.favorite)
+    }else toast({ status: "error", title: res.message || "Something went wrong"})
+    setLoading(false)
+  }, [type, fetchData])
   return (
     <Box
       onClick={handleToggleFavourite}
       as="button"
       pos="absolute"
       color={color || "inherit"}
-      top="1rem"
+      top="5%"
       zIndex={"10"}
-      right="1.04rem"
+      right="8%"
     >
-      <FavouriteIcon isFilled={isFavourite} />
+      {loading ? (
+        <Spinner color="brand.main" />
+      ) : (
+        <FavouriteIcon isFilled={isFavourite} />
+      )}
     </Box>
   )
 }
@@ -151,7 +172,7 @@ function AboutSection({
   ownersOccupation: string
   location: string
   apartmentType: string
-  rentDuration: "yearly" | "monthly" | "biannually"
+  rentDuration: Listing["rentDuration"]
   rentAmount: number
 }) {
   return (
@@ -182,7 +203,7 @@ function AboutSection({
       </Text>
       <Text as="b" fontSize="1.6rem" lineHeight="1.8rem">
         ₦{rentAmount.toLocaleString("en-us")}/
-        {rentDurationMapping[rentDuration]}
+        {rentDurationMapping[(rentDuration || "") as keyof typeof rentDurationMapping]}
       </Text>
     </Flex>
   )

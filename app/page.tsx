@@ -290,6 +290,7 @@ function RoomiesList({
         list={roomies.map((roomey) => (
           <RoomeyListingCard
             key={roomey._id}
+            userId={roomey._id}
             isLocked={lockProfiles}
             name={roomey.firstName}
             ageInYears={
@@ -297,7 +298,6 @@ function RoomiesList({
             }
             about={roomey.about}
             isFavourite={false}
-            toggleIsFavourite={() => {}}
             profileImage={roomey.profileImage}
           />
         ))}
@@ -320,9 +320,9 @@ function RoomsList({
   if (loading)
     return (
       <ListingsGridLayout
-        list={new Array(12)
-          .fill(1)
-          .map((_, idx) => <RoomListingCardSkeleton key={idx} />)}
+        list={new Array(12).fill(1).map((_, idx) => (
+          <RoomListingCardSkeleton key={idx} />
+        ))}
       />
     )
   if (rooms.length === 0 && !loading)

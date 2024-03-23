@@ -4,13 +4,13 @@ import User from "./User";
 
 export default interface Favorite {
   _id: string,
-  listing: User | Listing,
+  doc: User | Listing,
   type: FavoriteType
   createdAt: Date
   updatedAt: Date
 }
 
 export enum FavoriteType{
-  USER = "user",
-  LISTING = "listing"
+  USER = "User",
+  LISTING = "Listing"
 }

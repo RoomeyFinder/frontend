@@ -66,7 +66,7 @@ export default function ListingsProvider({
 
   useEffect(() => {
     fetchListings()
-  }, [fetchListings])
+  }, [])
 
   const updateListing = useCallback(
     (listing: Listing, useSession?: boolean) => {
