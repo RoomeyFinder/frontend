@@ -12,7 +12,6 @@ export default function RoomeyListingCard({
   name,
   ageInYears,
   about,
-  isFavourite,
   profileImage,
   userId,
 }: {
@@ -21,7 +20,6 @@ export default function RoomeyListingCard({
   name: string
   ageInYears: number
   about: string
-  isFavourite: boolean
   profileImage?: Photo
   userId: string
 }) {
@@ -42,7 +40,6 @@ export default function RoomeyListingCard({
     >
       {!isLocked && (
         <FavouriteButton
-          isFavourite={isFavourite}
           listingId={userId}
           type={FavoriteType.USER}
         />

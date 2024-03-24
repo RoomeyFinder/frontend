@@ -16,6 +16,7 @@ import useAppToast from "../_hooks/useAppToast"
 export const FavoritesContext = createContext<{
   favorites: Favorite[] | null
   addNewFavorite: (data: Favorite, useSession?: boolean) => void
+  deleteSingleFavorite: (data: Favorite, useSession?: boolean) => void
   removeFavorite: (id: string, useSession?: boolean) => void
   deleteAllFavorites: (_id: string, useSession?: boolean) => void
   loading: boolean
@@ -27,6 +28,7 @@ export const FavoritesContext = createContext<{
   favorites: [],
   removeFavorite: () => {},
   addNewFavorite: () => {},
+  deleteSingleFavorite: () => {},
   updateLoading: () => {},
   deleteAllFavorites: () => {},
   loading: true,
@@ -108,7 +110,23 @@ export default function FavoritesProvider({
 
   const addNewFavorite = useCallback(
     (favorite: Favorite) => {
-      updateAllFavorites([...(favorites || []), favorite])
+      console.log("favorite", favorites, "ljhgdfs")
+      updateAllFavorites([
+        ...((favorites || []) as Favorite[]).filter(
+          (it) => it._id !== favorite._id
+        ),
+        favorite,
+      ])
+    },
+    [favorites, updateAllFavorites]
+  )
+  const deleteSingleFavorite = useCallback(
+    (favorite: Favorite) => {
+      updateAllFavorites([
+        ...((favorites || []) as Favorite[]).filter(
+          (it) => it._id !== favorite._id
+        ),
+      ])
     },
     [favorites, updateAllFavorites]
   )
@@ -125,6 +143,7 @@ export default function FavoritesProvider({
         retriesCount,
         hasInitialized,
         retryInitialize,
+        deleteSingleFavorite,
       }}
     >
       {children}

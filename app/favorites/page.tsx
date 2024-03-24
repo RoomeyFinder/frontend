@@ -126,7 +126,6 @@ function FavoriteComponent({
           new Date().getFullYear() - new Date(roomey.dob).getFullYear()
         }
         about={roomey.about}
-        isFavourite={true}
         userId={roomey._id}
         variant="outlined"
       />
@@ -138,7 +137,6 @@ function FavoriteComponent({
       ownersName={listing.owner?.firstName as string}
       ownersOccupation={listing.owner?.occupation as string}
       city={listing.city as string}
-      isFavourite={true}
       rentAmount={(listing.rentAmount || 0) as number}
       rentDuration={listing.rentDuration as any}
       title={listing.lookingFor as string}

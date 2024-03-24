@@ -12,7 +12,7 @@ export default function AppHeader() {
       data-testid="header"
       as="header"
       position="sticky"
-      zIndex="100"
+      zIndex="150"
       top="0"
       h="9dvh"
       minH="8rem"

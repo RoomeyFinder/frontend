@@ -223,7 +223,7 @@ function ListingsSection() {
             loading={loadingRooms}
             emptyTextValue={
               <>
-                No roomies found
+                No rooms found
                 {search && <Text as="b"> {search}</Text>}
               </>
             }
@@ -297,7 +297,6 @@ function RoomiesList({
               new Date().getFullYear() - new Date(roomey.dob).getFullYear()
             }
             about={roomey.about}
-            isFavourite={false}
             profileImage={roomey.profileImage}
           />
         ))}
@@ -336,7 +335,6 @@ function RoomsList({
             ownersName={room.owner?.firstName as string}
             ownersOccupation={room.owner?.occupation as string}
             city={room.city as string}
-            isFavourite={false}
             rentAmount={room.rentAmount as number}
             rentDuration={room.rentDuration as any}
             title={room.lookingFor as string}

@@ -1,9 +1,14 @@
 import {
+  AlertDialog,
   Avatar,
   Box,
+  Button,
   Flex,
   Heading,
   Image,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Spinner,
   Text,
 } from "@chakra-ui/react"
@@ -13,7 +18,7 @@ import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
 import { Photo } from "../_types/User"
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useMemo, useRef, useState } from "react"
 import { FavoriteType } from "../_types/Favorites"
 import useAxios from "../_hooks/useAxios"
 import { FavoritesContext } from "../_providers/FavoritesProvider"
@@ -26,7 +31,6 @@ export default function RoomListingCard({
   ownersName,
   ownersOccupation,
   // city,
-  isFavourite,
   rentAmount,
   rentDuration,
   images,
@@ -37,7 +41,6 @@ export default function RoomListingCard({
   ownersName: string
   ownersOccupation: string
   city: string
-  isFavourite: boolean
   rentAmount: number
   rentDuration: Listing["rentDuration"]
   title: string
@@ -47,7 +50,7 @@ export default function RoomListingCard({
   return (
     <Flex
       w="95dvw"
-      padding={variant === "outlined" ? "1rem": "0"}
+      padding={variant === "outlined" ? "1rem" : "0"}
       maxW={{ base: "32rem", sm: "28.3rem" }}
       alignItems="start"
       flexDir="column"
@@ -62,7 +65,6 @@ export default function RoomListingCard({
       {showFavoriteButton && (
         <FavouriteButton
           color="white"
-          isFavourite={isFavourite}
           onToggleFavorite={() => {}}
           listingId={listingId}
           type={FavoriteType.LISTING}
@@ -97,49 +99,127 @@ export default function RoomListingCard({
 }
 
 export function FavouriteButton({
-  isFavourite,
   color,
   onToggleFavorite,
   type,
   listingId,
 }: {
-  isFavourite: boolean
   color?: string
   onToggleFavorite?: () => void
   listingId: string
   type: FavoriteType
 }) {
   const toast = useAppToast()
-  const { addNewFavorite, favorites } = useContext(FavoritesContext)
+  const { addNewFavorite, favorites, deleteSingleFavorite } =
+    useContext(FavoritesContext)
+  console.log(favorites)
   const { fetchData } = useAxios()
+  const favorite = useMemo(
+    () => favorites?.find((it) => it.doc?._id === listingId),
+    [favorites, listingId]
+  )
+  const isFavorite = useMemo(() => Boolean(favorite), [favorite])
   const [loading, setLoading] = useState(false)
-  const handleToggleFavourite = useCallback(async () => {
+  const handleAddFavorite = useCallback(async () => {
+    toast.closeAll()
     setLoading(true)
     const body = {
       doc: listingId,
       type,
     }
     const res = await fetchData({ url: "/favorites/me", method: "post", body })
-    if(res.statusCode === 201){
+    if (res.statusCode === 201) {
       addNewFavorite(res.favorite)
-    }else toast({ status: "error", title: res.message || "Something went wrong"})
+    } else
+      toast({ status: "error", title: res.message || "Something went wrong" })
     setLoading(false)
-  }, [type, fetchData])
+  }, [type, fetchData, toast, addNewFavorite])
+
+  const handleRemoveFavorite = useCallback(async () => {
+    if (!favorite) return
+    toast.closeAll()
+    setLoading(true)
+    const res = await fetchData({
+      url: `/favorites/${favorite?._id}`,
+      method: "delete",
+    })
+    if (res.statusCode === 200) deleteSingleFavorite(res.favorite)
+    else
+      toast({ status: "error", title: res.message || "Something went wrong" })
+    setLoading(false)
+  }, [type, fetchData, favorite, deleteSingleFavorite])
+
+  const getChildren = useCallback(
+    () =>
+      loading ? (
+        <Spinner color="brand.main" />
+      ) : (
+        <FavouriteIcon isFilled={isFavorite} />
+      ),
+    [loading, isFavorite]
+  )
+  const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false)
   return (
     <Box
-      onClick={handleToggleFavourite}
+      onClick={
+        !isFavorite ? handleAddFavorite : () => setShowRemoveConfirmation(true)
+      }
       as="button"
       pos="absolute"
       color={color || "inherit"}
       top="5%"
-      zIndex={"10"}
+      zIndex={"120"}
       right="8%"
     >
-      {loading ? (
-        <Spinner color="brand.main" />
-      ) : (
-        <FavouriteIcon isFilled={isFavourite} />
-      )}
+      {getChildren()}
+      <Box
+        display={showRemoveConfirmation ? "block" : "none"}
+        pos="absolute"
+        zIndex="130"
+        top="50%"
+        right="100%"
+        bg="white"
+        rounded="1.2rem"
+        p="1.2rem"
+        fontSize="1.6rem"
+        textAlign="center"
+        w="95dvw"
+        maxW="22rem"
+        fontWeight="600"
+      >
+        <Text as="h6" color="black" mb="1.5rem">
+          Are you sure you want to remove this favorite?
+        </Text>
+        <Flex justifyContent="center" alignItems="center" gap="1.5rem">
+          <Text
+            role="button"
+            py=".8rem"
+            px="1.5rem"
+            rounded="1.2rem"
+            color="red.main"
+            _hover={{ bg: "red.main", color: "white" }}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleRemoveFavorite()
+              setShowRemoveConfirmation(false)
+            }}
+          >
+            Remove
+          </Text>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation()
+              setShowRemoveConfirmation(false)
+            }}
+            as="p"
+            role="button"
+            py="1rem"
+            variant="brand-secondary"
+          >
+            Cancel
+          </Button>
+        </Flex>
+      </Box>
     </Box>
   )
 }
@@ -203,7 +283,11 @@ function AboutSection({
       </Text>
       <Text as="b" fontSize="1.6rem" lineHeight="1.8rem">
         ₦{rentAmount.toLocaleString("en-us")}/
-        {rentDurationMapping[(rentDuration || "") as keyof typeof rentDurationMapping]}
+        {
+          rentDurationMapping[
+            (rentDuration || "") as keyof typeof rentDurationMapping
+          ]
+        }
       </Text>
     </Flex>
   )
