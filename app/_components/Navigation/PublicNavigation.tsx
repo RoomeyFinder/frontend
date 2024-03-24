@@ -91,7 +91,7 @@ export default function PublicNavigation() {
               mx="auto"
               alignItems="center"
             >
-              <AppLogo showTextLogo="base" />
+              <AppLogo showTextLogoAlways={true} />
               <CloseButton
                 borderRadius="0"
                 _hover={{ bg: "brand.10", color: "brand.main" }}
@@ -99,7 +99,6 @@ export default function PublicNavigation() {
                 size="lg"
                 justifyContent="center"
                 ml="auto"
-                mr="2rem"
               />
             </Flex>
             <DrawerBody

@@ -63,7 +63,7 @@ export default function SupportNav({
   navItemComponent: ChakraComponent<never, BoxProps>
   navItemStyles?: SystemStyleObject
 }) {
-  const { logout } = useContext(UserContext)
+  const { logout, user } = useContext(UserContext)
   const router = useRouter()
   const SupportMenuComponent = getSupportMenuElement(
     navItemComponent,
@@ -80,9 +80,11 @@ export default function SupportNav({
             {link.name}
           </SupportMenuComponent>
         ))}
-        <SupportMenuComponent as="button" onClick={logout}>
-          Logout
-        </SupportMenuComponent>
+        {user && (
+          <SupportMenuComponent as="button" onClick={logout}>
+            Logout
+          </SupportMenuComponent>
+        )}
       </Flex>
     </>
   )

@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useState,
 } from "react"
 import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
@@ -43,6 +44,9 @@ export default function ListingsProvider({
     updateLoading,
   } = useGetFromStorage("RF_USER_LISTINGS")
 
+  const [retriesCount, setRetriesCount] = useState(0)
+  const [hasInitialized, setHasInitialized] = useState(false)
+
   const { fetchData } = useAxios()
 
   const fetchListings = useCallback(async () => {
@@ -52,8 +56,14 @@ export default function ListingsProvider({
       url: "/listings/me",
       method: "get",
     })
-    if (res.statusCode === 200) updateAllListings(res.listings)
-    else if (res.statusCode === 403) resetAuthorization()
+    if (res.statusCode === 200) {
+      setHasInitialized(true)
+      updateAllListings(res.listings)
+      setRetriesCount(0)
+    } else if (res.statusCode === 403) resetAuthorization()
+    else {
+      setRetriesCount(retriesCount + 1)
+    }
     updateLoading(false)
   }, [
     fetchData,
@@ -65,8 +75,10 @@ export default function ListingsProvider({
   ])
 
   useEffect(() => {
-    fetchListings()
-  }, [])
+    console.log(listings)
+    if (listings === null && hasInitialized === false && retriesCount < 10)
+      fetchListings()
+  }, [listings, fetchListings, hasInitialized, retriesCount])
 
   const updateListing = useCallback(
     (listing: Listing, useSession?: boolean) => {
