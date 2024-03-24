@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-import SupportNav, { baseNavItemStyles } from "./SupportNavList"
+import SupportNav, { baseNavItemStyles, getSupportMenuElement } from "./SupportNavList"
 import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"

@@ -10,6 +10,7 @@ import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
 import User from "../_types/User"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
+import localforage from "localforage"
 
 export const UserContext = createContext<{
   user: User | null
@@ -17,13 +18,15 @@ export const UserContext = createContext<{
   deleteUser: () => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
-    }>({
-      user: null,
-      updateUser: () => {},
-      deleteUser: () => {},
-      updateLoading: () => {},
-      loading: true,
-    })
+  logout: () => void
+}>({
+  user: null,
+  updateUser: () => {},
+  deleteUser: () => {},
+  updateLoading: () => {},
+  logout: () => {},
+  loading: true,
+})
 
 export default function UserProvider({
   children,
@@ -60,13 +63,22 @@ export default function UserProvider({
     isAuthorized,
   ])
 
+  const logout = useCallback(() => {
+    localforage.clear((err) => {
+      if (!err) {
+        sessionStorage.clear()
+        window.location.reload()
+      }
+    })
+  }, [])
+
   useEffect(() => {
     fetchUser()
   }, [])
 
   return (
     <UserContext.Provider
-      value={{ user, updateUser, deleteUser, loading, updateLoading }}
+      value={{ user, updateUser, deleteUser, loading, updateLoading, logout }}
     >
       {children}
     </UserContext.Provider>

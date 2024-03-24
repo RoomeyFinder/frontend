@@ -42,6 +42,8 @@ export default function AuthProvider({
 }: {
   children: ReactNode | ReactNode
 }) {
+
+  //clear storage on logout!!!!
   const {
     data: token,
     updateData: updateToken,

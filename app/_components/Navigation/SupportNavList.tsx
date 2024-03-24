@@ -1,7 +1,15 @@
-import { BoxProps, ChakraComponent, Flex, SystemStyleObject, chakra, Box } from "@chakra-ui/react"
+import {
+  BoxProps,
+  ChakraComponent,
+  Flex,
+  SystemStyleObject,
+  chakra,
+  Box,
+} from "@chakra-ui/react"
 import { supportLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
-
+import { UserContext } from "@/app/_providers/UserProvider"
+import { useContext } from "react"
 
 export const baseNavItemStyles = {
   bg: "transparent",
@@ -18,18 +26,21 @@ export const baseNavItemStyles = {
     textDecor: "none",
     bg: "brand.10",
     color: "brand.main",
-    fontWeight: "600"
+    fontWeight: "600",
   },
   _active: {
-    bg: "brand.25"
+    bg: "brand.25",
   },
   _focus: {
     borderColor: "brand.50",
-    bg: "brand.25"
-  }
+    bg: "brand.25",
+  },
 }
 
-function getSupportMenuElement (chakraComponent: ChakraComponent<never, BoxProps>, styles: SystemStyleObject) {
+export function getSupportMenuElement(
+  chakraComponent: ChakraComponent<never, BoxProps>,
+  styles: SystemStyleObject
+) {
   return chakra(chakraComponent, {
     baseStyle: {
       ...baseNavItemStyles,
@@ -40,27 +51,38 @@ function getSupportMenuElement (chakraComponent: ChakraComponent<never, BoxProps
       textAlign: "left",
       alignItems: "center",
       justifyContent: "start",
-      ...styles
-    }
+      ...styles,
+    },
   })
 }
 
-export default function SupportNav({ navItemComponent, navItemStyles }: {
-  navItemComponent: ChakraComponent<never, BoxProps>,
+export default function SupportNav({
+  navItemComponent,
+  navItemStyles,
+}: {
+  navItemComponent: ChakraComponent<never, BoxProps>
   navItemStyles?: SystemStyleObject
 }) {
+  const { logout } = useContext(UserContext)
   const router = useRouter()
-  const SupportMenuComponent = getSupportMenuElement(navItemComponent, navItemStyles || {}) as ChakraComponent<typeof Box, BoxProps>
+  const SupportMenuComponent = getSupportMenuElement(
+    navItemComponent,
+    navItemStyles || {}
+  ) as ChakraComponent<typeof Box, BoxProps>
   return (
     <>
       <Flex flexDir="column" gap="2rem" pb="2rem">
-        {
-          supportLinks.map((link) => (
-            <SupportMenuComponent key={link.name} onClick={() => router.push(link.href)}>
-              {link.name}
-            </SupportMenuComponent>
-          ))
-        }
+        {supportLinks.map((link) => (
+          <SupportMenuComponent
+            key={link.name}
+            onClick={() => router.push(link.href)}
+          >
+            {link.name}
+          </SupportMenuComponent>
+        ))}
+        <SupportMenuComponent as="button" onClick={logout}>
+          Logout
+        </SupportMenuComponent>
       </Flex>
     </>
   )

@@ -1,9 +1,8 @@
 "use client"
-import { ReactNode, useContext } from "react"
+import { ReactNode } from "react"
 import AppHeader from "./AppHeader"
 import { Box, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
-import { AuthContext } from "../_providers/AuthContext"
 
 export default function GlobalLayout({
   children,
@@ -16,7 +15,7 @@ export default function GlobalLayout({
       <Flex
         justifyContent="center"
         alignItems="center"
-        minH={{ base: "calc(100dvh - 30%)", sm: "calc(100dvh - 23%)" }}
+        minH={{ base: "80dvh" }}
       >
         <Box flexGrow="1">{children}</Box>
       </Flex>
