@@ -104,22 +104,11 @@ function Renderer() {
           favoritesToDisplay.length > 0 && (
             <ListingsGridLayout
               list={favoritesToDisplay.map((favorite) => (
-                <Box
-                  role="button"
-                  onClick={() =>
-                    router.push(
-                      !filter || filter === "rooms"
-                        ? `/ads/${favorite.doc?._id}`
-                        : `/profile/${favorite.doc._id}`
-                    )
-                  }
-                >
-                  <FavoriteComponent
-                    document={favorite.doc}
-                    key={favorite._id}
-                    filter={filter}
-                  />
-                </Box>
+                <FavoriteComponent
+                  document={favorite.doc}
+                  key={favorite._id}
+                  filter={filter}
+                />
               ))}
               justifyContent="start"
               templateColumns={{

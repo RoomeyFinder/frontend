@@ -12,6 +12,7 @@ import ListingMap from "./_components/ListingMap"
 import ListingCTAs from "./_components/ListingCTAs"
 import { UserContext } from "@/app/_providers/UserProvider"
 import ListingForm from "../_components/ListingForm"
+import BackButton from "@/app/_components/BackButton"
 
 export default function ListingPage() {
   const router = useRouter()
@@ -61,6 +62,7 @@ export default function ListingPage() {
       >
         <HStack w="full">
           <VStack gap="1rem" alignItems="start" w="full">
+        <BackButton />
             <ListingHeading isOwnListing={isOwnListing} listing={listing} />
             <ListingPhotos photos={listing?.photos} />
           </VStack>

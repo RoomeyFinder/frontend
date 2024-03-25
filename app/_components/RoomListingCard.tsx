@@ -24,6 +24,7 @@ import useAxios from "../_hooks/useAxios"
 import { FavoritesContext } from "../_providers/FavoritesProvider"
 import useAppToast from "../_hooks/useAppToast"
 import { Listing } from "../_types/Listings"
+import { useRouter } from "next/navigation"
 
 export default function RoomListingCard({
   variant,
@@ -47,6 +48,7 @@ export default function RoomListingCard({
   images: Photo[]
   listingId: string
 }) {
+  const router = useRouter()
   return (
     <Flex
       w="95dvw"
@@ -85,15 +87,17 @@ export default function RoomListingCard({
           )}
         />
       </Box>
-      <OwnersInfo ownersName={ownersName} />
-      <AboutSection
-        rentAmount={rentAmount}
-        rentDuration={rentDuration}
-        title={"Single Bedroom in Beautiful Mbuoba for lease just testing"}
-        ownersOccupation={ownersOccupation}
-        location={"Port Harcourt"}
-        apartmentType={"4 Rooms"}
-      />
+      <Box onClick={() => router.push(`/ads/${listingId}`)}>
+        <OwnersInfo ownersName={ownersName} />
+        <AboutSection
+          rentAmount={rentAmount}
+          rentDuration={rentDuration}
+          title={"Single Bedroom in Beautiful Mbuoba for lease just testing"}
+          ownersOccupation={ownersOccupation}
+          location={"Port Harcourt"}
+          apartmentType={"4 Rooms"}
+        />
+      </Box>
     </Flex>
   )
 }
@@ -112,7 +116,6 @@ export function FavouriteButton({
   const toast = useAppToast()
   const { addNewFavorite, favorites, deleteSingleFavorite } =
     useContext(FavoritesContext)
-  console.log(favorites)
   const { fetchData } = useAxios()
   const favorite = useMemo(
     () => favorites?.find((it) => it.doc?._id === listingId),

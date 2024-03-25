@@ -1,10 +1,11 @@
-import { Divider, Flex, Heading, Text } from "@chakra-ui/react"
+import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import DotSeparator from "./DotSeparator"
 import { Photo } from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
+import { useRouter } from "next/navigation"
 
 export default function RoomeyListingCard({
   variant,
@@ -23,6 +24,8 @@ export default function RoomeyListingCard({
   profileImage?: Photo
   userId: string
 }) {
+  const router = useRouter()
+
   return (
     <Flex
       py="2rem"
@@ -39,10 +42,7 @@ export default function RoomeyListingCard({
       _hover={{ background: "white" }}
     >
       {!isLocked && (
-        <FavouriteButton
-          listingId={userId}
-          type={FavoriteType.USER}
-        />
+        <FavouriteButton listingId={userId} type={FavoriteType.USER} />
       )}
       <ProfileAvatar
         imageSrc={profileImage?.secure_url}
@@ -52,7 +52,9 @@ export default function RoomeyListingCard({
       />
       <NameAndAge name={name} ageInYears={ageInYears} />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <AboutSection about={about} />
+      <Box onClick={() => router.push(`/profile/${userId}`)}>
+        <AboutSection about={about} />
+      </Box>
     </Flex>
   )
 }
