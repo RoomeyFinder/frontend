@@ -18,7 +18,7 @@ export default function ContactForm({
   useEffect(() => {
     const toastId = "password-toast"
     if (
-      toast.isActivated(toastId) === false &&
+      toast.isActive(toastId) === false &&
       (error.includes("password") || error.includes("confirmPassword")) &&
       (formData.password.length > 0 || formData.confirmPassword.length > 0)
     ) {
