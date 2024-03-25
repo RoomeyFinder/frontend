@@ -75,7 +75,6 @@ export default function ListingsProvider({
   ])
 
   useEffect(() => {
-    console.log(listings)
     if (listings === null && hasInitialized === false && retriesCount < 10)
       fetchListings()
   }, [listings, fetchListings, hasInitialized, retriesCount])
