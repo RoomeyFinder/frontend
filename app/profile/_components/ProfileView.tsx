@@ -1,9 +1,12 @@
-import { VStack } from "@chakra-ui/react"
+import { Flex, Text, VStack } from "@chakra-ui/react"
 import User from "../../_types/User"
 import ProfileOverview from "./ProfileOverview"
 import LifeStyleOverview from "./LifestyleOverview"
 import AboutOverview from "./AboutOverview"
 import ProfileVisibilityOverview from "./ProfileVisibilityOverview"
+import LeftChevron from "@/app/_assets/SVG/LeftChevron"
+import { useRouter } from "next/navigation"
+import BackButton from "@/app/_components/BackButton"
 
 export default function ProfileView({
   userData,
@@ -20,6 +23,7 @@ export default function ProfileView({
       w={{ base: "95dvw", sm: "75%", md: "64%" }}
       mx="auto"
     >
+     <BackButton/>
       <ProfileOverview
         userData={userData}
         isOwner={isOwner}

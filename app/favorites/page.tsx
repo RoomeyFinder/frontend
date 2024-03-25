@@ -1,6 +1,14 @@
 "use client"
-import { useSearchParams } from "next/navigation"
-import { Box, Button, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
+import { useRouter, useSearchParams } from "next/navigation"
+import {
+  Box,
+  Button,
+  Flex,
+  Link,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import Empty from "../_components/Empty"
 import FavoritesHeader from "../_components/PageHeader"
@@ -43,6 +51,7 @@ function Renderer() {
       }),
     [favorites, filter]
   )
+  const router = useRouter()
   return (
     <Box pos="relative" minH="80dvh">
       <FavoritesHeader
@@ -62,7 +71,12 @@ function Renderer() {
         <Empty
           heading="Oops!"
           text={
-            <VStack as="span" alignItems="start" justifyContent="start" gap="2rem">
+            <VStack
+              as="span"
+              alignItems="start"
+              justifyContent="start"
+              gap="2rem"
+            >
               <Text as="span">
                 An error was encountered while trying to load your favorites
               </Text>
@@ -90,11 +104,22 @@ function Renderer() {
           favoritesToDisplay.length > 0 && (
             <ListingsGridLayout
               list={favoritesToDisplay.map((favorite) => (
-                <FavoriteComponent
-                  document={favorite.doc}
-                  key={favorite._id}
-                  filter={filter}
-                />
+                <Box
+                  role="button"
+                  onClick={() =>
+                    router.push(
+                      !filter || filter === "rooms"
+                        ? `/ads/${favorite.doc?._id}`
+                        : `/profile/${favorite.doc._id}`
+                    )
+                  }
+                >
+                  <FavoriteComponent
+                    document={favorite.doc}
+                    key={favorite._id}
+                    filter={filter}
+                  />
+                </Box>
               ))}
               justifyContent="start"
               templateColumns={{
