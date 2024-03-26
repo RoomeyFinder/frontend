@@ -76,6 +76,7 @@ export default function EmailChangeForm() {
       newEmail,
       emailVerificationCode,
     })
+    setError(res.statusCode !== 200)
     if (res.statusCode === 200) {
       toast.success(res.message)
       navigateToStage(1)
@@ -166,7 +167,7 @@ export default function EmailChangeForm() {
           type="submit"
           variant="brand-secondary"
           fontWeight="400"
-          maxW={{ base: "15rem", md: "18.5rem" }}
+          maxW={{ base: "22rem", md: "20rem" }}
           flexGrow="1"
           flexShrink="0"
           isDisabled={isSubmitDisabled}
@@ -222,7 +223,6 @@ function NewEmailInputSection({
           readOnly={!isEditing}
           isDisabled={!isEditing}
           value={value}
-          // {...(error ? getErrorProps("email", ["email"]) : {})}
         />
       </InputGroup>
     </>
