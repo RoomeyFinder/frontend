@@ -1,6 +1,6 @@
 import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import Hero from "../_components/PublicPages/Hero"
-import ChatIcon from "../_assets/SVG/messengerIcon"
+import ChatIcon from "../_assets/SVG/ChatIcon"
 import Handlens from "../_assets/SVG/Handlens"
 import PeopleGroup from "../_assets/SVG/PeopleGroup"
 import FeatureCard from "../_components/FeatureCard"

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react"
 import PublishAdClicker from "./_components/PublishAdClicker"
 import FeatureCard from "./_components/FeatureCard"
-import ChatIcon from "./_assets/SVG/messengerIcon"
+import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
 import PeopleGroup from "./_assets/SVG/PeopleGroup"
 import {
