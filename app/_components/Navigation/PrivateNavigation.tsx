@@ -35,7 +35,7 @@ export default function PrivateNavigation({
     <Flex alignItems="center" gap="2rem">
       <Show above="md">
         <Flex gap="2rem">
-          <Link href="/chat">
+          <Link href="/messenger">
             <StandAloneIcon>
               <MessageIcon />
             </StandAloneIcon>
