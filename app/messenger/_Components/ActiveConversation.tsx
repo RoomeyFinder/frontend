@@ -10,12 +10,30 @@ import {
 } from "@chakra-ui/react"
 import Conversation from "./Conversation"
 import ThreeDotIcon, { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
+import { useContext } from "react"
+import { MessengerContext } from "@/app/_providers/MessengerProvider"
+import AppLogo from "@/app/_components/Logo"
 
-export default function ActiveConversation({
-  closeConversation,
-}: {
-  closeConversation: () => void
-}) {
+export default function ActiveConversation() {
+  const { activeConversation, closeActiveConversation } =
+    useContext(MessengerContext)
+
+  if (activeConversation === null)
+    return (
+      <>
+        <Flex
+          h="full"
+          justifyContent="center"
+          alignItems="center"
+          flexDir="column"
+          gap="2rem"
+          pb="12rem"
+        >
+          <AppLogo showTextLogoAlways  />
+          <Heading fontWeight="500" fontSize="2.4rem" color="#7070704D">Send and receive messages </Heading>
+        </Flex>
+      </>
+    )
   return (
     <>
       <Box
@@ -24,7 +42,7 @@ export default function ActiveConversation({
         h={{ base: "calc(100dvh - 8rem)", sm: "calc(100dvh - 8.7rem)" }}
         overflow="auto"
       >
-        <ConversationHeader closeConversation={closeConversation} />
+        <ConversationHeader closeConversation={closeActiveConversation} />
         <Conversation />
       </Box>
     </>
@@ -43,7 +61,7 @@ function ConversationHeader({
         bg="brand.10"
         px={{ base: "2rem", sm: "5rem" }}
         alignItems="center"
-        h={{ base: "6rem", sm: "9rem" }}
+        h={{ base: "7rem", sm: "9rem" }}
       >
         <Flex gap="1rem" alignItems="center">
           <Avatar />

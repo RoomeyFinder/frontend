@@ -1,12 +1,17 @@
 "use client"
 import { GridItem, SimpleGrid } from "@chakra-ui/react"
 import ActiveConversation from "./_Components/ActiveConversation"
-import { useState } from "react"
 import Conversations from "./_Components/Conversations"
 import Banner from "./_Components/Banner"
+import { MessengerContext } from "../_providers/MessengerProvider"
+import { useContext, useMemo } from "react"
 
 export default function Page() {
-  const [showChat, setShowChat] = useState(!false)
+  const { activeConversation } = useContext(MessengerContext)
+  const showChat = useMemo(
+    () => activeConversation !== null,
+    [activeConversation]
+  )
   return (
     <>
       <SimpleGrid
@@ -26,7 +31,7 @@ export default function Page() {
           colSpan={{ base: 6, sm: 4, md: 3 }}
           display={{ base: showChat ? "block" : "none", sm: "block" }}
         >
-          <ActiveConversation closeConversation={() => setShowChat(false)} />
+          <ActiveConversation />
         </GridItem>
       </SimpleGrid>
     </>
