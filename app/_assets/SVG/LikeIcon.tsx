@@ -33,8 +33,8 @@ export function LikeIconFilled(){
       />
       <path
         opacity="0.5"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M0.91863 9.58099C1.43225 9.55883 1.87217 9.94521 1.91646 10.4574L3.16012 24.8404C3.24001 25.7643 2.51227 26.5606 1.58301 26.5606C0.707709 26.5606 0 25.8504 0 24.9768V10.5401C0 10.026 0.404998 9.60316 0.91863 9.58099Z"
         fill="#3A86FF"
         fill-opacity="0.5"

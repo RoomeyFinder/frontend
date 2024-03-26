@@ -32,7 +32,7 @@ export const privateLinks = [
   },
   {
     name: "Chats",
-    href: "/chats",
+    href: "/messenger",
     icon: MessageIcon,
     hideAbove: "md",
     showBelow: "md",

@@ -35,6 +35,7 @@ const privatePaths = [
   "/favorites",
   "/interests",
   "/notifications",
+  "/messenger",
 ]
 
 export default function AuthProvider({
