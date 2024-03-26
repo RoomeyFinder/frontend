@@ -9,6 +9,7 @@ import UserProvider from "./_providers/UserProvider"
 import ListingsProvider from "./_providers/ListingsProvider"
 import FavoritesProvider from "./_providers/FavoritesProvider"
 import SearchProvider from "./_providers/SearchProvider"
+import { Toaster } from "react-hot-toast"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -38,6 +39,7 @@ export default function RootLayout({
             defer
             src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
           ></script>
+          <Toaster containerStyle={{ fontSize: "1.6rem" }} />
         </ChakraUIProvider>
       </body>
     </html>

@@ -5,6 +5,7 @@ import PageHeading from "./_PageHeading"
 import PasswordChangeForm from "./_PasswordChangeForm"
 import SocialAccountsSection from "./_SocialAccountsSection"
 import DeactivateAccountSection from "./_DeactivateAccountSection"
+import EmailChangeForm from "./EmailChangeForm"
 
 export default function ProfileSettings() {
   return (
@@ -17,6 +18,7 @@ export default function ProfileSettings() {
       my="5rem"
     >
       <PageHeading />
+      <EmailChangeForm />
       <PasswordChangeForm />
       <SocialAccountsSection />
       <DeactivateAccountSection />
