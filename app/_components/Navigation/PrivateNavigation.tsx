@@ -1,3 +1,4 @@
+"use client"
 import BoltIcon from "@/app/_assets/SVG/BoltIcon"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
 import LeftChevron from "@/app/_assets/SVG/LeftChevron"
@@ -21,7 +22,9 @@ import {
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-import SupportNav, { baseNavItemStyles, getSupportMenuElement } from "./SupportNavList"
+import SupportNav, {
+  baseNavItemStyles,
+} from "./SupportNavList"
 import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
@@ -31,20 +34,21 @@ export default function PrivateNavigation({
 }: {
   showHamburgerAlways?: boolean
 }) {
+  const router = useRouter()
   return (
     <Flex alignItems="center" gap="2rem">
       <Show above="md">
         <Flex gap="2rem">
-          <Link href="/messenger">
+          <Text as="button" onClick={() => router.push("/messenger")}>
             <StandAloneIcon>
               <MessageIcon />
             </StandAloneIcon>
-          </Link>
-          <Link href="/notifications">
+          </Text>
+          <Text as="button" onClick={() => router.push("/notifications")}>
             <StandAloneIcon>
               <NotificationIcon />
             </StandAloneIcon>
-          </Link>
+          </Text>
         </Flex>
       </Show>
       <PrivateNavigationDropDown showHamburgerAlways={showHamburgerAlways} />

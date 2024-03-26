@@ -28,15 +28,13 @@ export default function Banner() {
         Messages
         <FilterButton />
       </Flex>
-      <InputGroup
-        border="0"
-        borderBottom="1px solid #D9D9D9"
-        pb="1rem"
-    
-        p="0"
-      >
+      <InputGroup border="0" borderBottom="1px solid #D9D9D9" pb="1rem" p="0">
         <Input px="0" py="0" rounded="0" border="0" />
-        <InputRightAddon border="0" color="gray.main"    _hover={{ bg: "transparent" }}>
+        <InputRightAddon
+          border="0"
+          color="gray.main"
+          _hover={{ bg: "transparent" }}
+        >
           <SmallSearchIcon />
         </InputRightAddon>
       </InputGroup>
@@ -61,7 +59,9 @@ function FilterButton() {
         rounded="1.2rem"
       >
         <PopoverBody border="0">
-          <Heading fontSize="1.6rem" mb="2rem">Filter by</Heading>
+          <Heading fontSize="1.6rem" mb="2rem">
+            Filter by
+          </Heading>
           <Flex>
             <CustomRadioGroup
               options={["All", "Read", "Unread"]}
@@ -73,7 +73,7 @@ function FilterButton() {
                 alignItems: "start",
                 gap: "2rem",
                 fontSize: "1.4rem",
-                fontWeight: "400"
+                fontWeight: "400",
               }}
             />
           </Flex>
