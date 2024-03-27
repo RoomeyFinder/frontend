@@ -33,13 +33,15 @@ export default function MyAdsHeader({
   filters,
   children,
   isDisplayDynamic,
-  heading
+  heading,
+  background,
 }: {
   pathname: string
   filters: string[]
   children?: ReactNode | ReactNode[]
   isDisplayDynamic?: boolean
   heading?: string
+  background?: string
 }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -64,7 +66,7 @@ export default function MyAdsHeader({
       justifyContent="start"
       alignItems="center"
       zIndex="12"
-      bg="white.400"
+      bg={background || "white.400"}
     >
       <Heading variant="md" textTransform="capitalize">
         {isDisplayDynamic ? currentDisplay : heading}
