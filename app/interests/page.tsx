@@ -42,7 +42,7 @@ export default function Page() {
 function Interest() {
   return (
     <Flex
-      bg={{ base: "#d9d9d94f", md: "#D9D9D9" }}
+      bg="#d9d9d94f"
       rounded="1.2rem"
       alignItems="center"
       gap={{ base: "1rem", md: "1.5rem" }}
@@ -55,24 +55,34 @@ function Interest() {
         h={{ base: "4rem", md: "7rem" }}
         border="1px solid #3A86FF"
       />
-      <Box>
+      <Flex flexDir="column" gap={{ base: ".5rem", md: "1rem" }}>
         <Heading
           fontSize={{ base: "1.4rem", md: "1.9rem" }}
           lineHeight="1.2rem"
-          mb="1rem"
         >
           Sarah Owen
         </Heading>
-        <Link
-          href={``}
-          color="gray.main"
-          fontWeight="600"
-          fontSize={{ base: "1.2rem", md: "1.6rem" }}
-          textDecor="underline"
-        >
-          View profile
-        </Link>
-      </Box>
+        <Box>
+          <Link
+            href={``}
+            color="gray.main"
+            fontWeight="600"
+            fontSize={{ base: "1.2rem", md: "1.6rem" }}
+            textDecor="underline"
+          >
+            View profile
+          </Link>
+          &nbsp;&nbsp;&nbsp;
+          <Text
+            as="span"
+            display={{ md: "none" }}
+            fontSize={{ base: "1.3rem", md: "1.6rem" }}
+            color="#A1A1A1"
+          >
+            20s
+          </Text>
+        </Box>
+      </Flex>
       <Flex
         ml="auto"
         gap=".8rem"
