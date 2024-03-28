@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 import Conversation from "./Conversation"
-import ThreeDotIcon, { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
+import { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
 import { useContext } from "react"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import AppLogo from "@/app/_components/Logo"
@@ -19,7 +19,7 @@ export default function ActiveConversation() {
   const { activeConversation, closeActiveConversation } =
     useContext(MessengerContext)
 
-  if (activeConversation !== null)
+  if (activeConversation === null)
     return (
       <>
         <Flex
