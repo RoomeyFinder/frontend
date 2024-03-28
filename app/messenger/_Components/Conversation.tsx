@@ -10,10 +10,18 @@ export default function Conversation() {
         px={{ base: "3rem", md: "5rem" }}
         py="3rem"
       >
-        <Message shadow="md" />
-        <Message shadow="md" />
+        <Message shadow="md" bg="brand.10" />
+        <Message shadow="md" bg="brand.10" />
         <Message ml="auto" shadow="sm" />
-        <Message shadow="md" />
+        <Message shadow="md" bg="brand.10" />
+        <Message ml="auto" shadow="sm" />
+        <Message shadow="md" bg="brand.10" />
+        <Message ml="auto" shadow="sm" />
+        <Message shadow="md" bg="brand.10" />
+        <Message ml="auto" shadow="sm" />
+        <Message shadow="md" bg="brand.10" />
+        <Message ml="auto" shadow="sm" />
+        <Message shadow="md" bg="brand.10" />
       </VStack>
     </>
   )

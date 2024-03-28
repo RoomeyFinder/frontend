@@ -13,12 +13,13 @@ import ThreeDotIcon, { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
 import { useContext } from "react"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import AppLogo from "@/app/_components/Logo"
+import ConversationInput from "./ConversationInput"
 
 export default function ActiveConversation() {
   const { activeConversation, closeActiveConversation } =
     useContext(MessengerContext)
 
-  if (activeConversation === null)
+  if (activeConversation !== null)
     return (
       <>
         <Flex
@@ -41,9 +42,20 @@ export default function ActiveConversation() {
         position="relative"
         h={{ base: "calc(100dvh - 8rem)", sm: "calc(100dvh - 8.7rem)" }}
         overflow="auto"
+        bg="#f9f9f9"
       >
         <ConversationHeader closeConversation={closeActiveConversation} />
         <Conversation />
+        <Box
+          pos="sticky"
+          bottom="0"
+          insetX="0"
+          px={{ base: "5dvw", md: "3rem" }}
+          py="3rem"
+          bg="linear-gradient(45deg, transparent, white)"
+        >
+          <ConversationInput />
+        </Box>
       </Box>
     </>
   )
