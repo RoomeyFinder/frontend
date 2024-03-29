@@ -87,7 +87,12 @@ export default function RoomListingCard({
           )}
         />
       </Box>
-      <Box onClick={() => router.push(`/ads/${listingId}`)}>
+      <Box
+        onClick={() => router.push(`/ads/${listingId}`)}
+        _hover={{ shadow: "md" }}
+        p=".5rem"
+        roundedBottom="1.2rem"
+      >
         <OwnersInfo ownersName={ownersName} />
         <AboutSection
           rentAmount={rentAmount}

@@ -39,7 +39,7 @@ export default function RoomeyListingCard({
       borderRadius="1.2rem"
       background="transparent"
       cursor="pointer"
-      _hover={{ background: "white" }}
+      _hover={{ background: "white", shadow: "md" }}
     >
       {!isLocked && (
         <FavouriteButton listingId={userId} type={FavoriteType.USER} />
