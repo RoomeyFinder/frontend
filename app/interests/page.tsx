@@ -13,16 +13,17 @@ import MyAdsHeader from "../_components/PageHeader"
 import CheckIcon from "../_assets/SVG/CheckIcon"
 import { TimesIconSmall } from "../_assets/SVG/TimesIcon"
 import { InterestsContext } from "../_providers/InterestsProvider"
-import { useContext, useMemo } from "react"
+import { useCallback, useContext, useMemo } from "react"
 import { UserContext } from "../_providers/UserProvider"
 import { useSearchParams } from "next/navigation"
+import Interest from "../_types/Interest"
 
 export default function Page() {
   const { interests } = useContext(InterestsContext)
   const { user } = useContext(UserContext)
   const searchParams = useSearchParams()
   const currentDisplay = useMemo(
-    () => (searchParams.get("filter") || "sent") as "sent" | "received",
+    () => (searchParams.get("filter") || "received") as "sent" | "received",
     [searchParams]
   )
   const sentInterests = useMemo(() => {
@@ -36,6 +37,25 @@ export default function Page() {
       (interest) => interest.sender?._id !== user?._id
     )
   }, [interests, user])
+
+  const displayFilteredInterests = useCallback(
+    (interests: Interest[]) => {
+      if (currentDisplay.startsWith("sent"))
+        return sentInterests.map((interest) => (
+          <Interest
+            key={interest._id}
+            isSent={currentDisplay.startsWith("sent")}
+          />
+        ))
+      return receivedInterests.map((interest) => (
+        <Interest
+          key={interest._id}
+          isSent={currentDisplay.startsWith("sent")}
+        />
+      ))
+    },
+    [currentDisplay, sentInterests, receivedInterests]
+  )
 
   return (
     <Box pos="relative" minH="80dvh">
@@ -60,15 +80,9 @@ export default function Page() {
         justifyContent="center"
         mx="auto"
       >
-        {(currentDisplay.startsWith("sent")
-          ? sentInterests
-          : receivedInterests
-        ).map((interest) => (
-          <Interest
-            key={interest._id}
-            isSent={currentDisplay.startsWith("sent")}
-          />
-        ))}
+        {displayFilteredInterests(
+          currentDisplay.startsWith("sent") ? sentInterests : receivedInterests
+        )}
       </VStack>
     </Box>
   )
