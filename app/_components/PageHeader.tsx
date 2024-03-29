@@ -46,7 +46,7 @@ export default function MyAdsHeader({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [currentDisplay, setCurrentDisplay] = useState<string>(
-    (searchParams.get("filter") as any) || filters[0]
+    (searchParams.get("filter") as any) || (filters[0] as any).filterText || filters[0]
   )
 
   const toggleDisplay = useCallback(

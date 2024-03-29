@@ -15,9 +15,13 @@ import {
   TextProps,
   VStack,
 } from "@chakra-ui/react"
-import { ReactNode, useCallback, useMemo, useState } from "react"
+import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
 import ProfilePhotos, { ProfilePhotosModal } from "./ProfilePhotos"
 import { useRouter } from "next/navigation"
+import useAxios from "@/app/_hooks/useAxios"
+import { UserContext } from "@/app/_providers/UserProvider"
+import { InterestsContext } from "@/app/_providers/InterestsProvider"
+import toast from "react-hot-toast"
 
 const genderMapping = {
   female: "F",
@@ -114,7 +118,8 @@ export default function ProfileOverview({
               <InterestButton
                 isOwner={isOwner as boolean}
                 hasSentInterest={hasSentInterest}
-                handleSendInterest={handleSendInterest}
+                doc={userData._id}
+                docType={"User"}
               />
               {hasSentInterest === false ||
                 (isOwner === true && (
@@ -165,15 +170,39 @@ export default function ProfileOverview({
 export function InterestButton({
   isOwner,
   hasSentInterest,
-  handleSendInterest,
-  variant
+  variant,
+  doc,
+  docType,
 }: {
   isOwner: boolean
   hasSentInterest: boolean
-  handleSendInterest?: () => void
   variant?: string
+  doc: string
+  docType: "User" | "Listing"
 }) {
   const router = useRouter()
+  const { fetchData } = useAxios()
+  const { user } = useContext(UserContext)
+  const { addNewInterest } = useContext(InterestsContext)
+
+  const handleSendInterest = useCallback(async () => {
+    const body = {
+      sender: user?._id,
+      doc,
+      type: docType,
+    }
+    const res = await fetchData({ url: "/interests", method: "post", body })
+    if (res.statusCode === 201) {
+      addNewInterest(res.interest)
+    } else {
+      toast.error(
+        res.message ||
+          "Sorry, we are unable to send that interest at the moment. Please try again."
+      )
+    }
+    console.log(res)
+  }, [fetchData, user, doc, docType, addNewInterest])
+
   const display = useMemo(() => {
     if (isOwner)
       return (

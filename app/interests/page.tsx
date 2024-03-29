@@ -64,14 +64,11 @@ export default function Page() {
           ? sentInterests
           : receivedInterests
         ).map((interest) => (
-          <Interest />
+          <Interest
+            key={interest._id}
+            isSent={currentDisplay.startsWith("sent")}
+          />
         ))}
-        <Interest isSent={currentDisplay === "sent"} />
-        <Interest isSent={currentDisplay === "sent"} />
-        <Interest isSent={currentDisplay === "sent"} />
-        <Interest isSent={currentDisplay === "sent"} />
-        <Interest isSent={currentDisplay === "sent"} />
-        <Interest isSent={currentDisplay === "sent"} />
       </VStack>
     </Box>
   )
