@@ -17,6 +17,10 @@ import { useCallback, useContext, useMemo } from "react"
 import { UserContext } from "../_providers/UserProvider"
 import { useSearchParams } from "next/navigation"
 import Interest from "../_types/Interest"
+import { FavoriteType } from "../_types/Favorites"
+import { Listing } from "../_types/Listings"
+import User from "../_types/User"
+import TimeSince from "../_components/TimeSince"
 
 export default function Page() {
   const { interests } = useContext(InterestsContext)
@@ -45,12 +49,14 @@ export default function Page() {
           <Interest
             key={interest._id}
             isSent={currentDisplay.startsWith("sent")}
+            interest={interest}
           />
         ))
       return receivedInterests.map((interest) => (
         <Interest
           key={interest._id}
           isSent={currentDisplay.startsWith("sent")}
+          interest={interest}
         />
       ))
     },
@@ -88,7 +94,18 @@ export default function Page() {
   )
 }
 
-function Interest({ isSent }: { isSent?: boolean }) {
+function Interest({
+  isSent,
+  interest,
+}: {
+  isSent?: boolean
+  interest: Interest
+}) {
+  const profileToDisplay = useMemo<User | undefined>(() => {
+    if (!isSent) return interest.sender
+    if (interest.type === FavoriteType.USER) return interest.doc as User
+    else return (interest.doc as Listing)?.owner
+  }, [interest])
   return (
     <Flex
       bg="#d9d9d94f"
@@ -103,17 +120,19 @@ function Interest({ isSent }: { isSent?: boolean }) {
         w={{ base: "4rem", md: "7rem" }}
         h={{ base: "4rem", md: "7rem" }}
         border="1px solid #3A86FF"
+        src={profileToDisplay?.profileImage?.secure_url}
+        name={`${profileToDisplay?.firstName} ${profileToDisplay?.lastName}`}
       />
       <Flex flexDir="column" gap={{ base: ".5rem", md: "1rem" }}>
         <Heading
           fontSize={{ base: "1.4rem", md: "1.9rem" }}
           lineHeight="1.2rem"
         >
-          Sarah Owen
+          {profileToDisplay?.firstName} {profileToDisplay?.lastName}
         </Heading>
         <Box>
           <Link
-            href={``}
+            href={`/profile/${profileToDisplay?._id}`}
             color="gray.main"
             fontWeight="600"
             fontSize={{ base: "1.2rem", md: "1.6rem" }}
@@ -128,7 +147,7 @@ function Interest({ isSent }: { isSent?: boolean }) {
             fontSize={{ base: "1.3rem", md: "1.6rem" }}
             color="#A1A1A1"
           >
-            20s
+            <TimeSince date={interest.createdAt} />
           </Text>
         </Box>
       </Flex>
@@ -163,7 +182,7 @@ function Interest({ isSent }: { isSent?: boolean }) {
         )}
         <Show above="md">
           <Text fontSize={{ base: "1.3rem", md: "1.6rem" }} color="#A1A1A1">
-            20s
+            <TimeSince date={interest.createdAt} />
           </Text>
         </Show>
       </Flex>

@@ -11,4 +11,7 @@ export default interface Interest {
   declined: boolean,
   type: FavoriteType,
   seen: boolean
+  createdAt: string,
+  updatedAt: string,
+  seenAt: String
 }
