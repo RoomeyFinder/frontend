@@ -3,9 +3,9 @@
 import localforage from "localforage"
 import { useCallback, useEffect, useState } from "react"
 
-export default function useGetFromStorage(key: string) {
+export default function useGetFromStorage<T>(key: string) {
   const [loading, setLoading] = useState(true)
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<T | null>(null)
   const [isSessionStorage, setIsSessionStorage] = useState<undefined | boolean>(
     undefined
   )
@@ -55,7 +55,7 @@ export default function useGetFromStorage(key: string) {
         localforage
           .getItem(key)
           .then((val) => {
-            setData(val)
+            setData(val as T)
             setIsSessionStorage(false)
           })
           .catch((err) => {

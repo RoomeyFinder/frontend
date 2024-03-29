@@ -37,7 +37,7 @@ export default function MyAdsHeader({
   background,
 }: {
   pathname: string
-  filters: string[]
+  filters: string[] | { displayText: string; filterText: string }[]
   children?: ReactNode | ReactNode[]
   isDisplayDynamic?: boolean
   heading?: string
@@ -83,12 +83,14 @@ export default function MyAdsHeader({
       >
         {filters.map((filter, idx) => (
           <Tab
-            key={filter}
-            onClick={() => toggleDisplay(filter)}
+            key={(filter as any).displayText || filter}
+            onClick={() => toggleDisplay((filter as any).filterText || filter)}
             isActivated={
-              currentDisplay === filter || (!currentDisplay && idx === 0)
+              currentDisplay === (filter as any).filterText ||
+              currentDisplay === filter ||
+              (!currentDisplay && idx === 0)
             }
-            name={filter}
+            name={(filter as any).displayText || filter}
           />
         ))}
       </Flex>

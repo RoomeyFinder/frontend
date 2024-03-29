@@ -50,7 +50,7 @@ export default function FavoritesProvider({
     deleteData: deleteAllFavorites,
     loading,
     updateLoading,
-  } = useGetFromStorage("RF_USER_FAVORITES")
+  } = useGetFromStorage<Favorite[]>("RF_USER_FAVORITES")
   const [hasInitialized, setHasInitialized] = useState(false)
   const { fetchData } = useAxios()
 
@@ -101,7 +101,7 @@ export default function FavoritesProvider({
   const removeFavorite = useCallback(
     (id: string, useSession?: boolean) => {
       updateAllFavorites(
-        favorites.filter((it: Favorite) => it._id !== id),
+        favorites?.filter((it: Favorite) => it._id !== id),
         useSession
       )
     },
