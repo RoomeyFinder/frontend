@@ -42,7 +42,7 @@ export default function ListingsProvider({
     deleteData: deleteAllListings,
     loading,
     updateLoading,
-  } = useGetFromStorage("RF_USER_LISTINGS")
+  } = useGetFromStorage<Listing[] | null>("RF_USER_LISTINGS")
 
   const [retriesCount, setRetriesCount] = useState(0)
   const [hasInitialized, setHasInitialized] = useState(false)
@@ -82,7 +82,7 @@ export default function ListingsProvider({
   const updateListing = useCallback(
     (listing: Listing, useSession?: boolean) => {
       updateAllListings(
-        listings.map((it: Listing) => (it._id === listing._id ? listing : it)),
+        listings?.map((it: Listing) => (it._id === listing._id ? listing : it)),
         useSession
       )
     },
@@ -91,7 +91,7 @@ export default function ListingsProvider({
   const deleteListing = useCallback(
     (id: string, useSession?: boolean) => {
       updateAllListings(
-        listings.filter((it: Listing) => it._id !== id),
+        listings?.filter((it: Listing) => it._id !== id),
         useSession
       )
     },
@@ -100,7 +100,7 @@ export default function ListingsProvider({
 
   const addNewListing = useCallback(
     (listing: Listing) => {
-      updateAllListings([...listings, listing])
+      updateAllListings([...(listings || []), listing])
     },
     [listings, updateAllListings]
   )

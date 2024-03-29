@@ -1,8 +1,9 @@
 "use client"
-import { ReactNode, createContext, useCallback, useEffect } from "react"
+import { ReactNode, createContext, useCallback, useContext, useEffect } from "react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import useAxios from "../_hooks/useAxios"
 import Interest from "../_types/Interest"
+import { AuthContext } from "./AuthContext"
 
 export const InterestsContext = createContext<{
   interests: Interest[] | null
@@ -17,6 +18,7 @@ export default function InterestsProvider({
 }: {
   children: ReactNode[] | ReactNode
 }) {
+  const { isAuthorized } = useContext(AuthContext)
   const {
     data: interests,
     deleteData: deleteAllInterests,
@@ -28,6 +30,7 @@ export default function InterestsProvider({
   const { fetchData } = useAxios()
 
   const fetchInterests = useCallback(async () => {
+    if(loading || !isAuthorized) return
     updateLoading(true)
     const res = await fetchData({
       url: "/interests",
@@ -37,7 +40,7 @@ export default function InterestsProvider({
       updateInterests(res.interests, false)
     }
     updateLoading(false)
-  }, [fetchData, updateInterests, interests])
+  }, [fetchData, updateInterests, interests, isAuthorized])
 
   const addNewInterest = useCallback(
     (newInterest: Interest) => {
