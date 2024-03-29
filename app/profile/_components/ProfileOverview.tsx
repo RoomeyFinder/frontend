@@ -22,6 +22,7 @@ import useAxios from "@/app/_hooks/useAxios"
 import { UserContext } from "@/app/_providers/UserProvider"
 import { InterestsContext } from "@/app/_providers/InterestsProvider"
 import toast from "react-hot-toast"
+import { PersonIconTwo } from "@/app/_assets/SVG/PersonIcon"
 
 const genderMapping = {
   female: "F",
@@ -117,7 +118,6 @@ export default function ProfileOverview({
             <HStack alignItems="center" gap="2rem" mt="1.5rem">
               <InterestButton
                 isOwner={isOwner as boolean}
-                hasSentInterest={hasSentInterest}
                 doc={userData._id}
                 docType={"User"}
               />
@@ -169,13 +169,11 @@ export default function ProfileOverview({
 
 export function InterestButton({
   isOwner,
-  hasSentInterest,
   variant,
   doc,
   docType,
 }: {
   isOwner: boolean
-  hasSentInterest: boolean
   variant?: string
   doc: string
   docType: "User" | "Listing"
@@ -183,7 +181,24 @@ export function InterestButton({
   const router = useRouter()
   const { fetchData } = useAxios()
   const { user } = useContext(UserContext)
-  const { addNewInterest } = useContext(InterestsContext)
+  const { addNewInterest, interests } = useContext(InterestsContext)
+
+  const existingInterest = useMemo(
+    () =>
+      interests?.find(
+        (interest) => interest.doc._id === doc || interest.sender?._id === doc
+      ),
+    [doc, interests]
+  )
+
+  const isSender = useMemo(
+    () =>
+      existingInterest?.sender?._id &&
+      existingInterest?.sender?._id === user?._id
+        ? true
+        : false,
+    [existingInterest, user?._id]
+  )
 
   const handleSendInterest = useCallback(async () => {
     const body = {
@@ -192,64 +207,39 @@ export function InterestButton({
       type: docType,
     }
     const res = await fetchData({ url: "/interests", method: "post", body })
-    if (res.statusCode === 201) {
-      addNewInterest(res.interest)
-    } else {
+    if (res.statusCode === 201) addNewInterest(res.interest)
+    else
       toast.error(
         res.message ||
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
-    }
-    console.log(res)
   }, [fetchData, user, doc, docType, addNewInterest])
 
   const display = useMemo(() => {
-    if (isOwner)
-      return (
-        <>
-          Edit Profile <EditIcon />
-        </>
-      )
+    if (isOwner) return "Edit Profile"
     else {
-      if (hasSentInterest)
-        return (
-          <>
-            Interest sent <LikeIconFilled />
-          </>
-        )
-      return (
-        <>
-          Show Interest
-          <LikeIcon />
-        </>
-      )
+      if (existingInterest)
+        return isSender ? "Interest sent" : "Interest received"
+      return "Show Interest"
     }
-  }, [isOwner, hasSentInterest])
+  }, [isOwner, existingInterest])
 
-  const isOwnerProps = useMemo(() => {
+  const buttonProps = useMemo(() => {
     if (isOwner)
       return {
         onClick: () => router.push("/profile?edit=true"),
       }
     else {
-      if (hasSentInterest)
+      if (existingInterest)
         return {
-          title: `You will notified when ${name} accepts your interest`,
+          title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
           isDisabled: true,
-          color: "brand.main !important",
-          opacity: ".6 !important",
-          bg: "brand.10 !important",
-          _hover: {
-            _disabled: {
-              bg: "brand.10",
-            },
-          },
         }
       return {
         onClick: handleSendInterest,
       }
     }
-  }, [isOwner, hasSentInterest, handleSendInterest])
+  }, [isOwner, existingInterest, handleSendInterest])
 
   return (
     <Button
@@ -258,9 +248,16 @@ export function InterestButton({
       alignItems="end"
       variant={variant || "brand-secondary"}
       minW={{ md: "18.5rem" }}
-      {...isOwnerProps}
+      _disabled={{
+        bg: "transparent",
+        color: "",
+        _hover: { bg: "transparent", color: "brand.main" },
+        p: "0", 
+        justifyContent: "start"
+      }}
+      {...buttonProps}
     >
-      {display}
+      {display} {isOwner ? <EditIcon /> : <PersonIconTwo />}
     </Button>
   )
 }
