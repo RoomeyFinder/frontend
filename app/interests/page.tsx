@@ -2,9 +2,15 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Heading,
   Link,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Show,
   Text,
   VStack,
@@ -13,7 +19,7 @@ import MyAdsHeader from "../_components/PageHeader"
 import CheckIcon from "../_assets/SVG/CheckIcon"
 import { TimesIconSmall } from "../_assets/SVG/TimesIcon"
 import { InterestsContext } from "../_providers/InterestsProvider"
-import { useCallback, useContext, useMemo } from "react"
+import { useCallback, useContext, useMemo, useState } from "react"
 import { UserContext } from "../_providers/UserProvider"
 import { useSearchParams } from "next/navigation"
 import Interest from "../_types/Interest"
@@ -101,11 +107,50 @@ function Interest({
   isSent?: boolean
   interest: Interest
 }) {
+  const { unsendInterest, acceptInterest, declineInterest } =
+    useContext(InterestsContext)
+  const [loading, setLoading] = useState(false)
+  const [confirmation, setConfirmation] = useState({
+    text: "",
+    confirmAction: () => {},
+    show: false,
+  })
+  const isPending = useMemo(
+    () => interest.accepted === false && interest.declined === false,
+    [interest]
+  )
   const profileToDisplay = useMemo<User | undefined>(() => {
     if (!isSent) return interest.sender
     if (interest.type === FavoriteType.USER) return interest.doc as User
     else return (interest.doc as Listing)?.owner
   }, [interest])
+
+  const hideConfirmation = useCallback(
+    () => setConfirmation({ show: false, confirmAction: () => {}, text: "" }),
+    []
+  )
+
+  const handleUnsend = useCallback(async () => {
+    if (loading) return
+    setLoading(true)
+    await unsendInterest(interest?._id)
+    setLoading(false)
+  }, [interest, unsendInterest])
+
+  const handleAccept = useCallback(async () => {
+    if (loading) return
+    setLoading(true)
+    await acceptInterest(interest?._id)
+    setLoading(false)
+  }, [interest, acceptInterest])
+
+  const handleDecline = useCallback(async () => {
+    if (loading) return
+    setLoading(true)
+    await declineInterest(interest?._id)
+    setLoading(false)
+  }, [interest, declineInterest])
+
   return (
     <Flex
       bg="#d9d9d94f"
@@ -158,27 +203,67 @@ function Interest({
         fontSize={{ base: "1.2rem", md: "1.6rem" }}
         fontWeight="700"
       >
-        {isSent ? (
+        {isPending && (
           <>
-            <Text as="button" color="gray.main" aria-label="unsend interest">
-              Unsend
-            </Text>
+            {isSent ? (
+              <>
+                <Button
+                  isLoading={loading}
+                  onClick={() =>
+                    setConfirmation({
+                      show: true,
+                      text: "Are you show you want to unsend your interest?",
+                      confirmAction: handleUnsend,
+                    })
+                  }
+                  bg="transparent"
+                  color="gray.main"
+                  aria-label="unsend interest"
+                >
+                  Unsend
+                </Button>
+              </>
+            ) : (
+              <>
+                <Text
+                  onClick={handleAccept}
+                  as="button"
+                  color="brand.main"
+                  aria-label="accept interest"
+                >
+                  <Show below="md">
+                    <CheckIcon />
+                  </Show>
+                  <Show above="md">Accept</Show>
+                </Text>
+                <Text
+                  onClick={() =>
+                    setConfirmation({
+                      show: true,
+                      text: "Are you show you want to decline this interest?",
+                      confirmAction: handleDecline,
+                    })
+                  }
+                  as="button"
+                  color="gray.main"
+                  aria-label="decline interest"
+                >
+                  <Show below="md">
+                    <TimesIconSmall />
+                  </Show>
+                  <Show above="md">Decline</Show>
+                </Text>
+              </>
+            )}
           </>
-        ) : (
-          <>
-            <Text as="button" color="brand.main" aria-label="accept interest">
-              <Show below="md">
-                <CheckIcon />
-              </Show>
-              <Show above="md">Accept</Show>
-            </Text>
-            <Text as="button" color="gray.main" aria-label="decline interest">
-              <Show below="md">
-                <TimesIconSmall />
-              </Show>
-              <Show above="md">Decline</Show>
-            </Text>
-          </>
+        )}
+        {!isPending && (
+          <Text
+            color={interest.accepted ? "brand.main" : "gray.main"}
+            aria-label="decline interest"
+          >
+            {interest.accepted ? "Accepted" : "Declined"}
+          </Text>
         )}
         <Show above="md">
           <Text fontSize={{ base: "1.3rem", md: "1.6rem" }} color="#A1A1A1">
@@ -186,6 +271,34 @@ function Interest({
           </Text>
         </Show>
       </Flex>
+      <Modal isOpen={confirmation.show} isCentered onClose={hideConfirmation}>
+        <ModalOverlay />
+        <ModalContent
+          bg="white"
+          rounded="1.2rem"
+          maxW="50rem"
+          textAlign="center"
+          p="2rem"
+        >
+          <ModalHeader fontSize="2.4rem">{confirmation.text}</ModalHeader>
+          <ModalBody>
+            <Flex justifyContent="center" alignItems="center" gap="2rem">
+              <Button bg="transparent" as="button" onClick={hideConfirmation}>
+                Cancel
+              </Button>
+              <Button
+                variant="brand"
+                onClick={() => {
+                  confirmation.confirmAction()
+                  hideConfirmation()
+                }}
+              >
+                Yes
+              </Button>
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Flex>
   )
 }
