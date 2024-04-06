@@ -1,6 +1,15 @@
+import { Message as MessageInterface } from "@/app/_types/Conversation"
 import { Flex, FlexProps, Text } from "@chakra-ui/react"
+import { MutableRefObject } from "react"
 
-export default function Message({ ...props }: FlexProps) {
+export default function Message({
+  message,
+  messageRef,
+  ...props
+}: FlexProps & {
+  message: MessageInterface
+  messageRef?: MutableRefObject<HTMLDivElement | null>
+}) {
   return (
     <>
       <Flex
@@ -11,14 +20,18 @@ export default function Message({ ...props }: FlexProps) {
         py="1rem"
         rounded="1.2rem"
         flexDir="column"
+        ref={messageRef}
         {...props}
       >
         <Text fontSize={{ base: "1.2rem", md: "1.6rem" }} lineHeight="150%">
-          Lorem ipsum dolor sit amet consectetur. Eu aliquet proin id sit ipsum
-          velit sed diam. Sagittis sit sit maecenas egestas. Aliquet
+          {message.text}
         </Text>
         <Text alignSelf="end" color="gray.main">
-          12:00 AM
+          {new Date(message.createdAt).toLocaleTimeString("en-us", {
+            minute: "numeric",
+            hour: "numeric",
+            hour12: true,
+          })}
         </Text>
       </Flex>
     </>

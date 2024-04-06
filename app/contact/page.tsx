@@ -39,7 +39,6 @@ export default function ContactPage() {
         method: "post",
         body: formData,
       })
-      console.log(response)
       const isError = response.statusCode !== 201
       toast.closeAll()
       toast({

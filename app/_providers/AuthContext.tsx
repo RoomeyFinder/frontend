@@ -15,7 +15,7 @@ export const AuthContext = createContext<{
   isAuthorized: boolean
   updateToken: (newToken: string, useSession?: boolean) => void
   isSessionStorage?: boolean
-  resetAuthorization: () => void
+  resetAuthorization: (saveUrlState?: boolean) => void
   deleteToken: () => void
   loading: boolean
     }>({
@@ -51,7 +51,7 @@ export default function AuthProvider({
     deleteData: deleteToken,
     loading,
     isSessionStorage,
-  } = useGetFromStorage("RF_TOKEN")
+  } = useGetFromStorage<string | null>("RF_TOKEN")
   const pathname = usePathname()
   const router = useRouter()
   const isAuthorized = useMemo(() => token !== null, [token])

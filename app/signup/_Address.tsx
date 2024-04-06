@@ -23,7 +23,6 @@ export default function AddressForm({
             handleChange(sectionName, "placeId", "")
           }}
           handleSelection={(selection) => {
-            console.log(selection)
             handleChange(sectionName, "address", selection.description)
             handleChange(sectionName, "placeId", selection.place_id)
           }}

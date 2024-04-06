@@ -40,7 +40,7 @@ export default function UserProvider({
     deleteData: deleteUser,
     loading,
     updateLoading,
-  } = useGetFromStorage("RF_USER")
+  } = useGetFromStorage<User>("RF_USER")
 
   const { fetchData } = useAxios()
 
@@ -52,7 +52,7 @@ export default function UserProvider({
       method: "get",
     })
     if (res.statusCode === 200) updateUser(res.user)
-    else if (res.statusCode === 403) resetAuthorization()
+    else if (res.statusCode === 403) resetAuthorization(true)
     updateLoading(false)
   }, [
     fetchData,
@@ -67,10 +67,10 @@ export default function UserProvider({
     localforage.clear((err) => {
       if (!err) {
         sessionStorage.clear()
-        window.location.reload()
+        resetAuthorization(true)
       }
     })
-  }, [])
+  }, [resetAuthorization])
 
   useEffect(() => {
     fetchUser()

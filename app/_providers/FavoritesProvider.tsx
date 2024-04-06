@@ -110,7 +110,6 @@ export default function FavoritesProvider({
 
   const addNewFavorite = useCallback(
     (favorite: Favorite) => {
-      console.log("favorite", favorites, "ljhgdfs")
       updateAllFavorites([
         ...((favorites || []) as Favorite[]).filter(
           (it) => it._id !== favorite._id

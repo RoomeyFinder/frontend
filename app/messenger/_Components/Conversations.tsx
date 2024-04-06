@@ -4,10 +4,10 @@ import { Avatar, Box, Flex, Heading, Text, VStack } from "@chakra-ui/react"
 import { useContext } from "react"
 
 export default function Conversations() {
-  const { updateActiveConversation, conversations } =
+  const { updateActiveConversation, conversations, activeConversation } =
     useContext(MessengerContext)
 
-  if (conversations.length === 0)
+  if (conversations?.length === 0)
     return (
       <Flex
         h="full"
@@ -37,13 +37,13 @@ export default function Conversations() {
         overflow="auto"
         py="2rem"
       >
-        <ConversationItem onClick={() => updateActiveConversation({})} />
-        <ConversationItem onClick={() => updateActiveConversation({})} />
-        <ConversationItem
-          onClick={() => updateActiveConversation({})}
-          isActive
-        />
-        <ConversationItem onClick={() => updateActiveConversation({})} />
+        {conversations.map((convo) => (
+          <ConversationItem
+            key={convo._id}
+            onClick={() => updateActiveConversation(convo)}
+            isActive={activeConversation?._id === convo._id}
+          />
+        ))}
       </VStack>
     </>
   )

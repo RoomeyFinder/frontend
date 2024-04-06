@@ -232,8 +232,6 @@ export default function ListingForm({
       let body
       if (edit === false) body = await getFormDataForNewListing(isDraft)
       else body = await getFormDataForEditedListing(isDraft)
-      console.log(body.get("isDraft"), body.get("isActivated"), isDraft)
-      // return
       const requestOptions: FetchOptions = {
         url: edit === true ? `/listings/${listing?._id}` : "/listings",
         method: edit === true ? `put` : "post",

@@ -12,6 +12,7 @@ import SearchProvider from "./_providers/SearchProvider"
 import { Toaster } from "react-hot-toast"
 import MessengerProvider from "./_providers/MessengerProvider"
 import InterestsProvider from "./_providers/InterestsProvider"
+import MessagesProvider from "./_providers/MessagesProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -32,7 +33,9 @@ export default function RootLayout({
                     <FavoritesProvider>
                       <InterestsProvider>
                         <MessengerProvider>
-                          <GlobalLayout>{children}</GlobalLayout>
+                          <MessagesProvider>
+                            <GlobalLayout>{children}</GlobalLayout>
+                          </MessagesProvider>
                         </MessengerProvider>
                       </InterestsProvider>
                     </FavoritesProvider>
