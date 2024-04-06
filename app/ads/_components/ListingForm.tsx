@@ -40,6 +40,7 @@ const initialListingState: Listing = {
   features: [],
   isActivated: false,
   isDraft: false,
+  _id: ""
 }
 export default function ListingForm({
   edit,
