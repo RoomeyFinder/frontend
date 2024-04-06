@@ -17,6 +17,7 @@ import ConversationInput from "./ConversationInput"
 import { MessagesContext } from "@/app/_providers/MessagesProvider"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
 import { UserContext } from "@/app/_providers/UserProvider"
+import User from "@/app/_types/User"
 
 export default function ActiveConversation() {
   const { activeConversation, closeActiveConversation, socket } =
@@ -63,7 +64,10 @@ export default function ActiveConversation() {
         overflow="hidden"
         bg="#f9f9f9"
       >
-        <ConversationHeader closeConversation={closeActiveConversation} />
+        <ConversationHeader
+          closeConversation={closeActiveConversation}
+          otherUser={recipient}
+        />
         <Box
           h={{ base: "calc(100dvh - 28.8rem)", md: "calc(100dvh - 30rem)" }}
           overflow="auto"
@@ -87,8 +91,10 @@ export default function ActiveConversation() {
 
 function ConversationHeader({
   closeConversation,
+  otherUser,
 }: {
   closeConversation: () => void
+  otherUser?: User
 }) {
   return (
     <Box position="sticky" top="0" w="full" bg="white">
@@ -102,7 +108,7 @@ function ConversationHeader({
         <Flex gap="1rem" alignItems="center">
           <Avatar />
           <Heading fontSize={{ base: "1.8rem", sm: "2rem" }}>
-            Exploit Enomah
+            {otherUser?.firstName} {otherUser?.lastName}
           </Heading>
         </Flex>
         <Popover placement="left">

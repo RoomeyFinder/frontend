@@ -1,32 +1,23 @@
 "use client"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
+import { UserContext } from "@/app/_providers/UserProvider"
+import Conversation, { Message } from "@/app/_types/Conversation"
+import User from "@/app/_types/User"
 import { Avatar, Box, Flex, Heading, Text, VStack } from "@chakra-ui/react"
-import { useContext } from "react"
+import { useCallback, useContext } from "react"
 
 export default function Conversations() {
   const { updateActiveConversation, conversations, activeConversation } =
     useContext(MessengerContext)
-
-  if (conversations?.length === 0)
-    return (
-      <Flex
-        h="full"
-        justifyContent="center"
-        alignItems="start"
-        flexDir="column"
-        gap="2rem"
-        color="#7070704D"
-        pb="30rem"
-        px="3rem"
-      >
-        <Heading fontWeight="500" fontSize="2.4rem" color="inherit">
-          No Conversations yet
-        </Heading>
-        <Text fontWeight="400" fontSize="1.4rem">
-          Conversations you start will appear hear
-        </Text>
-      </Flex>
-    )
+  const { user } = useContext(UserContext)
+  const getOtherUser = useCallback(
+    (conversation: Conversation) => {
+      if (conversation?.creator?._id === user?._id)
+        return conversation?.otherUser
+      return conversation?.creator
+    },
+    [user]
+  )
   return (
     <>
       <VStack
@@ -42,6 +33,8 @@ export default function Conversations() {
             key={convo._id}
             onClick={() => updateActiveConversation(convo)}
             isActive={activeConversation?._id === convo._id}
+            otherUser={getOtherUser(convo)}
+            latestMessage={convo.latestMessage}
           />
         ))}
       </VStack>
@@ -52,9 +45,13 @@ export default function Conversations() {
 function ConversationItem({
   isActive,
   onClick,
+  otherUser,
+  latestMessage,
 }: {
   isActive?: boolean
   onClick: () => void
+  otherUser: User
+  latestMessage: Message | null
 }) {
   return (
     <>
@@ -74,7 +71,7 @@ function ConversationItem({
         />
         <Box>
           <Heading fontSize={{ base: "1.2rem", md: "1.6rem" }}>
-            Exploit Enomah
+            {otherUser?.firstName} {otherUser?.lastName}
             <Text
               as="span"
               fontWeight="normal"
@@ -82,7 +79,7 @@ function ConversationItem({
               fontSize={{ base: "1.4rem", sm: "1.6rem" }}
               mt=".5rem"
             >
-              Latest message text
+              {latestMessage?.text}
             </Text>
           </Heading>
         </Box>

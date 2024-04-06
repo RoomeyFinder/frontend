@@ -20,12 +20,14 @@ export const MessengerContext = createContext<{
   closeActiveConversation: () => void
   conversations: Conversation[]
   socket: Socket<any, any>
+  loading: boolean
 }>({
   activeConversation: null,
   updateActiveConversation: () => {},
   closeActiveConversation: () => {},
   conversations: [],
   socket: io(),
+  loading: true
 })
 
 export default function MessengerProvider({
@@ -39,6 +41,7 @@ export default function MessengerProvider({
     data: cachedConversations,
     updateData: updateCachedConversations,
     updateLoading,
+    loading
   } = useGetFromStorage<Conversation[]>("RF_USER_CONVERSATIONS")
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [hasFetched, setHasFetched] = useState(false)
@@ -93,6 +96,7 @@ export default function MessengerProvider({
         closeActiveConversation,
         conversations,
         socket,
+        loading
       }}
     >
       {children}
