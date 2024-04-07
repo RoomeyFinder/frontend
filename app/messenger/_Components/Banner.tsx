@@ -11,12 +11,20 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Radio,
   Text,
   VStack,
 } from "@chakra-ui/react"
+import { ChangeEventHandler } from "react"
 
-export default function Banner() {
+export default function Banner({
+  onChange,
+  onSelectFilter,
+  selectedFilter
+}: {
+  onChange?: ChangeEventHandler<HTMLInputElement>
+  onSelectFilter?: (val: string) => void
+  selectedFilter?: string
+}) {
   return (
     <VStack
       gap="1rem"
@@ -26,10 +34,14 @@ export default function Banner() {
     >
       <Flex as={Heading} justifyContent="space-between">
         Messages
-        <FilterButton />
+        <FilterButton
+          value={selectedFilter}
+          handleChange={onSelectFilter}
+          options={["All", "Read", "Unread"]}
+        />
       </Flex>
       <InputGroup border="0" borderBottom="1px solid #D9D9D9" pb="1rem" p="0">
-        <Input px="0" py="0" rounded="0" border="0" />
+        <Input px="0" py="0" rounded="0" border="0" onChange={onChange} />
         <InputRightAddon
           border="0"
           color="gray.main"
@@ -42,7 +54,15 @@ export default function Banner() {
   )
 }
 
-function FilterButton() {
+function FilterButton({
+  handleChange,
+  value,
+  options = ["All", "Read", "Unread"],
+}: {
+  handleChange?: (val: string) => void
+  value?: string
+  options?: string[]
+}) {
   return (
     <Popover placement="bottom">
       <PopoverTrigger>
@@ -64,10 +84,12 @@ function FilterButton() {
           </Heading>
           <Flex>
             <CustomRadioGroup
-              options={["All", "Read", "Unread"]}
-              onChange={() => {}}
+              options={options}
+              onChange={(val) => {
+                typeof handleChange === "function" && handleChange(val)
+              }}
               name={"filterBy"}
-              selectedValue={"All"}
+              selectedValue={value || options[0]}
               containerProps={{
                 flexDir: "column",
                 alignItems: "start",

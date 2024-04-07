@@ -31,9 +31,16 @@ export default function Page() {
           justifyContent="center"
           alignItems="center"
         >
-          <Banner />
+          {(loading || conversations.length === 0) && <Banner />}
           {!loading &&
-            (conversations.length > 0 ? <Conversations /> : <NoConversation />)}
+            (conversations.length > 0 ? (
+              <Conversations />
+            ) : (
+              <NoConversation
+                heading="No conversations yet"
+                body="Conversations you start will appear hear"
+              />
+            ))}
           {loading && (
             <Flex minH="40dvh" justifyContent="center" alignItems="center">
               <Spinner size="xl" color="brand.main" />
