@@ -1,31 +1,41 @@
-import { VStack } from "@chakra-ui/react"
+import { Box, Flex, VStack } from "@chakra-ui/react"
 import Message from "./Message"
 import { Message as MessageInterface } from "@/app/_types/Conversation"
-import { useContext, useEffect, useRef } from "react"
+import { useCallback, useContext, useEffect, useRef } from "react"
 import { UserContext } from "@/app/_providers/UserProvider"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
+import DownChevron from "@/app/_assets/SVG/DownChevron"
 
 export default function Conversation({
   messages,
+  canScrollToLatestMessage,
 }: {
   messages: MessageInterface[]
+  canScrollToLatestMessage: boolean
 }) {
   const { user } = useContext(UserContext)
   const { socket } = useContext(MessengerContext)
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
-  useEffect(() => {
-    lastMessageRef.current?.scrollIntoView(false)
-    socket.on(CONVERSATION_EVENTS.MESSAGE, () => {
-      lastMessageRef.current?.scrollIntoView(false)
-    })
-    return () => {
-      socket.off(CONVERSATION_EVENTS.MESSAGE, () => {
-        lastMessageRef.current?.scrollIntoView(false)
-      })
-    }
+  const scrollToLatestMsg = useCallback(() => {
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth", inline: "end", block: "end" })
   }, [])
+
+  useEffect(() => {
+    canScrollToLatestMessage && scrollToLatestMsg()
+    socket.on(
+      CONVERSATION_EVENTS.MESSAGE,
+      () => canScrollToLatestMessage && scrollToLatestMsg
+    )
+    return () => {
+      socket.off(
+        CONVERSATION_EVENTS.MESSAGE,
+        () => canScrollToLatestMessage && scrollToLatestMsg
+      )
+    }
+  }, [scrollToLatestMsg, canScrollToLatestMessage])
+
   return (
     <>
       <VStack
@@ -44,6 +54,28 @@ export default function Conversation({
             messageRef={idx === list.length - 1 ? lastMessageRef : undefined}
           />
         ))}
+        {!canScrollToLatestMessage && (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            w="4rem"
+            h="4rem"
+            pos="sticky"
+            bottom="5rem"
+            bg="brand.main"
+            color="white"
+            rounded="full"
+            cursor="pointer"
+            marginLeft="auto"
+            transition="all 400ms ease"
+            opacity=".4"
+            _hover={{ opacity: "1" }}
+            onClick={scrollToLatestMsg}
+            as="button"
+          >
+            <DownChevron />
+          </Flex>
+        )}
       </VStack>
     </>
   )

@@ -10,9 +10,15 @@ import {
 } from "@chakra-ui/react"
 import Conversation from "./Conversation"
 import { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
-import { useCallback, useContext, useMemo } from "react"
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
-import AppLogo from "@/app/_components/Logo"
 import ConversationInput from "./ConversationInput"
 import { MessagesContext } from "@/app/_providers/MessagesProvider"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
@@ -20,6 +26,9 @@ import { UserContext } from "@/app/_providers/UserProvider"
 import User from "@/app/_types/User"
 
 export default function ActiveConversation() {
+  const [isUserIntentionallyScrolling, setIsUserIntentionallyScrolling] =
+    useState(false)
+  const conversationsContainerRef = useRef<HTMLDivElement | null>(null)
   const { activeConversation, closeActiveConversation, socket } =
     useContext(MessengerContext)
   const { messages } = useContext(MessagesContext)
@@ -55,6 +64,20 @@ export default function ActiveConversation() {
     },
     [socket, activeConversation, recipient]
   )
+
+  useEffect(() => {
+    conversationsContainerRef.current?.addEventListener("scroll", (e) => {
+      console.log(
+        (e.target as any).scrollHeight - (e.target as any).scrollTop
+      )
+      setIsUserIntentionallyScrolling(
+        e.target != null && (e.target as any).scrollHeight - (e.target as any).scrollTop > 900
+      )
+    })
+    return () => {
+      conversationsContainerRef.current?.removeEventListener("scroll",() => {})
+    }
+  }, [])
   return (
     <>
       <Box
@@ -71,8 +94,12 @@ export default function ActiveConversation() {
         <Box
           h={{ base: "calc(100dvh - 28.8rem)", md: "calc(100dvh - 30rem)" }}
           overflow="auto"
+          ref={conversationsContainerRef}
         >
-          <Conversation messages={sortedMessages} />
+          <Conversation
+            messages={sortedMessages}
+            canScrollToLatestMessage={isUserIntentionallyScrolling === false}
+          />
         </Box>
         <Box
           pos="sticky"
