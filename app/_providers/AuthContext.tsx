@@ -32,7 +32,6 @@ export const AuthContext = createContext<{
 const privatePaths = [
   "/profile",
   "/ads",
-  "/messengers",
   "/favorites",
   "/interests",
   "/notifications",
@@ -68,23 +67,23 @@ export default function AuthProvider({
   const redirectWhenNotAuthorized = useCallback(() => {
     const currentUrl = window.location.pathname
     if (
-      privatePaths.some((path) =>
-        pathname.toLowerCase().startsWith(path.toLowerCase())
-      )
-    )
-      router.push(`/login?next=${currentUrl + window.location.search}`)
-  }, [router])
-
-  useEffect(() => {
-    if (
       !loading &&
       isAuthorized === false &&
       privatePaths.some((path) =>
         pathname.toLowerCase().startsWith(path.toLowerCase())
       )
     )
-      redirectWhenNotAuthorized()
-  }, [pathname, redirectWhenNotAuthorized, isAuthorized, loading])
+      if (
+        privatePaths.some((path) =>
+          pathname.toLowerCase().startsWith(path.toLowerCase())
+        )
+      )
+        router.push(`/login?next=${currentUrl + window.location.search}`)
+  }, [pathname, router, isAuthorized, loading, token])
+
+  useEffect(() => {
+    redirectWhenNotAuthorized()
+  }, [redirectWhenNotAuthorized])
 
   return (
     <AuthContext.Provider

@@ -19,22 +19,34 @@ export default function Conversation({
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   const scrollToLatestMsg = useCallback(() => {
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth", inline: "end", block: "end" })
-  }, [])
+    lastMessageRef.current?.scrollIntoView({
+      behavior: "smooth",
+      inline: "end",
+      block: "end",
+    })
+  }, [lastMessageRef.current])
 
   useEffect(() => {
     canScrollToLatestMessage && scrollToLatestMsg()
-    socket.on(
-      CONVERSATION_EVENTS.MESSAGE,
-      () => canScrollToLatestMessage && scrollToLatestMsg
-    )
+    console.log("iytsuede", canScrollToLatestMessage)
+    // socket.onAny(() => {
+    //   console.log("dfjkadslf", canScrollToLatestMessage)
+    //   if (canScrollToLatestMessage)
+    //     lastMessageRef.current?.scrollIntoView(false)
+    // })
     return () => {
-      socket.off(
-        CONVERSATION_EVENTS.MESSAGE,
-        () => canScrollToLatestMessage && scrollToLatestMsg
-      )
+      // socket.offAny(() => {
+      //   console.log("dfjkadslf", canScrollToLatestMessage)
+      //   if (canScrollToLatestMessage)
+      //     lastMessageRef.current?.scrollIntoView(false)
+      // })
     }
-  }, [scrollToLatestMsg, canScrollToLatestMessage])
+  }, [
+    scrollToLatestMsg,
+    canScrollToLatestMessage,
+    socket,
+    lastMessageRef.current,
+  ])
 
   return (
     <>
