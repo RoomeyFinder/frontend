@@ -67,7 +67,6 @@ export default function UserProvider({
     localforage.clear((err) => {
       if (!err) {
         sessionStorage.clear()
-        resetAuthorization(true)
       }
     })
   }, [resetAuthorization])

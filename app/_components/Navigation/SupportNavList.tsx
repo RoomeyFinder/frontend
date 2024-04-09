@@ -8,8 +8,6 @@ import {
 } from "@chakra-ui/react"
 import { supportLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
-import { UserContext } from "@/app/_providers/UserProvider"
-import { useContext } from "react"
 
 export const baseNavItemStyles = {
   bg: "transparent",
@@ -63,7 +61,6 @@ export default function SupportNav({
   navItemComponent: ChakraComponent<never, BoxProps>
   navItemStyles?: SystemStyleObject
 }) {
-  const { logout, user } = useContext(UserContext)
   const router = useRouter()
   const SupportMenuComponent = getSupportMenuElement(
     navItemComponent,
@@ -80,11 +77,6 @@ export default function SupportNav({
             {link.name}
           </SupportMenuComponent>
         ))}
-        {user && (
-          <SupportMenuComponent as="button" onClick={logout}>
-            Logout
-          </SupportMenuComponent>
-        )}
       </Flex>
     </>
   )
