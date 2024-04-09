@@ -29,8 +29,6 @@ export default function useGetSocket(nsp = "/", options?: SocketOptions) {
   )
   useEffect(() => {
     if (!socket.connected) socket.connect()
-    console.log(socket.connected, socket, token)
-
     socket.on("connect_error", () => {
       if (socket.active === false && !loading) logout()
     })

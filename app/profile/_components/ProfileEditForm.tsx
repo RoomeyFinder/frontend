@@ -327,7 +327,7 @@ export default function ProfileEditForm({
                 onChange={(e) =>
                   handleInputChange(e.target.name, e.target.value)
                 }
-                value={updatedUserData.firstName}
+                value={updatedUserData.firstName || ""}
               />
               <Input
                 flexBasis="48%"
@@ -336,7 +336,7 @@ export default function ProfileEditForm({
                 onChange={(e) =>
                   handleInputChange(e.target.name, e.target.value)
                 }
-                value={updatedUserData.lastName}
+                value={updatedUserData.lastName || ""}
               />
             </Flex>
           </InputGroup>
@@ -344,7 +344,7 @@ export default function ProfileEditForm({
           <Flex flexGrow="1" flexDir="column">
             <InputLabel>Phone number</InputLabel>
             <PhoneNumberInput
-              phoneNumber={updatedUserData.phoneNumber}
+              phoneNumber={updatedUserData.phoneNumber || ""}
               error={[]}
               isDisabled={true}
               handleCountryCodeChange={(update) => {
@@ -362,7 +362,7 @@ export default function ProfileEditForm({
               placeholder="Email address"
               readOnly
               isDisabled
-              value={updatedUserData.email}
+              value={updatedUserData.email || ""}
             />
           </InputGroup>
 
@@ -370,7 +370,7 @@ export default function ProfileEditForm({
             <InputLabel>Date of birth</InputLabel>
             <DobInput
               inputVariant="base"
-              value={updatedUserData.dob}
+              value={updatedUserData.dob || ""}
               handleChange={(update) => {
                 handleInputChange("dob", update)
               }}
@@ -385,7 +385,7 @@ export default function ProfileEditForm({
               handleChange={(selection) => {
                 handleInputChange("gender", selection)
               }}
-              value={updatedUserData.gender}
+              value={updatedUserData.gender || ""}
               errorProps={{}}
               options={["male", "female"]}
               inputName="gender"
@@ -424,7 +424,7 @@ export default function ProfileEditForm({
               handleSelection={(option) => {
                 handleInputChange("currentAddress", option.description)
               }}
-              value={updatedUserData.currentAddress}
+              value={updatedUserData.currentAddress || ""}
               reset={() => handleInputChange("currentAddress", "")}
             />
           </Flex>
@@ -452,7 +452,7 @@ export default function ProfileEditForm({
           <InputGroup flexGrow="1" flexDir="column">
             <InputLabel>About you</InputLabel>
             <Textarea
-              value={updatedUserData.about}
+              value={updatedUserData.about || ""}
               name="about"
               onChange={(e) => handleInputChange(e.target.name, e.target.value)}
               h="30rem"
