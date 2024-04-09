@@ -9,6 +9,7 @@ import {
   useMemo,
 } from "react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
+import localforage from "localforage"
 
 export const AuthContext = createContext<{
   token: string | null
@@ -18,15 +19,15 @@ export const AuthContext = createContext<{
   resetAuthorization: (saveUrlState?: boolean) => void
   deleteToken: () => void
   loading: boolean
-    }>({
-      token: null,
-      isAuthorized: false,
-      updateToken: () => {},
-      isSessionStorage: undefined,
-      resetAuthorization: () => {},
-      deleteToken: () => {},
-      loading: true,
-    })
+}>({
+  token: null,
+  isAuthorized: false,
+  updateToken: () => {},
+  isSessionStorage: undefined,
+  resetAuthorization: () => {},
+  deleteToken: () => {},
+  loading: true,
+})
 
 const privatePaths = [
   "/profile",
@@ -43,35 +44,36 @@ export default function AuthProvider({
 }: {
   children: ReactNode | ReactNode
 }) {
-
-  //clear storage on logout!!!!
   const {
     data: token,
     updateData: updateToken,
     deleteData: deleteToken,
     loading,
     isSessionStorage,
+    updateLoading,
   } = useGetFromStorage<string | null>("RF_TOKEN")
   const pathname = usePathname()
   const router = useRouter()
   const isAuthorized = useMemo(() => token !== null, [token])
 
-  const resetAuthorization = useCallback(
-    (saveUrlState = false) => {
-      const currentUrl = window.location.pathname
-      if (
-        pathname !== "/" &&
-        privatePaths.some((path) =>
-          pathname.toLowerCase().startsWith(path.toLowerCase())
-        )
-      ) {
-        if (saveUrlState)
-          router.push(`/login?next=${currentUrl + window.location.search}`)
-        else router.push("/login")
-      }
-    },
-    [pathname, router]
-  )
+  const resetAuthorization = useCallback(async () => {
+    updateLoading(true)
+    await deleteToken()
+    await localforage.clear()
+    sessionStorage.clear()
+    updateLoading(false)
+    router.refresh()
+  }, [pathname, deleteToken, updateLoading, router])
+
+  const redirectWhenNotAuthorized = useCallback(() => {
+    const currentUrl = window.location.pathname
+    if (
+      privatePaths.some((path) =>
+        pathname.toLowerCase().startsWith(path.toLowerCase())
+      )
+    )
+      router.push(`/login?next=${currentUrl + window.location.search}`)
+  }, [router])
 
   useEffect(() => {
     if (
@@ -81,8 +83,8 @@ export default function AuthProvider({
         pathname.toLowerCase().startsWith(path.toLowerCase())
       )
     )
-      resetAuthorization(true)
-  }, [pathname, resetAuthorization, isAuthorized, loading])
+      redirectWhenNotAuthorized()
+  }, [pathname, redirectWhenNotAuthorized, isAuthorized, loading])
 
   return (
     <AuthContext.Provider

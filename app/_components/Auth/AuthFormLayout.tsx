@@ -37,14 +37,15 @@ export default function AuthFormLayout({
   submitButtonVariant?: string
   loading?: boolean
 }) {
-  const { isAuthorized } = useContext(AuthContext)
+  const { isAuthorized, loading: loadingAuthState } = useContext(AuthContext)
 
   const searchParams = useSearchParams()
   const nextRoute = useMemo(() => searchParams.get("next"), [searchParams])
 
   useEffect(() => {
-    if (isAuthorized)  window.location.replace(nextRoute || "/")
-  }, [isAuthorized, nextRoute])
+    if (isAuthorized && !loadingAuthState)
+      window.location.replace(nextRoute || "/")
+  }, [isAuthorized, nextRoute, loadingAuthState])
 
   return (
     <>

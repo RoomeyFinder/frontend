@@ -35,10 +35,13 @@ export default function useGetFromStorage<T>(key: string) {
   const deleteData = useCallback(async () => {
     if (isSessionStorage === true) {
       sessionStorage.removeItem(key)
+      setData(null)
       return true
     } else if (isSessionStorage === false) {
       localforage.ready(() => {
-        localforage.removeItem(key).then(() => {})
+        localforage.removeItem(key).then(() => {
+          setData(null)
+        })
       })
       return true
     }

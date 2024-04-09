@@ -70,7 +70,7 @@ export default function MessengerProvider({
     if (res.statusCode === 200) {
       updateCachedConversations(res.conversations)
       setConversations(res.conversations)
-    } else if (res.statusCode === 403) resetAuthorization(true)
+    } else if (res.statusCode === 403) resetAuthorization()
     else {
       if (cachedConversations) setConversations(cachedConversations)
     }

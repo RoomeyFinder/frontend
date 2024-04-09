@@ -11,6 +11,8 @@ import { AuthContext } from "./AuthContext"
 import User from "../_types/User"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import localforage from "localforage"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 
 export const UserContext = createContext<{
   user: User | null
@@ -43,16 +45,15 @@ export default function UserProvider({
   } = useGetFromStorage<User>("RF_USER")
 
   const { fetchData } = useAxios()
-
   const fetchUser = useCallback(async () => {
     if (user || !isAuthorized) return
-    updateLoading(true)
+    updateLoading()
     const res = await fetchData({
       url: "/users/me",
       method: "get",
     })
     if (res.statusCode === 200) updateUser(res.user)
-    else if (res.statusCode === 403) resetAuthorization(true)
+    else if (res.statusCode === 403) resetAuthorization()
     updateLoading(false)
   }, [
     fetchData,
@@ -64,11 +65,7 @@ export default function UserProvider({
   ])
 
   const logout = useCallback(() => {
-    localforage.clear((err) => {
-      if (!err) {
-        sessionStorage.clear()
-      }
-    })
+    resetAuthorization()
   }, [resetAuthorization])
 
   useEffect(() => {

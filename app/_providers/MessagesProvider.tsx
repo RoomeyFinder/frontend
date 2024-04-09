@@ -53,7 +53,7 @@ export default function MessagesProvider({
     if (res.statusCode === 200) {
       updateCachedMessages(res.messages)
       setMessages(res.messages)
-    } else if (res.statusCode === 403) resetAuthorization(true)
+    } else if (res.statusCode === 403) resetAuthorization()
     else {
       if (cachedMessages) setMessages(cachedMessages)
     }
