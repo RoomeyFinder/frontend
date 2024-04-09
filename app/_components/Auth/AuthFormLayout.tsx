@@ -48,8 +48,15 @@ export default function AuthFormLayout({
   }, [isAuthorized, nextRoute, loadingAuthState])
 
   return (
-    <>
-      <Box as="main" w="93dvw" maxW="85.9rem" mx="auto">
+    <Box as="main">
+      <Box
+        w="93dvw"
+        maxW="85.9rem"
+        mx="auto"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") handleSubmit()
+        }}
+      >
         <Heading as="h1" w="max-content" mb="1rem" size="base" variant="700">
           {heading}
         </Heading>
@@ -104,6 +111,6 @@ export default function AuthFormLayout({
           </Button>
         </Flex>
       </Box>
-    </>
+    </Box>
   )
 }
