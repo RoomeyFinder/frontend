@@ -19,15 +19,17 @@ import {
   Show,
   chakra,
   useDisclosure,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-import SupportNav, {
-  baseNavItemStyles,
-} from "./SupportNavList"
+import SupportNav, { baseNavItemStyles } from "./SupportNavList"
 import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
+import NotificationsDropdown from "../Notifications/NotificationsDropdown"
 
 export default function PrivateNavigation({
   showHamburgerAlways,
@@ -44,11 +46,18 @@ export default function PrivateNavigation({
               <MessageIcon />
             </StandAloneIcon>
           </Text>
-          <Text as="button" onClick={() => router.push("/notifications")}>
-            <StandAloneIcon>
-              <NotificationIcon />
-            </StandAloneIcon>
-          </Text>
+          <Popover>
+            <PopoverTrigger>
+              <Text as="button">
+                <StandAloneIcon>
+                  <NotificationIcon />
+                </StandAloneIcon>
+              </Text>
+            </PopoverTrigger>
+            <PopoverContent boxShadow="none" border="0" w="max-content">
+              <NotificationsDropdown />
+            </PopoverContent>
+          </Popover>
         </Flex>
       </Show>
       <PrivateNavigationDropDown showHamburgerAlways={showHamburgerAlways} />
