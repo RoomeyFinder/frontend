@@ -106,7 +106,7 @@ export default function DeactivateAccountSection() {
               Yes
             </Button>
             <Button
-              onClick={() => {}}
+              onClick={() => setShowConfirm(false)}
               fontSize="1.6rem"
               fontWeight="600"
               lineHeight="2.4rem"

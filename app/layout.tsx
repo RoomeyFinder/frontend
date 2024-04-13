@@ -13,6 +13,7 @@ import { Toaster } from "react-hot-toast"
 import MessengerProvider from "./_providers/MessengerProvider"
 import InterestsProvider from "./_providers/InterestsProvider"
 import MessagesProvider from "./_providers/MessagesProvider"
+import { GoogleOAuthProvider } from "@react-oauth/google"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -26,23 +27,27 @@ export default function RootLayout({
       <body>
         <ChakraUIProvider>
           <LocalForageProvider>
-            <AuthProvider>
-              <UserProvider>
-                <SearchProvider>
-                  <ListingsProvider>
-                    <FavoritesProvider>
-                      <InterestsProvider>
-                        <MessengerProvider>
-                          <MessagesProvider>
-                            <GlobalLayout>{children}</GlobalLayout>
-                          </MessagesProvider>
-                        </MessengerProvider>
-                      </InterestsProvider>
-                    </FavoritesProvider>
-                  </ListingsProvider>
-                </SearchProvider>
-              </UserProvider>
-            </AuthProvider>
+            <GoogleOAuthProvider
+              clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+            >
+              <AuthProvider>
+                <UserProvider>
+                  <SearchProvider>
+                    <ListingsProvider>
+                      <FavoritesProvider>
+                        <InterestsProvider>
+                          <MessengerProvider>
+                            <MessagesProvider>
+                              <GlobalLayout>{children}</GlobalLayout>
+                            </MessagesProvider>
+                          </MessengerProvider>
+                        </InterestsProvider>
+                      </FavoritesProvider>
+                    </ListingsProvider>
+                  </SearchProvider>
+                </UserProvider>
+              </AuthProvider>
+            </GoogleOAuthProvider>
           </LocalForageProvider>
           <script
             defer
