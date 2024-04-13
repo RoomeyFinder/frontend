@@ -13,5 +13,6 @@ export default interface Interest {
   seen: boolean
   createdAt: string,
   updatedAt: string,
-  seenAt: String
+  seenAt: string
+  docOwner: string
 }

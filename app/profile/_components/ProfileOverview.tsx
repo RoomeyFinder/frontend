@@ -117,6 +117,7 @@ export default function ProfileOverview({
             </VStack>
             <HStack alignItems="center" gap="2rem" mt="1.5rem">
               <InterestButton
+                docOwner={userData._id}
                 isOwner={isOwner as boolean}
                 doc={userData._id}
                 docType={"User"}
@@ -172,11 +173,13 @@ export function InterestButton({
   variant,
   doc,
   docType,
+  docOwner,
 }: {
   isOwner: boolean
   variant?: string
   doc: string
   docType: "User" | "Listing"
+  docOwner: string
 }) {
   const router = useRouter()
   const { fetchData } = useAxios()
@@ -205,6 +208,7 @@ export function InterestButton({
       sender: user?._id,
       doc,
       type: docType,
+      docOwner,
     }
     const res = await fetchData({ url: "/interests", method: "post", body })
     if (res.statusCode === 201) addNewInterest(res.interest)
@@ -213,7 +217,7 @@ export function InterestButton({
         res.message ||
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
-  }, [fetchData, user, doc, docType, addNewInterest])
+  }, [fetchData, user, doc, docType, addNewInterest, docOwner])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"
@@ -252,8 +256,8 @@ export function InterestButton({
         bg: "transparent",
         color: "",
         _hover: { bg: "transparent", color: "brand.main" },
-        p: "0", 
-        justifyContent: "start"
+        p: "0",
+        justifyContent: "start",
       }}
       {...buttonProps}
     >
