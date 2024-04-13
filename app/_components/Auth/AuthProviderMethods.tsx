@@ -6,6 +6,7 @@ import { ReactNode } from "react"
 import StandAloneIcon from "../StandaloneIcon"
 import GoogleAuthButton from "./GoogleAuthButton"
 import useHandleThirdPartyAuths from "@/app/_hooks/useHandleThirdPartyAuths"
+import TwitterAuthButton from "./TwitterAuthButton"
 
 
 /*{
@@ -24,10 +25,12 @@ export default function AuthProviderMethods() {
       <Flex alignItems="center" gap="1.3rem">
         <GoogleAuthButton
           childComponent={({ onClick }) => (
-            <AuthProviderButton onClick={() => {
-              onClick()
-              console.log(onClick)
-            }}>
+            <AuthProviderButton
+              onClick={() => {
+                onClick()
+                console.log(onClick)
+              }}
+            >
               <GoogleIcon />
             </AuthProviderButton>
           )}
@@ -36,9 +39,16 @@ export default function AuthProviderMethods() {
         <AuthProviderButton>
           <FacebookIcon />
         </AuthProviderButton>
-        <AuthProviderButton>
-          <XIcon />
-        </AuthProviderButton>
+        <TwitterAuthButton
+          childComponent={({ onClick }) => (
+            <AuthProviderButton onClick={() => {
+              console.log("TWITTER")
+              onClick()
+            }}>
+              <XIcon />
+            </AuthProviderButton>
+          )}
+        />
       </Flex>
     </>
   )
