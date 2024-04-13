@@ -16,7 +16,7 @@ import { useCallback, useMemo, useState } from "react"
 export default function ListingAbout({ listing }: { listing: Listing }) {
   const [showMore, setShowMore] = useState(false)
   const previewOfDescription = useMemo(
-    () => listing.description.slice(0, 600),
+    () => listing.description?.slice(0, 600),
     [listing.description]
   )
 
@@ -24,7 +24,17 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
     ({ text, noOfLines }: { text: string; noOfLines?: number }) => {
       return (
         <>
-          <Heading fontSize="2.2rem" fontWeight="600" as="h3" mb="2rem">
+          <Heading
+            pos="sticky"
+            top="0"
+            bg="white"
+            fontSize="2.2rem"
+            fontWeight="600"
+            as="h3"
+            maxH={{ md: "7.4rem"}}
+            py={{ base: "2rem", md: "3rem" }}
+            w="fit-content"
+          >
             About this space
           </Heading>
           <Text
@@ -48,8 +58,11 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
   return (
     <>
       <Box px={{ base: "1rem", md: "0" }} w="full">
-        {getAboutDisplay({ text: previewOfDescription, noOfLines: 7 })}
-        {previewOfDescription.length === 600 && (
+        {getAboutDisplay({
+          text: previewOfDescription as string,
+          noOfLines: 7,
+        })}
+        {previewOfDescription?.length === 600 && (
           <Text
             as="button"
             fontSize="1.9rem"
@@ -72,11 +85,19 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
         <ModalContent
           w="90dvw"
           maxW="120rem"
+          maxH="75dvh"
+          overflow="auto"
           bg="white"
           rounded="1.5rem"
-          p={{ base: "2rem", md: "4rem" }}
+          pb={{ base: "2rem", md: "4rem" }}
+          px={{ base: "2rem", md: "4rem" }}
         >
-          <ModalHeader>
+          <ModalHeader
+            py={{ base: "2rem", md: "3rem" }}
+            position="sticky"
+            top="0"
+            bg="white"
+          >
             <Text
               as="button"
               onClick={() => setShowMore(false)}
@@ -88,7 +109,7 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
             </Text>
           </ModalHeader>
           <ModalBody>
-            {getAboutDisplay({ text: listing.description })}
+            {getAboutDisplay({ text: listing.description as string })}
           </ModalBody>
         </ModalContent>
       </Modal>
