@@ -12,7 +12,7 @@ export default function NotificationsDropdown() {
         boxShadow="0px 0px 10px 0px #ABABAB40"
         border="1px solid #EEEEEE"
         w="90dvw"
-        maxW="18.7rem"
+        maxW="22.4rem"
         borderRadius="1.2rem"
         bg="#F9F9F9"
         alignItems="stretch"
@@ -23,7 +23,7 @@ export default function NotificationsDropdown() {
         pt=".8rem"
       >
         <NoNewNotificationsView />
-        {/* <NotificationItem variant={NotificationVariant.ACCEPTED_INTEREST} />
+        {/*  <NotificationItem variant={NotificationVariant.ACCEPTED_INTEREST} />
         <NotificationItem variant={NotificationVariant.LISTING_VIEW} />
         <NotificationItem variant={NotificationVariant.PROFILE_VIEW} />
         <NotificationItem
@@ -33,7 +33,7 @@ export default function NotificationsDropdown() {
           variant={NotificationVariant.RECEIVED_PROFILE_INTEREST}
         />
         <NotificationItem variant={NotificationVariant.MESSAGE} />
-        <HStack
+         <HStack
           px=".8rem"
           py="1rem"
           borderTop="1px solid"

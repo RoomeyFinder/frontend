@@ -22,7 +22,7 @@ import { InterestsContext } from "../_providers/InterestsProvider"
 import { useCallback, useContext, useMemo, useState } from "react"
 import { UserContext } from "../_providers/UserProvider"
 import { useSearchParams } from "next/navigation"
-import Interest from "../_types/Interest"
+import InterestInterface from "../_types/Interest"
 import { FavoriteType } from "../_types/Favorites"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
@@ -49,7 +49,7 @@ export default function Page() {
   }, [interests, user])
 
   const displayFilteredInterests = useCallback(
-    (interests: Interest[]) => {
+    (interests: InterestInterface[]) => {
       if (currentDisplay.startsWith("sent"))
         return sentInterests.map((interest) => (
           <Interest
@@ -105,7 +105,7 @@ function Interest({
   interest,
 }: {
   isSent?: boolean
-  interest: Interest
+  interest: InterestInterface
 }) {
   const { unsendInterest, acceptInterest, declineInterest } =
     useContext(InterestsContext)
