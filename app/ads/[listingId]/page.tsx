@@ -19,6 +19,7 @@ export default function ListingPage() {
   const router = useRouter()
   const params = useParams()
   const searchParams = useSearchParams()
+  const { listings } = useContext(ListingsContext)
   const { rooms, loadingRooms } = useContext(SearchContext)
   const listingId = useMemo(() => params.listingId, [params])
   const isEditing = useMemo(
@@ -27,8 +28,8 @@ export default function ListingPage() {
   )
 
   const listing = useMemo(
-    () => rooms?.find((it) => it._id === listingId),
-    [rooms, listingId]
+    () => (isEditing ? listings : rooms)?.find((it) => it._id === listingId),
+    [rooms, listingId, isEditing]
   )
   const { user } = useContext(UserContext)
   const isOwnListing = useMemo(
