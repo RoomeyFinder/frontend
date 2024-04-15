@@ -66,12 +66,16 @@ export default function FavoritesProvider({
       updateAllFavorites(res.favorites)
       setFavorites(res.favorites)
       setHasInitialized(true)
+      updateLoading(false)
     } else if (res.statusCode === 403) resetAuthorization()
     else {
       setRetriesCount(retriesCount + 1)
-      setFailedToFetch(true)
+
+      if (retriesCount >= 10) {
+        updateLoading(false)
+        setFailedToFetch(true)
+      }
     }
-    updateLoading(false)
   }, [
     fetchData,
     resetAuthorization,
@@ -97,11 +101,11 @@ export default function FavoritesProvider({
   }, [fetchFavorites, hasInitialized, retriesCount])
 
   useEffect(() => {
-    if (failedToFetch && !loading && storedFavorites !== null) {
+    if (failedToFetch && storedFavorites !== null) {
       setFavorites(storedFavorites)
       setHasInitialized(true)
     }
-  }, [failedToFetch, loading, storedFavorites])
+  }, [failedToFetch, storedFavorites])
 
   const removeFavorite = useCallback(
     (id: string, useSession?: boolean) => {

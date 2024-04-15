@@ -52,7 +52,7 @@ export default function ListingsProvider({
   const { fetchData } = useAxios()
 
   const fetchListings = useCallback(async () => {
-    if (storedListings || !isAuthorized) return
+    if (!isAuthorized) return
     updateLoading(true)
     const res = await fetchData({
       url: "/listings/me",
