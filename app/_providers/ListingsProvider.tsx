@@ -20,6 +20,9 @@ export const ListingsContext = createContext<{
   deleteAllListings: (_id: string, useSession?: boolean) => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
+  reloadListings: () => void
+  failedToFetch: boolean
+  retriesCount: number
 }>({
   listings: [],
   updateListing: () => {},
@@ -28,6 +31,9 @@ export const ListingsContext = createContext<{
   updateLoading: () => {},
   deleteAllListings: () => {},
   loading: true,
+  reloadListings: () => {},
+  failedToFetch: false,
+  retriesCount: 0,
 })
 
 export default function ListingsProvider({
@@ -105,11 +111,10 @@ export default function ListingsProvider({
   )
   const deleteListing = useCallback(
     (id: string, useSession?: boolean) => {
-      const update = (storedListings || []).filter((it: Listing) => it._id !== id)
-      updateAllListings(
-        update,
-        useSession
+      const update = (storedListings || []).filter(
+        (it: Listing) => it._id !== id
       )
+      updateAllListings(update, useSession)
       setListings(update)
     },
     [storedListings, updateAllListings]
@@ -133,6 +138,12 @@ export default function ListingsProvider({
         loading,
         updateLoading,
         deleteAllListings,
+        failedToFetch,
+        reloadListings: () => {
+          fetchListings()
+          setRetriesCount(1)
+        },
+        retriesCount,
       }}
     >
       {children}
