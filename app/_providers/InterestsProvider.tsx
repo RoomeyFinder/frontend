@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useState,
 } from "react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import useAxios from "../_hooks/useAxios"
@@ -32,15 +33,15 @@ export default function InterestsProvider({
 }: {
   children: ReactNode[] | ReactNode
 }) {
-  const { isAuthorized } = useContext(AuthContext)
+  const [failedToFetch, setFailedToFetch] = useState(false)
+  const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
-    data: interests,
-    deleteData: deleteAllInterests,
+    data: storedInterests,
     updateData: updateInterests,
     updateLoading,
     loading,
   } = useGetFromStorage<Interest[]>("RF_USER_INTERESTS")
-
+  const [interests, setInterests] = useState<Interest[]>([])
   const { fetchData } = useAxios()
 
   const fetchInterests = useCallback(async () => {
@@ -50,20 +51,25 @@ export default function InterestsProvider({
       url: "/interests",
       method: "get",
     })
+    console.log(res)
     if (res.statusCode === 200) {
       updateInterests(res.interests, false)
-    }
+      setInterests(res.interests)
+    } else if (res.statusCode === 403) resetAuthorization()
+    else setFailedToFetch(true)
     updateLoading(false)
-  }, [fetchData, updateInterests, interests, isAuthorized])
+  }, [fetchData, updateInterests, isAuthorized])
 
   const addNewInterest = useCallback(
     (newInterest: Interest) => {
-      updateInterests([
+      const update = [
         newInterest,
         ...(interests || []).filter(
           (interest) => interest._id !== newInterest._id
         ),
-      ])
+      ]
+      updateInterests([...update])
+      setInterests([...update])
     },
     [updateInterests, interests]
   )
@@ -77,9 +83,11 @@ export default function InterestsProvider({
         method: "delete",
       })
       if (res.statusCode === 200) {
-        updateInterests(
-          interests?.filter((interest) => interest._id !== interestId)
+        const update = interests?.filter(
+          (interest) => interest._id !== interestId
         )
+        updateInterests([...update])
+        setInterests([...update])
       }
       updateLoading(false)
     },
@@ -95,15 +103,15 @@ export default function InterestsProvider({
         body: { accepted: true, seen: true },
       })
       if (res.statusCode === 200) {
-        updateInterests(
-          (interests || [])?.map((interest) =>
-            interest._id === interestId ? res.interest : interest
-          )
+        const update = (interests || [])?.map((interest) =>
+          interest._id === interestId ? res.interest : interest
         )
+        updateInterests([...update])
+        setInterests([...interests])
       }
       updateLoading(false)
     },
-    [fetchData, updateInterests, interests, isAuthorized]
+    [fetchData, updateInterests, interests, isAuthorized, loading]
   )
   const declineInterest = useCallback(
     async (interestId: string) => {
@@ -115,11 +123,11 @@ export default function InterestsProvider({
         body: { declined: true, seen: true },
       })
       if (res.statusCode === 200) {
-        updateInterests(
-          (interests || [])?.map((interest) =>
-            interest._id === interestId ? res.interest : interest
-          )
+        const update = (interests || [])?.map((interest) =>
+          interest._id === interestId ? res.interest : interest
         )
+        updateInterests([...update])
+        setInterests([...update])
       }
       updateLoading(false)
     },
@@ -127,8 +135,14 @@ export default function InterestsProvider({
   )
 
   useEffect(() => {
-    if (!loading && interests === null) fetchInterests()
-  }, [interests, loading])
+    fetchInterests()
+  }, [fetchInterests])
+
+  useEffect(() => {
+    if (failedToFetch && !loading && storedInterests !== null) {
+      setInterests(storedInterests)
+    }
+  }, [failedToFetch, loading, storedInterests])
   return (
     <InterestsContext.Provider
       value={{
