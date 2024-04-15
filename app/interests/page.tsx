@@ -27,6 +27,7 @@ import { FavoriteType } from "../_types/Favorites"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
 import TimeSince from "../_components/TimeSince"
+import { useRouter } from "next/navigation"
 
 export default function Page() {
   const { interests } = useContext(InterestsContext)
@@ -107,6 +108,7 @@ function Interest({
   isSent?: boolean
   interest: InterestInterface
 }) {
+  const router = useRouter()
   const { unsendInterest, acceptInterest, declineInterest } =
     useContext(InterestsContext)
   const [loading, setLoading] = useState(false)
@@ -176,15 +178,16 @@ function Interest({
           {profileToDisplay?.firstName} {profileToDisplay?.lastName}
         </Heading>
         <Box>
-          <Link
-            href={`/profile/${profileToDisplay?._id}`}
+          <Text
+            as="button"
             color="gray.main"
             fontWeight="600"
             fontSize={{ base: "1.2rem", md: "1.6rem" }}
             textDecor="underline"
+            onClick={() => router.push(`/profile/${profileToDisplay?._id}`)}
           >
             View profile
-          </Link>
+          </Text>
           &nbsp;&nbsp;&nbsp;
           <Text
             as="span"
