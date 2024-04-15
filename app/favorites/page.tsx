@@ -21,6 +21,7 @@ import { FavoriteType } from "../_types/Favorites"
 import User from "../_types/User"
 import { Listing } from "../_types/Listings"
 import NoWifi from "../_assets/SVG/NoWifi"
+import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
 
 export default function Favorites() {
   return (
@@ -68,28 +69,9 @@ function Renderer() {
           />
         )}
       {retriesCount === 10 && !hasInitialized && (
-        <Empty
-          heading="Oops!"
-          text={
-            <VStack
-              as="span"
-              alignItems="start"
-              justifyContent="start"
-              gap="2rem"
-            >
-              <Text as="span">
-                An error was encountered while trying to load your favorites
-              </Text>
-              <Button
-                variant="brand-secondary"
-                minW="16rem"
-                onClick={() => retryInitialize()}
-              >
-                retry
-              </Button>
-            </VStack>
-          }
-          icon={<NoWifi />}
+        <FailureUIWithRetryButton
+          handleRetry={() => retryInitialize()}
+          text="An error was encountered while trying to load your favorites"
         />
       )}
 

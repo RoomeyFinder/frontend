@@ -15,17 +15,21 @@ import { AuthContext } from "./AuthContext"
 export const InterestsContext = createContext<{
   interests: Interest[] | null
   addNewInterest: (interest: Interest) => void
+  reloadInterests: () => void
   unsendInterest: (interestId: string) => Promise<void>
   acceptInterest: (interestId: string) => Promise<void>
   declineInterest: (interestId: string) => Promise<void>
+  failedToFetch: boolean
   loading: boolean
 }>({
   interests: [],
+  reloadInterests: () => {},
   addNewInterest: () => {},
   unsendInterest: async () => {},
   acceptInterest: async () => {},
   declineInterest: async () => {},
   loading: false,
+  failedToFetch:false
 })
 
 export default function InterestsProvider({
@@ -152,6 +156,8 @@ export default function InterestsProvider({
         loading,
         acceptInterest,
         declineInterest,
+        failedToFetch,
+        reloadInterests: fetchInterests
       }}
     >
       {children}

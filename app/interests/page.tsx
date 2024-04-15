@@ -28,9 +28,12 @@ import { Listing } from "../_types/Listings"
 import User from "../_types/User"
 import TimeSince from "../_components/TimeSince"
 import { useRouter } from "next/navigation"
+import CenteredSpinner from "../_components/CenteredSpinner"
+import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
 
 export default function Page() {
-  const { interests } = useContext(InterestsContext)
+  const { interests, loading, failedToFetch, reloadInterests } =
+    useContext(InterestsContext)
   const { user } = useContext(UserContext)
   const searchParams = useSearchParams()
   const currentDisplay = useMemo(
@@ -49,26 +52,23 @@ export default function Page() {
     )
   }, [interests, user])
 
-  const displayFilteredInterests = useCallback(
-    (interests: InterestInterface[]) => {
-      if (currentDisplay.startsWith("sent"))
-        return sentInterests.map((interest) => (
-          <Interest
-            key={interest._id}
-            isSent={currentDisplay.startsWith("sent")}
-            interest={interest}
-          />
-        ))
-      return receivedInterests.map((interest) => (
+  const displayFilteredInterests = useCallback(() => {
+    if (currentDisplay.startsWith("sent"))
+      return sentInterests.map((interest) => (
         <Interest
           key={interest._id}
           isSent={currentDisplay.startsWith("sent")}
           interest={interest}
         />
       ))
-    },
-    [currentDisplay, sentInterests, receivedInterests]
-  )
+    return receivedInterests.map((interest) => (
+      <Interest
+        key={interest._id}
+        isSent={currentDisplay.startsWith("sent")}
+        interest={interest}
+      />
+    ))
+  }, [currentDisplay, sentInterests, receivedInterests])
 
   return (
     <Box pos="relative" minH="80dvh">
@@ -84,6 +84,13 @@ export default function Page() {
           { displayText: `sent(${sentInterests.length})`, filterText: "sent" },
         ]}
       />
+      {loading && <CenteredSpinner />}
+      {failedToFetch && !loading && !interests?.length && (
+        <FailureUIWithRetryButton
+          handleRetry={() => reloadInterests()}
+          text="An error was encountered while trying to load your interests"
+        />
+      )}
       <VStack
         w="90%"
         maxW={{ lg: "80%" }}
@@ -93,9 +100,7 @@ export default function Page() {
         justifyContent="center"
         mx="auto"
       >
-        {displayFilteredInterests(
-          currentDisplay.startsWith("sent") ? sentInterests : receivedInterests
-        )}
+        {displayFilteredInterests()}
       </VStack>
     </Box>
   )
