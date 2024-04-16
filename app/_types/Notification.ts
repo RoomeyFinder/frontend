@@ -6,3 +6,8 @@ export enum NotificationVariant {
   ACCEPTED_INTEREST = "accepted-interest",
   PROFILE_VIEW = "profile-view",
 }
+
+export default interface Notification {
+  _id: string
+  seen: boolean
+}

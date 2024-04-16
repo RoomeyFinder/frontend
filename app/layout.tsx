@@ -14,6 +14,7 @@ import MessengerProvider from "./_providers/MessengerProvider"
 import InterestsProvider from "./_providers/InterestsProvider"
 import MessagesProvider from "./_providers/MessagesProvider"
 import { GoogleOAuthProvider } from "@react-oauth/google"
+import NotificationProvider from "./_providers/NotificationsProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -38,7 +39,9 @@ export default function RootLayout({
                         <InterestsProvider>
                           <MessengerProvider>
                             <MessagesProvider>
-                              <GlobalLayout>{children}</GlobalLayout>
+                              <NotificationProvider>
+                                <GlobalLayout>{children}</GlobalLayout>
+                              </NotificationProvider>
                             </MessagesProvider>
                           </MessengerProvider>
                         </InterestsProvider>
