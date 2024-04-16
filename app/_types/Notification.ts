@@ -1,6 +1,11 @@
+import { Message } from "./Conversation"
+import Interest from "./Interest"
+import { Listing } from "./Listings"
+import User from "./User"
+
 export enum NotificationVariant {
-  RECEIVED_LISTING_INTEREST = "received-listing-interest",
-  RECEIVED_PROFILE_INTEREST = "received-profile-interest",
+  LISTING_INTEREST = "listing-interest",
+  PROFILE_INTEREST = "profile-interest",
   MESSAGE = "message",
   LISTING_VIEW = "listing-view",
   ACCEPTED_INTEREST = "accepted-interest",
@@ -10,4 +15,12 @@ export enum NotificationVariant {
 export default interface Notification {
   _id: string
   seen: boolean
+  title: NotificationVariant
+  body: string
+  from: User
+  data: User | Listing | Message | Interest
+  type: ["User", "Listing", "Message", "Interest"]
+  priority: ["high", "normal", "medium"]
+  ttl: number
+  target: string
 }

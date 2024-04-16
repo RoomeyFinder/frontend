@@ -3,8 +3,11 @@ import { Box, HStack, Heading, VStack } from "@chakra-ui/react"
 import CustomRadioGroup from "@/app/_components/CustomRadio"
 import NotificationItem from "../_components/Notifications/NotificationItem"
 import { NotificationVariant } from "../_types/Notification"
+import { useContext } from "react"
+import { NotificationsContext } from "../_providers/NotificationsProvider"
 
 export default function Page() {
+  const { notifications } = useContext(NotificationsContext)
   return (
     <>
       <Box
@@ -30,9 +33,14 @@ export default function Page() {
             />
           </HStack>
           <VStack alignItems="stretch" gap="1.5rem">
-            <NotificationItem variant={NotificationVariant.RECEIVED_LISTING_INTEREST} size={"large"} />
-            <NotificationItem variant={NotificationVariant.RECEIVED_LISTING_INTEREST} size={"large"} />
-            <NotificationItem variant={NotificationVariant.RECEIVED_LISTING_INTEREST} size={"large"} />
+            {notifications.map((notification) => (
+              <NotificationItem
+                key={notification._id}
+                variant={notification.title}
+                size={"large"}
+                notification={notification}
+              />
+            ))}
           </VStack>
         </VStack>
       </Box>

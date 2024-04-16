@@ -3,9 +3,16 @@ import NotificationItem from "./NotificationItem"
 import { useRouter } from "next/navigation"
 import { NotificationVariant } from "@/app/_types/Notification"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
+import { NotificationsContext } from "@/app/_providers/NotificationsProvider"
+import { useContext, useMemo } from "react"
 
 export default function NotificationsDropdown() {
   const router = useRouter()
+  const { notifications } = useContext(NotificationsContext)
+  const unseenNotifications = useMemo(
+    () => notifications.filter((it) => it.seen === false),
+    [notifications]
+  )
   return (
     <>
       <VStack
@@ -22,16 +29,28 @@ export default function NotificationsDropdown() {
         pos="relative"
         pt=".8rem"
       >
-        <NoNewNotificationsView />
+        {unseenNotifications.length === 0 ? (
+          <NoNewNotificationsView />
+        ) : (
+          <>
+            {notifications.map((notification) => (
+              <NotificationItem
+                variant={notification.title}
+                size={"small"}
+                notification={notification}
+                shouldRedirectToNotificationsPage
+              />
+            ))}
+          </>
+        )}
+
         {/*  <NotificationItem variant={NotificationVariant.ACCEPTED_INTEREST} />
         <NotificationItem variant={NotificationVariant.LISTING_VIEW} />
         <NotificationItem variant={NotificationVariant.PROFILE_VIEW} />
         <NotificationItem
           variant={NotificationVariant.RECEIVED_LISTING_INTEREST}
         />
-        <NotificationItem
-          variant={NotificationVariant.RECEIVED_PROFILE_INTEREST}
-        />
+      
         <NotificationItem variant={NotificationVariant.MESSAGE} />
          <HStack
           px=".8rem"

@@ -1,44 +1,29 @@
-import { NotificationVariant } from "@/app/_types/Notification"
+import Notification, { NotificationVariant } from "@/app/_types/Notification"
 import { timeAgo } from "@/app/_utils/date"
-import { Avatar, Box, Flex, Heading, Text, VStack } from "@chakra-ui/react"
-import { useMemo } from "react"
-
-function getDisplayTextByVariant(variant: NotificationVariant) {
-  let text = ""
-  switch (variant) {
-    case NotificationVariant.RECEIVED_LISTING_INTEREST:
-      text = "showed interest in your listing"
-      break
-    case NotificationVariant.RECEIVED_PROFILE_INTEREST:
-      text = "showed interest in your profile"
-      break
-    case NotificationVariant.ACCEPTED_INTEREST:
-      text = "accepted your interest"
-      break
-    case NotificationVariant.LISTING_VIEW:
-      text = "viewed your listing"
-      break
-    case NotificationVariant.PROFILE_VIEW:
-      text = "viewed your profile"
-      break
-    case NotificationVariant.MESSAGE:
-      text = "sent you a message"
-      break
-  }
-  return text
-}
+import {
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  keyframes,
+  useAnimationState,
+} from "@chakra-ui/react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useMemo, useRef } from "react"
 
 function getActionButtonsByVariant(variant: NotificationVariant) {
   let actionButtons = null
   switch (variant) {
-    case NotificationVariant.RECEIVED_LISTING_INTEREST:
+    case NotificationVariant.LISTING_INTEREST:
       actionButtons = (
         <>
           <AcceptInterestButton /> <DeclineInterestButton />
         </>
       )
       break
-    case NotificationVariant.RECEIVED_PROFILE_INTEREST:
+    case NotificationVariant.PROFILE_INTEREST:
       actionButtons = (
         <>
           <AcceptInterestButton /> <DeclineInterestButton />
@@ -63,20 +48,57 @@ function getActionButtonsByVariant(variant: NotificationVariant) {
 export default function NotificationItem({
   variant,
   size,
+  notification,
+  shouldRedirectToNotificationsPage = false,
 }: {
   variant: NotificationVariant
   size: "small" | "large"
+  notification: Notification
+  shouldRedirectToNotificationsPage?: boolean
 }) {
+  const router = useRouter()
+  const query = useSearchParams()
   const isSmall = useMemo(() => size === "small", [size])
-
+  const isInFocus = useMemo(
+    () =>
+      query.get("id") === notification._id &&
+      shouldRedirectToNotificationsPage === false,
+    [query, notification._id, shouldRedirectToNotificationsPage]
+  )
+  const spin = keyframes`  
+  from {background: rgba(58, 134, 255, 0.5);}   
+  to {background: #F9F9F9}`
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (isInFocus) {
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+        inline: "nearest",
+        block: "nearest",
+      })
+      const resetFocusTimeout = setTimeout(() => {
+        router.push("/notifications")
+      }, 2000)
+      return () => {
+        clearTimeout(resetFocusTimeout)
+      }
+    }
+  }, [isInFocus])
   return (
     <Flex
-      px={isSmall ?".8rem": "2rem"}
+      ref={containerRef}
+      animation={isInFocus ? `${spin} 2s linear` : ""}
+      px={isSmall ? ".8rem" : "2rem"}
       py={isSmall ? "" : "1.5rem"}
       gap={isSmall ? ".4rem" : "1.5rem"}
       alignItems="start"
-      bg="#F9F9F9"
+      bg={"#F9F9F9"}
       borderRadius={isSmall ? "" : "1.2rem"}
+      id={notification._id}
+      onClick={() =>
+        shouldRedirectToNotificationsPage &&
+        router.push(`/notifications?id=${notification._id}`)
+      }
     >
       <Box border="1px solid" borderColor="brand.main" rounded="full">
         <Avatar
@@ -102,15 +124,19 @@ export default function NotificationItem({
           lineHeight="normal"
           color="gray.100"
         >
-          {getDisplayTextByVariant(variant)}
+          {notification.body}
         </Text>
 
-        <Flex alignItems="center" gap=".5rem" fontSize={isSmall ? "1rem" : {base: "1.2rem", md: "1.6rem"}}>
+        <Flex
+          alignItems="center"
+          gap=".5rem"
+          fontSize={isSmall ? "1rem" : { base: "1.2rem", md: "1.6rem" }}
+        >
           {getActionButtonsByVariant(variant)}
         </Flex>
       </VStack>
       <Text
-        fontSize={isSmall ? "1.1rem": {base: "1.2rem", md: "1.6rem"}}
+        fontSize={isSmall ? "1.1rem" : { base: "1.2rem", md: "1.6rem" }}
         lineHeight="1rem"
         fontWeight="700"
         color="gray.100"
