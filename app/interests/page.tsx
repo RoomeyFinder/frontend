@@ -30,6 +30,7 @@ import TimeSince from "../_components/TimeSince"
 import { useRouter } from "next/navigation"
 import CenteredSpinner from "../_components/CenteredSpinner"
 import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
+import useActOnInterest from "../_hooks/useActOnInterest"
 
 export default function Page() {
   const { interests, loading, failedToFetch, reloadInterests } =
@@ -114,9 +115,9 @@ function Interest({
   interest: InterestInterface
 }) {
   const router = useRouter()
-  const { unsendInterest, acceptInterest, declineInterest } =
-    useContext(InterestsContext)
-  const [loading, setLoading] = useState(false)
+  // const { unsendInterest, acceptInterest, declineInterest } =
+  //   useContext(InterestsContext)
+  // const [loading, setLoading] = useState(false)
   const [confirmation, setConfirmation] = useState({
     text: "",
     confirmAction: () => {},
@@ -136,27 +137,29 @@ function Interest({
     () => setConfirmation({ show: false, confirmAction: () => {}, text: "" }),
     []
   )
+  const { handleAccept, handleDecline, handleUnsend, loading } =
+    useActOnInterest(interest)
 
-  const handleUnsend = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    await unsendInterest(interest?._id)
-    setLoading(false)
-  }, [interest, unsendInterest])
+  // const handleUnsend = useCallback(async () => {
+  //   if (loading) return
+  //   setLoading(true)
+  //   await unsendInterest(interest?._id)
+  //   setLoading(false)
+  // }, [interest, unsendInterest])
 
-  const handleAccept = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    await acceptInterest(interest?._id)
-    setLoading(false)
-  }, [interest, acceptInterest])
+  // const handleAccept = useCallback(async () => {
+  //   if (loading) return
+  //   setLoading(true)
+  //   await acceptInterest(interest?._id)
+  //   setLoading(false)
+  // }, [interest, acceptInterest])
 
-  const handleDecline = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    await declineInterest(interest?._id)
-    setLoading(false)
-  }, [interest, declineInterest])
+  // const handleDecline = useCallback(async () => {
+  //   if (loading) return
+  //   setLoading(true)
+  //   await declineInterest(interest?._id)
+  //   setLoading(false)
+  // }, [interest, declineInterest])
 
   return (
     <Flex

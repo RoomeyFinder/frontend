@@ -1,3 +1,5 @@
+import useActOnInterest from "@/app/_hooks/useActOnInterest"
+import Interest from "@/app/_types/Interest"
 import Notification, { NotificationVariant } from "@/app/_types/Notification"
 import { timeAgo } from "@/app/_utils/date"
 import {
@@ -5,6 +7,7 @@ import {
   Box,
   Flex,
   Heading,
+  Spinner,
   Text,
   VStack,
   keyframes,
@@ -13,22 +16,24 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef } from "react"
 
-function getActionButtonsByVariant(variant: NotificationVariant) {
+function getActionButtonsByVariant(
+  variant: NotificationVariant,
+  data: Notification["data"]
+) {
   let actionButtons = null
   switch (variant) {
-    case NotificationVariant.LISTING_INTEREST:
-      actionButtons = (
-        <>
-          <AcceptInterestButton /> <DeclineInterestButton />
-        </>
-      )
-      break
-    case NotificationVariant.PROFILE_INTEREST:
-      actionButtons = (
-        <>
-          <AcceptInterestButton /> <DeclineInterestButton />
-        </>
-      )
+    case NotificationVariant.LISTING_INTEREST ||
+      NotificationVariant.PROFILE_INTEREST:
+      let dataAsInterest = { ...data } as Interest
+      actionButtons =
+        !data || dataAsInterest?.accepted || dataAsInterest?.declined ? (
+          <></>
+        ) : (
+          <>
+            <AcceptInterestButton interest={dataAsInterest} />
+            <DeclineInterestButton interest={dataAsInterest} />
+          </>
+        )
       break
     case NotificationVariant.ACCEPTED_INTEREST:
       actionButtons = <StartChatButton />
@@ -84,7 +89,6 @@ export default function NotificationItem({
       }
     }
   }, [isInFocus])
-  console.log(notification.from)
   return (
     <Flex
       ref={containerRef}
@@ -134,7 +138,7 @@ export default function NotificationItem({
           gap=".5rem"
           fontSize={isSmall ? "1rem" : { base: "1.2rem", md: "1.6rem" }}
         >
-          {getActionButtonsByVariant(variant)}
+          {getActionButtonsByVariant(variant, notification.data)}
         </Flex>
       </VStack>
       <Text
@@ -151,16 +155,21 @@ export default function NotificationItem({
   )
 }
 
-function AcceptInterestButton() {
+function AcceptInterestButton({ interest }: { interest: Interest }) {
+  const { handleAccept, loading } = useActOnInterest(interest)
   return (
     <Text
+      onClick={(e) => {
+        e.stopPropagation()
+        handleAccept()
+      }}
       as="button"
       color="brand.main"
       fontSize="inherit"
       fontWeight="700"
       gap=".5rem"
     >
-      Accept
+      {loading ? <Spinner color="brand.main" size="sm" /> : <>Accept</>}
     </Text>
   )
 }
@@ -192,16 +201,21 @@ function ViewMessageButton() {
   )
 }
 
-function DeclineInterestButton() {
+function DeclineInterestButton({ interest }: { interest: Interest }) {
+  const { handleDecline, loading } = useActOnInterest(interest)
   return (
     <Text
+      onClick={(e) => {
+        e.stopPropagation()
+        handleDecline()
+      }}
       as="button"
       color="gray.main"
       fontSize="inherit"
       fontWeight="700"
       gap=".5rem"
     >
-      Decline
+      {loading ? <Spinner color="brand.main" size="sm" /> : <>Decline</>}
     </Text>
   )
 }

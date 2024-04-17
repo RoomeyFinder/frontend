@@ -55,7 +55,6 @@ export default function InterestsProvider({
       url: "/interests",
       method: "get",
     })
-    console.log(res)
     if (res.statusCode === 200) {
       updateInterests(res.interests, false)
       setInterests(res.interests)
@@ -81,7 +80,6 @@ export default function InterestsProvider({
   const unsendInterest = useCallback(
     async (interestId: string) => {
       if (loading || !isAuthorized) return
-      updateLoading(true)
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "delete",
@@ -93,14 +91,12 @@ export default function InterestsProvider({
         updateInterests([...update])
         setInterests([...update])
       }
-      updateLoading(false)
     },
     [fetchData, updateInterests, interests, isAuthorized]
   )
   const acceptInterest = useCallback(
     async (interestId: string) => {
       if (loading || !isAuthorized) return
-      updateLoading(true)
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "put",
@@ -113,14 +109,12 @@ export default function InterestsProvider({
         updateInterests([...update])
         setInterests([...interests])
       }
-      updateLoading(false)
     },
     [fetchData, updateInterests, interests, isAuthorized, loading]
   )
   const declineInterest = useCallback(
     async (interestId: string) => {
       if (loading || !isAuthorized) return
-      updateLoading(true)
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "put",
@@ -133,7 +127,6 @@ export default function InterestsProvider({
         updateInterests([...update])
         setInterests([...update])
       }
-      updateLoading(false)
     },
     [fetchData, updateInterests, interests, isAuthorized]
   )

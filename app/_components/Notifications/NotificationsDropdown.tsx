@@ -11,9 +11,10 @@ import NotificationItem from "./NotificationItem"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import { NotificationsContext } from "@/app/_providers/NotificationsProvider"
 import { useContext, useMemo } from "react"
-import router from "next/router"
+import { useRouter } from "next/navigation"
 
 export default function NotificationsDropdown() {
+  const router = useRouter()
   const { notifications, loading } = useContext(NotificationsContext)
   const unseenNotifications = useMemo(
     () => notifications.filter((it) => it.seen === false).slice(0, 4),
@@ -47,6 +48,7 @@ export default function NotificationsDropdown() {
             <>
               {unseenNotifications.map((notification) => (
                 <NotificationItem
+                  key={notification._id}
                   variant={notification.title}
                   size={"small"}
                   notification={notification}

@@ -18,7 +18,7 @@ export default interface Notification {
   title: NotificationVariant
   body: string
   from: User
-  data: User | Listing | Message | Interest
+  data: User | Listing | Message | Interest | null
   type: ["User", "Listing", "Message", "Interest"]
   priority: ["high", "normal", "medium"]
   ttl: number
