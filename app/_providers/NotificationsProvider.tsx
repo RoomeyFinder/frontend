@@ -25,15 +25,13 @@ export const NotificationsContext = createContext<{
   isSessionStorage: undefined,
   loading: true,
   addNewNotification: () => {},
-  failedToFetch: false
+  failedToFetch: false,
 })
 export default function NotificationProvider({
   children,
 }: {
   children: ReactNode | ReactNode
 }) {
-  const pathname = usePathname()
-  const router = useRouter()
   const [notifications, setNotifications] = useState<Notification[]>([])
 
   const [retriesCount, setRetriesCount] = useState(0)
@@ -45,22 +43,24 @@ export default function NotificationProvider({
     loading,
     updateLoading,
   } = useGetFromStorage<Notification[]>("RF_USER_FAVORITES")
+  const [isFetchingNotifications, setIsFetchingNotifications] = useState(true)
   const [hasInitialized, setHasInitialized] = useState(false)
   const { fetchData } = useAxios()
 
   const fetchNotifications = useCallback(async () => {
     if (!isAuthorized) return
+    setIsFetchingNotifications(true)
     updateLoading(true)
     const res = await fetchData({
       url: "/notifications/me",
       method: "get",
     })
-    console.log(res, "djasdfja")
     if (res.statusCode === 200) {
       updateAllNotifications(res.notifications)
       setNotifications(res.notifications)
       setHasInitialized(true)
       updateLoading(false)
+      setIsFetchingNotifications(false)
     } else if (res.statusCode === 403) resetAuthorization()
     else {
       setRetriesCount(retriesCount + 1)
@@ -68,6 +68,7 @@ export default function NotificationProvider({
       if (retriesCount >= 10) {
         updateLoading(false)
         setFailedToFetch(true)
+        setIsFetchingNotifications(false)
       }
     }
   }, [
@@ -111,16 +112,16 @@ export default function NotificationProvider({
 
   const markAllNotificationsAsSeen = useCallback(() => {
     const update = notifications.map((it) => ({ ...it, seen: true }))
-    setNotifications(() => ([...update]))
+    setNotifications(() => [...update])
     updateAllNotifications([...update])
   }, [])
   return (
     <NotificationsContext.Provider
       value={{
         notifications,
-        loading,
+        loading: isFetchingNotifications,
         addNewNotification,
-        failedToFetch
+        failedToFetch,
       }}
     >
       {children}

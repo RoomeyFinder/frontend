@@ -84,6 +84,7 @@ export default function NotificationItem({
       }
     }
   }, [isInFocus])
+  console.log(notification.from)
   return (
     <Flex
       ref={containerRef}
@@ -105,8 +106,8 @@ export default function NotificationItem({
           src=""
           name="Exploit enomah"
           bg="brand.50"
-          w={{ base: isSmall ? "3rem" : "4rem", md: "6rem" }}
-          h={{ base: isSmall ? "3rem" : "4rem", md: "6rem" }}
+          w={{ base: isSmall ? "3rem" : "4rem", md: isSmall ? "3rem" : "6rem" }}
+          h={{ base: isSmall ? "3rem" : "4rem", md: isSmall ? "3rem" : "6rem" }}
         />
       </Box>
       <VStack alignItems="stretch" gap=".2rem">
@@ -115,8 +116,9 @@ export default function NotificationItem({
           fontSize={isSmall ? "1.4rem" : "1.9rem"}
           fontWeight="600"
           lineHeight="normal"
+          textTransform="capitalize"
         >
-          Exploit Enomah
+          {notification.from?.firstName} {notification.from?.lastName}
         </Heading>
         <Text
           fontSize="1rem"
