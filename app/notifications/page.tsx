@@ -2,12 +2,37 @@
 import { Box, HStack, Heading, VStack } from "@chakra-ui/react"
 import CustomRadioGroup from "@/app/_components/CustomRadio"
 import NotificationItem from "../_components/Notifications/NotificationItem"
-import { NotificationVariant } from "../_types/Notification"
-import { useContext } from "react"
+import { useContext, useMemo, useState } from "react"
 import { NotificationsContext } from "../_providers/NotificationsProvider"
+import { NotificationVariant } from "../_types/Notification"
 
 export default function Page() {
   const { notifications } = useContext(NotificationsContext)
+  const [currentFilter, setCurrentFilter] = useState<
+    "interest" | "listing" | "message" | "all"
+  >("all")
+  const filteredNotifications = useMemo(() => {
+    switch (currentFilter) {
+      case "interest":
+        return notifications.filter(
+          (notif) =>
+            notif.title === NotificationVariant.LISTING_INTEREST ||
+            notif.title === NotificationVariant.PROFILE_INTEREST ||
+            notif.title === NotificationVariant.ACCEPTED_INTEREST
+        )
+      case "message":
+        return notifications.filter(
+          (notif) => notif.title === NotificationVariant.MESSAGE
+        )
+      case "listing":
+        return notifications.filter(
+          (notif) =>
+            notif.title === NotificationVariant.LISTING_INTEREST ||
+            notif.title === NotificationVariant.LISTING_VIEW
+        )
+      default: return notifications
+    }
+  }, [currentFilter, notifications])
   return (
     <>
       <Box
@@ -24,16 +49,20 @@ export default function Page() {
               Filters
             </Heading>
             <CustomRadioGroup
-              options={["Interests", "Messages", "Listings"]}
-              onChange={() => {}}
+              options={["all", "interest", "message", "listing"]}
+              onChange={(val) => setCurrentFilter(val as typeof currentFilter)}
               name={"Filters"}
-              selectedValue={"Interests"}
+              selectedValue={currentFilter}
               radioSize="small"
-              containerProps={{ gap: "2rem", flexWrap: "wrap" }}
+              containerProps={{
+                gap: "2rem",
+                flexWrap: "wrap",
+                textTransform: "capitalize",
+              }}
             />
           </HStack>
           <VStack alignItems="stretch" gap="1.5rem">
-            {notifications.map((notification) => (
+            {filteredNotifications.map((notification) => (
               <NotificationItem
                 key={notification._id}
                 variant={notification.title}
