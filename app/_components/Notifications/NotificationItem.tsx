@@ -1,4 +1,5 @@
 import useActOnInterest from "@/app/_hooks/useActOnInterest"
+import { Message } from "@/app/_types/Conversation"
 import Interest from "@/app/_types/Interest"
 import Notification, { NotificationVariant } from "@/app/_types/Notification"
 import { timeAgo } from "@/app/_utils/date"
@@ -11,9 +12,8 @@ import {
   Text,
   VStack,
   keyframes,
-  useAnimationState,
 } from "@chakra-ui/react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef } from "react"
 
 function getActionButtonsByVariant(
@@ -45,7 +45,7 @@ function getActionButtonsByVariant(
       actionButtons = <></>
       break
     case NotificationVariant.MESSAGE:
-      actionButtons = <ViewMessageButton />
+      actionButtons = <ViewMessageButton message={data as Message} />
       break
   }
   return actionButtons
@@ -187,7 +187,8 @@ function StartChatButton() {
     </Text>
   )
 }
-function ViewMessageButton() {
+function ViewMessageButton({ message }: { message: Message }) {
+  const router = useRouter()
   return (
     <Text
       as="button"
@@ -195,6 +196,10 @@ function ViewMessageButton() {
       fontSize="inherit"
       fontWeight="700"
       gap=".5rem"
+      onClick={(e) => {
+        e.stopPropagation()
+        router.push(`/messenger?convoId=${message?.conversationId}`)
+      }}
     >
       View
     </Text>
