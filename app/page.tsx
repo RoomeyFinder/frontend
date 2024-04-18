@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {rooms.length <= 12 && roomies.length <= 12 ? (
+      {rooms.length >= 12 && roomies.length >= 12 ? (
         <ListingsSection />
       ) : (
         <FeaturesSection />
@@ -114,7 +114,8 @@ function FeaturesSection() {
             mx="auto"
             lineHeight="2.2rem"
           >
-            Roomeyfinder helps you find roommates who are schoolmates with ease. We make finding your ideal living situation one less hassle.
+            Roomeyfinder helps you find roommates who are schoolmates with ease.
+            We make finding your ideal living situation one less hassle.
           </Text>
           <Flex
             as="ul"
