@@ -1,5 +1,5 @@
 import useActOnInterest from "@/app/_hooks/useActOnInterest"
-import { Message } from "@/app/_types/Conversation"
+import Conversation, { Message } from "@/app/_types/Conversation"
 import Interest from "@/app/_types/Interest"
 import Notification, { NotificationVariant } from "@/app/_types/Notification"
 import { timeAgo } from "@/app/_utils/date"
@@ -36,7 +36,7 @@ function getActionButtonsByVariant(
         )
       break
     case NotificationVariant.ACCEPTED_INTEREST:
-      actionButtons = <StartChatButton />
+      actionButtons = <StartChatButton conversation={data as Conversation} />
       break
     case NotificationVariant.LISTING_VIEW:
       actionButtons = <></>
@@ -174,7 +174,8 @@ function AcceptInterestButton({ interest }: { interest: Interest }) {
   )
 }
 
-function StartChatButton() {
+function StartChatButton({ conversation }: { conversation: Conversation }) {
+  const router = useRouter()
   return (
     <Text
       as="button"
@@ -182,6 +183,12 @@ function StartChatButton() {
       fontSize="inherit"
       fontWeight="700"
       gap=".5rem"
+      onClick={(e) => {
+        e.stopPropagation()
+        console.log(conversation, )
+        return
+        router.push(`/messenger?convoId=${conversation?._id}`)
+      }}
     >
       Start Chat
     </Text>

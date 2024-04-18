@@ -1,4 +1,4 @@
-import { Message } from "./Conversation"
+import Conversation, { Message } from "./Conversation"
 import Interest from "./Interest"
 import { Listing } from "./Listings"
 import User from "./User"
@@ -18,7 +18,7 @@ export default interface Notification {
   title: NotificationVariant
   body: string
   from: User
-  data: User | Listing | Message | Interest | null
+  data: User | Listing | Message | Interest | Conversation | null
   type: ["User", "Listing", "Message", "Interest"]
   priority: ["high", "normal", "medium"]
   ttl: number
