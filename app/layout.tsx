@@ -15,6 +15,7 @@ import InterestsProvider from "./_providers/InterestsProvider"
 import MessagesProvider from "./_providers/MessagesProvider"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import NotificationProvider from "./_providers/NotificationsProvider"
+import { Suspense } from "react"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -26,38 +27,40 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ChakraUIProvider>
-          <LocalForageProvider>
-            <GoogleOAuthProvider
-              clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
-            >
-              <AuthProvider>
-                <UserProvider>
-                  <SearchProvider>
-                    <ListingsProvider>
-                      <FavoritesProvider>
-                        <InterestsProvider>
-                          <MessengerProvider>
-                            <MessagesProvider>
-                              <NotificationProvider>
-                                <GlobalLayout>{children}</GlobalLayout>
-                              </NotificationProvider>
-                            </MessagesProvider>
-                          </MessengerProvider>
-                        </InterestsProvider>
-                      </FavoritesProvider>
-                    </ListingsProvider>
-                  </SearchProvider>
-                </UserProvider>
-              </AuthProvider>
-            </GoogleOAuthProvider>
-          </LocalForageProvider>
-          <script
-            defer
-            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
-          ></script>
-          <Toaster containerStyle={{ fontSize: "1.6rem" }} />
-        </ChakraUIProvider>
+        <Suspense fallback={<>HI</>}>
+          <ChakraUIProvider>
+            <LocalForageProvider>
+              <GoogleOAuthProvider
+                clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+              >
+                <AuthProvider>
+                  <UserProvider>
+                    <SearchProvider>
+                      <ListingsProvider>
+                        <FavoritesProvider>
+                          <InterestsProvider>
+                            <MessengerProvider>
+                              <MessagesProvider>
+                                <NotificationProvider>
+                                  <GlobalLayout>{children}</GlobalLayout>
+                                </NotificationProvider>
+                              </MessagesProvider>
+                            </MessengerProvider>
+                          </InterestsProvider>
+                        </FavoritesProvider>
+                      </ListingsProvider>
+                    </SearchProvider>
+                  </UserProvider>
+                </AuthProvider>
+              </GoogleOAuthProvider>
+            </LocalForageProvider>
+            <script
+              defer
+              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
+            ></script>
+            <Toaster containerStyle={{ fontSize: "1.6rem" }} />
+          </ChakraUIProvider>
+        </Suspense>
       </body>
     </html>
   )

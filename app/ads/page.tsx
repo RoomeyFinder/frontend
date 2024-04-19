@@ -8,6 +8,7 @@ import EditableListingCard from "../_components/EditableListingCard"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import CenteredSpinner from "../_components/CenteredSpinner"
 import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
+import Empty from "../_components/Empty"
 
 export default function MyAds() {
   return (
@@ -76,6 +77,12 @@ function Renderer() {
         <FailureUIWithRetryButton
           text="An error was encountered while trying to load your ads"
           handleRetry={() => reloadListings()}
+        />
+      )}
+      {listingsToDisplay.length === 0 && !loading && (
+        <Empty
+          heading={`You do not have any ${currentDisplay} ${currentDisplay !== "drafts" ? "ads" : ""}`}
+          text={"Ads you create will appear here."}
         />
       )}
       {listingsToDisplay.length > 0 && !loading && (

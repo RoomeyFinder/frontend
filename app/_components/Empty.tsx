@@ -29,10 +29,10 @@ export default function Empty({
           color="gray.main"
           textAlign="left"
         >
-          <Text fontSize={{ base: "3rem", lg: "5rem" }}>
+          <Text fontSize={{ base: "2.4rem", md: "3.6rem", lg: "5rem" }}>
             {heading || <>Empty</>}
           </Text>
-          <Text fontSize={{ base: "1.4rem", sm: "1.8rem", md: "2.4rem" }}>
+          <Text fontSize={{ base: "1.4rem", sm: "1.6rem", md: "1.8rem" }}>
             {text}
           </Text>
         </Flex>
