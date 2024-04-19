@@ -84,7 +84,7 @@ export default function Page() {
           { displayText: `sent(${sentInterests.length})`, filterText: "sent" },
         ]}
       />
-      {loading && <CenteredSpinner />}
+      {loading && interests?.length === 0 && <CenteredSpinner />}
       {failedToFetch && !loading && !interests?.length && (
         <FailureUIWithRetryButton
           handleRetry={() => reloadInterests()}
