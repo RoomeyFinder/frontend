@@ -31,7 +31,7 @@ export default function DeactivateAccountSection() {
     }
     setIsDeleting(false)
   }, [fetchData, user?._id, logout])
-  
+
   return (
     <Box>
       <Heading size="md" variant="md" as="h2" mb="3rem">
@@ -86,7 +86,7 @@ export default function DeactivateAccountSection() {
           </Heading>
           <Text fontSize="1.6rem">
             Your photos, ads and all information will be permanently deleted.
-            You won't be able to retrieve anything
+            You won&apos;t be able to retrieve anything
           </Text>
           <Flex justifyContent="center" alignItems="baseline" gap="2rem">
             <Button

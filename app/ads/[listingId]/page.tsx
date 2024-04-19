@@ -29,7 +29,7 @@ export default function ListingPage() {
 
   const listing = useMemo(
     () => (isEditing ? listings : rooms)?.find((it) => it._id === listingId),
-    [rooms, listingId, isEditing]
+    [rooms, listingId, isEditing, listings]
   )
   const { user } = useContext(UserContext)
   const isOwnListing = useMemo(
@@ -94,7 +94,7 @@ export default function ListingPage() {
       </VStack>
       {!isOwnListing && (
         <Hide above="sm">
-          <ListingCTAs />
+          <ListingCTAs isOwner={isOwnListing} listing={listing} />
         </Hide>
       )}
     </>

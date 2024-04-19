@@ -1,6 +1,4 @@
 "use client"
-import { usePathname } from "next/navigation"
-import { useRouter } from "next/navigation"
 import {
   ReactNode,
   createContext,
@@ -20,13 +18,13 @@ export const NotificationsContext = createContext<{
   loading: boolean
   addNewNotification: (notification: Notification) => void
   failedToFetch: boolean
-}>({
-  notifications: [],
-  isSessionStorage: undefined,
-  loading: true,
-  addNewNotification: () => {},
-  failedToFetch: false,
-})
+    }>({
+      notifications: [],
+      isSessionStorage: undefined,
+      loading: true,
+      addNewNotification: () => {},
+      failedToFetch: false,
+    })
 export default function NotificationProvider({
   children,
 }: {
@@ -40,7 +38,6 @@ export default function NotificationProvider({
   const {
     data: storedNotifications,
     updateData: updateAllNotifications,
-    loading,
     updateLoading,
   } = useGetFromStorage<Notification[]>("RF_USER_FAVORITES")
   const [isFetchingNotifications, setIsFetchingNotifications] = useState(true)
@@ -74,7 +71,6 @@ export default function NotificationProvider({
   }, [
     fetchData,
     resetAuthorization,
-    storedNotifications,
     updateAllNotifications,
     updateLoading,
     isAuthorized,
@@ -110,11 +106,11 @@ export default function NotificationProvider({
     [notifications, updateAllNotifications]
   )
 
-  const markAllNotificationsAsSeen = useCallback(() => {
-    const update = notifications.map((it) => ({ ...it, seen: true }))
-    setNotifications(() => [...update])
-    updateAllNotifications([...update])
-  }, [])
+  // const markAllNotificationsAsSeen = useCallback(() => {
+  //   const update = notifications.map((it) => ({ ...it, seen: true }))
+  //   setNotifications(() => [...update])
+  //   updateAllNotifications([...update])
+  // }, [notifications, updateAllNotifications])
   return (
     <NotificationsContext.Provider
       value={{

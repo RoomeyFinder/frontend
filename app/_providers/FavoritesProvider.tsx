@@ -23,18 +23,18 @@ export const FavoritesContext = createContext<{
   hasInitialized: boolean
   retriesCount: number
   retryInitialize: () => void
-}>({
-  favorites: [],
-  removeFavorite: () => {},
-  addNewFavorite: () => {},
-  deleteSingleFavorite: () => {},
-  updateLoading: () => {},
-  deleteAllFavorites: () => {},
-  loading: true,
-  retriesCount: 0,
-  hasInitialized: false,
-  retryInitialize: () => {},
-})
+    }>({
+      favorites: [],
+      removeFavorite: () => {},
+      addNewFavorite: () => {},
+      deleteSingleFavorite: () => {},
+      updateLoading: () => {},
+      deleteAllFavorites: () => {},
+      loading: true,
+      retriesCount: 0,
+      hasInitialized: false,
+      retryInitialize: () => {},
+    })
 
 export default function FavoritesProvider({
   children,
@@ -79,7 +79,6 @@ export default function FavoritesProvider({
   }, [
     fetchData,
     resetAuthorization,
-    storedFavorites,
     updateAllFavorites,
     updateLoading,
     isAuthorized,
@@ -89,7 +88,7 @@ export default function FavoritesProvider({
   const retryInitialize = useCallback(() => {
     setRetriesCount(0)
     updateLoading(true)
-  }, [])
+  }, [updateLoading])
 
   useEffect(() => {
     const initializeInterval = setInterval(() => {

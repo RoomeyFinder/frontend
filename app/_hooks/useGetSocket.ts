@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo } from "react"
 import { AuthContext } from "../_providers/AuthContext"
 import { Socket, SocketOptions, io } from "socket.io-client"
-import socket from "../_socket"
 import { UserContext } from "../_providers/UserProvider"
 
 const URL = process.env.NEXT_PUBLIC_SOCKET_URL
@@ -18,7 +17,7 @@ export default function useGetSocket(nsp = "/", options?: SocketOptions) {
             token,
           },
         }),
-      [token]
+      [token, nsp, options]
     )
     
   const emitOnlyWhenConnected = useCallback(
@@ -36,7 +35,7 @@ export default function useGetSocket(nsp = "/", options?: SocketOptions) {
     return () => {
       socket.off("connect_error", console.log)
     }
-  }, [socket, loading])
+  }, [socket, loading, logout])
 
   return { socket, emitOnlyWhenConnected }
 }

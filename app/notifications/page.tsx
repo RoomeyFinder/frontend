@@ -13,24 +13,24 @@ export default function Page() {
   >("all")
   const filteredNotifications = useMemo(() => {
     switch (currentFilter) {
-      case "interest":
-        return notifications.filter(
-          (notif) =>
-            notif.title === NotificationVariant.LISTING_INTEREST ||
+    case "interest":
+      return notifications.filter(
+        (notif) =>
+          notif.title === NotificationVariant.LISTING_INTEREST ||
             notif.title === NotificationVariant.PROFILE_INTEREST ||
             notif.title === NotificationVariant.ACCEPTED_INTEREST
-        )
-      case "message":
-        return notifications.filter(
-          (notif) => notif.title === NotificationVariant.MESSAGE
-        )
-      case "listing":
-        return notifications.filter(
-          (notif) =>
-            notif.title === NotificationVariant.LISTING_INTEREST ||
+      )
+    case "message":
+      return notifications.filter(
+        (notif) => notif.title === NotificationVariant.MESSAGE
+      )
+    case "listing":
+      return notifications.filter(
+        (notif) =>
+          notif.title === NotificationVariant.LISTING_INTEREST ||
             notif.title === NotificationVariant.LISTING_VIEW
-        )
-      default: return notifications
+      )
+    default: return notifications
     }
   }, [currentFilter, notifications])
   return (

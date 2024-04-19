@@ -43,9 +43,9 @@ export function timeAgo(date: Date) {
 
   if (days > 1) {
     if (days > 365) return `${Math.round(days / 365)}yrs`
-    else if (days === 365) return `1yr`
+    else if (days === 365) return "1yr"
     if (days < 7) return `${days}d`
-    else if (days === 7) return `1wk`
+    else if (days === 7) return "1wk"
     else return `${Math.round(days / 7)}wks`
   } else if (days === 1) {
     return "1d"

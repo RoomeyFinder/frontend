@@ -8,6 +8,6 @@ export default function useGetListener(socket: Socket) {
       return () => {
         socket.off(event, callback)
       }
-    }, [socket, event, callback])
+    }, [event, callback])
   }
 }

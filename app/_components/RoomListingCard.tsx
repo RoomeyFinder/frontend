@@ -1,14 +1,10 @@
 import {
-  AlertDialog,
   Avatar,
   Box,
   Button,
   Flex,
   Heading,
   Image,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Spinner,
   Text,
 } from "@chakra-ui/react"
@@ -18,7 +14,7 @@ import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
 import { Photo } from "../_types/User"
-import { useCallback, useContext, useMemo, useRef, useState } from "react"
+import { useCallback, useContext, useMemo, useState } from "react"
 import { FavoriteType } from "../_types/Favorites"
 import useAxios from "../_hooks/useAxios"
 import { FavoritesContext } from "../_providers/FavoritesProvider"
@@ -67,7 +63,6 @@ export default function RoomListingCard({
       {showFavoriteButton && (
         <FavouriteButton
           color="white"
-          onToggleFavorite={() => {}}
           listingId={listingId}
           type={FavoriteType.LISTING}
         />
@@ -83,6 +78,7 @@ export default function RoomListingCard({
               h="100%"
               minH="27.7rem"
               rounded="1.2rem"
+              alt=""
             />
           )}
         />
@@ -109,12 +105,10 @@ export default function RoomListingCard({
 
 export function FavouriteButton({
   color,
-  onToggleFavorite,
   type,
   listingId,
 }: {
   color?: string
-  onToggleFavorite?: () => void
   listingId: string
   type: FavoriteType
 }) {
@@ -141,7 +135,7 @@ export function FavouriteButton({
     } else
       toast({ status: "error", title: res.message || "Something went wrong" })
     setLoading(false)
-  }, [type, fetchData, toast, addNewFavorite])
+  }, [type, fetchData, toast, addNewFavorite, listingId])
 
   const handleRemoveFavorite = useCallback(async () => {
     if (!favorite) return
@@ -152,10 +146,10 @@ export function FavouriteButton({
       method: "delete",
     })
     if (res.statusCode === 200) deleteSingleFavorite(res.favorite)
-    else
+    else 
       toast({ status: "error", title: res.message || "Something went wrong" })
     setLoading(false)
-  }, [type, fetchData, favorite, deleteSingleFavorite])
+  }, [fetchData, favorite, deleteSingleFavorite, toast])
 
   const getChildren = useCallback(
     () =>

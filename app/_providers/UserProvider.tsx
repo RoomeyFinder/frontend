@@ -10,9 +10,6 @@ import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
 import User from "../_types/User"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
-import localforage from "localforage"
-import { useRouter } from "next/navigation"
-import toast from "react-hot-toast"
 
 export const UserContext = createContext<{
   user: User | null
@@ -21,14 +18,14 @@ export const UserContext = createContext<{
   loading: boolean
   updateLoading: (upd?: boolean) => void
   logout: () => void
-}>({
-  user: null,
-  updateUser: () => {},
-  deleteUser: () => {},
-  updateLoading: () => {},
-  logout: () => {},
-  loading: true,
-})
+    }>({
+      user: null,
+      updateUser: () => {},
+      deleteUser: () => {},
+      updateLoading: () => {},
+      logout: () => {},
+      loading: true,
+    })
 
 export default function UserProvider({
   children,
@@ -70,7 +67,7 @@ export default function UserProvider({
 
   useEffect(() => {
     fetchUser()
-  }, [])
+  }, [fetchUser])
 
   return (
     <UserContext.Provider

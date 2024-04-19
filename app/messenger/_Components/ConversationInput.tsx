@@ -12,7 +12,7 @@ export default function ConversationInput({
   const handleSubmit = useCallback(() => {
     onSubmit(text)
     setText("")
-  }, [text])
+  }, [text, onSubmit])
 
   return (
     <>

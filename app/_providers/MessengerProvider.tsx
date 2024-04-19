@@ -21,14 +21,14 @@ export const MessengerContext = createContext<{
   conversations: Conversation[]
   socket: Socket<any, any>
   loading: boolean
-}>({
-  activeConversation: null,
-  updateActiveConversation: () => {},
-  closeActiveConversation: () => {},
-  conversations: [],
-  socket: io(),
-  loading: true
-})
+    }>({
+      activeConversation: null,
+      updateActiveConversation: () => {},
+      closeActiveConversation: () => {},
+      conversations: [],
+      socket: io(),
+      loading: true
+    })
 
 export default function MessengerProvider({
   children,
@@ -82,7 +82,8 @@ export default function MessengerProvider({
     updateCachedConversations,
     updateLoading,
     cachedConversations,
-    hasFetched
+    hasFetched,
+    isAuthorized
   ])
 
   useEffect(() => {

@@ -145,7 +145,7 @@ export default function ProfileEditForm({
         setFiles(data.files || [])
       }
     }
-  }, [])
+  }, [setFiles, userData])
 
   const formHasChanges = useMemo(() => {
     const {

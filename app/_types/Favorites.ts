@@ -1,5 +1,5 @@
-import { Listing } from "./Listings";
-import User from "./User";
+import { Listing } from "./Listings"
+import User from "./User"
 
 
 export default interface Favorite {

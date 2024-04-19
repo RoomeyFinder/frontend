@@ -1,5 +1,4 @@
 import EditIcon from "@/app/_assets/SVG/EditIcon"
-import LikeIcon, { LikeIconFilled } from "@/app/_assets/SVG/LikeIcon"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
 import User from "@/app/_types/User"
 import {
@@ -34,13 +33,11 @@ export default function ProfileOverview({
   isOwner,
   hasSentInterest,
   handleRemoveInterest,
-  handleSendInterest,
 }: {
   userData: User
   isOwner?: boolean
   hasSentInterest: boolean
   handleRemoveInterest?: () => void
-  handleSendInterest?: () => void
 }) {
   const [show, setShow] = useState(false)
   const [activePhotoIdx, setActivePhotoIdx] = useState(0)
@@ -226,7 +223,7 @@ export function InterestButton({
         return isSender ? "Interest sent" : "Interest received"
       return "Show Interest"
     }
-  }, [isOwner, existingInterest])
+  }, [isOwner, existingInterest, isSender])
 
   const buttonProps = useMemo(() => {
     if (isOwner)
@@ -243,7 +240,7 @@ export function InterestButton({
         onClick: handleSendInterest,
       }
     }
-  }, [isOwner, existingInterest, handleSendInterest])
+  }, [isOwner, existingInterest, handleSendInterest, router])
 
   return (
     <Button

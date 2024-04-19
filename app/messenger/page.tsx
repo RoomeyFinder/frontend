@@ -45,7 +45,7 @@ function Page() {
         updateActiveConversation(conversation)
       }
     }
-  }, [searchParams, updateActiveConversation, router])
+  }, [searchParams, updateActiveConversation, router, conversations])
 
   return (
     <>

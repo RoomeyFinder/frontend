@@ -1,5 +1,5 @@
-import AppLogo from "@/app/_components/Logo";
-import { Flex, Heading } from "@chakra-ui/react";
+import AppLogo from "@/app/_components/Logo"
+import { Flex, Heading } from "@chakra-ui/react"
 
 
 

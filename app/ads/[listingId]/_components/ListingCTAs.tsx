@@ -1,15 +1,19 @@
 import HeartIcon from "@/app/_assets/SVG/HeartIcon"
 import ShareIcon from "@/app/_assets/SVG/ShareIcon"
+import { Listing } from "@/app/_types/Listings"
 import { InterestButton } from "@/app/profile/_components/ProfileOverview"
-import { Box, Button, Flex } from "@chakra-ui/react"
+import { Button, Flex } from "@chakra-ui/react"
 
-export default function ListingCTAs() {
+export default function ListingCTAs({ isOwner, listing}: {
+  isOwner: boolean
+  listing: Listing
+}) {
   return (
     <>
       <Flex
         pos="sticky"
         insetX="0"
-        bottom={{ base: "0",}}
+        bottom={{ base: "0" }}
         alignItems="center"
         justifyContent="space-between"
         bg="white"
@@ -26,9 +30,11 @@ export default function ListingCTAs() {
           </Button>
         </Flex>
         <InterestButton
-          variant="brand"
-          isOwner={false}
-          hasSentInterest={false}
+          variant="brand-secondary"
+          isOwner={isOwner}
+          doc={listing?._id}
+          docType={"Listing"}
+          docOwner={listing.owner?._id as string} // hasSentInterest={false}
         />
       </Flex>
     </>

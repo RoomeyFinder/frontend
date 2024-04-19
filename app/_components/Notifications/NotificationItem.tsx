@@ -22,10 +22,10 @@ function getActionButtonsByVariant(
 ) {
   let actionButtons = null
   switch (variant) {
-    case NotificationVariant.LISTING_INTEREST ||
-      NotificationVariant.PROFILE_INTEREST:
-      let dataAsInterest = { ...data } as Interest
-      actionButtons =
+  case NotificationVariant.LISTING_INTEREST ||
+      NotificationVariant.PROFILE_INTEREST: {
+    const dataAsInterest = { ...data } as Interest
+    actionButtons =
         !data || dataAsInterest?.accepted || dataAsInterest?.declined ? (
           <></>
         ) : (
@@ -34,19 +34,20 @@ function getActionButtonsByVariant(
             <DeclineInterestButton interest={dataAsInterest} />
           </>
         )
-      break
-    case NotificationVariant.ACCEPTED_INTEREST:
-      actionButtons = <StartChatButton conversation={data as Conversation} />
-      break
-    case NotificationVariant.LISTING_VIEW:
-      actionButtons = <></>
-      break
-    case NotificationVariant.PROFILE_VIEW:
-      actionButtons = <></>
-      break
-    case NotificationVariant.MESSAGE:
-      actionButtons = <ViewMessageButton message={data as Message} />
-      break
+    break
+  }
+  case NotificationVariant.ACCEPTED_INTEREST:
+    actionButtons = <StartChatButton conversation={data as Conversation} />
+    break
+  case NotificationVariant.LISTING_VIEW:
+    actionButtons = <></>
+    break
+  case NotificationVariant.PROFILE_VIEW:
+    actionButtons = <></>
+    break
+  case NotificationVariant.MESSAGE:
+    actionButtons = <ViewMessageButton message={data as Message} />
+    break
   }
   return actionButtons
 }
@@ -88,7 +89,7 @@ export default function NotificationItem({
         clearTimeout(resetFocusTimeout)
       }
     }
-  }, [isInFocus])
+  }, [isInFocus, router])
   return (
     <Flex
       ref={containerRef}
@@ -185,7 +186,7 @@ function StartChatButton({ conversation }: { conversation: Conversation }) {
       gap=".5rem"
       onClick={(e) => {
         e.stopPropagation()
-        console.log(conversation, )
+        console.log(conversation)
         return
         router.push(`/messenger?convoId=${conversation?._id}`)
       }}

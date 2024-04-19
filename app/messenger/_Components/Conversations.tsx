@@ -39,7 +39,7 @@ export default function Conversations() {
           getOtherUser(convo)._id === msg.recipient
       ).length
     },
-    [messages]
+    [messages, getOtherUser]
   )
   const [searchValue, setSearchValue] = useState("")
   const [selectedFilter, setSelectedFilter] = useState("All")
@@ -54,24 +54,24 @@ export default function Conversations() {
           .includes(searchValue)
       )
     })
-  }, [searchValue, conversations])
+  }, [searchValue, conversations, getOtherUser])
 
   const conversationsThatMatchFilter = useMemo(() => {
     switch (selectedFilter) {
-      case "All":
-        return conversationsThatMatchSearch
-      case "Unread":
-        return conversationsThatMatchSearch.filter(
-          (convo) => checkForUnreadMessagesCount(convo) > 0
-        )
-      case "Read":
-        return conversationsThatMatchSearch.filter(
-          (convo) => checkForUnreadMessagesCount(convo) === 0
-        )
-      default:
-        return conversationsThatMatchSearch
+    case "All":
+      return conversationsThatMatchSearch
+    case "Unread":
+      return conversationsThatMatchSearch.filter(
+        (convo) => checkForUnreadMessagesCount(convo) > 0
+      )
+    case "Read":
+      return conversationsThatMatchSearch.filter(
+        (convo) => checkForUnreadMessagesCount(convo) === 0
+      )
+    default:
+      return conversationsThatMatchSearch
     }
-  }, [conversationsThatMatchSearch, selectedFilter])
+  }, [conversationsThatMatchSearch, selectedFilter, checkForUnreadMessagesCount])
 
   return (
     <>
@@ -99,7 +99,7 @@ export default function Conversations() {
           />
         ))}
         {conversationsThatMatchFilter.length === 0 && <>
-        <NoConversation heading="No Conversations match your search" body="Try removing some filters"/>
+          <NoConversation heading="No Conversations match your search" body="Try removing some filters"/>
         </>}
       </VStack>
     </>

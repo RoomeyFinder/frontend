@@ -30,7 +30,7 @@ export default function useHandleThirdPartyAuths() {
             "Something went wrong! Please try again or use another method."
         )
     },
-    [fetchData]
+    [fetchData, updateToken, updateUser]
   )
   return {
     handleGoogleAuthSuccess,

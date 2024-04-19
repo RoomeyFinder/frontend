@@ -66,7 +66,8 @@ export default function ActiveConversation() {
   )
 
   useEffect(() => {
-    conversationsContainerRef.current?.addEventListener("scroll", (e) => {
+    const currentConversationRef = conversationsContainerRef.current
+    currentConversationRef?.addEventListener("scroll", (e) => {
       console.log(
         (e.target as any).scrollHeight - (e.target as any).scrollTop
       )
@@ -75,7 +76,7 @@ export default function ActiveConversation() {
       )
     })
     return () => {
-      conversationsContainerRef.current?.removeEventListener("scroll",() => {})
+      currentConversationRef?.removeEventListener("scroll",() => {})
     }
   }, [])
   return (

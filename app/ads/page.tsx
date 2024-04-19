@@ -4,7 +4,6 @@ import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "../_components/PageHeader"
-import Empty from "../_components/Empty"
 import EditableListingCard from "../_components/EditableListingCard"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import CenteredSpinner from "../_components/CenteredSpinner"
@@ -65,7 +64,7 @@ function Renderer() {
         filters={["active", "drafts", "deactivated"]}
       >
         <Button
-          onClick={() => router.push(`/ads?new=true`)}
+          onClick={() => router.push("/ads?new=true")}
           variant="brand-secondary"
           minW={{ md: "18.5rem" }}
           ml="auto"

@@ -15,10 +15,10 @@ import useAxios from "../_hooks/useAxios"
 export const MessagesContext = createContext<{
   updateMessages: (convo: Message) => void
   messages: Message[]
-}>({
-  updateMessages: () => {},
-  messages: [],
-})
+    }>({
+      updateMessages: () => {},
+      messages: [],
+    })
 
 export default function MessagesProvider({
   children,
@@ -40,7 +40,7 @@ export default function MessagesProvider({
       setMessages((prev) => [...prev, newMessage])
       updateCachedMessages([...(cachedMessages || messages), newMessage])
     },
-    [cachedMessages]
+    [cachedMessages, messages, updateCachedMessages]
   )
 
   const fetchMessages = useCallback(async () => {
@@ -66,7 +66,7 @@ export default function MessagesProvider({
     updateLoading,
     cachedMessages,
     hasFetched,
-    updateMessages,
+    isAuthorized
   ])
 
   useEffect(() => {

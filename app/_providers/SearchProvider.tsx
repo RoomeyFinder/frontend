@@ -18,20 +18,20 @@ export const SearchContext = createContext<{
   focus: "roomies" | "rooms" | ""
   setSearch: (s: string) => void
   setFocus: (val: "roomies" | "rooms" | "") => void
-}>({
-  roomies: [],
-  rooms: [],
-  loadingRooms: false,
-  loadingRoomies: false,
-  loadMoreRoomies: () => {},
-  loadMoreRooms: () => {},
-  setSearch: () => {},
-  setFocus: () => {},
-  hasMoreRoomies: true,
-  hasMoreRooms: true,
-  search: "",
-  focus: "",
-})
+    }>({
+      roomies: [],
+      rooms: [],
+      loadingRooms: false,
+      loadingRoomies: false,
+      loadMoreRoomies: () => {},
+      loadMoreRooms: () => {},
+      setSearch: () => {},
+      setFocus: () => {},
+      hasMoreRoomies: true,
+      hasMoreRooms: true,
+      search: "",
+      focus: "",
+    })
 
 export default function SearchProvider({
   children,
@@ -44,7 +44,7 @@ export default function SearchProvider({
     (searchParams.get("focus") as any) || ""
   )
   const roomies = useManageFetchListings<User>({
-    url: `/users?isProfileComplete=false`,
+    url: "/users?isProfileComplete=false",
     method: "get",
     resultKey: "users",
     limit: 12,
@@ -59,7 +59,7 @@ export default function SearchProvider({
 
   useEffect(() => {
     if (pathname !== "/" && search.length > 0) setSearch("")
-  }, [pathname])
+  }, [pathname, search.length])
 
   return (
     <SearchContext.Provider

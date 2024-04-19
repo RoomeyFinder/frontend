@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { pluralizeText } from "../_utils"
 
 const TimeSince = ({ date }: { date: any }) => {

@@ -1,7 +1,7 @@
 "use client"
 import useHandleFilesUploadWithDragAndDrop from "@/app/_hooks/useHandleFilesUploadWithDragAndDrop"
 import PhotosUploadSection from "./PhotosUploadSection"
-import { VStack, Heading, Flex, list } from "@chakra-ui/react"
+import { VStack, Heading, Flex } from "@chakra-ui/react"
 import {
   FormEventHandler,
   useCallback,
@@ -52,8 +52,8 @@ export default function ListingForm({
   const router = useRouter()
   useEffect(() => {
     if (edit && !listing) router.back()
-  }, [edit, listing])
-  const { updateListing, listings, addNewListing } = useContext(ListingsContext)
+  }, [edit, listing, router])
+  const { updateListing, addNewListing } = useContext(ListingsContext)
   const [showAdLimitModal, setShowAdLimitModal] = useState(false)
   const toast = useAppToast()
   const { fetchData } = useAxios()
@@ -93,12 +93,12 @@ export default function ListingForm({
         })),
         ...(edit && listing
           ? (photosToKeep || []).map((photo, index) => ({
-              photo,
-              preview: photo.secure_url,
-              id: photo._id,
-              _id: photo._id,
-              index,
-            }))
+            photo,
+            preview: photo.secure_url,
+            id: photo._id,
+            _id: photo._id,
+            index,
+          }))
           : []),
       ].map((it, index) => ({ ...it, index })),
     [files, photosToKeep, edit, listing]
@@ -146,7 +146,7 @@ export default function ListingForm({
       !isNaN(Number(listingData.currentOccupancyCount))
       ? true
       : false
-  }, [listingData, files, edit, listing, photosToKeep?.length])
+  }, [listingData, files, edit, photosToKeep?.length])
 
   const getFormDataForEditedListing = useCallback(
     async (isDraft: boolean) => {
@@ -180,9 +180,7 @@ export default function ListingForm({
     [
       files,
       listingData,
-      previewFiles,
       photosToDelete,
-      photosToKeep,
       features,
       locationPlaceId,
     ]
@@ -235,7 +233,7 @@ export default function ListingForm({
       else body = await getFormDataForEditedListing(isDraft)
       const requestOptions: FetchOptions = {
         url: edit === true ? `/listings/${listing?._id}` : "/listings",
-        method: edit === true ? `put` : "post",
+        method: edit === true ? "put" : "post",
         body,
       }
       const res = await fetchData(requestOptions)
@@ -264,15 +262,10 @@ export default function ListingForm({
     },
     [
       canBeSubmitted,
-      locationPlaceId,
-      listingData,
       files,
       fetchData,
       isSavingDraft,
-      isSavingListing,
-      features,
       updateListing,
-      listings,
       router,
       toast,
       previewFiles,

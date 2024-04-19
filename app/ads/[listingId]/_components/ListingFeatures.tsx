@@ -24,7 +24,7 @@ export default function ListingFeatures({ listing }: { listing: Listing }) {
           rowGap={{ base: ".8rem", md: "1rem" }}
           w="full"
         >
-          {listing.features.map((feature) => (
+          {listing.features?.map((feature) => (
             <ListingFeature key={feature.value} feature={feature} />
           ))}
         </Flex>

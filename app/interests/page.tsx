@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   Heading,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -131,7 +130,7 @@ function Interest({
     if (!isSent) return interest.sender
     if (interest.type === FavoriteType.USER) return interest.doc as User
     else return (interest.doc as Listing)?.owner
-  }, [interest])
+  }, [interest, isSent])
 
   const hideConfirmation = useCallback(
     () => setConfirmation({ show: false, confirmAction: () => {}, text: "" }),

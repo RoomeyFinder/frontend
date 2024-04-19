@@ -43,8 +43,8 @@ export default function ListingHeading({
           {listing.isStudioApartment
             ? "Studio Apartment"
             : (Number(listing.numberOfBedrooms) > 1
-                ? listing.numberOfBedrooms
-                : "Single") + " bedroom apartment"}
+              ? listing.numberOfBedrooms
+              : "Single") + " bedroom apartment"}
         </Text>
         <Text
           as="span"
