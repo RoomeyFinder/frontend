@@ -45,7 +45,7 @@ export default function InterestsProvider({
   const { fetchData, isFetching } = useAxios()
 
   const fetchInterests = useCallback(async () => {
-    if (isFetching || !isAuthorized) return
+    // if (isFetching || !isAuthorized) return
     const res = await fetchData({
       url: "/interests",
       method: "get",
