@@ -39,7 +39,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {rooms.length >= 12 && roomies.length >= 12 ? (
+      {rooms.length <= 12 && roomies.length <= 12 ? (
         <ListingsSection />
       ) : (
         <FeaturesSection />

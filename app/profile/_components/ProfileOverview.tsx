@@ -182,6 +182,7 @@ export function InterestButton({
   const { fetchData } = useAxios()
   const { user } = useContext(UserContext)
   const { addNewInterest, interests } = useContext(InterestsContext)
+  const [sendingInterest, setSendingInterest] = useState(false)
 
   const existingInterest = useMemo(
     () =>
@@ -207,6 +208,7 @@ export function InterestButton({
       type: docType,
       docOwner,
     }
+    setSendingInterest(true)
     const res = await fetchData({ url: "/interests", method: "post", body })
     if (res.statusCode === 201) addNewInterest(res.interest)
     else
@@ -214,6 +216,7 @@ export function InterestButton({
         res.message ||
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
+    setSendingInterest(false)
   }, [fetchData, user, doc, docType, addNewInterest, docOwner])
 
   const display = useMemo(() => {
@@ -249,6 +252,14 @@ export function InterestButton({
       alignItems="end"
       variant={variant || "brand-secondary"}
       minW={{ md: "18.5rem" }}
+      _loading={{
+        bg: "brand.main !important",
+        color: "white !important",
+        opacity: ".3",
+        justifyContent: "center !important",
+        alignItems: "center !important",
+        py: "1.5rem"
+      }}
       _disabled={{
         bg: "transparent",
         color: "",
@@ -256,6 +267,7 @@ export function InterestButton({
         p: "0",
         justifyContent: "start",
       }}
+      isLoading={sendingInterest}
       {...buttonProps}
     >
       {display} {isOwner ? <EditIcon /> : <PersonIconTwo />}
