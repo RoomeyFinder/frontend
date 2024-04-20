@@ -30,6 +30,7 @@ import { useRouter } from "next/navigation"
 import CenteredSpinner from "../_components/CenteredSpinner"
 import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
 import useActOnInterest from "../_hooks/useActOnInterest"
+import Empty from "../_components/Empty"
 
 export default function Page() {
   const { interests, loading, failedToFetch, reloadInterests } =
@@ -89,6 +90,12 @@ export default function Page() {
         <FailureUIWithRetryButton
           handleRetry={() => reloadInterests()}
           text="An error was encountered while trying to load your interests"
+        />
+      )}
+      {!failedToFetch && !loading && interests?.length === 0 && (
+        <Empty
+          heading={`No interests yet`}
+          text={`Interests you ${currentDisplay.startsWith("sent") ? "send" : "receive"} will appear here`}
         />
       )}
       <VStack

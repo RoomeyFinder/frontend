@@ -43,7 +43,7 @@ export default function useAxios() {
           }
         }
         console.log(err)
-        return err.response.data
+        return err.response?.data
       } finally {
         setIsFetching(false)
       }

@@ -21,16 +21,16 @@ export const InterestsContext = createContext<{
   declineInterest: (interestId: string) => Promise<void>
   failedToFetch: boolean
   loading: boolean
-    }>({
-      interests: [],
-      reloadInterests: () => {},
-      addNewInterest: () => {},
-      unsendInterest: async () => {},
-      acceptInterest: async () => {},
-      declineInterest: async () => {},
-      loading: false,
-      failedToFetch:false
-    })
+}>({
+  interests: [],
+  reloadInterests: () => {},
+  addNewInterest: () => {},
+  unsendInterest: async () => {},
+  acceptInterest: async () => {},
+  declineInterest: async () => {},
+  loading: false,
+  failedToFetch: false,
+})
 
 export default function InterestsProvider({
   children,
@@ -39,18 +39,13 @@ export default function InterestsProvider({
 }) {
   const [failedToFetch, setFailedToFetch] = useState(false)
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
-  const {
-    data: storedInterests,
-    updateData: updateInterests,
-    updateLoading,
-    loading,
-  } = useGetFromStorage<Interest[]>("RF_USER_INTERESTS")
+  const { data: storedInterests, updateData: updateInterests } =
+    useGetFromStorage<Interest[]>("RF_USER_INTERESTS")
   const [interests, setInterests] = useState<Interest[]>([])
-  const { fetchData } = useAxios()
+  const { fetchData, isFetching } = useAxios()
 
   const fetchInterests = useCallback(async () => {
-    if (loading || !isAuthorized) return
-    updateLoading(true)
+    if (isFetching || !isAuthorized) return
     const res = await fetchData({
       url: "/interests",
       method: "get",
@@ -60,8 +55,7 @@ export default function InterestsProvider({
       setInterests(res.interests)
     } else if (res.statusCode === 403) resetAuthorization()
     else setFailedToFetch(true)
-    updateLoading(false)
-  }, [fetchData, updateInterests, isAuthorized, loading, resetAuthorization, updateLoading])
+  }, [fetchData, updateInterests, isAuthorized, isFetching, resetAuthorization])
 
   const addNewInterest = useCallback(
     (newInterest: Interest) => {
@@ -79,7 +73,7 @@ export default function InterestsProvider({
 
   const unsendInterest = useCallback(
     async (interestId: string) => {
-      if (loading || !isAuthorized) return
+      if (isFetching || !isAuthorized) return
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "delete",
@@ -92,11 +86,11 @@ export default function InterestsProvider({
         setInterests([...update])
       }
     },
-    [fetchData, updateInterests, interests, isAuthorized, loading]
+    [fetchData, updateInterests, interests, isAuthorized, isFetching]
   )
   const acceptInterest = useCallback(
     async (interestId: string) => {
-      if (loading || !isAuthorized) return
+      if (isFetching || !isAuthorized) return
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "put",
@@ -110,11 +104,11 @@ export default function InterestsProvider({
         setInterests([...interests])
       }
     },
-    [fetchData, updateInterests, interests, isAuthorized, loading]
+    [fetchData, updateInterests, interests, isAuthorized, isFetching]
   )
   const declineInterest = useCallback(
     async (interestId: string) => {
-      if (loading || !isAuthorized) return
+      if (isFetching || !isAuthorized) return
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "put",
@@ -128,7 +122,7 @@ export default function InterestsProvider({
         setInterests([...update])
       }
     },
-    [fetchData, updateInterests, interests, isAuthorized, loading]
+    [fetchData, updateInterests, interests, isAuthorized, isFetching]
   )
 
   useEffect(() => {
@@ -136,21 +130,21 @@ export default function InterestsProvider({
   }, [fetchInterests])
 
   useEffect(() => {
-    if (failedToFetch && !loading && storedInterests !== null) {
+    if (failedToFetch && !isFetching && storedInterests !== null) {
       setInterests(storedInterests)
     }
-  }, [failedToFetch, loading, storedInterests])
+  }, [failedToFetch, isFetching, storedInterests])
   return (
     <InterestsContext.Provider
       value={{
         interests,
         addNewInterest,
         unsendInterest,
-        loading,
+        loading: isFetching,
         acceptInterest,
         declineInterest,
         failedToFetch,
-        reloadInterests: fetchInterests
+        reloadInterests: fetchInterests,
       }}
     >
       {children}
