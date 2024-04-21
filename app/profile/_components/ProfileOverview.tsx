@@ -22,7 +22,7 @@ import { UserContext } from "@/app/_providers/UserProvider"
 import { InterestsContext } from "@/app/_providers/InterestsProvider"
 import toast from "react-hot-toast"
 import { PersonIconTwo } from "@/app/_assets/SVG/PersonIcon"
-import InterestLimitModal from "@/app/_components/InterestLimitModal"
+import InterestLimitModal from "@/app/_components/PremiumModal"
 import { timeAgo } from "@/app/_utils/date"
 import ActiveBall from "@/app/_assets/SVG/ActiveBall"
 

@@ -14,12 +14,14 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { ReactNode, useState } from "react"
+import { ReactNode } from "react"
 import LikeIcon from "../_assets/SVG/LikeIcon"
-import FilledPlusIcon, { FilledIcon } from "../_assets/SVG/FilledPlusIcon"
+import { FilledIcon } from "../_assets/SVG/FilledPlusIcon"
 import ShareIcon from "../_assets/SVG/ShareIcon"
+import EyeIcon, { EyeIconLarge } from "../_assets/SVG/EyeIcon"
+import HouseIcon, { HouseIconLarge } from "../_assets/SVG/HouseIcon"
 
-export default function InterestLimitModal({
+export default function PremiumModal({
   show,
   onClose,
 }: {
@@ -65,9 +67,21 @@ export default function InterestLimitModal({
                   Benefits
                 </Heading>
                 <VStack as={List} gap="2rem" w="full">
-                  <PremiumBenefit />
-                  <PremiumBenefit />
-                  <PremiumBenefit />
+                  <PremiumBenefit
+                    icon={<LikeIcon />}
+                    title={<>Higher Interest Limit</>}
+                    text={<>30 interests per day</>}
+                  />
+                  <PremiumBenefit
+                    icon={<EyeIconLarge />}
+                    title={<>Listing views</>}
+                    text={<>See all profile and ad views</>}
+                  />
+                  <PremiumBenefit
+                    icon={<HouseIconLarge />}
+                    title={<>Higher ad limit</>}
+                    text={<>Upload up to 3 ads</>}
+                  />
                 </VStack>
               </Flex>
               <VStack justifyContent="start" gap="1rem">
@@ -102,7 +116,15 @@ export default function InterestLimitModal({
   )
 }
 
-function PremiumBenefit() {
+function PremiumBenefit({
+  icon,
+  title,
+  text,
+}: {
+  icon: ReactNode
+  title: ReactNode
+  text: ReactNode
+}) {
   return (
     <ListItem w="full">
       <HStack
@@ -121,7 +143,7 @@ function PremiumBenefit() {
           alignItems="center"
           color="white"
         >
-          <LikeIcon />
+          {icon}
         </Flex>
         <VStack gap="1rem" alignItems="start" mr="auto">
           <Heading
@@ -129,11 +151,9 @@ function PremiumBenefit() {
             fontWeight="600"
             fontSize={{ base: "1.6rem", md: "1.9rem" }}
           >
-            Higher Interest Limit
+            {title}
           </Heading>
-          <Text fontSize={{ base: "1.4rem", md: "1.6rem" }}>
-            30 interests per day
-          </Text>
+          <Text fontSize={{ base: "1.4rem", md: "1.6rem" }}>{text}</Text>
         </VStack>
         <FilledIcon />
       </HStack>
