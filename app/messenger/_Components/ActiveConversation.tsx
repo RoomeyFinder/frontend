@@ -56,7 +56,7 @@ export default function ActiveConversation() {
 
   const handleSendMessage = useCallback(
     (msg: string) => {
-      socket.emit(CONVERSATION_EVENTS.MESSAGE, {
+      socket?.emit(CONVERSATION_EVENTS.MESSAGE, {
         recipient: recipient?._id,
         text: msg,
         conversationId: activeConversation?._id,

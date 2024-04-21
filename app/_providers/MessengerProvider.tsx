@@ -11,7 +11,6 @@ import Conversation from "../_types/Conversation"
 import { AuthContext } from "./AuthContext"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import useAxios from "../_hooks/useAxios"
-import useGetSocket from "../_hooks/useGetSocket"
 import { Socket, io } from "socket.io-client"
 
 export const MessengerContext = createContext<{
@@ -19,29 +18,35 @@ export const MessengerContext = createContext<{
   updateActiveConversation: (convo: Conversation) => void
   closeActiveConversation: () => void
   conversations: Conversation[]
-  socket: Socket<any, any>
+  socket: Socket<any, any> | null
   loading: boolean
-    }>({
-      activeConversation: null,
-      updateActiveConversation: () => {},
-      closeActiveConversation: () => {},
-      conversations: [],
-      socket: io(),
-      loading: true
-    })
+}>({
+  activeConversation: null,
+  updateActiveConversation: () => {},
+  closeActiveConversation: () => {},
+  conversations: [],
+  socket: null,
+  loading: true,
+})
 
+const socket = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations`, {
+  // ...options,
+  // auth: {
+  //   token,
+  // },
+  reconnectionAttempts: 0,
+})
 export default function MessengerProvider({
   children,
 }: {
   children: ReactNode | ReactNode[]
 }) {
-  const { socket } = useGetSocket("/conversations", {})
-  const { resetAuthorization, isAuthorized } = useContext(AuthContext)
+  const { resetAuthorization, isAuthorized, token } = useContext(AuthContext)
   const {
     data: cachedConversations,
     updateData: updateCachedConversations,
     updateLoading,
-    loading
+    loading,
   } = useGetFromStorage<Conversation[]>("RF_USER_CONVERSATIONS")
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [hasFetched, setHasFetched] = useState(false)
@@ -61,7 +66,7 @@ export default function MessengerProvider({
   }, [])
 
   const fetchConversations = useCallback(async () => {
-    if (hasFetched|| !isAuthorized) return
+    if (hasFetched || !isAuthorized) return
     updateLoading(true)
     const res = await fetchData({
       url: "/conversations",
@@ -83,12 +88,19 @@ export default function MessengerProvider({
     updateLoading,
     cachedConversations,
     hasFetched,
-    isAuthorized
+    isAuthorized,
   ])
 
   useEffect(() => {
     fetchConversations()
   }, [fetchConversations])
+
+  useEffect(() => {
+    if(!socket.connected){
+      socket.auth = { ...(socket.auth || {}), token }
+      socket.connect()
+    }
+  }, [token])
   return (
     <MessengerContext.Provider
       value={{
@@ -97,7 +109,7 @@ export default function MessengerProvider({
         closeActiveConversation,
         conversations,
         socket,
-        loading
+        loading,
       }}
     >
       {children}
