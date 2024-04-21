@@ -16,6 +16,7 @@ export default function useGetSocket(nsp = "/", options?: SocketOptions) {
           auth: {
             token,
           },
+          reconnectionAttempts: 0,
         }),
       [token, nsp, options]
     )
@@ -27,7 +28,7 @@ export default function useGetSocket(nsp = "/", options?: SocketOptions) {
     [socket]
   )
   useEffect(() => {
-    if (!socket.connected) socket.connect()
+    // if (!socket.connected) socket.connect()
     socket.on("connect_error", () => {
       if (socket.active === false && !loading) logout()
     })

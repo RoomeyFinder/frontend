@@ -7,3 +7,23 @@ export default function FilledPlusIcon(){
     </svg>
   )
 }
+
+export function FilledIcon(){
+  return (
+    <svg
+      width="12"
+      height="13"
+      viewBox="0 0 12 13"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 6.5H11M6 1.5V11.5"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

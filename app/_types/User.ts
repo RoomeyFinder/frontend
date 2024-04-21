@@ -10,6 +10,7 @@ export default interface User {
   firstName: string
   lastName: string
   dob: string
+  lastSeen: string
   phoneNumber: string
   countryCode: string
   gender: "male" | "female"
@@ -26,6 +27,7 @@ export default interface User {
   photos: Photo[]
   _id: string
   isVisible: boolean
+  isOnline?: boolean
 }
 
 export type Photo = {
