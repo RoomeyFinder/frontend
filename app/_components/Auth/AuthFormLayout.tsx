@@ -28,6 +28,7 @@ export default function AuthFormLayout({
   submitButtonType,
   submitButtonVariant,
   loading,
+  showAuthProviders = false
 }: {
   children: ReactNode | ReactNode[]
   submitButtonText: string
@@ -37,6 +38,7 @@ export default function AuthFormLayout({
   submitButtonType?: "button" | "submit" | "reset"
   submitButtonVariant?: string
   loading?: boolean
+  showAuthProviders?: boolean
 }) {
   const { isAuthorized, loading: loadingAuthState } = useContext(AuthContext)
 
@@ -85,10 +87,24 @@ export default function AuthFormLayout({
           gap="2rem"
           flexDir={{ base: "column-reverse", sm: "row" }}
         >
-          <Flex flexDir="column" justifyContent="start" gap="1rem" alignSelf={{ base: "center", sm: "end"}}>
-            <Text fontSize="1rem" fontWeight="normal" lineHeight="normal" textTransform="uppercase">or sign in with</Text>
-            <AuthProviderMethods />
-          </Flex>
+          {showAuthProviders && (
+            <Flex
+              flexDir="column"
+              justifyContent="start"
+              gap="1rem"
+              alignSelf={{ base: "center", sm: "end" }}
+            >
+              <Text
+                fontSize="1rem"
+                fontWeight="normal"
+                lineHeight="normal"
+                textTransform="uppercase"
+              >
+                or sign in with
+              </Text>
+              <AuthProviderMethods />
+            </Flex>
+          )}
           <Button
             ml="auto"
             onClick={() => handleSubmit()}

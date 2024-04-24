@@ -1,51 +1,28 @@
-import FacebookIcon from "@/app/_assets/SVG/FacebookIcon"
 import GoogleIcon from "@/app/_assets/SVG/GoogleIcon"
-import XIcon from "@/app/_assets/SVG/XIcon"
 import { Button, ButtonProps, Flex } from "@chakra-ui/react"
 import { ReactNode } from "react"
-import StandAloneIcon from "../StandaloneIcon"
-import GoogleAuthButton from "./GoogleAuthButton"
 import useHandleThirdPartyAuths from "@/app/_hooks/useHandleThirdPartyAuths"
-import TwitterAuthButton from "./TwitterAuthButton"
+import GoogleAuthButton from "./GoogleAuthButton"
 
-
-/*{
-  "access_token": "ya29.a0Ad52N3_FIjDWjy9zazm4ytPPK7gfRye99RRW56Hto9a7Zo9oiJ5blDpH1xvmHEh037MZxCeNN5EMY77pjEB4-tSRRWD_PdH9KlwTCjWDUF5nkSjVDInAGrl5cP4bi55a-mjCYxvl2O05Hq1mXKRCfutK5efE-VDcRwaCgYKAe8SARASFQHGX2Mig6zVtv74QywglzDhqKqCyw0169",
-  "token_type": "Bearer",
-  "expires_in": 3599,
-  "scope": "email profile https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email",
-  "authuser": "0",
-  "prompt": "consent"
-} */
 export default function AuthProviderMethods() {
-
   const { handleGoogleAuthSuccess } = useHandleThirdPartyAuths()
   return (
     <>
       <Flex alignItems="center" gap="1.3rem">
         <GoogleAuthButton
+          onSuccess={handleGoogleAuthSuccess}
           childComponent={({ onClick }) => (
             <AuthProviderButton
-              onClick={() => {
-                onClick()
-                console.log(onClick)
-              }}
+              onClick={onClick}
+              display="flex"
+              alignItems="center"
+              gap=".8rem"
+              as="span"
+              color="#4285F4"
+              _focus={{ boxShadow: "none" }}
+              rounded=".4rem"
             >
-              <GoogleIcon />
-            </AuthProviderButton>
-          )}
-          onSuccess={handleGoogleAuthSuccess}
-        />
-        <AuthProviderButton>
-          <FacebookIcon />
-        </AuthProviderButton>
-        <TwitterAuthButton
-          childComponent={({ onClick }) => (
-            <AuthProviderButton onClick={() => {
-              console.log("TWITTER")
-              onClick()
-            }}>
-              <XIcon />
+              <GoogleIcon /> Google
             </AuthProviderButton>
           )}
         />
@@ -71,7 +48,7 @@ function AuthProviderButton({
       _hover={{ bg: "transparent" }}
       {...rest}
     >
-      <StandAloneIcon>{children}</StandAloneIcon>
+      <>{children}</>
     </Button>
   )
 }
