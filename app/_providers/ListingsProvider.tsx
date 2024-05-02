@@ -64,7 +64,6 @@ export default function ListingsProvider({
       url: "/listings/me",
       method: "get",
     })
-    console.log(res)
     if (res.statusCode === 200) {
       setHasInitialized(true)
       updateAllListings(res.listings)
