@@ -111,12 +111,12 @@ function FavoriteComponent({
     const roomey = document as User
     return (
       <RoomeyListingCard
-        name={roomey.firstName}
+        name={roomey?.firstName}
         ageInYears={
-          new Date().getFullYear() - new Date(roomey.dob).getFullYear()
+          new Date().getFullYear() - new Date(roomey?.dob).getFullYear()
         }
-        about={roomey.about}
-        userId={roomey._id}
+        about={roomey?.about}
+        userId={roomey?._id}
         variant="outlined"
       />
     )

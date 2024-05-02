@@ -2,7 +2,7 @@
 import { ListingsContext } from "@/app/_providers/ListingsProvider"
 import { Box, Divider, HStack, Heading, Hide, VStack } from "@chakra-ui/react"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useContext, useEffect, useMemo } from "react"
+import { useCallback, useContext, useEffect, useMemo } from "react"
 import ListingHeading from "./_components/ListingHeading"
 import ListingPhotos from "./_components/ListingPhotos"
 import ListingOwnerOverview from "./_components/ListingOwnerOverview"
@@ -14,6 +14,7 @@ import { UserContext } from "@/app/_providers/UserProvider"
 import ListingForm from "../_components/ListingForm"
 import BackButton from "@/app/_components/BackButton"
 import { SearchContext } from "@/app/_providers/SearchProvider"
+import toast from "react-hot-toast"
 
 export default function ListingPage() {
   const router = useRouter()
@@ -45,6 +46,24 @@ export default function ListingPage() {
     // if (!isOwnListing && isEditing && !loadingRooms) router.push(`/ads/${listing?._id}`)
   }, [listing, loadingRooms, router, isOwnListing, isEditing])
 
+  const handleShare = useCallback(async () => {
+    const shareData = {
+      url: window.location.href,
+      title: `RoomeyFinder`,
+      text: `Stay with ${listing?.owner?.firstName}`,
+    }
+    if (navigator.share && navigator.canShare(shareData)) {
+      try {
+        await navigator.share(shareData)
+      } catch (err) {
+        toast.error("Unable to share, something went wrong")
+        console.log(err)
+      }
+    } else {
+      navigator.clipboard.writeText(shareData.url)
+      toast.success("Copied to clipboard!")
+    }
+  }, [listing])
   if (isEditing && listing)
     return (
       <>
@@ -68,7 +87,11 @@ export default function ListingPage() {
         <HStack w="full">
           <VStack gap="1rem" alignItems="start" w="full">
             <BackButton />
-            <ListingHeading isOwnListing={isOwnListing} listing={listing} />
+            <ListingHeading
+              handleShare={handleShare}
+              isOwnListing={isOwnListing}
+              listing={listing}
+            />
             <ListingPhotos photos={listing?.photos} />
           </VStack>
         </HStack>
@@ -96,7 +119,11 @@ export default function ListingPage() {
       </VStack>
       {!isOwnListing && (
         <Hide above="sm">
-          <ListingCTAs isOwner={isOwnListing} listing={listing} />
+          <ListingCTAs
+            handleShare={handleShare}
+            isOwner={isOwnListing}
+            listing={listing}
+          />
         </Hide>
       )}
     </>

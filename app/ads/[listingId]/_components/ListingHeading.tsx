@@ -2,16 +2,21 @@ import Globe from "@/app/_assets/SVG/Globe"
 import HeartIcon from "@/app/_assets/SVG/HeartIcon"
 import SchoolIcon from "@/app/_assets/SVG/SchoolIcon"
 import ShareIcon from "@/app/_assets/SVG/ShareIcon"
+import { FavouriteButton } from "@/app/_components/RoomListingCard"
+import { FavoriteType } from "@/app/_types/Favorites"
 import { Listing } from "@/app/_types/Listings"
 import { rentDurationMapping, appendCommaIfLengthNotZero } from "@/app/_utils"
 import { Button, Flex, Heading, Text } from "@chakra-ui/react"
+import toast from "react-hot-toast"
 
 export default function ListingHeading({
   listing,
   isOwnListing,
+  handleShare,
 }: {
   listing: Listing
   isOwnListing: boolean
+  handleShare: () => void
 }) {
   return (
     <Flex
@@ -71,25 +76,30 @@ export default function ListingHeading({
       </Heading>
       <Flex
         gap=".2rem"
-        display={{ base: isOwnListing ? "flex" : "none", md: "flex" }}
+        display={{ base: isOwnListing ? "flex" : "none", sm: "flex" }}
       >
         <Button
           variant="brand-secondary"
           color="black"
           rounded="full"
           p={{ base: "1.2rem", md: "1.8rem" }}
+          onClick={handleShare}
         >
           <ShareIcon />
         </Button>
         {!isOwnListing && (
-          <Button
-            variant="brand-secondary"
+          <FavouriteButton
+            listingId={listing?._id}
             color="black"
-            rounded="full"
-            p={{ base: "1.2rem", md: "1.8rem" }}
-          >
-            <HeartIcon />
-          </Button>
+            type={FavoriteType.LISTING}
+            useConfirmation={false}
+            buttonProps={{
+              p: { base: "1.2rem", md: "1.8rem" },
+              rounded: "full",
+              pos: "static",
+              bg: "brand.10"
+            }}
+          />
         )}
       </Flex>
     </Flex>

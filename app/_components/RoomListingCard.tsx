@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  ButtonProps,
   Flex,
   Heading,
   Image,
@@ -107,10 +108,14 @@ export function FavouriteButton({
   color,
   type,
   listingId,
+  buttonProps = {},
+  useConfirmation = true
 }: {
   color?: string
   listingId: string
   type: FavoriteType
+  buttonProps?: ButtonProps
+  useConfirmation?: boolean
 }) {
   const toast = useAppToast()
   const { addNewFavorite, favorites, deleteSingleFavorite } =
@@ -164,7 +169,12 @@ export function FavouriteButton({
   return (
     <Box
       onClick={
-        !isFavorite ? handleAddFavorite : () => setShowRemoveConfirmation(true)
+        !isFavorite
+          ? handleAddFavorite
+          : () =>
+              useConfirmation
+                ? setShowRemoveConfirmation(true)
+                : handleRemoveFavorite()
       }
       as="button"
       pos="absolute"
@@ -172,6 +182,7 @@ export function FavouriteButton({
       top="5%"
       zIndex={"120"}
       right="8%"
+      {...buttonProps}
     >
       {getChildren()}
       <Box
