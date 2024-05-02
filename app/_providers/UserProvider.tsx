@@ -69,7 +69,8 @@ export default function UserProvider({
 
   useEffect(() => {
     if (isAuthorized) fetchUser()
-  })
+    //  eslint-disable-next-line  react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <UserContext.Provider
