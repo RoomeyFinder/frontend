@@ -1,1 +1,48 @@
+:root{
+  --swiper-pagination-color: #3A86FF;
+  /* --swiper-theme-color: #3A86FF; */
+  --swiper-pagination-bullet-inactive-color: #fff;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-horizontal-gap: 2px;
+  --swiper-pagination-bullet-size: 6px;
+}
+html{
+  font-size: 10px;
+  background: white;
+}
+
+body{
+  /* overflow: hidden; */
+  background: white;
+  color: white;
+}
+
+@media (prefers-color-scheme: dark){
+  html body{
+    background-color: white;
+    color: black;
+  }
+}
+
+.unset-country-code-flags{
+  width: 100% !important;
+  border: 0 !important;
+  padding: 0 !important;
+  flex-grow: 1;
+  align-items: center;
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+    content: "" !important;
+}
+
+.ReactFlagsSelect-module_disabledBtn__3A4GF{
+  background-color: transparent !important;
+  cursor: not-allowed !important;
+}
+
+input:checked ~ .custom-toggle-dot {
+  transform: translateX(100%);
+  background-color: #48bb78;
+}
 

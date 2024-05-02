@@ -1,0 +1,6 @@
+
+
+
+export const CONVERSATION_EVENTS = {
+  MESSAGE: "MESSAGE"
+}
