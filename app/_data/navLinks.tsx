@@ -44,13 +44,6 @@ export const privateLinks = [
     hideAbove: "md",
     showBelow: "md",
   },
-  {
-    name: "Premium",
-    href: "/premium",
-    icon: GrowthIcon,
-    hideAbove: "base",
-    showBelow: "",
-  },
 ]
 
 export const supportLinks = [

@@ -30,7 +30,9 @@ import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 import NotificationsDropdown from "../Notifications/NotificationsDropdown"
 import { UserContext } from "@/app/_providers/UserProvider"
-import { useContext } from "react"
+import { useContext, useState } from "react"
+import GrowthIcon from "@/app/_assets/SVG/GrowthIcon"
+import { PremiumModalInfoOnly } from "../PremiumModal"
 
 export default function PrivateNavigation({
   showHamburgerAlways,
@@ -140,6 +142,9 @@ function PrivateNavigationDropDown({
 
 function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
   const router = useRouter()
+  const [showPremiumModal, setShowPremiumModal] = useState(false)
+  const { user } = useContext(UserContext)
+
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
@@ -161,7 +166,7 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
                 bg="brand.main"
                 fontSize={{ base: "1rem", md: "1.4rem" }}
               >
-                Incomplete
+                {user.isProfileComplete ? "Complete" : "Incomplete"}
               </Text>
             </Flex>
           </Flex>
@@ -176,12 +181,23 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
             {idx < arr.length - 1 && <PrivateMenuDivider />}
           </Show>
         ))}
+        <PrivateMenuItem
+          closeOnSelect={true}
+          onClick={() => setShowPremiumModal(true)}
+        >
+          <PrivateMenuIcon as={GrowthIcon} />
+          Premium
+        </PrivateMenuItem>
         <PrivateMenuItem closeOnSelect={false} onClick={toggleShowMore}>
           <PrivateMenuIcon as={QuestionMarkCircled} />
           More
         </PrivateMenuItem>
       </Flex>
       <InterestsAccessCount />
+      <PremiumModalInfoOnly
+        show={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+      />
     </>
   )
 }

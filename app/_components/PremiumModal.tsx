@@ -18,8 +18,8 @@ import { ReactNode, useContext, useMemo } from "react"
 import LikeIcon from "../_assets/SVG/LikeIcon"
 import { FilledIcon } from "../_assets/SVG/FilledPlusIcon"
 import ShareIcon from "../_assets/SVG/ShareIcon"
-import EyeIcon, { EyeIconLarge } from "../_assets/SVG/EyeIcon"
-import HouseIcon, { HouseIconLarge } from "../_assets/SVG/HouseIcon"
+import { EyeIconLarge } from "../_assets/SVG/EyeIcon"
+import { HouseIconLarge } from "../_assets/SVG/HouseIcon"
 import { usePaystackPayment } from "react-paystack"
 import { UserContext } from "../_providers/UserProvider"
 import useGetPaymentStatusLoggers from "../_hooks/useGetPaymentStatusLoggers"
@@ -165,6 +165,102 @@ export default function PremiumModal({
                   Share
                 </Button>
               </VStack>
+            </ModalBody>
+          </ModalContent>
+        </>
+      </Modal>
+    </>
+  )
+}
+
+export function PremiumModalInfoOnly({
+  show,
+  onClose,
+}: {
+  show: boolean
+  onClose: () => void
+}) {
+  const { user } = useContext(UserContext)
+  const hasPremium = useMemo(() => {
+    if (!user) return false
+    if (!user.premiumPurchaseExpiry) return false
+    return new Date(user.premiumPurchaseExpiry).getTime() > Date.now()
+  }, [user])
+
+  if (!hasPremium) return <PremiumModal show={show} onClose={onClose} />
+  return (
+    <>
+      <Modal isOpen={show} isCentered onClose={onClose}>
+        <ModalOverlay bg="#000000BF" />
+        <>
+          <ModalContent
+            bg="white"
+            maxW={{ base: "95dvmin", sm: "55rem" }}
+            // minH={{ base: "57rem" }}
+            border="1px solid black"
+            rounded="1.2rem"
+            p={{ base: "1.5rem", md: "3rem" }}
+          >
+            <ModalBody
+              display="flex"
+              gap="3rem"
+              flexDir="column"
+              alignItems="center"
+              justifyContent="center"
+              fontSize={{ base: "1.8rem", md: "2.4rem" }}
+              lineHeight="100%"
+              textAlign="center"
+            >
+              <>
+                <Heading lineHeight="100%" fontSize="inherit">
+                  Get Premium
+                </Heading>
+                <Flex
+                  flexDir="column"
+                  gap="3rem"
+                  p={{ base: "1rem", md: "2rem" }}
+                  alignItems="start"
+                  border="1px solid #7070704D"
+                  rounded="1.2rem"
+                  w="full"
+                >
+                  <Heading
+                    fontSize="inherit"
+                    color="gray.main"
+                    fontWeight="600"
+                  >
+                    Benefits
+                  </Heading>
+                  <VStack as={List} gap="2rem" w="full">
+                    <PremiumBenefit
+                      icon={<LikeIcon />}
+                      title={<>Higher Interest Limit</>}
+                      text={<>30 interests per day</>}
+                    />
+                    <PremiumBenefit
+                      icon={<EyeIconLarge />}
+                      title={<>Listing views</>}
+                      text={<>See all profile and ad views</>}
+                    />
+                    <PremiumBenefit
+                      icon={<HouseIconLarge />}
+                      title={<>Higher ad limit</>}
+                      text={<>Upload up to 3 ads</>}
+                    />
+                  </VStack>
+                </Flex>
+                <VStack justifyContent="start" gap="1rem">
+                  {hasPremium && (
+                    <Heading
+                      fontSize="1.6rem"
+                      color="gray.main"
+                      fontWeight="600"
+                    >
+                      You are on RoomeyFinder Premium
+                    </Heading>
+                  )}
+                </VStack>
+              </>
             </ModalBody>
           </ModalContent>
         </>

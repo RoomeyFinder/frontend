@@ -7,6 +7,7 @@ export default interface User {
     id: string
     _id: string
   }
+  isProfileComplete: boolean
   firstName: string
   lastName: string
   dob: string
