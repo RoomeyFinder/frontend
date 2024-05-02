@@ -1,5 +1,4 @@
 import Globe from "@/app/_assets/SVG/Globe"
-import HeartIcon from "@/app/_assets/SVG/HeartIcon"
 import SchoolIcon from "@/app/_assets/SVG/SchoolIcon"
 import ShareIcon from "@/app/_assets/SVG/ShareIcon"
 import { FavouriteButton } from "@/app/_components/RoomListingCard"
@@ -7,7 +6,6 @@ import { FavoriteType } from "@/app/_types/Favorites"
 import { Listing } from "@/app/_types/Listings"
 import { rentDurationMapping, appendCommaIfLengthNotZero } from "@/app/_utils"
 import { Button, Flex, Heading, Text } from "@chakra-ui/react"
-import toast from "react-hot-toast"
 
 export default function ListingHeading({
   listing,
@@ -48,8 +46,8 @@ export default function ListingHeading({
           {listing.isStudioApartment
             ? "Studio Apartment"
             : (Number(listing.numberOfBedrooms) > 1
-                ? listing.numberOfBedrooms
-                : "Single") + " bedroom apartment"}
+              ? listing.numberOfBedrooms
+              : "Single") + " bedroom apartment"}
         </Text>
         <Text
           as="span"
