@@ -20,14 +20,14 @@ export const MessengerContext = createContext<{
   conversations: Conversation[]
   socket: Socket<any, any> | null
   loading: boolean
-}>({
-  activeConversation: null,
-  updateActiveConversation: () => {},
-  closeActiveConversation: () => {},
-  conversations: [],
-  socket: null,
-  loading: true,
-})
+    }>({
+      activeConversation: null,
+      updateActiveConversation: () => {},
+      closeActiveConversation: () => {},
+      conversations: [],
+      socket: null,
+      loading: true,
+    })
 
 const socket = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations`, {
   // ...options,

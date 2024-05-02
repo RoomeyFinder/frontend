@@ -17,6 +17,6 @@ export default function PaymentStatusLoggers() {
     },
     [fetchData, updateUser]
   )
-  const onCloseLogger = useCallback(console.log, [])
+  const onCloseLogger = useCallback(() => {}, [])
   return { onSuccessLogger, onCloseLogger }
 }

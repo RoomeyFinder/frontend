@@ -23,18 +23,18 @@ export const ListingsContext = createContext<{
   reloadListings: () => void
   failedToFetch: boolean
   retriesCount: number
-}>({
-  listings: [],
-  updateListing: () => {},
-  deleteListing: () => {},
-  addNewListing: () => {},
-  updateLoading: () => {},
-  deleteAllListings: () => {},
-  loading: true,
-  reloadListings: () => {},
-  failedToFetch: false,
-  retriesCount: 0,
-})
+    }>({
+      listings: [],
+      updateListing: () => {},
+      deleteListing: () => {},
+      addNewListing: () => {},
+      updateLoading: () => {},
+      deleteAllListings: () => {},
+      loading: true,
+      reloadListings: () => {},
+      failedToFetch: false,
+      retriesCount: 0,
+    })
 
 export default function ListingsProvider({
   children,
@@ -64,7 +64,6 @@ export default function ListingsProvider({
       url: "/listings/me",
       method: "get",
     })
-    console.log(res)
     if (res.statusCode === 200) {
       setHasInitialized(true)
       updateAllListings(res.listings)

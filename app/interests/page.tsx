@@ -94,7 +94,7 @@ export default function Page() {
       )}
       {!failedToFetch && !loading && interests?.length === 0 && (
         <Empty
-          heading={`No interests yet`}
+          heading={"No interests yet"}
           text={`Interests you ${currentDisplay.startsWith("sent") ? "send" : "receive"} will appear here`}
         />
       )}
