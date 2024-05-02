@@ -166,7 +166,7 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
                 bg="brand.main"
                 fontSize={{ base: "1rem", md: "1.4rem" }}
               >
-                {user.isProfileComplete ? "Complete" : "Incomplete"}
+                {user?.isProfileComplete ? "Complete" : "Incomplete"}
               </Text>
             </Flex>
           </Flex>
