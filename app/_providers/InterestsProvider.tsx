@@ -127,7 +127,8 @@ export default function InterestsProvider({
 
   useEffect(() => {
     fetchInterests()
-  })
+    //  eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (failedToFetch && !isFetching && storedInterests !== null) {
