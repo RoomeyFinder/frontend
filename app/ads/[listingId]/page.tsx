@@ -28,7 +28,10 @@ export default function ListingPage() {
   )
 
   const listing = useMemo(
-    () => (isEditing ? listings : rooms)?.find((it) => it._id === listingId),
+    () =>
+      (isEditing ? listings : [...rooms, ...(listings || [])])?.find(
+        (it) => it._id === listingId
+      ),
     [rooms, listingId, isEditing, listings]
   )
   const { user } = useContext(UserContext)
@@ -42,7 +45,6 @@ export default function ListingPage() {
     // if (!isOwnListing && isEditing && !loadingRooms) router.push(`/ads/${listing?._id}`)
   }, [listing, loadingRooms, router, isOwnListing, isEditing])
 
-  console.log(listing)
   if (isEditing && listing)
     return (
       <>

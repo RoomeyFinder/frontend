@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation"
 import { PreviewablePhoto } from "@/app/_types"
 import { ListingsContext } from "@/app/_providers/ListingsProvider"
 import AdLimitModal from "@/app/_components/AdLimitModal"
+import { PremiumModalInfoOnly } from "@/app/_components/PremiumModal"
 
 const initialListingState: Listing = {
   photos: [],
@@ -366,9 +367,10 @@ export default function ListingForm({
           isSavingListing={isSavingListing}
         />
       </VStack>
-      <AdLimitModal
+      <PremiumModalInfoOnly
         show={showAdLimitModal}
         onClose={() => setShowAdLimitModal(false)}
+        heading={"Ad Limit Reached"}
       />
     </>
   )

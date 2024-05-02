@@ -176,9 +176,11 @@ export default function PremiumModal({
 export function PremiumModalInfoOnly({
   show,
   onClose,
+  heading
 }: {
   show: boolean
   onClose: () => void
+  heading?: ReactNode
 }) {
   const { user } = useContext(UserContext)
   const hasPremium = useMemo(() => {
@@ -213,7 +215,7 @@ export function PremiumModalInfoOnly({
             >
               <>
                 <Heading lineHeight="100%" fontSize="inherit">
-                  Get Premium
+                  {heading || <>Get Premium</>}
                 </Heading>
                 <Flex
                   flexDir="column"
