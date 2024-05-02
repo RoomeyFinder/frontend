@@ -83,7 +83,7 @@ export default function ProfileOverview({
               <KeyValue
                 keyNode="Interest Left"
                 generalProps={{ fontSize: "1.6rem", my: ".5rem" }}
-                valueNode={userData.interestCount ?? 20}
+                valueNode={userData.countOfInterestsLeft}
               />
             )}
             <VStack gap=".2rem" alignItems={{ md: "start" }}>
@@ -162,9 +162,7 @@ export default function ProfileOverview({
                 color="black"
                 fontSize="1.3rem"
               >
-                <ActiveBall
-                  color={userData.isOnline ? "#009A49" : "#707070"}
-                />
+                <ActiveBall color={userData.isOnline ? "#009A49" : "#707070"} />
                 Active&nbsp;
                 {!userData.isOnline && (
                   <Text color="gray.main" as="span">
@@ -206,7 +204,7 @@ export function InterestButton({
 }) {
   const router = useRouter()
   const { fetchData } = useAxios()
-  const { user } = useContext(UserContext)
+  const { user, updateUser } = useContext(UserContext)
   const { addNewInterest, interests } = useContext(InterestsContext)
   const [sendingInterest, setSendingInterest] = useState(false)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
@@ -238,14 +236,20 @@ export function InterestButton({
     setSendingInterest(true)
     const res = await fetchData({ url: "/interests", method: "post", body })
     if (res.statusCode === 402) setShowPremiumModal(true)
-    else if (res.statusCode === 201) addNewInterest(res.interest)
-    else
+    else if (res.statusCode === 201) {
+      addNewInterest(res.interest)
+      user &&
+        updateUser({
+          ...user,
+          countOfInterestsLeft: user.countOfInterestsLeft - 1,
+        })
+    } else
       toast.error(
         res.message ||
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
     setSendingInterest(false)
-  }, [fetchData, user, doc, docType, addNewInterest, docOwner])
+  }, [fetchData, user, doc, docType, addNewInterest, docOwner, user,updateUser])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"
