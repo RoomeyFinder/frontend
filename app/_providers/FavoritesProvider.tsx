@@ -11,7 +11,6 @@ import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import Favorite from "../_types/Favorites"
-import useAppToast from "../_hooks/useAppToast"
 
 export const FavoritesContext = createContext<{
   favorites: Favorite[] | null
@@ -24,18 +23,18 @@ export const FavoritesContext = createContext<{
   hasInitialized: boolean
   retriesCount: number
   retryInitialize: () => void
-}>({
-  favorites: [],
-  removeFavorite: () => {},
-  addNewFavorite: () => {},
-  deleteSingleFavorite: () => {},
-  updateLoading: () => {},
-  deleteAllFavorites: () => {},
-  loading: true,
-  retriesCount: 0,
-  hasInitialized: false,
-  retryInitialize: () => {},
-})
+    }>({
+      favorites: [],
+      removeFavorite: () => {},
+      addNewFavorite: () => {},
+      deleteSingleFavorite: () => {},
+      updateLoading: () => {},
+      deleteAllFavorites: () => {},
+      loading: true,
+      retriesCount: 0,
+      hasInitialized: false,
+      retryInitialize: () => {},
+    })
 
 export default function FavoritesProvider({
   children,
@@ -43,9 +42,11 @@ export default function FavoritesProvider({
   children: ReactNode | ReactNode
 }) {
   const [retriesCount, setRetriesCount] = useState(0)
+  const [failedToFetch, setFailedToFetch] = useState(false)
+  const [favorites, setFavorites] = useState<Favorite[]>([])
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
-    data: favorites,
+    data: storedFavorites,
     updateData: updateAllFavorites,
     deleteData: deleteAllFavorites,
     loading,
@@ -55,7 +56,7 @@ export default function FavoritesProvider({
   const { fetchData } = useAxios()
 
   const fetchFavorites = useCallback(async () => {
-    if (favorites || !isAuthorized) return
+    if (!isAuthorized) return
     updateLoading(true)
     const res = await fetchData({
       url: "/favorites/me",
@@ -63,17 +64,21 @@ export default function FavoritesProvider({
     })
     if (res.statusCode === 200) {
       updateAllFavorites(res.favorites)
+      setFavorites(res.favorites)
       setHasInitialized(true)
       updateLoading(false)
     } else if (res.statusCode === 403) resetAuthorization()
     else {
       setRetriesCount(retriesCount + 1)
-      if (retriesCount === 9) updateLoading(false)
+
+      if (retriesCount >= 10) {
+        updateLoading(false)
+        setFailedToFetch(true)
+      }
     }
   }, [
     fetchData,
     resetAuthorization,
-    favorites,
     updateAllFavorites,
     updateLoading,
     isAuthorized,
@@ -83,7 +88,7 @@ export default function FavoritesProvider({
   const retryInitialize = useCallback(() => {
     setRetriesCount(0)
     updateLoading(true)
-  }, [])
+  }, [updateLoading])
 
   useEffect(() => {
     const initializeInterval = setInterval(() => {
@@ -95,39 +100,44 @@ export default function FavoritesProvider({
   }, [fetchFavorites, hasInitialized, retriesCount])
 
   useEffect(() => {
-    if (favorites !== null && hasInitialized === false) setHasInitialized(true)
-  }, [favorites, hasInitialized])
+    if (failedToFetch && storedFavorites !== null) {
+      setFavorites(storedFavorites)
+      setHasInitialized(true)
+    }
+  }, [failedToFetch, storedFavorites])
 
   const removeFavorite = useCallback(
     (id: string, useSession?: boolean) => {
-      updateAllFavorites(
-        favorites?.filter((it: Favorite) => it._id !== id),
-        useSession
-      )
+      const update = favorites?.filter((it: Favorite) => it._id !== id)
+      updateAllFavorites([...(update || [])], useSession)
+      setFavorites([...(update || [])])
     },
     [favorites, updateAllFavorites]
   )
 
   const addNewFavorite = useCallback(
     (favorite: Favorite) => {
-      updateAllFavorites([
+      const prev = [
         ...((favorites || []) as Favorite[]).filter(
           (it) => it._id !== favorite._id
         ),
-        favorite,
-      ])
+      ]
+      updateAllFavorites([...prev, favorite])
+      setFavorites([...prev, favorite])
     },
     [favorites, updateAllFavorites]
   )
   const deleteSingleFavorite = useCallback(
     (favorite: Favorite) => {
-      updateAllFavorites([
-        ...((favorites || []) as Favorite[]).filter(
+      const update = [
+        ...((storedFavorites || []) as Favorite[]).filter(
           (it) => it._id !== favorite._id
         ),
-      ])
+      ]
+      updateAllFavorites([...update])
+      setFavorites([...update])
     },
-    [favorites, updateAllFavorites]
+    [storedFavorites, updateAllFavorites]
   )
 
   return (

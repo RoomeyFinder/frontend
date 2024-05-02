@@ -1,5 +1,4 @@
 import EditIcon from "@/app/_assets/SVG/EditIcon"
-import LikeIcon, { LikeIconFilled } from "@/app/_assets/SVG/LikeIcon"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
 import User from "@/app/_types/User"
 import {
@@ -23,6 +22,9 @@ import { UserContext } from "@/app/_providers/UserProvider"
 import { InterestsContext } from "@/app/_providers/InterestsProvider"
 import toast from "react-hot-toast"
 import { PersonIconTwo } from "@/app/_assets/SVG/PersonIcon"
+import InterestLimitModal from "@/app/_components/PremiumModal"
+import { timeAgo } from "@/app/_utils/date"
+import ActiveBall from "@/app/_assets/SVG/ActiveBall"
 
 const genderMapping = {
   female: "F",
@@ -34,13 +36,11 @@ export default function ProfileOverview({
   isOwner,
   hasSentInterest,
   handleRemoveInterest,
-  handleSendInterest,
 }: {
   userData: User
   isOwner?: boolean
   hasSentInterest: boolean
   handleRemoveInterest?: () => void
-  handleSendInterest?: () => void
 }) {
   const [show, setShow] = useState(false)
   const [activePhotoIdx, setActivePhotoIdx] = useState(0)
@@ -49,6 +49,7 @@ export default function ProfileOverview({
     setActivePhotoIdx(idx)
     setShow(true)
   }, [])
+
   return (
     <>
       {userData.photos.length > 0 && (
@@ -82,7 +83,7 @@ export default function ProfileOverview({
               <KeyValue
                 keyNode="Interest Left"
                 generalProps={{ fontSize: "1.6rem", my: ".5rem" }}
-                valueNode={userData.interestCount ?? 20}
+                valueNode={userData.countOfInterestsLeft}
               />
             )}
             <VStack gap=".2rem" alignItems={{ md: "start" }}>
@@ -117,6 +118,7 @@ export default function ProfileOverview({
             </VStack>
             <HStack alignItems="center" gap="2rem" mt="1.5rem">
               <InterestButton
+                docOwner={userData._id}
                 isOwner={isOwner as boolean}
                 doc={userData._id}
                 docType={"User"}
@@ -144,12 +146,32 @@ export default function ProfileOverview({
           </Hide>
         </Flex>
         <VStack gap="2rem">
-          <ProfileAvatar
-            width={{ base: "10rem", md: "12rem" }}
-            height={{ base: "10rem", md: "12rem" }}
-            showVerifiedBadge
-            imageSrc={userData.profileImage?.secure_url}
-          />
+          <VStack alignItems="start" gap=".5rem">
+            <ProfileAvatar
+              width={{ base: "10rem", md: "12rem" }}
+              height={{ base: "10rem", md: "12rem" }}
+              showVerifiedBadge
+              imageSrc={userData.profileImage?.secure_url}
+            />
+            {!isOwner && (
+              <Text
+                display="flex"
+                alignItems="center"
+                gap=".5rem"
+                alignSelf="center"
+                color="black"
+                fontSize="1.3rem"
+              >
+                <ActiveBall color={userData.isOnline ? "#009A49" : "#707070"} />
+                Active&nbsp;
+                {!userData.isOnline && (
+                  <Text color="gray.main" as="span">
+                    {timeAgo(new Date(userData.lastSeen))} ago
+                  </Text>
+                )}
+              </Text>
+            )}
+          </VStack>
           <Hide above="md">
             <AvatarGroup size={{ base: "md", sm: "lg" }} max={2}>
               {userData.photos.map((photo, idx) => (
@@ -172,16 +194,20 @@ export function InterestButton({
   variant,
   doc,
   docType,
+  docOwner,
 }: {
   isOwner: boolean
   variant?: string
   doc: string
   docType: "User" | "Listing"
+  docOwner: string
 }) {
   const router = useRouter()
   const { fetchData } = useAxios()
-  const { user } = useContext(UserContext)
+  const { user, updateUser } = useContext(UserContext)
   const { addNewInterest, interests } = useContext(InterestsContext)
+  const [sendingInterest, setSendingInterest] = useState(false)
+  const [showPremiumModal, setShowPremiumModal] = useState(false)
 
   const existingInterest = useMemo(
     () =>
@@ -205,15 +231,25 @@ export function InterestButton({
       sender: user?._id,
       doc,
       type: docType,
+      docOwner,
     }
+    setSendingInterest(true)
     const res = await fetchData({ url: "/interests", method: "post", body })
-    if (res.statusCode === 201) addNewInterest(res.interest)
-    else
+    if (res.statusCode === 402) setShowPremiumModal(true)
+    else if (res.statusCode === 201) {
+      addNewInterest(res.interest)
+      user &&
+        updateUser({
+          ...user,
+          countOfInterestsLeft: user.countOfInterestsLeft - 1,
+        })
+    } else
       toast.error(
         res.message ||
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
-  }, [fetchData, user, doc, docType, addNewInterest])
+    setSendingInterest(false)
+  }, [fetchData, user, doc, docType, addNewInterest, docOwner, user,updateUser])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"
@@ -222,7 +258,7 @@ export function InterestButton({
         return isSender ? "Interest sent" : "Interest received"
       return "Show Interest"
     }
-  }, [isOwner, existingInterest])
+  }, [isOwner, existingInterest, isSender])
 
   const buttonProps = useMemo(() => {
     if (isOwner)
@@ -239,26 +275,40 @@ export function InterestButton({
         onClick: handleSendInterest,
       }
     }
-  }, [isOwner, existingInterest, handleSendInterest])
+  }, [isOwner, existingInterest, handleSendInterest, router])
 
   return (
-    <Button
-      fontWeight="400"
-      display="flex"
-      alignItems="end"
-      variant={variant || "brand-secondary"}
-      minW={{ md: "18.5rem" }}
-      _disabled={{
-        bg: "transparent",
-        color: "",
-        _hover: { bg: "transparent", color: "brand.main" },
-        p: "0", 
-        justifyContent: "start"
-      }}
-      {...buttonProps}
-    >
-      {display} {isOwner ? <EditIcon /> : <PersonIconTwo />}
-    </Button>
+    <>
+      <Button
+        fontWeight="400"
+        display="flex"
+        alignItems="end"
+        variant={variant || "brand-secondary"}
+        minW={{ md: "18.5rem" }}
+        _loading={{
+          bg: "brand.main !important",
+          color: "white !important",
+          opacity: ".3",
+          justifyContent: "center !important",
+          alignItems: "center !important",
+        }}
+        _disabled={{
+          bg: "transparent",
+          color: "",
+          _hover: { bg: "transparent", color: "brand.main" },
+          p: "0",
+          justifyContent: "start",
+        }}
+        isLoading={sendingInterest}
+        {...buttonProps}
+      >
+        {display} {isOwner ? <EditIcon /> : <PersonIconTwo />}
+      </Button>
+      <InterestLimitModal
+        show={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+      />
+    </>
   )
 }
 

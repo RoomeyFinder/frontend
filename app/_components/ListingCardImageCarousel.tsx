@@ -37,7 +37,7 @@ export default function Carousel({
         spaceBetween={10}
       >
         {slides.map((slide, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={idx} style={{ height: "100%"}}>
             {swiperSlideContent({ slide })}
           </SwiperSlide>
         ))}

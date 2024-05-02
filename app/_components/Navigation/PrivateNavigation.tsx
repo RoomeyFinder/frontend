@@ -10,7 +10,6 @@ import {
   Button,
   Flex,
   Icon,
-  Link,
   Menu,
   MenuButton,
   MenuDivider,
@@ -30,6 +29,10 @@ import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 import NotificationsDropdown from "../Notifications/NotificationsDropdown"
+import { UserContext } from "@/app/_providers/UserProvider"
+import { useContext, useState } from "react"
+import GrowthIcon from "@/app/_assets/SVG/GrowthIcon"
+import { PremiumModalInfoOnly } from "../PremiumModal"
 
 export default function PrivateNavigation({
   showHamburgerAlways,
@@ -139,6 +142,9 @@ function PrivateNavigationDropDown({
 
 function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
   const router = useRouter()
+  const [showPremiumModal, setShowPremiumModal] = useState(false)
+  const { user } = useContext(UserContext)
+
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
@@ -160,7 +166,7 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
                 bg="brand.main"
                 fontSize={{ base: "1rem", md: "1.4rem" }}
               >
-                Incomplete
+                {user?.isProfileComplete ? "Complete" : "Incomplete"}
               </Text>
             </Flex>
           </Flex>
@@ -175,12 +181,23 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
             {idx < arr.length - 1 && <PrivateMenuDivider />}
           </Show>
         ))}
+        <PrivateMenuItem
+          closeOnSelect={true}
+          onClick={() => setShowPremiumModal(true)}
+        >
+          <PrivateMenuIcon as={GrowthIcon} />
+          Premium
+        </PrivateMenuItem>
         <PrivateMenuItem closeOnSelect={false} onClick={toggleShowMore}>
           <PrivateMenuIcon as={QuestionMarkCircled} />
           More
         </PrivateMenuItem>
       </Flex>
       <InterestsAccessCount />
+      <PremiumModalInfoOnly
+        show={showPremiumModal}
+        onClose={() => setShowPremiumModal(false)}
+      />
     </>
   )
 }
@@ -244,6 +261,7 @@ export function ProfileThrustAd() {
 }
 
 function InterestsAccessCount() {
+  const { user } = useContext(UserContext)
   return (
     <Box bg="white.400" p="2rem">
       <Flex
@@ -253,15 +271,15 @@ function InterestsAccessCount() {
         flexDir="column"
         justifyContent="center"
         alignItems="center"
-        gap="1rem"
+        gap=".5rem"
         bg="brand.10"
-        p="1rem"
+        p="1.25rem"
         rounded="1rem"
       >
-        <Text lineHeight="1">Interest Access</Text>
         <Text lineHeight="1" color="black">
-          20 Listings
+          {user?.countOfInterestsLeft}
         </Text>
+        <Text lineHeight="1">Interests Left</Text>
       </Flex>
     </Box>
   )

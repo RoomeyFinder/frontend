@@ -1,11 +1,25 @@
-import { Box, Flex, HStack, Heading, Text, VStack } from "@chakra-ui/react"
+import {
+  Box,
+  Flex,
+  HStack,
+  Heading,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import NotificationItem from "./NotificationItem"
-import { useRouter } from "next/navigation"
-import { NotificationVariant } from "@/app/_types/Notification"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
+import { NotificationsContext } from "@/app/_providers/NotificationsProvider"
+import { useContext, useMemo } from "react"
+import { useRouter } from "next/navigation"
 
 export default function NotificationsDropdown() {
   const router = useRouter()
+  const { notifications, loading } = useContext(NotificationsContext)
+  const unseenNotifications = useMemo(
+    () => notifications.filter((it) => it.seen === false).slice(0, 4),
+    [notifications]
+  )
   return (
     <>
       <VStack
@@ -22,47 +36,48 @@ export default function NotificationsDropdown() {
         pos="relative"
         pt=".8rem"
       >
-        <NoNewNotificationsView />
-        {/*  <NotificationItem variant={NotificationVariant.ACCEPTED_INTEREST} />
-        <NotificationItem variant={NotificationVariant.LISTING_VIEW} />
-        <NotificationItem variant={NotificationVariant.PROFILE_VIEW} />
-        <NotificationItem
-          variant={NotificationVariant.RECEIVED_LISTING_INTEREST}
-        />
-        <NotificationItem
-          variant={NotificationVariant.RECEIVED_PROFILE_INTEREST}
-        />
-        <NotificationItem variant={NotificationVariant.MESSAGE} />
-         <HStack
-          px=".8rem"
-          py="1rem"
-          borderTop="1px solid"
-          borderTopColor="#D9D9D9"
-          bg="#F1F1F1"
-          justifyContent="space-between"
-          pos="sticky"
-          bottom="0"
-        >
-          <Text
-            fontSize="1.4rem"
-            lineHeight="1.2rem"
-            fontWeight="700"
-            color="gray.main"
-            as="button"
-            onClick={() => router.push("/notifications")}
-          >
-            View All
-          </Text>
-          <Text
-            fontSize="1.4rem"
-            lineHeight="1.2rem"
-            fontWeight="700"
-            color="gray.100"
-            as="button"
-          >
-            Clear All
-          </Text>
-        </HStack> */}
+        {loading && (
+          <Flex minH="10rem" justifyContent="center" alignItems="center">
+            <Spinner color="brand.main" />
+          </Flex>
+        )}
+        {!loading &&
+          (unseenNotifications.length === 0 ? (
+            <NoNewNotificationsView />
+          ) : (
+            <>
+              {unseenNotifications.map((notification) => (
+                <NotificationItem
+                  key={notification._id}
+                  variant={notification.title}
+                  size={"small"}
+                  notification={notification}
+                  shouldRedirectToNotificationsPage
+                />
+              ))}
+              <HStack
+                px="1.2rem"
+                py="1rem"
+                borderTop="1px solid"
+                borderTopColor="#D9D9D9"
+                bg="#F1F1F1"
+                justifyContent="start"
+                pos="sticky"
+                bottom="0"
+              >
+                <Text
+                  fontSize="1.4rem"
+                  lineHeight="1.2rem"
+                  fontWeight="700"
+                  color="gray.main"
+                  as="button"
+                  onClick={() => router.push("/notifications")}
+                >
+                  View All
+                </Text>
+              </HStack>
+            </>
+          ))}
       </VStack>
     </>
   )

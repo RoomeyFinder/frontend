@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   Heading,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -27,9 +26,15 @@ import { FavoriteType } from "../_types/Favorites"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
 import TimeSince from "../_components/TimeSince"
+import { useRouter } from "next/navigation"
+import CenteredSpinner from "../_components/CenteredSpinner"
+import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
+import useActOnInterest from "../_hooks/useActOnInterest"
+import Empty from "../_components/Empty"
 
 export default function Page() {
-  const { interests } = useContext(InterestsContext)
+  const { interests, loading, failedToFetch, reloadInterests } =
+    useContext(InterestsContext)
   const { user } = useContext(UserContext)
   const searchParams = useSearchParams()
   const currentDisplay = useMemo(
@@ -48,26 +53,23 @@ export default function Page() {
     )
   }, [interests, user])
 
-  const displayFilteredInterests = useCallback(
-    (interests: InterestInterface[]) => {
-      if (currentDisplay.startsWith("sent"))
-        return sentInterests.map((interest) => (
-          <Interest
-            key={interest._id}
-            isSent={currentDisplay.startsWith("sent")}
-            interest={interest}
-          />
-        ))
-      return receivedInterests.map((interest) => (
+  const displayFilteredInterests = useCallback(() => {
+    if (currentDisplay.startsWith("sent"))
+      return sentInterests.map((interest) => (
         <Interest
           key={interest._id}
           isSent={currentDisplay.startsWith("sent")}
           interest={interest}
         />
       ))
-    },
-    [currentDisplay, sentInterests, receivedInterests]
-  )
+    return receivedInterests.map((interest) => (
+      <Interest
+        key={interest._id}
+        isSent={currentDisplay.startsWith("sent")}
+        interest={interest}
+      />
+    ))
+  }, [currentDisplay, sentInterests, receivedInterests])
 
   return (
     <Box pos="relative" minH="80dvh">
@@ -83,6 +85,19 @@ export default function Page() {
           { displayText: `sent(${sentInterests.length})`, filterText: "sent" },
         ]}
       />
+      {loading && interests?.length === 0 && <CenteredSpinner />}
+      {failedToFetch && !loading && !interests?.length && (
+        <FailureUIWithRetryButton
+          handleRetry={() => reloadInterests()}
+          text="An error was encountered while trying to load your interests"
+        />
+      )}
+      {!failedToFetch && !loading && interests?.length === 0 && (
+        <Empty
+          heading={`No interests yet`}
+          text={`Interests you ${currentDisplay.startsWith("sent") ? "send" : "receive"} will appear here`}
+        />
+      )}
       <VStack
         w="90%"
         maxW={{ lg: "80%" }}
@@ -92,9 +107,7 @@ export default function Page() {
         justifyContent="center"
         mx="auto"
       >
-        {displayFilteredInterests(
-          currentDisplay.startsWith("sent") ? sentInterests : receivedInterests
-        )}
+        {displayFilteredInterests()}
       </VStack>
     </Box>
   )
@@ -107,9 +120,10 @@ function Interest({
   isSent?: boolean
   interest: InterestInterface
 }) {
-  const { unsendInterest, acceptInterest, declineInterest } =
-    useContext(InterestsContext)
-  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  // const { unsendInterest, acceptInterest, declineInterest } =
+  //   useContext(InterestsContext)
+  // const [loading, setLoading] = useState(false)
   const [confirmation, setConfirmation] = useState({
     text: "",
     confirmAction: () => {},
@@ -123,33 +137,35 @@ function Interest({
     if (!isSent) return interest.sender
     if (interest.type === FavoriteType.USER) return interest.doc as User
     else return (interest.doc as Listing)?.owner
-  }, [interest])
+  }, [interest, isSent])
 
   const hideConfirmation = useCallback(
     () => setConfirmation({ show: false, confirmAction: () => {}, text: "" }),
     []
   )
+  const { handleAccept, handleDecline, handleUnsend, loading } =
+    useActOnInterest(interest)
 
-  const handleUnsend = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    await unsendInterest(interest?._id)
-    setLoading(false)
-  }, [interest, unsendInterest])
+  // const handleUnsend = useCallback(async () => {
+  //   if (loading) return
+  //   setLoading(true)
+  //   await unsendInterest(interest?._id)
+  //   setLoading(false)
+  // }, [interest, unsendInterest])
 
-  const handleAccept = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    await acceptInterest(interest?._id)
-    setLoading(false)
-  }, [interest, acceptInterest])
+  // const handleAccept = useCallback(async () => {
+  //   if (loading) return
+  //   setLoading(true)
+  //   await acceptInterest(interest?._id)
+  //   setLoading(false)
+  // }, [interest, acceptInterest])
 
-  const handleDecline = useCallback(async () => {
-    if (loading) return
-    setLoading(true)
-    await declineInterest(interest?._id)
-    setLoading(false)
-  }, [interest, declineInterest])
+  // const handleDecline = useCallback(async () => {
+  //   if (loading) return
+  //   setLoading(true)
+  //   await declineInterest(interest?._id)
+  //   setLoading(false)
+  // }, [interest, declineInterest])
 
   return (
     <Flex
@@ -176,15 +192,16 @@ function Interest({
           {profileToDisplay?.firstName} {profileToDisplay?.lastName}
         </Heading>
         <Box>
-          <Link
-            href={`/profile/${profileToDisplay?._id}`}
+          <Text
+            as="button"
             color="gray.main"
             fontWeight="600"
             fontSize={{ base: "1.2rem", md: "1.6rem" }}
             textDecor="underline"
+            onClick={() => router.push(`/profile/${profileToDisplay?._id}`)}
           >
             View profile
-          </Link>
+          </Text>
           &nbsp;&nbsp;&nbsp;
           <Text
             as="span"

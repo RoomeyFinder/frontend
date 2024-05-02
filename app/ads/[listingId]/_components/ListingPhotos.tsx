@@ -15,6 +15,7 @@ export default function ListingPhotos({
         maxH="24rem"
         borderRadius="xl"
         display="inline-block"
+        objectFit="cover"
         src={src}
         alt="Alt"
       />
@@ -28,11 +29,11 @@ export default function ListingPhotos({
             slides={photos}
             swiperSlideContent={({ slide }) => (
               <Image
-                objectFit="contain"
+                objectFit="cover"
                 objectPosition="center"
                 src={slide.secure_url}
                 width="100%"
-                height="auto"
+                height="100%"
                 mx="auto"
                 display="block"
                 alt=""

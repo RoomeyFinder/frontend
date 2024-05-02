@@ -1,6 +1,6 @@
-import { FavoriteType } from "./Favorites";
-import { Listing } from "./Listings";
-import User from "./User";
+import { FavoriteType } from "./Favorites"
+import { Listing } from "./Listings"
+import User from "./User"
 
 
 export default interface Interest {
@@ -13,5 +13,6 @@ export default interface Interest {
   seen: boolean
   createdAt: string,
   updatedAt: string,
-  seenAt: String
+  seenAt: string
+  docOwner: string
 }

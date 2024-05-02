@@ -22,7 +22,7 @@ export default function useAxios() {
   const fetchData = useCallback(
     async ({ url, method, body, headers, baseURL }: FetchOptions) => {
       setIsFetching(true)
-      let bearerToken =
+      const bearerToken =
         JSON.parse(sessionStorage.getItem("RF_TOKEN") || "null") ||
         (await localforage.getItem("RF_TOKEN"))
       axios.defaults.headers.common["Authorization"] = `Bearer ${bearerToken}`
@@ -43,7 +43,7 @@ export default function useAxios() {
           }
         }
         console.log(err)
-        return err.response.data
+        return err.response?.data
       } finally {
         setIsFetching(false)
       }

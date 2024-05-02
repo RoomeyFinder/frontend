@@ -19,15 +19,15 @@ export const AuthContext = createContext<{
   resetAuthorization: (saveUrlState?: boolean) => void
   deleteToken: () => void
   loading: boolean
-}>({
-  token: null,
-  isAuthorized: false,
-  updateToken: () => {},
-  isSessionStorage: undefined,
-  resetAuthorization: () => {},
-  deleteToken: () => {},
-  loading: true,
-})
+    }>({
+      token: null,
+      isAuthorized: false,
+      updateToken: () => {},
+      isSessionStorage: undefined,
+      resetAuthorization: () => {},
+      deleteToken: () => {},
+      loading: true,
+    })
 
 const privatePaths = [
   "/profile",
@@ -56,13 +56,14 @@ export default function AuthProvider({
   const isAuthorized = useMemo(() => token !== null, [token])
 
   const resetAuthorization = useCallback(async () => {
+    if(!isAuthorized) return 
     updateLoading(true)
     await deleteToken()
     await localforage.clear()
     sessionStorage.clear()
     updateLoading(false)
     router.refresh()
-  }, [pathname, deleteToken, updateLoading, router])
+  }, [deleteToken, updateLoading, router, isAuthorized])
 
   const redirectWhenNotAuthorized = useCallback(() => {
     const currentUrl = window.location.pathname
@@ -79,7 +80,7 @@ export default function AuthProvider({
         )
       )
         router.push(`/login?next=${currentUrl + window.location.search}`)
-  }, [pathname, router, isAuthorized, loading, token])
+  }, [pathname, router, isAuthorized, loading])
 
   useEffect(() => {
     redirectWhenNotAuthorized()

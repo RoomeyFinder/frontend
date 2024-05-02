@@ -26,8 +26,8 @@ export default function ListingOwnerOverview({
   isOwnListing: boolean
 }) {
   return (
-    <HStack pos="sticky" alignItems="center" px={{ base: "1rem", md: 0 }}>
-      <HStack gap="2rem">
+    <HStack pos="sticky" alignItems="center" px={{ base: "1rem", md: 0 }} w="full">
+      <HStack gap="2rem" w="full">
         <ProfileAvatar
           size="small"
           imageSrc={listing.photos?.[0]?.secure_url}
@@ -72,8 +72,9 @@ export default function ListingOwnerOverview({
           display={{ base: "none", sm: "block" }}
         >
           <InterestButton
-            hasSentInterest={false}
+            docOwner={listing.owner?._id || ""}
             isOwner={false}
+            variant=""
             doc={listing._id}
             docType={"Listing"}
           />

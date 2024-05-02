@@ -267,7 +267,7 @@ function OldPasswordInputSection({
 }) {
   return (
     <>
-      <InputGroup flexDir="column" gap="1rem">
+      <InputGroup flexDir="column">
         <InputLabel>Current password</InputLabel>
         <Input
           {...(error ? getErrorProps("oldPassword", ["oldPassword"]) : {})}

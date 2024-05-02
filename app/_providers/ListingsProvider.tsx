@@ -20,6 +20,9 @@ export const ListingsContext = createContext<{
   deleteAllListings: (_id: string, useSession?: boolean) => void
   loading: boolean
   updateLoading: (upd?: boolean) => void
+  reloadListings: () => void
+  failedToFetch: boolean
+  retriesCount: number
 }>({
   listings: [],
   updateListing: () => {},
@@ -28,6 +31,9 @@ export const ListingsContext = createContext<{
   updateLoading: () => {},
   deleteAllListings: () => {},
   loading: true,
+  reloadListings: () => {},
+  failedToFetch: false,
+  retriesCount: 0,
 })
 
 export default function ListingsProvider({
@@ -37,72 +43,84 @@ export default function ListingsProvider({
 }) {
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
-    data: listings,
+    data: storedListings,
     updateData: updateAllListings,
     deleteData: deleteAllListings,
     loading,
     updateLoading,
   } = useGetFromStorage<Listing[] | null>("RF_USER_LISTINGS")
 
+  const [failedToFetch, setFailedToFetch] = useState(false)
+  const [listings, setListings] = useState<Listing[]>([])
   const [retriesCount, setRetriesCount] = useState(0)
   const [hasInitialized, setHasInitialized] = useState(false)
 
   const { fetchData } = useAxios()
 
   const fetchListings = useCallback(async () => {
-    if (listings || !isAuthorized) return
+    if (!isAuthorized) return
     updateLoading(true)
     const res = await fetchData({
       url: "/listings/me",
       method: "get",
     })
+    console.log(res)
     if (res.statusCode === 200) {
       setHasInitialized(true)
       updateAllListings(res.listings)
+      setListings(res.listings)
       setRetriesCount(0)
     } else if (res.statusCode === 403) resetAuthorization()
     else {
+      setFailedToFetch(true)
       setRetriesCount(retriesCount + 1)
     }
     updateLoading(false)
   }, [
     fetchData,
     resetAuthorization,
-    listings,
     updateAllListings,
     updateLoading,
     isAuthorized,
+    retriesCount,
   ])
 
   useEffect(() => {
-    if (listings === null && hasInitialized === false && retriesCount < 10)
-      fetchListings()
-  }, [listings, fetchListings, hasInitialized, retriesCount])
+    if (hasInitialized === false && retriesCount < 10) fetchListings()
+  }, [storedListings, fetchListings, hasInitialized, retriesCount])
+
+  useEffect(() => {
+    if (failedToFetch && !loading && storedListings !== null)
+      setListings(storedListings)
+  }, [failedToFetch, loading, storedListings])
 
   const updateListing = useCallback(
     (listing: Listing, useSession?: boolean) => {
-      updateAllListings(
-        listings?.map((it: Listing) => (it._id === listing._id ? listing : it)),
-        useSession
+      const update = (storedListings || []).map((it: Listing) =>
+        it._id === listing._id ? listing : it
       )
+      updateAllListings(update, useSession)
+      setListings(update)
     },
-    [listings, updateAllListings]
+    [storedListings, updateAllListings]
   )
   const deleteListing = useCallback(
     (id: string, useSession?: boolean) => {
-      updateAllListings(
-        listings?.filter((it: Listing) => it._id !== id),
-        useSession
+      const update = (storedListings || []).filter(
+        (it: Listing) => it._id !== id
       )
+      updateAllListings(update, useSession)
+      setListings(update)
     },
-    [listings, updateAllListings]
+    [storedListings, updateAllListings]
   )
 
   const addNewListing = useCallback(
     (listing: Listing) => {
-      updateAllListings([...(listings || []), listing])
+      updateAllListings([...(storedListings || []), listing])
+      setListings([...(storedListings || []), listing])
     },
-    [listings, updateAllListings]
+    [storedListings, updateAllListings]
   )
 
   return (
@@ -115,6 +133,12 @@ export default function ListingsProvider({
         loading,
         updateLoading,
         deleteAllListings,
+        failedToFetch,
+        reloadListings: () => {
+          fetchListings()
+          setRetriesCount(1)
+        },
+        retriesCount,
       }}
     >
       {children}

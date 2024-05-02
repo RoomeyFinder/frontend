@@ -4,10 +4,11 @@ import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "../_components/PageHeader"
-import Empty from "../_components/Empty"
 import EditableListingCard from "../_components/EditableListingCard"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import CenteredSpinner from "../_components/CenteredSpinner"
+import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
+import Empty from "../_components/Empty"
 
 export default function MyAds() {
   return (
@@ -26,7 +27,8 @@ export default function MyAds() {
 function Renderer() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const { listings, loading } = useContext(ListingsContext)
+  const { listings, loading, failedToFetch, reloadListings, retriesCount } =
+    useContext(ListingsContext)
   const currentDisplay = useMemo(
     () =>
       (searchParams.get("filter") || "active") as
@@ -63,7 +65,7 @@ function Renderer() {
         filters={["active", "drafts", "deactivated"]}
       >
         <Button
-          onClick={() => router.push(`/ads?new=true`)}
+          onClick={() => router.push("/ads?new=true")}
           variant="brand-secondary"
           minW={{ md: "18.5rem" }}
           ml="auto"
@@ -71,7 +73,18 @@ function Renderer() {
           Create ad
         </Button>
       </MyAdsHeader>
-      {listingsToDisplay.length === 0 && !loading && <Empty heading="No Ads" />}
+      {failedToFetch && !loading && retriesCount >= 10 && (
+        <FailureUIWithRetryButton
+          text="An error was encountered while trying to load your ads"
+          handleRetry={() => reloadListings()}
+        />
+      )}
+      {listingsToDisplay.length === 0 && !loading && (
+        <Empty
+          heading={`You do not have any ${currentDisplay} ${currentDisplay !== "drafts" ? "ads" : ""}`}
+          text={"Ads you create will appear here."}
+        />
+      )}
       {listingsToDisplay.length > 0 && !loading && (
         <VStack
           py="5rem"

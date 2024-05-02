@@ -16,5 +16,40 @@ export default function EyeIcon(){
       />
     </svg>
   )
+}
 
+export function EyeIconLarge(){
+  return (
+    <svg
+      width="30"
+      height="30"
+      viewBox="0 0 30 30"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+    >
+      <rect
+        width="30"
+        height="30"
+        transform="translate(0 0.0078125)"
+        fill="url(#pattern0_5338_3197)"
+      />
+      <defs>
+        <pattern
+          id="pattern0_5338_3197"
+          patternContentUnits="objectBoundingBox"
+          width="1"
+          height="1"
+        >
+          <use xlinkHref="#image0_5338_3197" transform="scale(0.0166667)" />
+        </pattern>
+        <image
+          id="image0_5338_3197"
+          width="60"
+          height="60"
+          xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKzSURBVHgB7ZqNbdswEIXPmUCdoNogzgRVJ2g2qDtBtYG8QbJBkgkygpwJ6k4gbZBs8HpXSgAjWArJE20G4AccLNnk0Y+/R0pEmUwmk8lkMpk4bCgiAAr+uGW7ZivZtmzFYCP9YEe2v2yHzWbT02dBRLLVbC3C+cO2YyspVQahDdsr1uUhOeGRhNqI74YujdQ8TPc7Fx0u1dpc8E/EbdU5pMyazglMF7405+niSEPsSFzRSEvsSBzRSFPsiLNop0iLHUq09Ew63tieyERU/fDdGIl9IxOJadhxhPZEWmCWHs1s7DSrwkRWHcKRckrSovwTnc+fgKncDuFITFBQKNCN2w4BNQ59j7pb8r9ZKpg/OgrnF4+px4lPqf0dmd2T8EIndkfQzxlf2OebVw4u9B7hdCf8/Z5puZNjHLrd1p58URa4OyH2I+pJnhrhtOQLdONoa/lxHZOSppjkC+V1TtfVgubg2Y7Hz9G6rRx9jeN79NFTOLPlLQlei8oj7TVFZkmw3yxnwV3qKymBZj1dIIpg5sa6PpI7L9Z1ReHMlnnlWLgvlXX9SG6VJ2kO1v0PCsenkg3cpSqE8y6uhdsSU1vpNTO0cEshQLcWtxNfItop8OD7Z4QTHh1y5i1063Ez8SctJ7uih8GkEopJmgY6StIAXcQDOJ4rw5xra1pWWOdwD7q4WujY7mBFYJZvafUG+hPQexctrice0u1kTG5Jj8zG/XBdkiKiszhyZHbjktD5YRpMtxTRJaVFz/bdNRT1enqYoOiePMQK3o9LExLdk6fYYGBm1BaXo0WkWPsj4XucH6fZOKZo7UmjKx1bRakA/bnyHLI+7ylVVhQuZ8wyZFYdq9FeaoGJqsbHKJVDFglIZFs3Ht0eKAJR3+KxGSpAWquc/PRf6Kd6cyeTyWQymUwmkyH6By36SaxXVHVFAAAAAElFTkSuQmCC"
+        />
+      </defs>
+    </svg>
+  )
 }

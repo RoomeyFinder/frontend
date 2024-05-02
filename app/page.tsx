@@ -110,10 +110,12 @@ function FeaturesSection() {
             fontSize={{ base: "1.3rem", md: "1.6rem" }}
             color="gray.main"
             mb="5rem"
+            maxW="80rem"
+            mx="auto"
             lineHeight="2.2rem"
           >
-            Here at Roomeyfinder, we help you find your ideal living situation
-            or find a match for your space.
+            Roomeyfinder helps you find roommates who are schoolmates with ease.
+            We make finding your ideal living situation one less hassle.
           </Text>
           <Flex
             as="ul"

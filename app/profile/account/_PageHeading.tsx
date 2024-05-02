@@ -6,7 +6,7 @@ export default function PageHeading(){
     <Box>
       <Breadcrumb
         separator=">"
-        fontSize="1.6rem"
+        fontSize={{base: "1.2rem", md: "1.6rem"}}
         color="gray.main"
         lineHeight="normal"
         fontWeight="400"
@@ -19,7 +19,7 @@ export default function PageHeading(){
         </BreadcrumbItem>
       </Breadcrumb>
       <Heading
-        as="h1"
+        aria-level={1}
         mt={{ base: "1.5rem", lg: "3rem" }}
         variant="large"
       >

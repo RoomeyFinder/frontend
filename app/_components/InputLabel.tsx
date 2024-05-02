@@ -8,7 +8,7 @@ export default function InputLabel({ children, as }: { children: ReactNode, as?:
         lineHeight="normal"
         mb="1rem"
         fontWeight="600"
-        fontSize={{ base: "1.6rem", md: "2rem" }}
+        fontSize={{ base: "1.3rem", md: "2rem" }}
       >
         {children}
       </Text>

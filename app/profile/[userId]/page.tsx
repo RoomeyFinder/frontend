@@ -34,7 +34,7 @@ function Renderer() {
       roomies.find((it) => it._id === params.userId) ||
       (favorites?.find((it) => it.doc?._id === params.userId)?.doc as User)
     )
-  }, [params.userId, roomies])
+  }, [favorites, params.userId, roomies])
 
   if (loadingRoomies) {
     return (

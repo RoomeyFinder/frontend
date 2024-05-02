@@ -7,9 +7,11 @@ export default interface User {
     id: string
     _id: string
   }
+  isProfileComplete: boolean
   firstName: string
   lastName: string
   dob: string
+  lastSeen: string
   phoneNumber: string
   countryCode: string
   gender: "male" | "female"
@@ -22,10 +24,13 @@ export default interface User {
   currentAddress: string
   lifestyleTags?: { value: string; category: string }[]
   about: string
-  interestCount: number
+  countOfInterestsLeft: number
   photos: Photo[]
   _id: string
   isVisible: boolean
+  isOnline?: boolean
+  premiumPurchaseExpiry?: string
+  lastDateOfInterestReset: string
 }
 
 export type Photo = {

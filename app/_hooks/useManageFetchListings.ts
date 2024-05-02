@@ -76,6 +76,7 @@ export default function useManageFetchListings<T>({
       resultKey,
       concatQueryObjectToSearchString,
       hasFetchedAll,
+      limit
     ]
   )
 

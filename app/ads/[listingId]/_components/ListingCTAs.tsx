@@ -1,15 +1,26 @@
 import HeartIcon from "@/app/_assets/SVG/HeartIcon"
 import ShareIcon from "@/app/_assets/SVG/ShareIcon"
+import { FavouriteButton } from "@/app/_components/RoomListingCard"
+import { FavoriteType } from "@/app/_types/Favorites"
+import { Listing } from "@/app/_types/Listings"
 import { InterestButton } from "@/app/profile/_components/ProfileOverview"
 import { Box, Button, Flex } from "@chakra-ui/react"
 
-export default function ListingCTAs() {
+export default function ListingCTAs({
+  isOwner,
+  listing,
+  handleShare,
+}: {
+  isOwner: boolean
+  listing: Listing
+  handleShare: () => void
+}) {
   return (
     <>
       <Flex
         pos="sticky"
         insetX="0"
-        bottom={{ base: "0",}}
+        bottom={{ base: "0" }}
         alignItems="center"
         justifyContent="space-between"
         bg="white"
@@ -18,17 +29,35 @@ export default function ListingCTAs() {
         boxShadow="0px -2px 2px #0000000f"
       >
         <Flex gap="1rem">
-          <Button variant="brand-secondary" rounded="full" p="1rem">
+          <Button
+            onClick={handleShare}
+            variant="brand-secondary"
+            rounded="full"
+            p="1rem"
+          >
             <ShareIcon />
           </Button>
-          <Button variant="brand-secondary" rounded="full" p="1rem">
-            <HeartIcon />
-          </Button>
+
+          <FavouriteButton
+            listingId={listing?._id}
+            type={FavoriteType.LISTING}
+            useConfirmation={false}
+            buttonProps={{
+              variant: "brand-secondary",
+              position: "static",
+              bg: "brand.10",
+              p: "1rem",
+              rounded: "full",
+            }}
+            color="brand.main"
+          />
         </Flex>
         <InterestButton
-          variant="brand"
-          isOwner={false}
-          hasSentInterest={false}
+          variant="brand-secondary"
+          isOwner={isOwner}
+          doc={listing?._id}
+          docType={"Listing"}
+          docOwner={listing.owner?._id as string} // hasSentInterest={false}
         />
       </Flex>
     </>

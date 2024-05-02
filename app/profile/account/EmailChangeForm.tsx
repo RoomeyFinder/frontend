@@ -24,15 +24,9 @@ import {
 } from "react"
 import toast from "react-hot-toast"
 
-const initialState = {
-  oldPassword: "",
-  newEmail: "",
-  confirmNewPassword: "",
-}
-
 export default function EmailChangeForm() {
   const { fetchData } = useAxios()
-  const { currentStage, navigateToStage, goToNextStage, goToPrevStage } =
+  const { currentStage, navigateToStage, goToNextStage } =
     useManageStageFlow({
       maxStage: 3,
       minStage: 1,
@@ -134,13 +128,13 @@ export default function EmailChangeForm() {
       as="form"
       onSubmit={handleSubmit}
     >
-      <Heading variant="md" as="h2">
+      <Heading as="h2" mt={{ base: "1.5rem", lg: "3rem" }} variant="large">
         Email
       </Heading>
       <Stage currentStage={currentStage} stage={1}>
         <NewEmailInputSection
           value={user?.email || ""}
-          onChange={(e) => {}}
+          onChange={() => {}}
           error={error}
           isEditing={false}
         />
@@ -202,7 +196,6 @@ export default function EmailChangeForm() {
 function NewEmailInputSection({
   value,
   onChange,
-  error,
   isEditing,
 }: {
   value: string

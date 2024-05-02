@@ -5,14 +5,12 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useState,
 } from "react"
 import useAxios from "../_hooks/useAxios"
 import { AuthContext } from "./AuthContext"
 import User from "../_types/User"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
-import localforage from "localforage"
-import { useRouter } from "next/navigation"
-import toast from "react-hot-toast"
 
 export const UserContext = createContext<{
   user: User | null
@@ -37,28 +35,30 @@ export default function UserProvider({
 }) {
   const { resetAuthorization, isAuthorized } = useContext(AuthContext)
   const {
-    data: user,
+    data: fallbackUser,
     updateData: updateUser,
     deleteData: deleteUser,
     loading,
     updateLoading,
   } = useGetFromStorage<User>("RF_USER")
-
+  const [user, setUser] = useState<User | null>(null)
   const { fetchData } = useAxios()
   const fetchUser = useCallback(async () => {
-    if (user || !isAuthorized) return
     updateLoading()
     const res = await fetchData({
       url: "/users/me",
       method: "get",
     })
-    if (res.statusCode === 200) updateUser(res.user)
-    else if (res.statusCode === 403) resetAuthorization()
+    if (res.statusCode === 200) {
+      setUser(res.user)
+      updateUser(res.user)
+    } else if (res.statusCode === 403) resetAuthorization()
+    else setUser(fallbackUser)
     updateLoading(false)
   }, [
     fetchData,
     resetAuthorization,
-    user,
+    fallbackUser,
     updateUser,
     updateLoading,
     isAuthorized,
@@ -69,12 +69,19 @@ export default function UserProvider({
   }, [resetAuthorization])
 
   useEffect(() => {
-    fetchUser()
-  }, [])
+    if (isAuthorized) fetchUser()
+  }, [isAuthorized])
 
   return (
     <UserContext.Provider
-      value={{ user, updateUser, deleteUser, loading, updateLoading, logout }}
+      value={{
+        user,
+        updateUser: (update: User) => setUser(update),
+        deleteUser,
+        loading,
+        updateLoading,
+        logout,
+      }}
     >
       {children}
     </UserContext.Provider>

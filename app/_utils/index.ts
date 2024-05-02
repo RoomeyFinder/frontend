@@ -3,12 +3,12 @@ import { getGeocode, getZipCode, getLatLng } from "use-places-autocomplete"
 
 
 export const rentDurationMapping: {
-  yearly: "year"
+  annually: "year"
   monthly: "month"
   biannually: "6months"
   quarterly: "4months"
 } = {
-  yearly: "year",
+  annually: "year",
   monthly: "month",
   biannually: "6months",
   quarterly: "4months",

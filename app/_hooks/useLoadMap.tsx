@@ -16,7 +16,7 @@ export default function useLoadMap(
     const bounds = new window.google.maps.LatLngBounds(center)
     map.fitBounds(bounds)
     setMap(map)
-  }, [])
+  }, [center])
 
   const onUnmount = useCallback(function callback() {
     setMap(null)

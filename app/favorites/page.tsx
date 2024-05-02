@@ -1,13 +1,9 @@
 "use client"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import {
   Box,
-  Button,
   Flex,
-  Link,
   Spinner,
-  Text,
-  VStack,
 } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import Empty from "../_components/Empty"
@@ -20,7 +16,7 @@ import RoomeyListingCard from "../_components/RoomeyListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import User from "../_types/User"
 import { Listing } from "../_types/Listings"
-import NoWifi from "../_assets/SVG/NoWifi"
+import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
 
 export default function Favorites() {
   return (
@@ -51,7 +47,6 @@ function Renderer() {
       }),
     [favorites, filter]
   )
-  const router = useRouter()
   return (
     <Box pos="relative" minH="80dvh">
       <FavoritesHeader
@@ -63,33 +58,14 @@ function Renderer() {
       {!loading &&
         hasInitialized &&
         (!favoritesToDisplay || favoritesToDisplay.length === 0) && (
-          <Empty
-            text={`${!filter || filter === "rooms" ? "Rooms" : "Roomies"}  you favorite will appear here.`}
-          />
-        )}
-      {retriesCount === 10 && !hasInitialized && (
         <Empty
-          heading="Oops!"
-          text={
-            <VStack
-              as="span"
-              alignItems="start"
-              justifyContent="start"
-              gap="2rem"
-            >
-              <Text as="span">
-                An error was encountered while trying to load your favorites
-              </Text>
-              <Button
-                variant="brand-secondary"
-                minW="16rem"
-                onClick={() => retryInitialize()}
-              >
-                retry
-              </Button>
-            </VStack>
-          }
-          icon={<NoWifi />}
+          text={`${!filter || filter === "rooms" ? "Rooms" : "Roomies"}  you favorite will appear here.`}
+        />
+      )}
+      {retriesCount === 10 && !hasInitialized && (
+        <FailureUIWithRetryButton
+          handleRetry={() => retryInitialize()}
+          text="An error was encountered while trying to load your favorites"
         />
       )}
 
@@ -102,23 +78,23 @@ function Renderer() {
         {hasInitialized &&
           favoritesToDisplay &&
           favoritesToDisplay.length > 0 && (
-            <ListingsGridLayout
-              list={favoritesToDisplay.map((favorite) => (
-                <FavoriteComponent
-                  document={favorite.doc}
-                  key={favorite._id}
-                  filter={filter}
-                />
-              ))}
-              justifyContent="start"
-              templateColumns={{
-                base: "repeat(1, 1fr)",
-                sm: "repeat(2, 1fr)",
-                md: "repeat(3, 1fr)",
-                xl: "repeat(4, 1fr)",
-              }}
-            />
-          )}
+          <ListingsGridLayout
+            list={favoritesToDisplay.map((favorite) => (
+              <FavoriteComponent
+                document={favorite.doc}
+                key={favorite._id}
+                filter={filter}
+              />
+            ))}
+            justifyContent="start"
+            templateColumns={{
+              base: "repeat(1, 1fr)",
+              sm: "repeat(2, 1fr)",
+              md: "repeat(3, 1fr)",
+              xl: "repeat(4, 1fr)",
+            }}
+          />
+        )}
       </Box>
     </Box>
   )
@@ -132,20 +108,20 @@ function FavoriteComponent({
   document: User | Listing
 }) {
   if (filter === "roomies") {
-    let roomey = document as User
+    const roomey = document as User
     return (
       <RoomeyListingCard
-        name={roomey.firstName}
+        name={roomey?.firstName}
         ageInYears={
-          new Date().getFullYear() - new Date(roomey.dob).getFullYear()
+          new Date().getFullYear() - new Date(roomey?.dob).getFullYear()
         }
-        about={roomey.about}
-        userId={roomey._id}
+        about={roomey?.about}
+        userId={roomey?._id}
         variant="outlined"
       />
     )
   }
-  let listing = document as Listing
+  const listing = document as Listing
   return (
     <RoomListingCard
       ownersName={listing.owner?.firstName as string}

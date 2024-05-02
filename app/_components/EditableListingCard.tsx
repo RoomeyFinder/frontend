@@ -120,7 +120,7 @@ function ListingActions({
   listingId: string
 }) {
   const router = useRouter()
-  const { updateListing, deleteListing, addNewListing, listings } =
+  const { updateListing, deleteListing } =
     useContext(ListingsContext)
   const toast = useAppToast()
   const { fetchData } = useAxios()
@@ -141,7 +141,7 @@ function ListingActions({
       if (res.statusCode === 200 && res.listing)
         updateListing(res.listing as Listing)
     },
-    [toast, listings, updateListing, listingId, router, fetchData]
+    [toast, updateListing, listingId, router, fetchData, deleteListing]
   )
 
   const renderButtons = useCallback(() => {
@@ -228,14 +228,14 @@ const getActionFetchOptions = (
   listingId: string
 ): FetchOptions => {
   switch (primaryActionText) {
-    case "Activate":
-      return { url: `/listings/${listingId}/activate`, method: "put" }
-    case "Deactivate":
-      return { url: `/listings/${listingId}/deactivate`, method: "put" }
-    case "Delete":
-      return { url: `/listings/${listingId}`, method: "delete" }
-    default:
-      return { url: "/", method: "get" }
+  case "Activate":
+    return { url: `/listings/${listingId}/activate`, method: "put" }
+  case "Deactivate":
+    return { url: `/listings/${listingId}/deactivate`, method: "put" }
+  case "Delete":
+    return { url: `/listings/${listingId}`, method: "delete" }
+  default:
+    return { url: "/", method: "get" }
   }
 }
 
