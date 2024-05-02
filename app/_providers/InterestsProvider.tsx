@@ -127,7 +127,7 @@ export default function InterestsProvider({
 
   useEffect(() => {
     fetchInterests()
-  }, [fetchInterests])
+  }, [])
 
   useEffect(() => {
     if (failedToFetch && !isFetching && storedInterests !== null) {

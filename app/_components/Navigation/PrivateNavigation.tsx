@@ -29,6 +29,8 @@ import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 import NotificationsDropdown from "../Notifications/NotificationsDropdown"
+import { UserContext } from "@/app/_providers/UserProvider"
+import { useContext } from "react"
 
 export default function PrivateNavigation({
   showHamburgerAlways,
@@ -243,6 +245,7 @@ export function ProfileThrustAd() {
 }
 
 function InterestsAccessCount() {
+  const { user } = useContext(UserContext)
   return (
     <Box bg="white.400" p="2rem">
       <Flex
@@ -252,15 +255,15 @@ function InterestsAccessCount() {
         flexDir="column"
         justifyContent="center"
         alignItems="center"
-        gap="1rem"
+        gap=".5rem"
         bg="brand.10"
-        p="1rem"
+        p="1.25rem"
         rounded="1rem"
       >
-        <Text lineHeight="1">Interest Access</Text>
         <Text lineHeight="1" color="black">
-          20 Listings
+          {user?.countOfInterestsLeft}
         </Text>
+        <Text lineHeight="1">Interests Left</Text>
       </Flex>
     </Box>
   )
