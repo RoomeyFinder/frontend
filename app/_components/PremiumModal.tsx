@@ -81,7 +81,7 @@ export default function PremiumModal({
               lineHeight="100%"
               textAlign="center"
             >
-              {hasPremium && (
+              {!hasPremium && (
                 <>
                   <Heading lineHeight="100%" fontSize="inherit">
                     Get Premium
@@ -147,7 +147,7 @@ export default function PremiumModal({
                   <DividerWithCenteredText text="Or" />
                 </>
               )}
-              {!hasPremium && (
+              {hasPremium && (
                 <Heading lineHeight="100%" fontSize="inherit">
                   You have used up your interests for today.
                 </Heading>
