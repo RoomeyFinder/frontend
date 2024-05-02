@@ -49,7 +49,7 @@ export default function ListingPage() {
   const handleShare = useCallback(async () => {
     const shareData = {
       url: window.location.href,
-      title: `RoomeyFinder`,
+      title: "RoomeyFinder",
       text: `Stay with ${listing?.owner?.firstName}`,
     }
     if (navigator.share && navigator.canShare(shareData)) {

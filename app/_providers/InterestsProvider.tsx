@@ -21,16 +21,16 @@ export const InterestsContext = createContext<{
   declineInterest: (interestId: string) => Promise<void>
   failedToFetch: boolean
   loading: boolean
-}>({
-  interests: [],
-  reloadInterests: () => {},
-  addNewInterest: () => {},
-  unsendInterest: async () => {},
-  acceptInterest: async () => {},
-  declineInterest: async () => {},
-  loading: false,
-  failedToFetch: false,
-})
+    }>({
+      interests: [],
+      reloadInterests: () => {},
+      addNewInterest: () => {},
+      unsendInterest: async () => {},
+      acceptInterest: async () => {},
+      declineInterest: async () => {},
+      loading: false,
+      failedToFetch: false,
+    })
 
 export default function InterestsProvider({
   children,
@@ -55,7 +55,7 @@ export default function InterestsProvider({
       setInterests(res.interests)
     } else if (res.statusCode === 403) resetAuthorization()
     else setFailedToFetch(true)
-  }, [fetchData, updateInterests, isAuthorized, isFetching, resetAuthorization])
+  }, [fetchData, updateInterests, resetAuthorization])
 
   const addNewInterest = useCallback(
     (newInterest: Interest) => {
@@ -127,7 +127,7 @@ export default function InterestsProvider({
 
   useEffect(() => {
     fetchInterests()
-  }, [])
+  })
 
   useEffect(() => {
     if (failedToFetch && !isFetching && storedInterests !== null) {

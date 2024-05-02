@@ -249,7 +249,7 @@ export function InterestButton({
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
     setSendingInterest(false)
-  }, [fetchData, user, doc, docType, addNewInterest, docOwner, user,updateUser])
+  }, [fetchData, doc, docType, addNewInterest, docOwner, user, updateUser])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"

@@ -1,6 +1,5 @@
 import EditIcon from "../_assets/SVG/EditIcon"
 import FacebookIcon from "../_assets/SVG/FacebookIcon"
-import GrowthIcon from "../_assets/SVG/GrowthIcon"
 import HeartIcon from "../_assets/SVG/HeartIcon"
 import HeartShineIcon from "../_assets/SVG/HeartShineIcon"
 import InstagramIcon from "../_assets/SVG/InstagramIcon"

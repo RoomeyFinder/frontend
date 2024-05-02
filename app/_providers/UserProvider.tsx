@@ -19,14 +19,14 @@ export const UserContext = createContext<{
   loading: boolean
   updateLoading: (upd?: boolean) => void
   logout: () => void
-}>({
-  user: null,
-  updateUser: () => {},
-  deleteUser: () => {},
-  updateLoading: () => {},
-  logout: () => {},
-  loading: true,
-})
+    }>({
+      user: null,
+      updateUser: () => {},
+      deleteUser: () => {},
+      updateLoading: () => {},
+      logout: () => {},
+      loading: true,
+    })
 
 export default function UserProvider({
   children,
@@ -60,8 +60,7 @@ export default function UserProvider({
     resetAuthorization,
     fallbackUser,
     updateUser,
-    updateLoading,
-    isAuthorized,
+    updateLoading
   ])
 
   const logout = useCallback(() => {
@@ -70,7 +69,7 @@ export default function UserProvider({
 
   useEffect(() => {
     if (isAuthorized) fetchUser()
-  }, [isAuthorized])
+  })
 
   return (
     <UserContext.Provider
