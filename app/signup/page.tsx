@@ -2,7 +2,7 @@
 import AuthFormLayout from "../_components/Auth/AuthFormLayout"
 import Stage from "./Stage"
 import ProfileInitialsForm from "./_ProfileInitials"
-import { FormEvent, useContext } from "react"
+import { FormEvent, useContext, useEffect } from "react"
 import SignupProvider from "./_ContextProvider"
 import ContactForm from "./_Contact"
 import EmailVerficationForm from "./_EmailVerification"
@@ -35,6 +35,14 @@ function SignupConsumer() {
     loading,
   } = useContext(SignupContext)
 
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.removeItem("unverifiedEmail")
+    })
+    return () => {
+      window.removeEventListener("beforeunload", () => {})
+    }
+  }, [])
   return (
     <Box py={{ base: "5rem", md: "" }}>
       <AuthFormLayout
