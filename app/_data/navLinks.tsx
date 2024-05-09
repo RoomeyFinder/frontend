@@ -13,21 +13,21 @@ export const privateLinks = [
     href: "/ads",
     icon: EditIcon,
     hideAbove: "",
-    showBelow: "",
+    showBelow: "md",
   },
   {
     name: "Favorites",
     href: "/favorites",
     icon: HeartIcon,
-    hideAbove: "base",
-    showBelow: "",
+    hideAbove: "",
+    showBelow: "md",
   },
   {
     name: "Interests",
     href: "/interests",
     icon: HeartShineIcon,
-    hideAbove: "base",
-    showBelow: "",
+    hideAbove: "",
+    showBelow: "md",
   },
   {
     name: "Chats",
@@ -35,6 +35,7 @@ export const privateLinks = [
     icon: MessageIcon,
     hideAbove: "md",
     showBelow: "md",
+    isIcon: true
   },
   {
     name: "Notifications",
@@ -42,6 +43,7 @@ export const privateLinks = [
     icon: NotificationIcon,
     hideAbove: "md",
     showBelow: "md",
+    isIcon: true
   },
 ]
 

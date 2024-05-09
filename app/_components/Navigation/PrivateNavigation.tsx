@@ -1,8 +1,5 @@
 "use client"
-import BoltIcon from "@/app/_assets/SVG/BoltIcon"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
-import LeftChevron from "@/app/_assets/SVG/LeftChevron"
-import QuestionMarkCircled from "@/app/_assets/SVG/QuestionMarkCircled"
 import {
   Avatar,
   Box,
@@ -17,14 +14,14 @@ import {
   MenuList,
   Show,
   chakra,
-  useDisclosure,
   Popover,
   PopoverTrigger,
   PopoverContent,
+  HStack,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-import SupportNav, { baseNavItemStyles } from "./SupportNavList"
+import { baseNavItemStyles } from "./SupportNavList"
 import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
@@ -33,17 +30,28 @@ import { UserContext } from "@/app/_providers/UserProvider"
 import { useContext, useState } from "react"
 import GrowthIcon from "@/app/_assets/SVG/GrowthIcon"
 import { PremiumModalInfoOnly } from "../PremiumModal"
+import { FooterLink } from "../AppFooter"
+import UserSettingsIcon from "@/app/_assets/SVG/UserSettingsIcon"
+import UserIconSmall from "@/app/_assets/SVG/UserIconSmall"
 
-export default function PrivateNavigation({
-  showHamburgerAlways,
-}: {
-  showHamburgerAlways?: boolean
-}) {
+export default function PrivateNavigation() {
   const router = useRouter()
   return (
-    <Flex alignItems="center" gap="2rem">
+    <Flex alignItems="center" gap="4rem">
       <Show above="md">
-        <Flex gap="2rem">
+        <Flex gap="4rem">
+          <HStack gap="6rem" w="100%">
+            <FooterLink href="/profile">My Profile</FooterLink>
+            {privateLinks.map((link) => (
+              <Show above={link.showBelow}>
+                {!link.isIcon && (
+                  <FooterLink href={link.href} key={link.name}>
+                    {link.name}
+                  </FooterLink>
+                )}
+              </Show>
+            ))}
+          </HStack>
           <Text as="button" onClick={() => router.push("/messenger")}>
             <StandAloneIcon>
               <MessageIcon />
@@ -63,18 +71,13 @@ export default function PrivateNavigation({
           </Popover>
         </Flex>
       </Show>
-      <PrivateNavigationDropDown showHamburgerAlways={showHamburgerAlways} />
+      <MobileNavigation />
     </Flex>
   )
 }
 
-function PrivateNavigationDropDown({
-  showHamburgerAlways,
-}: {
-  showHamburgerAlways?: boolean
-}) {
-  const { isOpen: showSupportNav, onToggle: onToggleShowSupportNav } =
-    useDisclosure()
+function MobileNavigation() {
+  const { user } = useContext(UserContext)
   return (
     <>
       <Menu>
@@ -104,16 +107,12 @@ function PrivateNavigationDropDown({
                 alignItems="center"
                 color={isOpen ? "brand.main" : "black"}
               >
-                <Text
-                  display={
-                    showHamburgerAlways
-                      ? "inline"
-                      : { base: "none", md: "inline" }
-                  }
-                >
-                  <Icon as={HamburgerIcon} />
-                </Text>
-                <Avatar name="Brandon" background="brand.main" />
+                <Icon as={HamburgerIcon} />
+                <Avatar
+                  name={user?.firstName || "Roomey"}
+                  color="white"
+                  background="brand.main"
+                />
               </Flex>
             </MenuButton>
             <MenuList
@@ -127,11 +126,7 @@ function PrivateNavigationDropDown({
               borderTop="1px solid"
               borderTopColor="white.200"
             >
-              {showSupportNav ? (
-                <SubPrivateNav toggleHideMore={onToggleShowSupportNav} />
-              ) : (
-                <MainPrivateNav toggleShowMore={onToggleShowSupportNav} />
-              )}
+              <MainPrivateNav />
             </MenuList>
           </>
         )}
@@ -140,38 +135,20 @@ function PrivateNavigationDropDown({
   )
 }
 
-function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
+function MainPrivateNav() {
   const router = useRouter()
   const [showPremiumModal, setShowPremiumModal] = useState(false)
-  const { user } = useContext(UserContext)
 
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
-        <PrivateMenuItem onClick={() => router.push("/profile")}>
-          <Flex
-            _hover={{ textDecoration: "none" }}
-            w="100%"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Text as="span">Profile</Text>
-            <Flex as="span" alignItems="center" gap=".4rem">
-              <Text fontSize={{ base: "1rem", md: "1.4rem" }}>status:</Text>
-              <Text
-                rounded=".3rem"
-                lineHeight={1}
-                px=".5rem"
-                color="white.main"
-                bg="brand.main"
-                fontSize={{ base: "1rem", md: "1.4rem" }}
-              >
-                {user?.isProfileComplete ? "Complete" : "Incomplete"}
-              </Text>
-            </Flex>
-          </Flex>
-        </PrivateMenuItem>
-        <PrivateMenuDivider />
+        <Show below="md">
+          <PrivateMenuItem onClick={() => router.push("/profile")}>
+            <PrivateMenuIcon width="2rem" as={UserIconSmall} />
+            <Text as="span">My Profile</Text>
+          </PrivateMenuItem>
+          <PrivateMenuDivider />
+        </Show>
         {privateLinks.map((link, idx, arr) => (
           <Show key={link.name} below={link.showBelow}>
             <PrivateMenuItem onClick={() => router.push(link.href)}>
@@ -181,16 +158,17 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
             {idx < arr.length - 1 && <PrivateMenuDivider />}
           </Show>
         ))}
+        <PrivateMenuItem onClick={() => router.push("/profile/account")}>
+          <PrivateMenuIcon as={UserSettingsIcon} />
+          <Text as="span">Account</Text>
+        </PrivateMenuItem>
+        <PrivateMenuDivider />
         <PrivateMenuItem
           closeOnSelect={true}
           onClick={() => setShowPremiumModal(true)}
         >
           <PrivateMenuIcon as={GrowthIcon} />
           Premium
-        </PrivateMenuItem>
-        <PrivateMenuItem closeOnSelect={false} onClick={toggleShowMore}>
-          <PrivateMenuIcon as={QuestionMarkCircled} />
-          More
         </PrivateMenuItem>
       </Flex>
       <InterestsAccessCount />
@@ -202,68 +180,44 @@ function MainPrivateNav({ toggleShowMore }: { toggleShowMore: () => void }) {
   )
 }
 
-function SubPrivateNav({ toggleHideMore }: { toggleHideMore: () => void }) {
-  return (
-    <>
-      <Flex justifyContent="center" alignItems="center" p="2rem">
-        <MenuItem
-          autoFocus
-          w="fit-content"
-          closeOnSelect={false}
-          onClick={toggleHideMore}
-          _focus={{ bg: "brand.10", color: "brand.main" }}
-        >
-          <Icon as={LeftChevron} />
-        </MenuItem>
-        <Text
-          fontSize={{ base: "1.4rem", md: "1.6rem" }}
-          fontWeight="600"
-          as="span"
-          display="block"
-          flexGrow="1"
-          textAlign="center"
-          ml="auto"
-          mr="2rem"
-        >
-          Support
-        </Text>
-      </Flex>
-      <PrivateMenuDivider mb="2rem" />
-      <Box w="100%" maxW="28rem" mx="auto">
-        <SupportNav navItemComponent={MenuItem as typeof Box} />
-      </Box>
-    </>
-  )
-}
-
-export function ProfileThrustAd() {
-  return (
-    <Flex flexDir="column" gap=".949rem" bg="brand.10" p="1rem" rounded="1rem">
-      <Flex
-        _hover={{ textDecorationColor: "brand.main", textDecor: "underline" }}
-        as={MenuItem}
-        gap="10px"
-        w="fit-content"
-        p="0"
-        bg="transparent"
-      >
-        <Icon as={BoltIcon} />
-        <Text fontSize="1.4rem" color="brand.main">
-          {" "}
-          Profile Thrust
-        </Text>
-      </Flex>
-      <Text fontSize="1.2rem" color="black">
-        Push your profile to the top and get people to see you first
-      </Text>
-    </Flex>
-  )
-}
+// function SubPrivateNav({ toggleHideMore }: { toggleHideMore: () => void }) {
+//   return (
+//     <>
+//       <Flex justifyContent="center" alignItems="center" p="2rem">
+//         <MenuItem
+//           autoFocus
+//           w="fit-content"
+//           closeOnSelect={false}
+//           onClick={toggleHideMore}
+//           _focus={{ bg: "brand.10", color: "brand.main" }}
+//         >
+//           <Icon as={LeftChevron} />
+//         </MenuItem>
+//         <Text
+//           fontSize={{ base: "1.4rem", md: "1.6rem" }}
+//           fontWeight="600"
+//           as="span"
+//           display="block"
+//           flexGrow="1"
+//           textAlign="center"
+//           ml="auto"
+//           mr="2rem"
+//         >
+//           Support
+//         </Text>
+//       </Flex>
+//       <PrivateMenuDivider mb="2rem" />
+//       <Box w="100%" maxW="28rem" mx="auto">
+//         <SupportNav navItemComponent={MenuItem as typeof Box} />
+//       </Box>
+//     </>
+//   )
+// }
 
 function InterestsAccessCount() {
   const { user } = useContext(UserContext)
   return (
-    <Box bg="white.400" p="2rem">
+    <Box p=".8rem">
       <Flex
         fontSize="1.4rem"
         fontWeight={700}

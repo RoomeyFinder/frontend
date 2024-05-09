@@ -94,17 +94,11 @@ function FooterSubLinks() {
   )
 }
 
-export function FooterLink({ href, children, ...rest }: LinkProps) {
+export function FooterLink({ href, children, onClick, ...rest }: LinkProps) {
   const router = useRouter()
   return (
     <Link
       href={href}
-      onClick={(e) => {
-        if(href){
-          e.preventDefault()
-          router.push(href)
-        }
-      }}
       color="gray.main"
       fontSize={{ base: "1.4rem", md: "1.6rem" }}
       lineHeight="150%"
@@ -117,6 +111,13 @@ export function FooterLink({ href, children, ...rest }: LinkProps) {
         color: "black",
       }}
       {...rest}
+      onClick={(e) => {
+        typeof onClick === "function" && onClick(e)
+        if (href) {
+          e.preventDefault()
+          router.push(href)
+        }
+      }}
     >
       {children}
     </Link>
