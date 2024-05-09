@@ -47,20 +47,20 @@ export const privateLinks = [
 
 export const supportLinks = [
   {
-    name: "Help Center",
-    href: "/help",
-  },
-  {
-    name: "Legal",
-    href: "/legal",
-  },
-  {
     name: "About",
     href: "/about",
   },
   {
     name: "Contact",
     href: "/contact",
+  },
+  {
+    name: "Legal",
+    href: "/legal",
+  },
+  {
+    name: "FAQ",
+    href: "/faq",
   },
 ]
 
