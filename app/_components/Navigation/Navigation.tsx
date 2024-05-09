@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 
 export default function Navigation() {
   const { isAuthorized } = useContext(AuthContext)
-  if (isAuthorized === !true)
+  if (isAuthorized === true)
     return (
       <PrivateNavigation />
     )
