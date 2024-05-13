@@ -35,7 +35,7 @@ export default function OccupationOrUniversityInput({
       <GridItem>
         <SearchableInput
           inputName={inputName}
-          inputPlaceholder={inputName}
+          inputPlaceholder={isStudent ? "School" : "Occupation"}
           errorProps={{ ...getErrorProps(inputName, errors) }}
           options={isStudent ? nigerian_universities.map(x => x.name) : occupations}
           value={inputValue}

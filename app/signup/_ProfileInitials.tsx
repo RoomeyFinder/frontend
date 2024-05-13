@@ -48,7 +48,7 @@ export default function ProfileInitialsForm({
             inputVariant="filled"
             value={formData.gender as string}
             errorProps={getErrorProps("gender", error)}
-            options={["male", "female"]}
+            options={["Male", "Female"]}
             handleChange={(selection: string) => handleChange(sectionName, "gender", selection)} />
         </GridItem>
         <GridItem colSpan={{ base: 1, sm: 2 }}>

@@ -89,6 +89,7 @@ export default function DobInput({
   )
   return (
     <DropDownInput
+    options={dateOptions}
       initialFocusRef={inputRef}
       trigger={
         <InputGroup

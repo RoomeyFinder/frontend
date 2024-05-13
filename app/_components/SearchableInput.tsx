@@ -22,6 +22,7 @@ export default function SearchableInput({ inputPlaceholder, options, handleChang
 
   return (
     <DropDownInput
+         options={filteredList}
       returnFocusOnClose={false} closeOnBlur={false} closeOnEsc={false} initialFocusRef={inputRef}
       trigger={
         <Input
@@ -32,7 +33,7 @@ export default function SearchableInput({ inputPlaceholder, options, handleChang
           value={text} name={inputName}
           {...errorProps}
           onChange={(e) => {
-            if (value.length > 0) handleChange("")
+            handleChange(e.target.value)
             updateText(e.target.value)
           }} />}>
       {({ onClose }: { onClose: () => void }) => (
@@ -42,6 +43,7 @@ export default function SearchableInput({ inputPlaceholder, options, handleChang
           onClose()
         }} />
       )}
+ 
     </DropDownInput>
   )
 }
