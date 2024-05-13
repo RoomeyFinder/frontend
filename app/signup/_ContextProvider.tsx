@@ -188,16 +188,16 @@ export default function SignupProvider({
     ]);
 
     const handleSubmitButtonClick = useCallback(() => {
-     
         if (totalStages.currentStage === 1) {
             const currentStage = profileAndContactFlow.currentStage;
             let isValidated;
-            if (currentStage === 1){
+            if (currentStage === 1) {
                 isValidated = profileInitials.validate(
                     profileInitials.formData
                 );
-                console.log(isValidated)}
-            else isValidated = contactDetails.validate(contactDetails.formData);
+                console.log(isValidated);
+            } else
+                isValidated = contactDetails.validate(contactDetails.formData);
             if (isValidated[0] === false)
                 return setError(isValidated[1] as string[]);
             if (profileAndContactFlow.currentStage >= 2) {
