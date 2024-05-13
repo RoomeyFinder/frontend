@@ -9,7 +9,7 @@ export default function DropDown({
   closeOnBlur,
   closeOnEsc,
   returnFocusOnClose,
-  options,
+  options = [],
 }: {
   trigger: ReactNode | ReactNode[]
   children: ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => ReactNode | ReactNode[]
@@ -17,7 +17,7 @@ export default function DropDown({
   closeOnBlur?: boolean
   closeOnEsc?: boolean
   returnFocusOnClose?: boolean,
-  options: (string | number | { [x: string]: string | number | (() => ReactNode) })[]
+  options?: (string | number | { [x: string]: string | number | (() => ReactNode) })[]
 }) {
   return (
     <Popover returnFocusOnClose={returnFocusOnClose || false} initialFocusRef={initialFocusRef} matchWidth trigger="hover" closeOnBlur={closeOnBlur || true} closeOnEsc={closeOnEsc || true}>
