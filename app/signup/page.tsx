@@ -47,8 +47,8 @@ function SignupConsumer() {
     <Box py={{ base: "5rem", md: "" }}>
       <AuthFormLayout
         handleSubmit={handleSubmitButtonClick}
-        heading="Create Account"
-        mode="signup"
+        heading='Create Account'
+        mode='signup'
         submitButtonVariant={
           emailVerificationAndAddressFlow.currentStage === 2
             ? "brand"
@@ -56,26 +56,28 @@ function SignupConsumer() {
         }
         submitButtonText={
           totalStages.currentStage === 2 &&
-          emailVerificationAndAddressFlow.currentStage === 2
+                    emailVerificationAndAddressFlow.currentStage === 2
             ? "Complete"
             : "Next"
         }
-        loading={loading}
-      >
+        loading={loading}>
         <Box
-          as="form"
+          as='form'
           onSubmit={(e: FormEvent) => {
             e.preventDefault()
-          }}
-        >
+          }}>
           <SignupProgress
-            progressOnePercentage={profileAndContactFlow.progressInPercentage}
+            progressOnePercentage={
+              profileAndContactFlow.progressInPercentage
+            }
             progressTwoPercentage={
               emailVerificationAndAddressFlow.progressInPercentage
             }
           />
           <Stage currentStage={totalStages.currentStage} stage={1}>
-            <Stage currentStage={profileAndContactFlow.currentStage} stage={1}>
+            <Stage
+              currentStage={profileAndContactFlow.currentStage}
+              stage={1}>
               <ProfileInitialsForm
                 error={formErrors}
                 handleChange={handleFormDataChange}
@@ -83,7 +85,9 @@ function SignupConsumer() {
                 sectionName={profileInitials.name}
               />
             </Stage>
-            <Stage currentStage={profileAndContactFlow.currentStage} stage={2}>
+            <Stage
+              currentStage={profileAndContactFlow.currentStage}
+              stage={2}>
               <ContactForm
                 error={formErrors}
                 handleChange={handleFormDataChange}
@@ -94,21 +98,25 @@ function SignupConsumer() {
           </Stage>
           <Stage currentStage={totalStages.currentStage} stage={2}>
             <Stage
-              currentStage={emailVerificationAndAddressFlow.currentStage}
-              stage={1}
-            >
+              currentStage={
+                emailVerificationAndAddressFlow.currentStage
+              }
+              stage={1}>
               <EmailVerficationForm
                 error={formErrors}
-                resendVerificationEmail={resendVerificationEmail}
+                resendVerificationEmail={
+                  resendVerificationEmail
+                }
                 handleChange={handleFormDataChange}
                 formData={emailVerificationDetails.formData}
                 sectionName={emailVerificationDetails.name}
               />
             </Stage>
             <Stage
-              currentStage={emailVerificationAndAddressFlow.currentStage}
-              stage={2}
-            >
+              currentStage={
+                emailVerificationAndAddressFlow.currentStage
+              }
+              stage={2}>
               <AddressForm
                 error={formErrors}
                 handleChange={handleFormDataChange}

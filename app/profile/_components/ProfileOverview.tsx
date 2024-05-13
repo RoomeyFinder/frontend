@@ -27,8 +27,8 @@ import { timeAgo } from "@/app/_utils/date"
 import ActiveBall from "@/app/_assets/SVG/ActiveBall"
 
 const genderMapping = {
-  female: "F",
-  male: "M",
+  Female: "F",
+  Male: "M",
 }
 
 export default function ProfileOverview({

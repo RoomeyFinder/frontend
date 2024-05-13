@@ -14,7 +14,7 @@ export default interface User {
   lastSeen: string
   phoneNumber: string
   countryCode: string
-  gender: "male" | "female"
+  gender: "Male" | "Female"
   email: string
   isStudent: boolean
   school: string

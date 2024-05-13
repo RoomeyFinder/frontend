@@ -23,17 +23,19 @@ export const metadata: Metadata = appendSharedMetaData({})
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+    children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body>
-        <Suspense fallback={<CenteredSpinner/>}>
+        <Suspense fallback={<CenteredSpinner />}>
           <ChakraUIProvider>
             <LocalForageProvider>
               <GoogleOAuthProvider
-                clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
-              >
+                clientId={
+                                    process.env
+                                      .NEXT_PUBLIC_GOOGLE_CLIENT_ID as string
+                }>
                 <AuthProvider>
                   <UserProvider>
                     <SearchProvider>
@@ -43,7 +45,11 @@ export default function RootLayout({
                             <MessengerProvider>
                               <MessagesProvider>
                                 <NotificationProvider>
-                                  <GlobalLayout>{children}</GlobalLayout>
+                                  <GlobalLayout>
+                                    {
+                                      children
+                                    }
+                                  </GlobalLayout>
                                 </NotificationProvider>
                               </MessagesProvider>
                             </MessengerProvider>
@@ -57,8 +63,7 @@ export default function RootLayout({
             </LocalForageProvider>
             <script
               defer
-              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
-            ></script>
+              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}></script>
             <Toaster containerStyle={{ fontSize: "1.6rem" }} />
           </ChakraUIProvider>
         </Suspense>

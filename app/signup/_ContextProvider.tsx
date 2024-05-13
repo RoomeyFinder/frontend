@@ -1,5 +1,12 @@
 import { useRouter } from "next/navigation"
-import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import useManageStageFlow from "../_hooks/useManageStageFlow"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { getGeocode, getZipCode, getLatLng } from "use-places-autocomplete"
@@ -23,22 +30,24 @@ const validateFormDataFields = (
   formData: { [x: string]: string | boolean },
   fields: string[]
 ) => {
-  type formDataKey = keyof typeof formData
-  return fields.every((field) => formData[field as formDataKey])
+    type formDataKey = keyof typeof formData;
+    return fields.every((field) => formData[field as formDataKey])
 }
 
 const findErrorFields = (
   formData: { [x: string]: string | boolean },
   fields: string[]
 ) => {
-  type formDataKey = keyof typeof formData
-  return fields.filter((it) => Boolean(formData[it as formDataKey]) === false)
+    type formDataKey = keyof typeof formData;
+    return fields.filter(
+      (it) => Boolean(formData[it as formDataKey]) === false
+    )
 }
 
 export default function SignupProvider({
   children,
 }: {
-  children: ReactNode | ReactNode[]
+    children: ReactNode | ReactNode[];
 }) {
   const router = useRouter()
   const toast = useToast({
@@ -47,7 +56,11 @@ export default function SignupProvider({
   })
   const { fetchData } = useAxios()
   const [loading, setLoading] = useState(false)
-  const totalStages = useManageStageFlow({ maxStage: 2, minStage: 1, start: 1 })
+  const totalStages = useManageStageFlow({
+    maxStage: 2,
+    minStage: 1,
+    start: 1,
+  })
   const profileAndContactFlow = useManageStageFlow({
     maxStage: 2,
     minStage: 1,
@@ -81,7 +94,10 @@ export default function SignupProvider({
       })
       if (res.statusCode === 201) {
         successCallback()
-        sessionStorage.setItem("unverifiedEmail", contactDetails.formData.email)
+        sessionStorage.setItem(
+          "unverifiedEmail",
+          contactDetails.formData.email
+        )
       } else toast({ description: res.message, status: "error" })
       setLoading(false)
     },
@@ -167,17 +183,23 @@ export default function SignupProvider({
     toast,
     router,
     contactDetails.formData.email,
-    updateToken, updateUser
+    updateToken,
+    updateUser,
   ])
 
   const handleSubmitButtonClick = useCallback(() => {
     if (totalStages.currentStage === 1) {
       const currentStage = profileAndContactFlow.currentStage
       let isValidated
-      if (currentStage === 1)
-        isValidated = profileInitials.validate(profileInitials.formData)
-      else isValidated = contactDetails.validate(contactDetails.formData)
-      if (isValidated[0] === false) return setError(isValidated[1] as string[])
+      if (currentStage === 1) {
+        isValidated = profileInitials.validate(
+          profileInitials.formData
+        )
+        console.log(isValidated)
+      } else
+        isValidated = contactDetails.validate(contactDetails.formData)
+      if (isValidated[0] === false)
+        return setError(isValidated[1] as string[])
       if (profileAndContactFlow.currentStage >= 2) {
         sendEmailVerificationCode(() => {
           totalStages.goToNextStage()
@@ -191,11 +213,18 @@ export default function SignupProvider({
         isValidated = emailVerificationDetails.validate(
           emailVerificationDetails.formData
         )
-      else isValidated = locationDetails.validate(locationDetails.formData)
-      if (isValidated[0] === false) return setError(isValidated[1] as string[])
-      if (emailVerificationAndAddressFlow.currentStage === 2) submitSignup()
+      else
+        isValidated = locationDetails.validate(
+          locationDetails.formData
+        )
+      if (isValidated[0] === false)
+        return setError(isValidated[1] as string[])
+      if (emailVerificationAndAddressFlow.currentStage === 2)
+        submitSignup()
       else {
-        verifyEmail(() => emailVerificationAndAddressFlow.goToNextStage())
+        verifyEmail(() =>
+          emailVerificationAndAddressFlow.goToNextStage()
+        )
       }
     }
   }, [
@@ -248,8 +277,8 @@ export default function SignupProvider({
     const unverifiedEmail = sessionStorage.getItem("unverifiedEmail")
     if (
       unverifiedEmail &&
-      totalStages.currentStage !== 2 &&
-      emailVerificationAndAddressFlow.currentStage !== 1
+            totalStages.currentStage !== 2 &&
+            emailVerificationAndAddressFlow.currentStage !== 1
     ) {
       handleFormDataChange((name: string) =>
         setError((prev) => prev.filter((it) => it !== name))
@@ -285,35 +314,49 @@ function useManageFormData() {
       school: "",
     },
     validate: (formData: { [x: string]: string | boolean }) => {
-      type formDataKey = keyof typeof formData
-      const mainRequiredFields = ["firstName", "lastName", "dob", "gender"]
-      const firstCheck =
-        validateFormDataFields(formData, mainRequiredFields) &&
-        (formData.firstName as string).length >= 4 &&
-        (formData.lastName as string).length >= 4
-      const passedIsNotAStudentCheck =
-        formData["isStudent" as formDataKey] === false &&
-        (formData["occupation" as formDataKey] as string).length > 0
-      const passedIsStudentCheck =
-        formData["isStudent" as formDataKey] === true &&
-        (formData["school" as formDataKey] as string).length > 0
-      const formErrorsFields = findErrorFields(formData, mainRequiredFields)
-      if (formData.isStudent === true)
-        return [
-          passedIsStudentCheck && firstCheck,
-          formErrorsFields.concat(!passedIsStudentCheck ? "school" : []),
-        ]
-      return [
-        passedIsNotAStudentCheck && firstCheck,
-        formErrorsFields
-          .concat(!passedIsNotAStudentCheck ? "occupation" : [])
-          .concat(
-            (formData.firstName as string).length < 4 ? ["firstName"] : []
-          )
-          .concat(
-            (formData.lastName as string).length < 4 ? ["lastName"] : []
-          ),
-      ]
+            type formDataKey = keyof typeof formData;
+            const mainRequiredFields = [
+              "firstName",
+              "lastName",
+              "dob",
+              "gender",
+            ]
+            const firstCheck =
+                validateFormDataFields(formData, mainRequiredFields) &&
+                (formData.firstName as string).length >= 4 &&
+                (formData.lastName as string).length >= 4
+            const passedIsNotAStudentCheck =
+                formData["isStudent" as formDataKey] === false &&
+                (formData["occupation" as formDataKey] as string).length > 0
+            const passedIsStudentCheck =
+                formData["isStudent" as formDataKey] === true &&
+                (formData["school" as formDataKey] as string).length > 0
+            const formErrorsFields = findErrorFields(
+              formData,
+              mainRequiredFields
+            )
+            if (formData.isStudent === true)
+              return [
+                passedIsStudentCheck && firstCheck,
+                formErrorsFields.concat(
+                  !passedIsStudentCheck ? "school" : []
+                ),
+              ]
+            return [
+              passedIsNotAStudentCheck && firstCheck,
+              formErrorsFields
+                .concat(!passedIsNotAStudentCheck ? "occupation" : [])
+                .concat(
+                  (formData.firstName as string).length < 4
+                    ? ["firstName"]
+                    : []
+                )
+                .concat(
+                  (formData.lastName as string).length < 4
+                    ? ["lastName"]
+                    : []
+                ),
+            ]
     },
   })
   const [contactDetails, setContactDetails] = useState({
@@ -328,12 +371,15 @@ function useManageFormData() {
     validate: (formData: { [x: string]: string }) => {
       const mainRequiredFields = ["email", "phoneNumber", "countryCode"]
       const passedPasswordCheck =
-        formData.password === formData.confirmPassword &&
-        formData.password.length >= 8
-      const formErrorsFields = findErrorFields(formData, mainRequiredFields)
+                formData.password === formData.confirmPassword &&
+                formData.password.length >= 8
+      const formErrorsFields = findErrorFields(
+        formData,
+        mainRequiredFields
+      )
       return [
         validateFormDataFields(formData, mainRequiredFields) &&
-          passedPasswordCheck,
+                    passedPasswordCheck,
         formErrorsFields.concat(
           !passedPasswordCheck ? ["password", "confirmPassword"] : []
         ),
@@ -346,7 +392,10 @@ function useManageFormData() {
       verificationToken: "",
     },
     validate: (formData: { [x: string]: string }) => {
-      return [formData.verificationToken.length === 6, ["verificationToken"]]
+      return [
+        formData.verificationToken.length === 6,
+        ["verificationToken"],
+      ]
     },
   })
   const [locationDetails, setLocationDetails] = useState({
@@ -369,7 +418,10 @@ function useManageFormData() {
         "country",
         "placeId",
       ]
-      const formErrorsFields = findErrorFields(formData, mainRequiredFields)
+      const formErrorsFields = findErrorFields(
+        formData,
+        mainRequiredFields
+      )
       return [
         validateFormDataFields(formData, mainRequiredFields),
         formErrorsFields,
@@ -379,7 +431,10 @@ function useManageFormData() {
 
   const onChangeHandlers = useMemo(
     () => ({
-      "PROFILE-INITIALS": (name: string, value: string | number | boolean) =>
+      "PROFILE-INITIALS": (
+        name: string,
+        value: string | number | boolean
+      ) =>
         setProfileInitials((prev) => ({
           ...prev,
           formData: { ...prev.formData, [name]: value },
@@ -389,7 +444,10 @@ function useManageFormData() {
           ...prev,
           formData: { ...prev.formData, [name]: value },
         })),
-      "EMAIL-VERIFICATION": (name: string, value: string | number | boolean) =>
+      "EMAIL-VERIFICATION": (
+        name: string,
+        value: string | number | boolean
+      ) =>
         setEmailVerificationDetails((prev) => ({
           ...prev,
           formData: { ...prev.formData, [name]: value },
@@ -405,7 +463,11 @@ function useManageFormData() {
 
   const handleFormDataChange = useCallback(
     (resetError: (name: string) => void) =>
-      (stageName: string, name: string, value: string | number | boolean) => {
+      (
+        stageName: string,
+        name: string,
+        value: string | number | boolean
+      ) => {
         resetError(name)
         onChangeHandlers[stageName as keyof typeof onChangeHandlers](
           name,
