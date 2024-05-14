@@ -12,7 +12,7 @@ export async function getAddressComponents({
   const encodedAddress = encodeURIComponent(address)
   const link = `https://maps.google.com/maps/api/geocode/json?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&address=${encodedAddress}&sensor=false`
   try {
-    let response = await fetch(link)
+    const response = await fetch(link)
     if (!response.ok)
       throw new Error("Err: No access to Google service: " + address)
     return await response.json()

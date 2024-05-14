@@ -4,13 +4,19 @@ import { useEffect } from "react"
 import { getErrorProps } from "./utils"
 import PhoneNumberInput from "@/app/_components/PhoneNumberInput"
 
-
 export default function ContactForm({
-  formData, sectionName, handleChange, error
+  formData,
+  sectionName,
+  handleChange,
+  error,
 }: {
   formData: { [x: string]: string }
-  sectionName: string,
-  handleChange: (stageName: string, name: string, value: string | number | boolean) => void
+  sectionName: string
+  handleChange: (
+    stageName: string,
+    name: string,
+    value: string | number | boolean
+  ) => void
   error: string[]
 }) {
   const toast = useToast()
@@ -40,7 +46,24 @@ export default function ContactForm({
   }, [error, formData.confirmPassword.length, formData.password.length, toast])
 
   return (
-    <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={{ base: "1.8rem", sm: "3rem" }} pb={{ base: "3rem", md: "5rem" }}>
+    <SimpleGrid
+      columns={{ base: 1, sm: 2 }}
+      spacing={{ base: "1.8rem", sm: "3rem" }}
+      pb={{ base: "3rem", md: "5rem" }}
+    >
+      <GridItem>
+        <PhoneNumberInput
+          error={error}
+          handleCountryCodeChange={(val) =>
+            handleChange(sectionName, "countryCode", val)
+          }
+          handlePhoneNumberChange={(val) =>
+            handleChange(sectionName, "phoneNumber", val)
+          }
+          phoneNumber={formData.phoneNumber}
+          inputVariant="filled"
+        />
+      </GridItem>
       <GridItem>
         <Input
           variant="filled"
@@ -49,14 +72,8 @@ export default function ContactForm({
           type="email"
           {...getErrorProps("email", error)}
           value={formData.firstName as string}
-          onChange={(e) => handleChange(sectionName, "email", e.target.value)} />
-      </GridItem>
-      <GridItem>
-        <PhoneNumberInput
-          error={error}
-          handleCountryCodeChange={(val) => handleChange(sectionName, "countryCode", val)}
-          handlePhoneNumberChange={(val) => handleChange(sectionName, "phoneNumber", val)}
-          phoneNumber={formData.phoneNumber} inputVariant="filled" />
+          onChange={(e) => handleChange(sectionName, "email", e.target.value)}
+        />
       </GridItem>
       <GridItem>
         <Input
@@ -66,7 +83,10 @@ export default function ContactForm({
           type="password"
           {...getErrorProps("password", error)}
           value={formData.password as string}
-          onChange={(e) => handleChange(sectionName, "password", e.target.value)} />
+          onChange={(e) =>
+            handleChange(sectionName, "password", e.target.value)
+          }
+        />
       </GridItem>
       <GridItem>
         <Input
@@ -76,7 +96,10 @@ export default function ContactForm({
           type="password"
           {...getErrorProps("confirmPassword", error)}
           value={formData.confirmPassword as string}
-          onChange={(e) => handleChange(sectionName, "confirmPassword", e.target.value)} />
+          onChange={(e) =>
+            handleChange(sectionName, "confirmPassword", e.target.value)
+          }
+        />
       </GridItem>
     </SimpleGrid>
   )
