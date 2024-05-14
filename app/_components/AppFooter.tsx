@@ -17,7 +17,7 @@ import {
 } from "../_data/navLinks"
 import ListItemMarker from "../_assets/SVG/ListItemMarker"
 import StandAloneIcon from "./StandaloneIcon"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 export default function AppFooter() {
   const pathname = usePathname()
@@ -94,7 +94,8 @@ function FooterSubLinks() {
   )
 }
 
-function FooterLink({ href, children, ...rest }: LinkProps) {
+export function FooterLink({ href, children, onClick, ...rest }: LinkProps) {
+  const router = useRouter()
   return (
     <Link
       href={href}
@@ -110,6 +111,13 @@ function FooterLink({ href, children, ...rest }: LinkProps) {
         color: "black",
       }}
       {...rest}
+      onClick={(e) => {
+        typeof onClick === "function" && onClick(e)
+        if (href) {
+          e.preventDefault()
+          router.push(href)
+        }
+      }}
     >
       {children}
     </Link>

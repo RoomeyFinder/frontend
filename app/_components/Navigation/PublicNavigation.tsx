@@ -17,6 +17,9 @@ import {
 import { useRef } from "react"
 import AppLogo from "../Logo"
 import SupportNav from "./SupportNavList"
+import { supportLinks } from "@/app/_data/navLinks"
+import { useRouter } from "next/navigation"
+import { FooterLink } from "../AppFooter"
 
 const SignupButton = () => {
   return (
@@ -47,10 +50,20 @@ const LoginButton = () => {
 export default function PublicNavigation() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef<HTMLButtonElement | null>(null)
+  const router = useRouter()
   return (
     <Flex alignItems="center">
       <Show above="md">
-        <HStack gap="2rem" w="100%">
+        <HStack gap="4rem" w="100%">
+          {supportLinks.map((link) => (
+            <FooterLink
+              href={link.href}
+              key={link.name}
+              onClick={() => router.push(link.href)}
+            >
+              {link.name}
+            </FooterLink>
+          ))}
           <LoginButton />
           <SignupButton />
         </HStack>

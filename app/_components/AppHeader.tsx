@@ -26,16 +26,6 @@ export default function AppHeader() {
       <Flex href="/" as={Link}>
         <AppLogo showTextLogoAlways={pathname !== "/"} />
       </Flex>
-      {pathname === "/" && (
-        <Flex
-          width={{ base: "60%", md: "75%" }}
-          maxW="50rem"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <SearchBar />
-        </Flex>
-      )}
       <Navigation />
     </Flex>
   )
