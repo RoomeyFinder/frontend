@@ -16,6 +16,7 @@ import MessagesProvider from "./_providers/MessagesProvider"
 import { GoogleOAuthProvider } from "@react-oauth/google"
 import NotificationProvider from "./_providers/NotificationsProvider"
 import { Suspense } from "react"
+import CenteredSpinner from "./_components/CenteredSpinner"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Suspense fallback={<>HI</>}>
+        <Suspense fallback={<CenteredSpinner/>}>
           <ChakraUIProvider>
             <LocalForageProvider>
               <GoogleOAuthProvider

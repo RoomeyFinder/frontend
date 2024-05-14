@@ -6,11 +6,10 @@ import { useContext } from "react"
 import { usePathname } from "next/navigation"
 
 export default function Navigation() {
-  const pathname = usePathname()
   const { isAuthorized } = useContext(AuthContext)
   if (isAuthorized === true)
     return (
-      <PrivateNavigation showHamburgerAlways={pathname !== "/"} />
+      <PrivateNavigation />
     )
   return <PublicNavigation />
 }
