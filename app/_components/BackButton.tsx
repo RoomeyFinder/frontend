@@ -10,7 +10,7 @@ export default function BackButton(){
     <Flex
       gap="1rem"
       alignItems="center"
-      fontSize="1.4rem"
+      fontSize="1.6rem"
       p="1rem"
       as="button"
       onClick={() => router.back()}
