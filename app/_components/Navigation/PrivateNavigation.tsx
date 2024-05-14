@@ -43,7 +43,7 @@ export default function PrivateNavigation() {
           <HStack gap="6rem" w="100%">
             <FooterLink href="/profile">My Profile</FooterLink>
             {privateLinks.map((link) => (
-              <Show above={link.showBelow}>
+              <Show above={link.showBelow} key={link.name}>
                 {!link.isIcon && (
                   <FooterLink href={link.href} key={link.name}>
                     {link.name}
