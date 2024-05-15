@@ -23,14 +23,11 @@ import {
 } from "react"
 import { SearchContext } from "./_providers/SearchProvider"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
-import RoomeyListingCard from "./_components/RoomeyListingCard"
 import RoomListingCard from "./_components/RoomListingCard"
-import User from "./_types/User"
 import { Listing } from "./_types/Listings"
 import { AuthContext } from "./_providers/AuthContext"
 import Empty from "./_components/Empty"
 import {
-  RoomeyListingCardSkeleton,
   RoomListingCardSkeleton,
 } from "./_components/Skeletons/ListingCardSkeleton"
 
@@ -149,7 +146,6 @@ function FeaturesSection() {
 function ListingsSection() {
   const { isAuthorized } = useContext(AuthContext)
   const {
-    roomies,
     rooms,
     hasMoreRooms,
     loadMoreRooms,
@@ -170,18 +166,17 @@ function ListingsSection() {
       })
   }, [focus])
 
-  const [_, filteredRoomsBySearch] = useMemo(() => {
-    if (!search) return [roomies, rooms]
+  const filteredRoomsBySearch = useMemo(() => {
+    if (!search) return rooms
     else {
       const isMatch = (obj: { [x: string]: any }) =>
         JSON.stringify(Object.values(obj))
           .toLowerCase()
           .includes(search.toLowerCase())
-      const roomiesFiltered = roomies.filter((roomey) => isMatch(roomey))
       const roomsFiltered = rooms.filter((room) => isMatch(room))
-      return [roomiesFiltered, roomsFiltered]
+      return roomsFiltered
     }
-  }, [roomies, rooms, search])
+  }, [rooms, search])
 
   return (
     <>
