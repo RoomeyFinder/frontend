@@ -23,14 +23,11 @@ import {
 } from "react"
 import { SearchContext } from "./_providers/SearchProvider"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
-import RoomeyListingCard from "./_components/RoomeyListingCard"
 import RoomListingCard from "./_components/RoomListingCard"
-import User from "./_types/User"
 import { Listing } from "./_types/Listings"
 import { AuthContext } from "./_providers/AuthContext"
 import Empty from "./_components/Empty"
 import {
-  RoomeyListingCardSkeleton,
   RoomListingCardSkeleton,
 } from "./_components/Skeletons/ListingCardSkeleton"
 
@@ -149,20 +146,15 @@ function FeaturesSection() {
 function ListingsSection() {
   const { isAuthorized } = useContext(AuthContext)
   const {
-    roomies,
     rooms,
-    hasMoreRoomies,
     hasMoreRooms,
-    loadMoreRoomies,
     loadMoreRooms,
-    loadingRoomies,
     loadingRooms,
     search,
     focus,
   } = useContext(SearchContext)
 
   const roomsSectionRef = useRef<HTMLDivElement | null>(null)
-  const roomiesSectionRef = useRef<HTMLDivElement | null>(null)
   const allListingsRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -172,51 +164,23 @@ function ListingsSection() {
         block: "center",
         inline: "center",
       })
-    if (focus === "roomies")
-      roomiesSectionRef.current?.firstElementChild?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      })
   }, [focus])
 
-  const [roomiesFilteredBySearch, filteredRoomsBySearch] = useMemo(() => {
-    if (!search) return [roomies, rooms]
+  const filteredRoomsBySearch = useMemo(() => {
+    if (!search) return rooms
     else {
       const isMatch = (obj: { [x: string]: any }) =>
         JSON.stringify(Object.values(obj))
           .toLowerCase()
           .includes(search.toLowerCase())
-      const roomiesFiltered = roomies.filter((roomey) => isMatch(roomey))
       const roomsFiltered = rooms.filter((room) => isMatch(room))
-      return [roomiesFiltered, roomsFiltered]
+      return roomsFiltered
     }
-  }, [roomies, rooms, search])
+  }, [rooms, search])
 
   return (
     <>
       <Box ref={allListingsRef}>
-        <ListSectionContainer sectionRef={roomiesSectionRef}>
-          <Heading variant="md">Latest Roomies</Heading>
-          <RoomiesList
-            lockProfiles={!isAuthorized}
-            roomies={roomiesFilteredBySearch}
-            loading={loadingRoomies}
-            emptyTextValue={
-              <>
-                No roomies found
-                {search && <Text as="b"> {search}</Text>}
-              </>
-            }
-          />
-          {roomies.length > 0 && (
-            <ContinueExploring
-              text="roomies"
-              onClick={() => loadMoreRoomies()}
-              show={hasMoreRoomies}
-            />
-          )}
-        </ListSectionContainer>
         <ListSectionContainer sectionRef={roomsSectionRef}>
           <Heading variant="md">Latest Rooms</Heading>
           <RoomsList
@@ -263,47 +227,6 @@ function ListSectionContainer({
     >
       {children}
     </Box>
-  )
-}
-function RoomiesList({
-  roomies,
-  lockProfiles,
-  loading,
-  emptyTextValue,
-}: {
-  roomies: User[]
-  lockProfiles: boolean
-  loading: boolean
-  emptyTextValue: ReactNode
-}) {
-  if (loading)
-    return (
-      <ListingsGridLayout
-        list={new Array(12).fill(1).map((_, idx) => (
-          <RoomeyListingCardSkeleton key={idx} />
-        ))}
-      />
-    )
-  if (roomies.length === 0 && !loading)
-    return <Empty heading="Oops" text={emptyTextValue} />
-  return (
-    <>
-      <ListingsGridLayout
-        list={roomies.map((roomey) => (
-          <RoomeyListingCard
-            key={roomey._id}
-            userId={roomey._id}
-            isLocked={lockProfiles}
-            name={roomey.firstName}
-            ageInYears={
-              new Date().getFullYear() - new Date(roomey.dob).getFullYear()
-            }
-            about={roomey.about}
-            profileImage={roomey.profileImage}
-          />
-        ))}
-      ></ListingsGridLayout>
-    </>
   )
 }
 
