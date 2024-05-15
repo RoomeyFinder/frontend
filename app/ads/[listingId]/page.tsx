@@ -67,7 +67,8 @@ export default function ListingPage() {
   if (isEditing && listing)
     return (
       <>
-        <Box>
+        <Box alignItems="start" py="3rem" gap="3rem" w="86%" mx="auto">
+          <BackButton />
           <ListingForm edit={true} listing={listing} />
         </Box>
       </>

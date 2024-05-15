@@ -292,12 +292,11 @@ export default function ListingForm({
         alignItems="start"
         py="3rem"
         gap="4rem"
-        w="95dvw"
+        w="100%"
         mx="auto"
         overflowX="hidden"
         as="form"
         onSubmit={handleSubmit}
-        maxW={{ lg: "45%" }}
       >
         <Heading variant="large">{edit ? "Edit Ad" : "Create Ad"}</Heading>
         <Flex
