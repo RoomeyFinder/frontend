@@ -2,7 +2,6 @@ import {
   ReactNode,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react"
@@ -43,21 +42,13 @@ export default function SignupProvider({
   })
   const { fetchData } = useAxios()
   const [loading, setLoading] = useState(false)
+
   const totalStages = useManageStageFlow({
     maxStage: 2,
-    minStage: 1,
-    start: 1,
-  })
-  const profileAndContactFlow = useManageStageFlow({
-    maxStage: 2,
-    minStage: 1,
-    start: 1,
-  })
-  const emailVerificationAndAddressFlow = useManageStageFlow({
-    maxStage: 2,
-    minStage: 1,
+    minStage: 0,
     start: 0,
   })
+
   const [formErrors, setError] = useState<string[]>([])
 
   const {
@@ -132,42 +123,37 @@ export default function SignupProvider({
     ]
   )
   const handleSubmitButtonClick = useCallback(() => {
-    if (totalStages.currentStage === 1) {
-      const currentStage = profileAndContactFlow.currentStage
-      let isValidated
-      if (currentStage === 1) {
-        isValidated = profileInitials.validate(profileInitials.formData)
-        console.log(isValidated)
-      } else isValidated = contactDetails.validate(contactDetails.formData)
-      if (isValidated[0] === false) return setError(isValidated[1] as string[])
-      if (profileAndContactFlow.currentStage >= 2) {
-        sendEmailVerificationCode(() => {
-          totalStages.goToNextStage()
-          emailVerificationAndAddressFlow.goToNextStage()
-        })
-      } else profileAndContactFlow.goToNextStage()
+    let isValidated
+    if (totalStages.currentStage === 0) {
+      isValidated = profileInitials.validate(profileInitials.formData)
+    } else if (totalStages.currentStage === 1) {
+      isValidated = contactDetails.validate(contactDetails.formData)
     } else {
-      const isValidated = emailVerificationDetails.validate(
+      isValidated = emailVerificationDetails.validate(
         emailVerificationDetails.formData
       )
-      if (isValidated[0] === false) return setError(isValidated[1] as string[])
-      verifyEmail(() => emailVerificationAndAddressFlow.goToNextStage())
+    }
+    if (isValidated[0] === false) return setError(isValidated[1] as string[])
+    else {
+      if (totalStages.currentStage === 2)
+        verifyEmail(() => {
+          totalStages.goToNextStage()
+        })
+      else if (totalStages.currentStage === 1)
+        sendEmailVerificationCode(() => totalStages.goToNextStage())
+      else totalStages.goToNextStage()
     }
   }, [
     totalStages,
     sendEmailVerificationCode,
     verifyEmail,
-    profileAndContactFlow,
     profileInitials,
     contactDetails,
-    emailVerificationAndAddressFlow,
     emailVerificationDetails,
   ])
 
   const signupContextValue = useMemo(
     () => ({
-      profileAndContactFlow,
-      emailVerificationAndAddressFlow,
       totalStages,
       handleSubmitButtonClick,
       handleFormDataChange: handleFormDataChange((name) =>
@@ -182,8 +168,6 @@ export default function SignupProvider({
       isSignupDone,
     }),
     [
-      profileAndContactFlow,
-      emailVerificationAndAddressFlow,
       totalStages,
       handleSubmitButtonClick,
       handleFormDataChange,
@@ -196,27 +180,6 @@ export default function SignupProvider({
       isSignupDone,
     ]
   )
-
-  useEffect(() => {
-    const unverifiedEmail = sessionStorage.getItem("unverifiedEmail")
-    if (
-      unverifiedEmail &&
-      totalStages.currentStage !== 2 &&
-      emailVerificationAndAddressFlow.currentStage !== 1
-    ) {
-      handleFormDataChange((name: string) =>
-        setError((prev) => prev.filter((it) => it !== name))
-      )("CONTACT", "email", unverifiedEmail)
-      totalStages.navigateToStage(2)
-      profileAndContactFlow.navigateToStage(2)
-      emailVerificationAndAddressFlow.navigateToStage(1)
-    }
-  }, [
-    emailVerificationAndAddressFlow,
-    handleFormDataChange,
-    profileAndContactFlow,
-    totalStages,
-  ])
 
   return (
     <SignupContext.Provider value={signupContextValue}>

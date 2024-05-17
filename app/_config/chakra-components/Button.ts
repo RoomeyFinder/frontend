@@ -9,7 +9,7 @@ const Button = defineStyleConfig({
   },
   sizes: {
     sm: {
-      fontSize: "1.6rem",
+      fontSize: "1.4rem",
     },
     md: {
       fontSize: "1.9rem",

@@ -1,23 +1,10 @@
-
-
 export type SignupValue = {
   isSignupDone: boolean
   loading: boolean
   formErrors: string[]
-  profileAndContactFlow: {
-    currentStage: number
-    goToNextStage: () => void
-    goToPrevStage: () => void
-    progressInPercentage: number
-  }
-  emailVerificationAndAddressFlow: {
-    currentStage: number
-    goToNextStage: () => void
-    goToPrevStage: () => void
-    progressInPercentage: number
-  }
   totalStages: {
     currentStage: number
+    navigateToStage: (stage: number) => void
     goToNextStage: () => void
     goToPrevStage: () => void
     progressInPercentage: number

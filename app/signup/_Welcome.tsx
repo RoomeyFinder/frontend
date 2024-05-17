@@ -1,38 +1,40 @@
-import { Button, Flex, HStack, Heading, Image, Text } from "@chakra-ui/react"
+import { Button, Flex, HStack, Heading, Text } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 
-export default function Congratulations() {
+export default function Welcome() {
   const router = useRouter()
   return (
     <HStack
-      justifyContent={{ base: "center", sm: "start" }}
+      justifyContent={{ base: "center", sm: "end" }}
       gap="4rem"
       maxW="120rem"
       mx="auto"
-      minH="40dvh"
-      alignItems={{ sm: "start" }}
+      minH={{ base: "60dvh", md: "60dvh" }}
+      alignItems={{ sm: "center" }}
       px={{ base: "3rem", sm: "6rem" }}
-      bgImage={{ base: "none", sm: "url(/images/welcome.jpg)" }}
-      bgSize={{ sm: "50rem", md: "70rem" }}
+      bgImage={{ base: "url(/images/welcome.svg)" }}
+      bgSize={{ base: "25rem", sm: "30rem", md: "contain" }}
       bgRepeat="no-repeat"
-      bgPos="right"
+      bgPos={{ base: "top", sm: "left" }}
     >
       <Flex
         flexDir="column"
-        alignItems={{ base: "center", sm: "start" }}
-        textAlign={{ base: "center", sm: "start" }}
+        alignItems={{ base: "center", sm: "end" }}
+        justifyContent="end"
+        textAlign={{ base: "center", sm: "right" }}
         gap="2.4rem"
       >
-        <Heading variant="large" fontWeight="400">
-          Welcome To RoomeyFinder!
+        <Heading variant="large" fontWeight="500">
+          Welcome To{" "}
+          <Text
+            textShadow="2px  2px #3a86ff30"
+            fontSize="inherit"
+            fontWeight="inherit"
+            as="span"
+          >
+            RoomeyFinder!
+          </Text>
         </Heading>
-        <Image
-          src="/images/welcome.jpg"
-          alt=""
-          display={{ sm: "none" }}
-          w="50rem"
-          h="auto"
-        />
         <Text fontSize={{ base: "1.8rem", md: "2.4rem" }}>
           Let&apos;s get you started with finding the
           <Text

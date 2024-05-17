@@ -5,6 +5,7 @@ import { ReactNode, useContext, useEffect, useMemo } from "react"
 import { useSearchParams } from "next/navigation"
 import { AuthContext } from "@/app/_providers/AuthContext"
 import AuthProviderMethods from "./AuthProviderMethods"
+import RightArrow from "@/app/_assets/SVG/RightArrow"
 
 const modeTexts = {
   signin: {
@@ -28,7 +29,9 @@ export default function AuthFormLayout({
   submitButtonType,
   submitButtonVariant,
   loading,
-  showAuthProviders = false
+  showBackButton = false,
+  handleBackButtonClick,
+  showAuthProviderMethods,
 }: {
   children: ReactNode | ReactNode[]
   submitButtonText: string
@@ -38,7 +41,9 @@ export default function AuthFormLayout({
   submitButtonType?: "button" | "submit" | "reset"
   submitButtonVariant?: string
   loading?: boolean
-  showAuthProviders?: boolean
+  showBackButton?: boolean
+  handleBackButtonClick?: () => void
+  showAuthProviderMethods?: boolean
 }) {
   const { isAuthorized, loading: loadingAuthState } = useContext(AuthContext)
 
@@ -53,7 +58,7 @@ export default function AuthFormLayout({
   return (
     <Box as="main">
       <Box
-        w="93dvw"
+        w="85dvw"
         maxW="85.9rem"
         mx="auto"
         onKeyDown={(e) => {
@@ -83,11 +88,28 @@ export default function AuthFormLayout({
         <Box>{children}</Box>
         <Flex
           justifyContent="space-between"
-          alignItems={{ base: "stretch", md: "end" }}
+          alignItems="center"
           gap="2rem"
-          flexDir={{ base: "column-reverse", sm: "row" }}
+          // flexDir={{ base: "column-reverse", sm: "row" }}
         >
-          {showAuthProviders && (
+          {showBackButton && (
+            <Button
+              variant="brand-secondary"
+              bg="transparent"
+              onClick={handleBackButtonClick}
+              isDisabled={loading}
+              _disabled={{
+                opacity: ".3",
+                cursor: "not-allowed",
+              }}
+            >
+              <Text as="span" display="block" transform="rotate(180deg)">
+                <RightArrow />{" "}
+              </Text>
+              Back
+            </Button>
+          )}
+          {showAuthProviderMethods && (
             <Flex
               flexDir="column"
               justifyContent="start"
@@ -120,7 +142,8 @@ export default function AuthFormLayout({
               base: submitButtonVariant || "brand",
               sm: submitButtonVariant || "brand-secondary",
             }}
-            minW={{ md: "19.8rem" }}
+            w="50%"
+            maxW={{ md: "19.8rem" }}
             lineHeight="150%"
             padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}
           >
@@ -131,3 +154,20 @@ export default function AuthFormLayout({
     </Box>
   )
 }
+
+/*<Flex
+              flexDir="column"
+              justifyContent="start"
+              gap="1rem"
+              alignSelf={{ base: "center", sm: "end" }}
+            >
+              <Text
+                fontSize="1rem"
+                fontWeight="normal"
+                lineHeight="normal"
+                textTransform="uppercase"
+              >
+                or sign in with
+              </Text>
+              <AuthProviderMethods />
+            </Flex>*/
