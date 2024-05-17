@@ -55,7 +55,7 @@ export default function PhoneNumberInput({
         variant={inputVariant}
         placeholder="Phone number *"
         name="phoneNumber"
-        type="number"
+        type="tel"
         max={16}
         {...getErrorProps("phoneNumber", error)}
         value={phoneNumber}

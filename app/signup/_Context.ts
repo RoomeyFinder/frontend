@@ -38,10 +38,14 @@ const SignupContext = createContext<SignupValue>({
     formData: {},
     validate: () => [false, []]
   },
+  locationDetails: {
+    name: "LOCATION",
+    formData: {},
+    validate: () => [false, []]
+  },
   handleFormDataChange: () => { },
   formErrors: [],
-  resendVerificationEmail: () => { },
-  isSignupDone: false
+  resendVerificationEmail: () => { }
 })
 
 export default SignupContext
