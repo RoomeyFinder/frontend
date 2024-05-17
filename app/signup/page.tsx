@@ -7,7 +7,7 @@ import SignupProvider from "./_ContextProvider"
 import ContactForm from "./_Contact"
 import EmailVerficationForm from "./_EmailVerification"
 import SignupProgress from "./_SignupProgress"
-import { Box, Collapse } from "@chakra-ui/react"
+import { Box, Collapse, GridItem, Link, Text } from "@chakra-ui/react"
 import SignupContext from "./_Context"
 import Welcome from "./_Welcome"
 
@@ -106,6 +106,28 @@ function SignupConsumer() {
                     formData={emailVerificationDetails.formData}
                     sectionName={emailVerificationDetails.name}
                   />
+                  <GridItem colSpan={{ base: 1, sm: 2 }} mb="1.6rem">
+                    <Text textAlign="right" lineHeight="normal">
+                      By clicking complete, I agree to Roomeyfinder&apos;s
+                      <Link
+                        fontWeight="600"
+                        color="brand.main"
+                        href="/terms-of-service"
+                      >
+                        {" "}
+                        Terms of Service
+                      </Link>{" "}
+                      and
+                      <Link
+                        fontWeight="600"
+                        color="brand.main"
+                        href="/privacy-policy"
+                      >
+                        {" "}
+                        Privacy Policy
+                      </Link>
+                    </Text>
+                  </GridItem>
                 </Stage>
               </Box>
             </>
