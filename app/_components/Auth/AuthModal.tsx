@@ -19,9 +19,17 @@ import GoogleIcon from "@/app/_assets/SVG/Google"
 export default function AuthModal() {
   return (
     <>
-      <Modal isOpen={!true} onClose={() => {}} isCentered>
+      <Modal isOpen={true} onClose={() => {}} isCentered={false}>
         <ModalOverlay bgColor="#22222261" />
-        <ModalContent bgColor="white" w="full" maxW="56.8rem" rounded="1.2rem">
+        <ModalContent
+          bgColor="white"
+          w="full"
+          maxW="56.8rem"
+          rounded="1.2rem"
+          roundedBottom={{ base: "0", sm: "1.2rem" }}
+          mt={{ base: "auto" }}
+          mb={{ base: "0", sm: "auto" }}
+        >
           <ModalHeader
             pos="relative"
             p="2.4rem"
