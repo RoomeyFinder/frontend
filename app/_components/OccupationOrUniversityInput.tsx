@@ -1,5 +1,8 @@
-import { GridItem, ResponsiveValue, SimpleGrid } from "@chakra-ui/react"
-import { getErrorProps } from "../signup/utils"
+import {
+  GridItem,
+  ResponsiveValue,
+  SimpleGrid,
+} from "@chakra-ui/react"
 import CustomRadioGroup from "./CustomRadio"
 import nigerian_universities from "@/app/_data/nigerian_universities"
 import occupations from "@/app/_data/occupations.json"
@@ -11,37 +14,38 @@ export default function OccupationOrUniversityInput({
   inputName,
   inputValue,
   handleChange,
-  errors,
+  errorProps,
   spacing,
   inputVariant,
   columns,
 }: {
-    isStudent: boolean;
-    toggleIsStudent: (newValue: boolean) => void;
-    inputName: string;
-    inputValue: string;
-    handleChange: (inputName: string, newValue: string) => void;
-    errors: string[];
-    spacing?: ResponsiveValue<
-        | number
-        | (string & Record<string, never>)
-        | "-moz-initial"
-        | "inherit"
-        | "initial"
-        | "revert"
-        | "revert-layer"
-        | "unset"
-    >;
-    inputVariant?: string;
-    columns?: ResponsiveValue<number> | undefined;
+  errorProps?: { [x: string]: string }
+  isStudent: boolean
+  toggleIsStudent: (newValue: boolean) => void
+  inputName: string
+  inputValue: string
+  handleChange: (inputName: string, newValue: string) => void
+  spacing?: ResponsiveValue<
+    | number
+    | (string & Record<string, never>)
+    | "-moz-initial"
+    | "inherit"
+    | "initial"
+    | "revert"
+    | "revert-layer"
+    | "unset"
+  >
+  inputVariant?: string
+  columns?: ResponsiveValue<number> | undefined
 }) {
   const options = ["I am a student", "I am not a student"]
 
   return (
     <SimpleGrid
-      alignItems='center'
+      alignItems="center"
       columns={columns || { base: 1, sm: 2 }}
-      spacing={spacing || { base: "1.8rem", sm: "3rem" }}>
+      spacing={spacing || { base: "1.8rem", sm: "3rem" }}
+    >
       <GridItem>
         <CustomRadioGroup
           containerProps={{
@@ -49,7 +53,7 @@ export default function OccupationOrUniversityInput({
             flexWrap: "wrap",
             alignItems: "center",
           }}
-          name='isStudent'
+          name="isStudent"
           selectedValue={isStudent ? options[0] : options[1]}
           onChange={(val: string) => {
             toggleIsStudent(
@@ -63,17 +67,13 @@ export default function OccupationOrUniversityInput({
         <SearchableInput
           inputName={inputName}
           inputPlaceholder={isStudent ? "School" : "Occupation"}
-          errorProps={{ ...getErrorProps(inputName, errors) }}
+          errorProps={errorProps}
           options={
-            isStudent
-              ? nigerian_universities.map((x) => x.name)
-              : occupations
+            isStudent ? nigerian_universities.map((x) => x.name) : occupations
           }
           value={inputValue}
           inputVariant={inputVariant}
-          handleChange={(value: string) =>
-            handleChange(inputName, value)
-          }
+          handleChange={(value: string) => handleChange(inputName, value)}
         />
       </GridItem>
     </SimpleGrid>

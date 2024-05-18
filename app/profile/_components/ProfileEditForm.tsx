@@ -345,7 +345,6 @@ export default function ProfileEditForm({
             <InputLabel>Phone number</InputLabel>
             <PhoneNumberInput
               phoneNumber={updatedUserData.phoneNumber || ""}
-              error={[]}
               isDisabled={true}
               handleCountryCodeChange={(update) => {
                 handleInputChange("countryCode", update)
@@ -409,7 +408,6 @@ export default function ProfileEditForm({
               handleChange={(inputName, newValue) => {
                 handleInputChange(inputName, newValue)
               }}
-              errors={[]}
               toggleIsStudent={(update) => {
                 handleInputChange("isStudent", update)
               }}

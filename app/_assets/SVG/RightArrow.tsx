@@ -11,7 +11,7 @@ export default function RightArrow(){
     >
       <path
         d="M1.5 8H16.5M16.5 8L10.25 1.75M16.5 8L10.25 14.25"
-        stroke="#707070"
+        stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
