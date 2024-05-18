@@ -1,32 +1,15 @@
 import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
 import useManageStageFlow from "../_hooks/useManageStageFlow"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
-import { useToast } from "@chakra-ui/react"
 import SignupContext from "./_Context"
 import { UserContext } from "../_providers/UserProvider"
 import { AuthContext } from "../_providers/AuthContext"
-import { error } from "console"
 import { validateEmail } from "../_utils"
+import toast from "react-hot-toast"
 
 // const SIXTEEN_YEARS_AGO = new Date(Date.now())
 // SIXTEEN_YEARS_AGO.setFullYear(SIXTEEN_YEARS_AGO.getFullYear() - 16)
 export const FOURTEEN_YEARS_IN_MILLISECONDS = 4.418e11
-
-const validateFormDataFields = (
-  formData: { [x: string]: string | boolean },
-  fields: string[]
-) => {
-  type formDataKey = keyof typeof formData
-  return fields.every((field) => formData[field as formDataKey])
-}
-
-const findErrorFields = (
-  formData: { [x: string]: string | boolean },
-  fields: string[]
-) => {
-  type formDataKey = keyof typeof formData
-  return fields.filter((it) => Boolean(formData[it as formDataKey]) === false)
-}
 
 export default function SignupProvider({
   children,
@@ -34,10 +17,6 @@ export default function SignupProvider({
   children: ReactNode | ReactNode[]
 }) {
   const [isSignupDone, setIsSignupDone] = useState(false)
-  const toast = useToast({
-    containerStyle: { fontSize: "1.6rem", color: "white" },
-    position: "top",
-  })
   const { fetchData } = useAxios()
   const [loading, setLoading] = useState(false)
 
@@ -70,10 +49,10 @@ export default function SignupProvider({
       if (res.statusCode === 201) {
         successCallback()
         sessionStorage.setItem("unverifiedEmail", contactDetails.formData.email)
-      } else toast({ description: res.message, status: "error" })
+      } else toast.error(res.message)
       setLoading(false)
     },
-    [contactDetails.formData, fetchData, profileInitials.formData, toast]
+    [contactDetails.formData, fetchData, profileInitials.formData]
   )
 
   const resendVerificationEmail = useCallback(async () => {
@@ -86,11 +65,10 @@ export default function SignupProvider({
       method: "post",
       body,
     })
-    if (res.statusCode === 200)
-      toast({ description: res.message, status: "success" })
-    else toast({ description: res.message, status: "success" })
+    if (res.statusCode === 200) toast.success(res.message)
+    else toast.error(res.message)
     setLoading(false)
-  }, [contactDetails.formData.email, fetchData, toast])
+  }, [contactDetails.formData.email, fetchData])
 
   const { updateUser } = useContext(UserContext)
   const { updateToken } = useContext(AuthContext)
@@ -108,17 +86,17 @@ export default function SignupProvider({
         setIsSignupDone(true)
         updateUser(res.user)
         updateToken(res.token)
-      } else setError((prev) => ({
-        ...prev,
-        verificationToken: res.message || "Something went wrong",
-      }))
-      console.log('dfdkfkj')
+      } else
+        setError((prev) => ({
+          ...prev,
+          verificationToken: res.message || "Something went wrong",
+        }))
+      console.log("dfdkfkj")
       setLoading(false)
     },
     [
       emailVerificationDetails.formData.verificationToken,
       fetchData,
-      toast,
       contactDetails.formData.email,
       updateUser,
       updateToken,

@@ -63,7 +63,7 @@ export default function ProfileInitialsForm({
         <GridItem pos="relative">
           <Input
             {...getErrorPropsV1(error.dob)}
-            pos="relative"
+            color={formData.dob ? "black" : "gray.100"}
             zIndex="2"
             variant="filled"
             placeholder="Date of birth *"
@@ -74,25 +74,27 @@ export default function ProfileInitialsForm({
               handleChange(sectionName, "dob", e.target.value)
             }}
           />
-          <Text
-            pos="absolute"
-            top="30%"
-            left="2rem"
-            // translateY="-50%"
-            fontSize="1.4rem"
-            color="gray.100"
-            display={formData.dob ? "none" : "block"}
-            zIndex="-1"
-          >
-            Date of birth *
-          </Text>
+          {!formData.dob && (
+            <Text
+              pos="absolute"
+              top="50%"
+              left="2rem"
+              transform="translateY(-50%)"
+              fontSize="1.4rem"
+              color="gray.100"
+              display={{ base: formData.dob ? "none" : "block", md: "hidden" }}
+              zIndex="300"
+            >
+              Date of birth *
+            </Text>
+          )}
           {error.dob && <ErrorText>{error.dob}</ErrorText>}
         </GridItem>
         <GridItem>
           <Input
             {...getErrorPropsV1(error.gender)}
             variant="filled"
-            color="gray.100"
+            color={formData.gender ? "black" : "gray.100"}
             placeholder="gender"
             min={4}
             name="gender"

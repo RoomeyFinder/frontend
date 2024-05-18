@@ -3,6 +3,7 @@ import { GridItem, Input, SimpleGrid } from "@chakra-ui/react"
 import { getErrorPropsV1 } from "./utils"
 import PhoneNumberInput from "@/app/_components/PhoneNumberInput"
 import ErrorText from "../_components/Auth/ErrorText"
+import AuthPasswordInput from "../_components/Auth/AuthPasswordInput"
 
 export default function ContactForm({
   formData,
@@ -52,7 +53,7 @@ export default function ContactForm({
         {error.email && <ErrorText>{error.email}</ErrorText>}
       </GridItem>
       <GridItem>
-        <Input
+        <AuthPasswordInput
           {...getErrorPropsV1(error.password)}
           variant="filled"
           placeholder="Create a password *"
@@ -66,7 +67,7 @@ export default function ContactForm({
         {error.password && <ErrorText>{error.password}</ErrorText>}
       </GridItem>
       <GridItem>
-        <Input
+        <AuthPasswordInput
           variant="filled"
           placeholder="Confirm your password *"
           name="confirmPassword"
