@@ -36,7 +36,7 @@ export default function Welcome() {
           </Text>
         </Heading>
         <Text fontSize={{ base: "1.8rem", md: "2.4rem" }}>
-          Let&apos;s get you started with finding the
+          Let&apos;s get you started with finding your
           <Text
             fontSize="inherit"
             fontWeight="500"
@@ -44,7 +44,7 @@ export default function Welcome() {
             color="brand.main"
           >
             {" "}
-            perfect roommate.
+            ideal roommate.
           </Text>
         </Text>
         <Button variant="brand-secondary" onClick={() => router.push("/")}>
