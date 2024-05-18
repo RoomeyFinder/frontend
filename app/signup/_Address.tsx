@@ -1,4 +1,4 @@
-import { GridItem, Input, Link, SimpleGrid, Text } from "@chakra-ui/react"
+import { GridItem, Input, SimpleGrid } from "@chakra-ui/react"
 import AddressInput from "../_components/AddressInput"
 import { getErrorProps } from "./utils"
 

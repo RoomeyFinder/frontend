@@ -1,4 +1,4 @@
-import EyeIcon, { EyeSlash, PasswordEye } from "@/app/_assets/SVG/EyeIcon"
+import { EyeSlash, PasswordEye } from "@/app/_assets/SVG/EyeIcon"
 import { Box, Input, InputProps, Text } from "@chakra-ui/react"
 import { useState } from "react"
 

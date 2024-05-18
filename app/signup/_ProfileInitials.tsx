@@ -117,9 +117,11 @@ export default function ProfileInitialsForm({
         </GridItem>
         <GridItem colSpan={{ base: 1, sm: 2 }}>
           <OccupationOrUniversityInput
-            errorProps={getErrorPropsV1(
-              formData.isStudent ? error.school : error.occupation
-            )}
+            errorProps={
+              getErrorPropsV1(
+                formData.isStudent ? error.school : error.occupation
+              ) as { [x: string]: string }
+            }
             inputName={formData.isStudent ? "school" : "occupation"}
             inputValue={
               (formData.isStudent

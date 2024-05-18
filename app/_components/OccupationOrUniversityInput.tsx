@@ -1,5 +1,8 @@
-import { GridItem, ResponsiveValue, SimpleGrid } from "@chakra-ui/react"
-import { getErrorProps } from "../signup/utils"
+import {
+  GridItem,
+  ResponsiveValue,
+  SimpleGrid,
+} from "@chakra-ui/react"
 import CustomRadioGroup from "./CustomRadio"
 import nigerian_universities from "@/app/_data/nigerian_universities"
 import occupations from "@/app/_data/occupations.json"
@@ -16,7 +19,7 @@ export default function OccupationOrUniversityInput({
   inputVariant,
   columns,
 }: {
-  errorProps?: {}
+  errorProps?: { [x: string]: string }
   isStudent: boolean
   toggleIsStudent: (newValue: boolean) => void
   inputName: string

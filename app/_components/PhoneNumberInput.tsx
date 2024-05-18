@@ -5,7 +5,6 @@ import {
   InputProps,
   BoxProps,
 } from "@chakra-ui/react"
-import { getErrorProps } from "../signup/utils"
 import CountryCodeInput from "@/app/_components/CountryCodeInput"
 import countryCodes from "@/app/_data/country_codes.json"
 import { useState } from "react"

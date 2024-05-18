@@ -187,7 +187,7 @@ function useManageFormData() {
     },
     validate: (formData: { [x: string]: string | boolean }) => {
       type formDataKey = keyof typeof formData
-      let errors: { [x: string]: string } = {}
+      const errors: { [x: string]: string } = {}
       if (!formData.gender) errors.gender = "This field is required"
       if (!formData.firstName) errors.firstName = "This field is required"
       if ((formData.firstName as string).length <= 4)
@@ -211,35 +211,6 @@ function useManageFormData() {
       )
         errors.school = "This field is required"
       return { hasError: Object.entries(errors).length > 0, errors }
-      // const mainRequiredFields = ["firstName", "lastName", "dob", "gender"]
-      // const firstCheck =
-      //   validateFormDataFields(formData, mainRequiredFields) &&
-      //   (formData.firstName as string).length >= 4 &&
-      //   (formData.lastName as string).length >= 4
-      // const dobCheck =
-      //   Date.now() - new Date(formData.dob as string).getTime() <=
-      //   FOURTEEN_YEARS_IN_MILLISECONDS
-      // const passedIsNotAStudentCheck =
-      //   formData["isStudent" as formDataKey] === false &&
-      //   (formData["occupation" as formDataKey] as string).length > 0
-      // const passedIsStudentCheck =
-      //   formData["isStudent" as formDataKey] === true &&
-      //   (formData["school" as formDataKey] as string).length > 0
-      // const formErrorsFields = findErrorFields(formData, mainRequiredFields)
-      // if (formData.isStudent === true)
-      //   return [
-      //     passedIsStudentCheck && firstCheck,
-      //     formErrorsFields.concat(!passedIsStudentCheck ? "school" : []),
-      //   ]
-      // return [
-      //   passedIsNotAStudentCheck && firstCheck && !dobCheck,
-      //   formErrorsFields
-      //     .concat(!passedIsNotAStudentCheck ? "occupation" : [])
-      //     .concat(
-      //       (formData.firstName as string).length < 4 ? ["firstName"] : []
-      //     )
-      //     .concat((formData.lastName as string).length < 4 ? ["lastName"] : []),
-      // ]
     },
   })
   const [contactDetails, setContactDetails] = useState({
@@ -252,7 +223,7 @@ function useManageFormData() {
       confirmPassword: "",
     },
     validate: (formData: { [x: string]: string }) => {
-      let errors: { [x: string]: string } = {}
+      const errors: { [x: string]: string } = {}
       if (!formData.email) errors.email = "This field is required"
       if (!validateEmail(formData.email)) errors.email = "Invalid email address"
       if (!formData.phoneNumber) errors.phoneNumber = "This field is required"
@@ -269,18 +240,6 @@ function useManageFormData() {
         hasError: Object.entries(errors).length > 0,
         errors,
       }
-      // const mainRequiredFields = ["email", "phoneNumber", "countryCode"]
-      // const passedPasswordCheck =
-      //   formData.password === formData.confirmPassword &&
-      //   formData.password.length >= 8
-      // const formErrorsFields = findErrorFields(formData, mainRequiredFields)
-      // return [
-      //   validateFormDataFields(formData, mainRequiredFields) &&
-      //     passedPasswordCheck,
-      //   formErrorsFields.concat(
-      //     !passedPasswordCheck ? ["password", "confirmPassword"] : []
-      //   ),
-      // ]
     },
   })
   const [emailVerificationDetails, setEmailVerificationDetails] = useState({

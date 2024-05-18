@@ -5,7 +5,9 @@ const SignupContext = createContext<SignupValue>({
   loading: false,
   totalStages: {
     currentStage: 1,
-    navigateToStage: (stage: number) => {},
+    navigateToStage: (stage: number) => {
+      console.log(stage)
+    },
     goToNextStage: () => {},
     goToPrevStage: () => {},
     progressInPercentage: 0,
