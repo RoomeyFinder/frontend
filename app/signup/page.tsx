@@ -42,11 +42,12 @@ function SignupConsumer() {
     }
   }, [])
 
-  if(isSignupDone)return (
-    <Collapse in={isSignupDone}>
-      <Welcome />
-    </Collapse>
-  )
+  if (isSignupDone)
+    return (
+      <Collapse in={isSignupDone}>
+        <Welcome />
+      </Collapse>
+    )
   return (
     <>
       <Collapse in={isSignupDone === false} unmountOnExit>

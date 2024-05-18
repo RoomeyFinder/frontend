@@ -37,13 +37,13 @@ const baseStyle = definePartsStyle({
 
 const filledInput = definePartsStyle({
   field: {
-    bg: "white.300",
+    bg: "transparent",
     border: "1px solid",
     borderColor: "gray.100",
-    py: { base: "1.4rem", md: "2rem" },
-    px: { base: "2rem", md: "2.7rem" },
+    py: "1.4rem",
+    px: "2rem",
     _hover: {
-      background: "white.500"
+      background: "transparent"
     },
     _placeholder: {
       fontSize: "1.6rem",

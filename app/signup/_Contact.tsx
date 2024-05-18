@@ -1,8 +1,8 @@
 "use client"
-import { GridItem, Input, SimpleGrid, useToast } from "@chakra-ui/react"
-import { useEffect } from "react"
-import { getErrorProps } from "./utils"
+import { GridItem, Input, SimpleGrid } from "@chakra-ui/react"
+import { getErrorPropsV1 } from "./utils"
 import PhoneNumberInput from "@/app/_components/PhoneNumberInput"
+import ErrorText from "../_components/Auth/ErrorText"
 
 export default function ContactForm({
   formData,
@@ -17,34 +17,8 @@ export default function ContactForm({
     name: string,
     value: string | number | boolean
   ) => void
-  error: string[]
+  error: { [x: string]: string }
 }) {
-  const toast = useToast()
-
-  useEffect(() => {
-    const toastId = "password-toast"
-    if (
-      toast.isActive(toastId) === false &&
-      (error.includes("password") || error.includes("confirmPassword")) &&
-      (formData.password.length > 0 || formData.confirmPassword.length > 0)
-    ) {
-      toast({
-        id: toastId,
-        title: "Passwords must match and must be a minimum of 8 characters!",
-        status: "warning",
-        duration: 9000,
-        isClosable: true,
-        position: "top",
-        size: "lgs",
-        containerStyle: {
-          color: "white",
-          fontSize: "1.6rem",
-          textAlign: "center",
-        },
-      })
-    }
-  }, [error, formData.confirmPassword.length, formData.password.length, toast])
-
   return (
     <SimpleGrid
       columns={{ base: 1, sm: 2 }}
@@ -53,7 +27,7 @@ export default function ContactForm({
     >
       <GridItem>
         <PhoneNumberInput
-          error={error}
+          errorProps={{ ...getErrorPropsV1(error.phoneNumber) }}
           handleCountryCodeChange={(val) =>
             handleChange(sectionName, "countryCode", val)
           }
@@ -63,6 +37,7 @@ export default function ContactForm({
           phoneNumber={formData.phoneNumber}
           inputVariant="filled"
         />
+        {error.phoneNumber && <ErrorText>{error.phoneNumber}</ErrorText>}
       </GridItem>
       <GridItem>
         <Input
@@ -70,23 +45,25 @@ export default function ContactForm({
           placeholder="Email address *"
           name="email"
           type="email"
-          {...getErrorProps("email", error)}
           value={formData.firstName as string}
           onChange={(e) => handleChange(sectionName, "email", e.target.value)}
+          {...getErrorPropsV1(error.email)}
         />
+        {error.email && <ErrorText>{error.email}</ErrorText>}
       </GridItem>
       <GridItem>
         <Input
+          {...getErrorPropsV1(error.password)}
           variant="filled"
           placeholder="Create a password *"
           name="password"
           type="password"
-          {...getErrorProps("password", error)}
           value={formData.password as string}
           onChange={(e) =>
             handleChange(sectionName, "password", e.target.value)
           }
         />
+        {error.password && <ErrorText>{error.password}</ErrorText>}
       </GridItem>
       <GridItem>
         <Input
@@ -94,12 +71,15 @@ export default function ContactForm({
           placeholder="Confirm your password *"
           name="confirmPassword"
           type="password"
-          {...getErrorProps("confirmPassword", error)}
+          {...getErrorPropsV1(error.confirmPassword)}
           value={formData.confirmPassword as string}
           onChange={(e) =>
             handleChange(sectionName, "confirmPassword", e.target.value)
           }
         />
+        {error.confirmPassword && (
+          <ErrorText>{error.confirmPassword}</ErrorText>
+        )}
       </GridItem>
     </SimpleGrid>
   )

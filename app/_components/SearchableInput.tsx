@@ -9,20 +9,19 @@ export default function SearchableInput({
   options,
   handleChange,
   value,
-  errorProps,
+  errorProps = {},
   inputVariant,
   inputName,
 }: {
-    value: string;
-    options: string[];
-    handleChange: (value: string) => void;
-    errorProps: { [x: string]: string };
-    inputVariant?: string;
-    inputName: string;
-    inputPlaceholder: string;
+  value: string
+  options: string[]
+  handleChange: (value: string) => void
+  errorProps?: { [x: string]: string }
+  inputVariant?: string
+  inputName: string
+  inputPlaceholder: string
 }) {
-  const { text, updateText, filteredList } =
-        useFilterStringListByText(options)
+  const { text, updateText, filteredList } = useFilterStringListByText(options)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function SearchableInput({
       trigger={
         <Input
           ref={inputRef}
-          autoComplete='off'
+          autoComplete="off"
           variant={inputVariant || "filled"}
           placeholder={inputPlaceholder}
           value={text}
@@ -50,7 +49,8 @@ export default function SearchableInput({
             updateText(e.target.value)
           }}
         />
-      }>
+      }
+    >
       {({ onClose }: { onClose: () => void }) => (
         <CustomDropDownList
           list={filteredList as never[]}

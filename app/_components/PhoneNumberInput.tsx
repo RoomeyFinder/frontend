@@ -1,18 +1,24 @@
-import { InputGroup, InputLeftAddon, Input } from "@chakra-ui/react"
+import {
+  InputGroup,
+  InputLeftAddon,
+  Input,
+  InputProps,
+  BoxProps,
+} from "@chakra-ui/react"
 import { getErrorProps } from "../signup/utils"
 import CountryCodeInput from "@/app/_components/CountryCodeInput"
 import countryCodes from "@/app/_data/country_codes.json"
 import { useState } from "react"
 
 export default function PhoneNumberInput({
-  error,
+  errorProps = {},
   handleCountryCodeChange,
   handlePhoneNumberChange,
   phoneNumber,
   inputVariant,
   isDisabled,
 }: {
-  error: string[]
+  errorProps?: BoxProps & InputProps
   handleCountryCodeChange: (value: string) => void
   handlePhoneNumberChange: (value: string) => void
   phoneNumber: string
@@ -24,11 +30,11 @@ export default function PhoneNumberInput({
   return (
     <InputGroup variant={inputVariant} zIndex={10}>
       <InputLeftAddon
-        {...getErrorProps("countryCode", error)}
+        {...errorProps}
         flexBasis={{ base: "30%", md: "25%" }}
         borderLeft="1px solid"
         borderLeftColor="gray.100"
-        opacity={isDisabled ? .6 : 1}
+        opacity={isDisabled ? 0.6 : 1}
         cursor={isDisabled ? "not-allowed" : "pointer"}
         _hover={{ _disabled: { backgroundColor: "transparent" } }}
       >
@@ -57,7 +63,7 @@ export default function PhoneNumberInput({
         name="phoneNumber"
         type="number"
         max={16}
-        {...getErrorProps("phoneNumber", error)}
+        {...errorProps}
         value={phoneNumber}
         onChange={(e) => handlePhoneNumberChange(e.target.value)}
       />

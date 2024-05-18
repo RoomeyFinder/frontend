@@ -94,6 +94,7 @@ export default function AuthFormLayout({
         >
           {showBackButton && (
             <Button
+              type="button"
               variant="brand-secondary"
               bg="transparent"
               onClick={handleBackButtonClick}

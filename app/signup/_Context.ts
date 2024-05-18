@@ -14,20 +14,20 @@ const SignupContext = createContext<SignupValue>({
   profileInitials: {
     name: "PROFILE-INITIALS",
     formData: {},
-    validate: () => [false, []],
+    validate: () => ({ hasError: false, errors: {} }),
   },
   contactDetails: {
     name: "CONTACT",
     formData: {},
-    validate: () => [false, []],
+    validate: () => ({ hasError: false, errors: {} }),
   },
   emailVerificationDetails: {
     name: "EMAIL-VERIFICATION",
     formData: {},
-    validate: () => [false, []],
+    validate: () => ({ hasError: false, errors: {} }),
   },
   handleFormDataChange: () => {},
-  formErrors: [],
+  formErrors: {},
   resendVerificationEmail: () => {},
   isSignupDone: false,
 })

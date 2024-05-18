@@ -1,17 +1,15 @@
-import {
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react"
+import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
 import useManageStageFlow from "../_hooks/useManageStageFlow"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { useToast } from "@chakra-ui/react"
 import SignupContext from "./_Context"
 import { UserContext } from "../_providers/UserProvider"
 import { AuthContext } from "../_providers/AuthContext"
+import { error } from "console"
+import { validateEmail } from "../_utils"
 
+// const SIXTEEN_YEARS_AGO = new Date(Date.now())
+// SIXTEEN_YEARS_AGO.setFullYear(SIXTEEN_YEARS_AGO.getFullYear() - 16)
 export const FOURTEEN_YEARS_IN_MILLISECONDS = 4.418e11
 
 const validateFormDataFields = (
@@ -49,7 +47,7 @@ export default function SignupProvider({
     start: 0,
   })
 
-  const [formErrors, setError] = useState<string[]>([])
+  const [formErrors, setError] = useState<{ [x: string]: string }>({})
 
   const {
     profileInitials,
@@ -110,7 +108,11 @@ export default function SignupProvider({
         setIsSignupDone(true)
         updateUser(res.user)
         updateToken(res.token)
-      } else toast({ description: res.message, status: "error" })
+      } else setError((prev) => ({
+        ...prev,
+        verificationToken: res.message || "Something went wrong",
+      }))
+      console.log('dfdkfkj')
       setLoading(false)
     },
     [
@@ -133,7 +135,8 @@ export default function SignupProvider({
         emailVerificationDetails.formData
       )
     }
-    if (isValidated[0] === false) return setError(isValidated[1] as string[])
+    if (isValidated.hasError === true)
+      return setError(isValidated.errors as any)
     else {
       if (totalStages.currentStage === 2)
         verifyEmail(() => {
@@ -157,7 +160,11 @@ export default function SignupProvider({
       totalStages,
       handleSubmitButtonClick,
       handleFormDataChange: handleFormDataChange((name) =>
-        setError((prev) => prev.filter((it) => it !== name))
+        setError((prev) => {
+          const update = { ...prev }
+          delete update[name as keyof typeof update]
+          return update
+        })
       ),
       profileInitials,
       contactDetails,
@@ -202,32 +209,59 @@ function useManageFormData() {
     },
     validate: (formData: { [x: string]: string | boolean }) => {
       type formDataKey = keyof typeof formData
-      const mainRequiredFields = ["firstName", "lastName", "dob", "gender"]
-      const firstCheck =
-        validateFormDataFields(formData, mainRequiredFields) &&
-        (formData.firstName as string).length >= 4 &&
-        (formData.lastName as string).length >= 4
-      const passedIsNotAStudentCheck =
+      let errors: { [x: string]: string } = {}
+      if (!formData.gender) errors.gender = "This field is required"
+      if (!formData.firstName) errors.firstName = "This field is required"
+      if ((formData.firstName as string).length <= 4)
+        errors.firstName = "Must be at least 4 characters"
+      if (!formData.lastName) errors.lastName = "This field is required"
+      if ((formData.lastName as string).length <= 4)
+        errors.lastName = "Must be at least 4 characters"
+      const isOfAge =
+        Date.now() - new Date(formData.dob as string).getTime() >=
+        FOURTEEN_YEARS_IN_MILLISECONDS
+      if (!formData.dob) errors.dob = "This field is required"
+      if (!isOfAge) errors.dob = "You must be at least 14 years"
+      if (
         formData["isStudent" as formDataKey] === false &&
-        (formData["occupation" as formDataKey] as string).length > 0
-      const passedIsStudentCheck =
+        !(formData["occupation" as formDataKey] as string)?.length
+      )
+        errors.occupation = "This field is required"
+      if (
         formData["isStudent" as formDataKey] === true &&
-        (formData["school" as formDataKey] as string).length > 0
-      const formErrorsFields = findErrorFields(formData, mainRequiredFields)
-      if (formData.isStudent === true)
-        return [
-          passedIsStudentCheck && firstCheck,
-          formErrorsFields.concat(!passedIsStudentCheck ? "school" : []),
-        ]
-      return [
-        passedIsNotAStudentCheck && firstCheck,
-        formErrorsFields
-          .concat(!passedIsNotAStudentCheck ? "occupation" : [])
-          .concat(
-            (formData.firstName as string).length < 4 ? ["firstName"] : []
-          )
-          .concat((formData.lastName as string).length < 4 ? ["lastName"] : []),
-      ]
+        !(formData["school" as formDataKey] as string)?.length
+      )
+        errors.school = "This field is required"
+      return { hasError: Object.entries(errors).length > 0, errors }
+      // const mainRequiredFields = ["firstName", "lastName", "dob", "gender"]
+      // const firstCheck =
+      //   validateFormDataFields(formData, mainRequiredFields) &&
+      //   (formData.firstName as string).length >= 4 &&
+      //   (formData.lastName as string).length >= 4
+      // const dobCheck =
+      //   Date.now() - new Date(formData.dob as string).getTime() <=
+      //   FOURTEEN_YEARS_IN_MILLISECONDS
+      // const passedIsNotAStudentCheck =
+      //   formData["isStudent" as formDataKey] === false &&
+      //   (formData["occupation" as formDataKey] as string).length > 0
+      // const passedIsStudentCheck =
+      //   formData["isStudent" as formDataKey] === true &&
+      //   (formData["school" as formDataKey] as string).length > 0
+      // const formErrorsFields = findErrorFields(formData, mainRequiredFields)
+      // if (formData.isStudent === true)
+      //   return [
+      //     passedIsStudentCheck && firstCheck,
+      //     formErrorsFields.concat(!passedIsStudentCheck ? "school" : []),
+      //   ]
+      // return [
+      //   passedIsNotAStudentCheck && firstCheck && !dobCheck,
+      //   formErrorsFields
+      //     .concat(!passedIsNotAStudentCheck ? "occupation" : [])
+      //     .concat(
+      //       (formData.firstName as string).length < 4 ? ["firstName"] : []
+      //     )
+      //     .concat((formData.lastName as string).length < 4 ? ["lastName"] : []),
+      // ]
     },
   })
   const [contactDetails, setContactDetails] = useState({
@@ -240,18 +274,35 @@ function useManageFormData() {
       confirmPassword: "",
     },
     validate: (formData: { [x: string]: string }) => {
-      const mainRequiredFields = ["email", "phoneNumber", "countryCode"]
-      const passedPasswordCheck =
-        formData.password === formData.confirmPassword &&
-        formData.password.length >= 8
-      const formErrorsFields = findErrorFields(formData, mainRequiredFields)
-      return [
-        validateFormDataFields(formData, mainRequiredFields) &&
-          passedPasswordCheck,
-        formErrorsFields.concat(
-          !passedPasswordCheck ? ["password", "confirmPassword"] : []
-        ),
-      ]
+      let errors: { [x: string]: string } = {}
+      if (!formData.email) errors.email = "This field is required"
+      if (!validateEmail(formData.email)) errors.email = "Invalid email address"
+      if (!formData.phoneNumber) errors.phoneNumber = "This field is required"
+      if (!formData.password) errors.password = "This field is required"
+      if ((formData.password as string).length < 8)
+        errors.password = "Must be at least 8 characters"
+      if (!formData.confirmPassword)
+        errors.confirmPassword = "This field is required"
+      if (
+        (formData.confirmPassword as string) !== (formData.password as string)
+      )
+        errors.confirmPassword = "Must be the same as password"
+      return {
+        hasError: Object.entries(errors).length > 0,
+        errors,
+      }
+      // const mainRequiredFields = ["email", "phoneNumber", "countryCode"]
+      // const passedPasswordCheck =
+      //   formData.password === formData.confirmPassword &&
+      //   formData.password.length >= 8
+      // const formErrorsFields = findErrorFields(formData, mainRequiredFields)
+      // return [
+      //   validateFormDataFields(formData, mainRequiredFields) &&
+      //     passedPasswordCheck,
+      //   formErrorsFields.concat(
+      //     !passedPasswordCheck ? ["password", "confirmPassword"] : []
+      //   ),
+      // ]
     },
   })
   const [emailVerificationDetails, setEmailVerificationDetails] = useState({
@@ -260,7 +311,10 @@ function useManageFormData() {
       verificationToken: "",
     },
     validate: (formData: { [x: string]: string }) => {
-      return [formData.verificationToken.length === 6, ["verificationToken"]]
+      return {
+        hasError: formData.verificationToken.length < 6,
+        errors: { verificationToken: "This field is required" },
+      }
     },
   })
 
