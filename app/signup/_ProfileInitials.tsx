@@ -69,6 +69,7 @@ export default function ProfileInitialsForm({
             placeholder="Date of birth *"
             name="dob"
             type="date"
+            height="5.4rem"
             value={formData.dob as string}
             onChange={(e) => {
               handleChange(sectionName, "dob", e.target.value)
@@ -82,7 +83,7 @@ export default function ProfileInitialsForm({
               transform="translateY(-50%)"
               fontSize="1.4rem"
               color="gray.100"
-              display={{ base: formData.dob ? "none" : "block", md: "hidden" }}
+              display={{ base: formData.dob ? "none" : "block", md: "none" }}
               zIndex="300"
             >
               Date of birth *
@@ -95,7 +96,7 @@ export default function ProfileInitialsForm({
             {...getErrorPropsV1(error.gender)}
             variant="filled"
             color={formData.gender ? "black" : "gray.100"}
-            placeholder="gender"
+            placeholder="Gender"
             min={4}
             name="gender"
             value={formData.gender as string}
