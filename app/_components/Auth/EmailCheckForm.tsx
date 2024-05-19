@@ -8,7 +8,7 @@ export default function EmailCheckForm() {
         <Button
           variant="brand"
           cursor="pointer"
-          py="1.6rem"
+          py="1.3rem"
           fontSize="1.6rem"
           fontWeight="600"
         >

@@ -1,6 +1,5 @@
 "use client"
 import {
-  Button,
   Flex,
   Heading,
   Modal,
@@ -15,6 +14,12 @@ import {
 import { DividerWithCenteredText } from "../PremiumModal"
 import EmailCheckForm from "./EmailCheckForm"
 import GoogleIcon from "@/app/_assets/SVG/Google"
+import { ReactNode } from "react"
+import FacebookIcon from "@/app/_assets/SVG/Facebook"
+import { useSigninWithFacebook } from "@/app/_providers/FacebookProvider"
+import useHandleGoogleToken from "@/app/_hooks/useHandleGoogleToken"
+import { useGoogleLogin } from "@react-oauth/google"
+import useHandleFacebookLogin from "@/app/_hooks/useHandleFacebookSignin"
 
 export default function AuthModal() {
   return (
@@ -24,7 +29,7 @@ export default function AuthModal() {
         <ModalContent
           bgColor="white"
           w="full"
-          maxW="56.8rem"
+          maxW="45.8rem"
           rounded="1.2rem"
           roundedBottom={{ base: "0", sm: "1.2rem" }}
           mt={{ base: "auto" }}
@@ -69,19 +74,42 @@ export default function AuthModal() {
 }
 
 function AuthForms() {
+  const handleGoogleToken = useHandleGoogleToken()
+  const handleFacebookUserData = useHandleFacebookLogin()
+  const fbSignIn = useSigninWithFacebook(handleFacebookUserData)
+  const googleSignIn = useGoogleLogin({
+    onSuccess: handleGoogleToken,
+  })
+
   return (
     <>
       <EmailCheckForm />
       <DividerWithCenteredText text="or" />
       <VStack gap="1.6rem">
-        <SSOGoogleButton />
-        <SSOGoogleButton />
+        <SSOButton
+          icon={<FacebookIcon />}
+          text="Continue with Facebook"
+          onClick={fbSignIn}
+        />
+        <SSOButton
+          icon={<GoogleIcon />}
+          text="Continue with Google"
+          onClick={googleSignIn}
+        />
       </VStack>
     </>
   )
 }
 
-function SSOGoogleButton() {
+function SSOButton({
+  icon,
+  text,
+  onClick,
+}: {
+  icon: ReactNode | ReactNode[]
+  text: ReactNode | ReactNode[]
+  onClick: () => void
+}) {
   return (
     <Flex
       as="button"
@@ -95,10 +123,13 @@ function SSOGoogleButton() {
       border="1px solid"
       rounded="1.2rem"
       _hover={{ bg: "white.100" }}
+      onClick={onClick}
     >
-      <GoogleIcon />{" "}
+      <Text as="span" w="2rem" h="2rem" textAlign="center">
+        {icon}
+      </Text>
       <Text as="span" flexGrow="1" textAlign="center">
-        Continue with Google
+        {text}
       </Text>
     </Flex>
   )

@@ -18,6 +18,7 @@ import NotificationProvider from "./_providers/NotificationsProvider"
 import { Suspense } from "react"
 import CenteredSpinner from "./_components/CenteredSpinner"
 import AuthModal from "./_components/Auth/AuthModal"
+import FacebookProvider from "./_providers/FacebookProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -63,6 +64,7 @@ export default function RootLayout({
               defer
               src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY}&libraries=places&callback=Function.prototype`}
             ></script>
+            <FacebookProvider />
             <Toaster containerStyle={{ fontSize: "1.6rem" }} />
           </ChakraUIProvider>
         </Suspense>
