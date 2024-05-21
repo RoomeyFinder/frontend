@@ -1,23 +1,18 @@
 import useAxios from "@/app/_hooks/useAxios"
-import { Box, Button, Input } from "@chakra-ui/react"
+import { Box, Button, Text, VStack } from "@chakra-ui/react"
 import { FormEventHandler, useCallback, useState } from "react"
 import ErrorText from "./ErrorText"
 import { getErrorPropsV1 } from "@/app/signup/utils"
-import { validateEmail } from "@/app/_utils"
+import AuthPasswordInput from "./AuthPasswordInput"
 
-export type AccountCheckResponse = {
-  statusCode: number
-  hasAccount: boolean
-  ssoProvider?: "google" | "facebook"
-  email: string
-  firstName?: string
-}
-export default function EmailCheckForm({
-  handleStatus,
+export default function PasswordForm({
+  email,
+  handleForgotPasswordClick,
 }: {
-  handleStatus: (response: AccountCheckResponse) => void
+  email: string
+  handleForgotPasswordClick: () => void
 }) {
-  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isSubmiting, setIsSubmitting] = useState(false)
   const { fetchData } = useAxios()
@@ -25,45 +20,43 @@ export default function EmailCheckForm({
   const handleEmailCheck: FormEventHandler = useCallback(
     async (e) => {
       e.preventDefault()
-      console.log(email)
-      if (email.length === 0) return setError("Please provide an email!")
-      if (!validateEmail(email)) return setError("Email address is invalid!")
+      if (password.length === 0) return setError("This field is required!")
       setIsSubmitting(true)
       const res = await fetchData({
-        url: "/users/find-account",
+        url: "/users/login",
         method: "post",
         body: {
           email,
+          password,
         },
       })
+      console.log(res)
       if (res.statusCode === 200) {
-        setEmail("")
-        handleStatus(res)
       } else setError("Something went wrong!")
       setError("")
       setIsSubmitting(false)
     },
-    [fetchData, handleStatus, email]
+    [fetchData, email, password]
   )
   return (
-    <>
+    <VStack w="100%" pb="10rem" alignItems="start">
       <Box
         onSubmit={handleEmailCheck}
         as="form"
         display="flex"
         flexDir="column"
         gap="1.6rem"
+        w="100%"
       >
         <Box>
-          <Input
+          <AuthPasswordInput
             {...getErrorPropsV1(error)}
             variant="filled"
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={email}
+            placeholder="Password"
+            type="password"
+            value={password}
             onChange={(e) => {
-              setEmail(e.target.value)
+              setPassword(e.target.value)
               setError("")
             }}
           />
@@ -79,9 +72,20 @@ export default function EmailCheckForm({
           type="submit"
           loadingText="Please wait"
         >
-          Continue
+          Login
         </Button>
       </Box>
-    </>
+      <Text
+        onClick={handleForgotPasswordClick}
+        as="button"
+        textDecor="underline"
+        fontWeight="600"
+        fontSize="1.4rem"
+        mt="1.8rem"
+        mb=".1rem"
+      >
+        Forgot Password?
+      </Text>
+    </VStack>
   )
 }

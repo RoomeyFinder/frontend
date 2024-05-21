@@ -10,7 +10,7 @@ export default function PinInputElement({
   value: string
 }) {
   return (
-    <HStack>
+    <HStack gap="0">
       <PinInput
         onChange={(value) => handleChange(value)}
         value={value}
@@ -21,56 +21,86 @@ export default function PinInputElement({
         <PinInputField
           borderColor={hasError ? "red" : "gray.100"}
           mr={{ base: ".8rem", md: "2rem" }}
-          w={{ base: "5rem", md: "6.5rem" }}
-          h={{ base: "5rem", md: "6.5rem" }}
+          w={{ base: "3.5rem", sm: "5rem", md: "6.8rem" }}
+          h={{ base: "4rem", sm: "5rem", md: "6.5rem" }}
           rounded="1.2rem"
-          bg="white.300"
+          bg="tranpsarent"
           fontSize="2rem"
+          _focusVisible={{
+            boxShadow: "none",
+            border: "1px solid",
+            borderColor: "brand.main",
+          }}
         />
         <PinInputField
           borderColor={hasError ? "red" : "gray.100"}
           mr={{ base: ".8rem", md: "2rem" }}
-          w={{ base: "5rem", md: "6.5rem" }}
-          h={{ base: "5rem", md: "6.5rem" }}
+          w={{ base: "3.5rem", sm: "5rem", md: "6.8rem" }}
+          h={{ base: "4rem", sm: "5rem", md: "6.5rem" }}
           rounded="1.2rem"
-          bg="white.300"
+          bg="tranpsarent"
           fontSize="2rem"
+          _focusVisible={{
+            boxShadow: "none",
+            border: "1px solid",
+            borderColor: "brand.main",
+          }}
         />
         <PinInputField
           borderColor={hasError ? "red" : "gray.100"}
           mr={{ base: ".8rem", md: "2rem" }}
-          w={{ base: "5rem", md: "6.5rem" }}
-          h={{ base: "5rem", md: "6.5rem" }}
+          w={{ base: "3.5rem", sm: "5rem", md: "6.8rem" }}
+          h={{ base: "4rem", sm: "5rem", md: "6.5rem" }}
           rounded="1.2rem"
-          bg="white.300"
+          bg="tranpsarent"
           fontSize="2rem"
+          _focusVisible={{
+            boxShadow: "none",
+            border: "1px solid",
+            borderColor: "brand.main",
+          }}
         />
         <PinInputField
           borderColor={hasError ? "red" : "gray.100"}
           mr={{ base: ".8rem", md: "2rem" }}
-          w={{ base: "5rem", md: "6.5rem" }}
-          h={{ base: "5rem", md: "6.5rem" }}
+          w={{ base: "3.5rem", sm: "5rem", md: "6.8rem" }}
+          h={{ base: "4rem", sm: "5rem", md: "6.5rem" }}
           rounded="1.2rem"
-          bg="white.300"
+          bg="tranpsarent"
           fontSize="2rem"
+          _focusVisible={{
+            boxShadow: "none",
+            border: "1px solid",
+            borderColor: "brand.main",
+          }}
         />
         <PinInputField
           borderColor={hasError ? "red" : "gray.100"}
           mr={{ base: ".8rem", md: "2rem" }}
-          w={{ base: "5rem", md: "6.5rem" }}
-          h={{ base: "5rem", md: "6.5rem" }}
+          w={{ base: "3.5rem", sm: "5rem", md: "6.8rem" }}
+          h={{ base: "4rem", sm: "5rem", md: "6.5rem" }}
           rounded="1.2rem"
-          bg="white.300"
+          bg="tranpsarent"
           fontSize="2rem"
+          _focusVisible={{
+            boxShadow: "none",
+            border: "1px solid",
+            borderColor: "brand.main",
+          }}
         />
         <PinInputField
           borderColor={hasError ? "red" : "gray.100"}
           mr={{ base: ".8rem", md: "2rem" }}
-          w={{ base: "5rem", md: "6.5rem" }}
-          h={{ base: "5rem", md: "6.5rem" }}
+          w={{ base: "3.5rem", sm: "5rem", md: "6.8rem" }}
+          h={{ base: "4rem", sm: "5rem", md: "6.5rem" }}
           rounded="1.2rem"
-          bg="white.300"
+          bg="tranpsarent"
           fontSize="2rem"
+          _focusVisible={{
+            boxShadow: "none",
+            border: "1px solid",
+            borderColor: "brand.main",
+          }}
         />
       </PinInput>
     </HStack>

@@ -1,6 +1,8 @@
 "use client"
 import {
-  Flex,
+  BoxProps,
+  Button,
+  Collapse,
   Heading,
   Modal,
   ModalBody,
@@ -12,60 +14,158 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import { DividerWithCenteredText } from "../PremiumModal"
-import EmailCheckForm from "./EmailCheckForm"
-import GoogleIcon from "@/app/_assets/SVG/Google"
-import { ReactNode } from "react"
-import FacebookIcon from "@/app/_assets/SVG/Facebook"
-import { useSigninWithFacebook } from "@/app/_providers/FacebookProvider"
-import useHandleGoogleToken from "@/app/_hooks/useHandleGoogleToken"
-import { useGoogleLogin } from "@react-oauth/google"
-import useHandleFacebookLogin from "@/app/_hooks/useHandleFacebookSignin"
+import EmailCheckForm, { AccountCheckResponse } from "./EmailCheckForm"
+import { useCallback, useState } from "react"
+import useManageStageFlow from "@/app/_hooks/useManageStageFlow"
+import PasswordForm from "./PasswordForm"
+import BackChevron from "@/app/_assets/SVG/BackChevron"
+import SignupForm from "./SignupForm"
+import ContinueWithProvider from "./AuthModalContinueWith"
+import FacebookSSOButton from "./FacebookSSOButton"
+import GoogleSSOButton from "./GoogleSSOButton"
+import User from "@/app/_types/User"
+import ConfirmEmailForm from "./ConfirmEmailForm"
+
+const modalContentProps: BoxProps = {
+  bgColor: "white",
+  w: "full",
+  maxW: "48.5rem",
+  rounded: "1.2rem",
+  roundedBottom: { base: "0", sm: "1.2rem" },
+  mt: { base: "auto" },
+  mb: { base: "0", sm: "auto" },
+}
+
+const modalHeaderProps: BoxProps = {
+  pos: "relative",
+  p: "2.4rem",
+  borderBottom: "1px solid #dddddd",
+}
 
 export default function AuthModal() {
+  const [accountIsSSOProvided, setAccountIsSSOProvided] = useState(false)
+  const [usersFirstName, setUsersFirstName] = useState("")
+  const [nonSSOHeading, setNonSSOHeading] = useState("Log in")
+  const { currentStage, goToNextStage, navigateToStage } = useManageStageFlow({
+    maxStage: 2,
+    minStage: 0,
+    start: 0,
+  })
+  const [hasAccount, setHasAccount] = useState(false)
+  const [email, setEmail] = useState("")
+  const [ssoProvider, setSSoProvider] = useState<
+    "google" | "facebook" | undefined
+  >()
+
+  const handleEmailCheckStatus = useCallback(
+    (res: AccountCheckResponse) => {
+      setHasAccount(res.hasAccount)
+      setSSoProvider(res.ssoProvider)
+      setEmail(res.email)
+      if (res.hasAccount) {
+        setAccountIsSSOProvided(res.ssoProvider !== undefined)
+        res.firstName && setUsersFirstName(res.firstName)
+        res.ssoProvider === undefined && setNonSSOHeading("Log in")
+      } else {
+        res.ssoProvider === undefined && setNonSSOHeading("Finish signing up")
+      }
+      goToNextStage()
+    },
+    [goToNextStage]
+  )
+
+  const handleGoBackFromEmailCheck = useCallback(() => {
+    setHasAccount(false)
+    navigateToStage(0)
+    setAccountIsSSOProvided(false)
+    setUsersFirstName("")
+  }, [navigateToStage])
+
+  const handleBackBtnClick = useCallback(() => {
+    setAccountIsSSOProvided(false)
+    setUsersFirstName("")
+    navigateToStage(0)
+  }, [])
+
+  const handleSignupResponse = useCallback(
+    (res: { user?: User; statusCode: number }) => {
+      if (res.statusCode === 201) {
+        navigateToStage(2)
+        res.user && setEmail(res.user?.email)
+      }
+    },
+    [navigateToStage]
+  )
+
   return (
     <>
       <Modal isOpen={true} onClose={() => {}} isCentered={false}>
         <ModalOverlay bgColor="#22222261" />
         <ModalContent
-          bgColor="white"
-          w="full"
-          maxW="45.8rem"
-          rounded="1.2rem"
-          roundedBottom={{ base: "0", sm: "1.2rem" }}
-          mt={{ base: "auto" }}
-          mb={{ base: "0", sm: "auto" }}
+          {...modalContentProps}
+          maxW={currentStage > 1 ? "59rem" : "48.5rem"}
         >
-          <ModalHeader
-            pos="relative"
-            p="2.4rem"
-            borderBottom="1px solid #dddddd"
-          >
-            <ModalCloseButton
-              _focusVisible={{
-                boxShadow: "none",
-                border: "1px solid",
-                borderColor: "brand.50",
-              }}
-              size="lg"
-              pos="absolute"
-              left="2.4rem"
-              top="50%"
-              transform="translateY(-50%)"
+          <ModalHeader {...modalHeaderProps}>
+            {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 ? (
+              <AuthModalBackButton onClick={handleBackBtnClick} />
+            ) : (
+              <AuthModalCloseButton />
+            )}
+            <ModalHeading
+              usersFirstName={usersFirstName}
+              accountIsSSOProvided={accountIsSSOProvided}
+              currentStage={currentStage}
+              nonSSOHeading={nonSSOHeading}
             />
-            <Heading
-              as="h3"
-              textAlign="center"
-              fontSize="1.6rem"
-              fontWeight="700"
-            >
-              Log in or sign up
-            </Heading>
           </ModalHeader>
           <ModalBody p="2.4rem" display="flex" flexDir="column" gap="2.4rem">
-            <Heading as="h3" fontSize="2.2rem" fontWeight="600" my=".8rem">
-              Welcome to RoomeyFinder
-            </Heading>
-            <AuthForms />
+            {!accountIsSSOProvided && currentStage === 0 && (
+              <Heading as="h3" fontSize="2.2rem" fontWeight="600" my=".8rem">
+                Welcome to RoomeyFinder
+              </Heading>
+            )}
+            <VStack gap="2.4rem" alignItems="stretch" w="100%">
+              <Collapse in={currentStage === 0}>
+                <EmailCheckForm handleStatus={handleEmailCheckStatus} />
+              </Collapse>
+              <Collapse in={currentStage === 1}>
+                <Collapse in={hasAccount === true && !ssoProvider}>
+                  <PasswordForm
+                    email={email}
+                    handleForgotPasswordClick={handleGoBackFromEmailCheck}
+                  />
+                </Collapse>
+                <Collapse in={hasAccount === true && ssoProvider !== undefined}>
+                  <ContinueWithProvider
+                    ssoProvider={ssoProvider}
+                    email={email}
+                  />
+                  <UseAnotherAccountText
+                    handleClick={handleGoBackFromEmailCheck}
+                  />
+                </Collapse>
+                <Collapse
+                  in={hasAccount === false && ssoProvider === undefined}
+                >
+                  <SignupForm
+                    email={email}
+                    handleSubmission={handleSignupResponse}
+                  />
+                </Collapse>
+              </Collapse>
+              <Collapse in={currentStage === 2}>
+                <ConfirmEmailForm handleSubmission={() => {}} email={email} />
+              </Collapse>
+              <Collapse in={currentStage === 0}>
+                <VStack alignItems="start" gap="1.6rem" w="100%">
+                  <DividerWithCenteredText text="or" />
+                  <VStack gap="1.6rem" w="full">
+                    <FacebookSSOButton />
+                    <GoogleSSOButton />
+                  </VStack>
+                </VStack>
+              </Collapse>
+            </VStack>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -73,64 +173,101 @@ export default function AuthModal() {
   )
 }
 
-function AuthForms() {
-  const handleGoogleToken = useHandleGoogleToken()
-  const handleFacebookUserData = useHandleFacebookLogin()
-  const fbSignIn = useSigninWithFacebook(handleFacebookUserData)
-  const googleSignIn = useGoogleLogin({
-    onSuccess: handleGoogleToken,
-  })
-
+function ModalHeading({
+  usersFirstName,
+  accountIsSSOProvided,
+  currentStage,
+  nonSSOHeading,
+}: {
+  usersFirstName: string
+  accountIsSSOProvided: boolean
+  currentStage: number
+  nonSSOHeading: string
+}) {
   return (
-    <>
-      <EmailCheckForm />
-      <DividerWithCenteredText text="or" />
-      <VStack gap="1.6rem">
-        <SSOButton
-          icon={<FacebookIcon />}
-          text="Continue with Facebook"
-          onClick={fbSignIn}
-        />
-        <SSOButton
-          icon={<GoogleIcon />}
-          text="Continue with Google"
-          onClick={googleSignIn}
-        />
-      </VStack>
-    </>
+    <Heading as="h3" textAlign="center" fontSize="1.6rem" fontWeight="700">
+      {accountIsSSOProvided && currentStage > 0 && (
+        <>
+          Welcome back,{" "}
+          <Text as="span" fontSize="inherit" textTransform="capitalize">
+            {usersFirstName}
+          </Text>
+        </>
+      )}
+      {!accountIsSSOProvided && currentStage === 0 && <>Log in or sign up</>}
+      {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 && <>{nonSSOHeading}</>}
+      {currentStage > 1 && <>Verify Email</>}
+    </Heading>
   )
 }
 
-function SSOButton({
-  icon,
-  text,
-  onClick,
-}: {
-  icon: ReactNode | ReactNode[]
-  text: ReactNode | ReactNode[]
-  onClick: () => void
-}) {
+function UseAnotherAccountText({ handleClick }: { handleClick: () => void }) {
   return (
-    <Flex
-      as="button"
-      gap="1.6rem"
-      w="full"
+    <Text
+      display="flex"
+      gap=".8rem"
       alignItems="center"
       fontSize="1.4rem"
-      fontWeight="600"
-      px="2.4rem"
-      py="1.4rem"
-      border="1px solid"
-      rounded="1.2rem"
-      _hover={{ bg: "white.100" }}
-      onClick={onClick}
+      alignSelf="start"
+      mt="1.8rem"
+      mb=".1rem"
     >
-      <Text as="span" w="2rem" h="2rem" textAlign="center">
-        {icon}
+      Not you?
+      <Text
+        onClick={handleClick}
+        as="button"
+        textDecor="underline"
+        fontWeight="600"
+      >
+        Use another account
       </Text>
-      <Text as="span" flexGrow="1" textAlign="center">
-        {text}
-      </Text>
-    </Flex>
+    </Text>
+  )
+}
+
+function AuthModalCloseButton() {
+  return (
+    <ModalCloseButton
+      _focusVisible={{
+        boxShadow: "none",
+        border: "1px solid",
+        borderColor: "brand.50",
+      }}
+      size="lg"
+      pos="absolute"
+      left={{ base: "1.4rem", sm: "2.4rem" }}
+      top="50%"
+      transform="translateY(-50%)"
+    />
+  )
+}
+
+function AuthModalBackButton({ onClick }: { onClick: () => void }) {
+  return (
+    <Button
+      onClick={onClick}
+      _focusVisible={{
+        boxShadow: "none",
+        border: "1px solid",
+        borderColor: "brand.50",
+      }}
+      _hover={{
+        bg: "white.100",
+      }}
+      _active={{
+        bg: "white.100",
+      }}
+      size="lg"
+      pos="absolute"
+      left={{ base: "1.4rem", sm: "2.4rem" }}
+      top="50%"
+      transform="translateY(-50%)"
+      bg="transparent"
+      rounded="full"
+      height="3.2rem"
+      width="3.2rem"
+    >
+      <BackChevron />
+    </Button>
   )
 }
