@@ -101,7 +101,7 @@ function AuthModal({
     setAccountIsSSOProvided(false)
     setUsersFirstName("")
     navigateToStage(0)
-  }, [])
+  }, [navigateToStage])
 
   const handleSignupResponse = useCallback(
     (res: { user?: User; statusCode: number }) => {
@@ -117,7 +117,7 @@ function AuthModal({
     toast.success(
       usersFirstName
         ? `Welcome back, ${usersFirstName}!`
-        : `You are signed in!`,
+        : "You are signed in!",
       {
         style: {
           textTransform: "capitalize",

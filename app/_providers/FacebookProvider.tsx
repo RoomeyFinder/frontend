@@ -51,7 +51,7 @@ export function useSigninWithFacebook(
         }
       }
     )
-  }, [])
+  }, [handleResponse])
   const fbSignIn = useCallback(() => {
     window.FB.init({
       appId: process.env.NEXT_PUBLIC_FB_APP_ID,
@@ -59,6 +59,6 @@ export function useSigninWithFacebook(
       version: "v19.0",
     })
     window.FB.login(getDetails)
-  }, [])
+  }, [getDetails])
   return fbSignIn
 }

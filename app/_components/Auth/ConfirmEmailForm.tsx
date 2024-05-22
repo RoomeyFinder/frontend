@@ -12,7 +12,7 @@ import { UserContext } from "@/app/_providers/UserProvider"
 
 export default function ConfirmEmailForm({
   email,
-  handleSubmission,
+  // handleSubmission,
   handleSuccess,
 }: {
   email: string
@@ -63,7 +63,6 @@ export default function ConfirmEmailForm({
     fetchData,
     email,
     verificationCode,
-    handleSubmission,
     isSubmiting,
     prevCode,
     handleSuccess,
@@ -78,7 +77,7 @@ export default function ConfirmEmailForm({
     return () => {
       clearTimeout(autoSubmitTimeout)
     }
-  }, [verificationCode])
+  }, [verificationCode, verifyEmail])
 
   const resendVerificationEmail = useCallback(async () => {
     const res = await fetchData({

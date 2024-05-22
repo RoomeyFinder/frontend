@@ -49,7 +49,15 @@ export default function PasswordForm({
       } else setError(res.message || "Something went wrong!")
       setIsSubmitting(false)
     },
-    [fetchData, email, password, handleSuccess, updateToken, updateUser]
+    [
+      fetchData,
+      email,
+      password,
+      handleSuccess,
+      updateToken,
+      updateUser,
+      handleUnverifiedEmail,
+    ]
   )
   return (
     <VStack w="100%" pb="10rem" alignItems="start">

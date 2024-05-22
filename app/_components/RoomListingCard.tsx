@@ -50,7 +50,7 @@ export default function RoomListingCard({
   const router = useRouter()
   const { user } = useContext(UserContext)
   const { open: showAuthModal } = useContext(AuthModalContext)
-  
+
   return (
     <Flex
       onClick={() =>
@@ -175,9 +175,9 @@ export function FavouriteButton({
         !isFavorite
           ? handleAddFavorite
           : () =>
-              useConfirmation
-                ? setShowRemoveConfirmation(true)
-                : handleRemoveFavorite()
+            useConfirmation
+              ? setShowRemoveConfirmation(true)
+              : handleRemoveFavorite()
       }
       as="button"
       pos="absolute"

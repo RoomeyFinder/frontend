@@ -1,19 +1,15 @@
 "use client"
-import {
-  ReactNode,
-  createContext,
-  useState,
-} from "react"
+import { ReactNode, createContext, useState } from "react"
 
 export const AuthModalContext = createContext<{
   isOpen: boolean
   close: () => void
   open: () => void
-}>({
-  isOpen: false,
-  close: () => {},
-  open: () => {},
-})
+    }>({
+      isOpen: false,
+      close: () => {},
+      open: () => {},
+    })
 
 export default function AuthModalProvider({
   children,
@@ -27,7 +23,7 @@ export default function AuthModalProvider({
       value={{
         isOpen,
         close: () => setIsOpen(false),
-        open: () => setIsOpen(true)
+        open: () => setIsOpen(true),
       }}
     >
       {children}

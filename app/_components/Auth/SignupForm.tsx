@@ -88,7 +88,7 @@ export default function SignupForm({
       }
       setIsSubmitting(false)
     },
-    [fetchData, email, formData, handleSubmission]
+    [fetchData, formData, handleSubmission]
   )
 
   useEffect(() => {
@@ -176,7 +176,7 @@ export function AutoAgreeToTermsText() {
     <Text fontSize="1rem">
       By selecting <Text as="b">Agree and continue</Text>, I agree to{" "}
       <Link href="#" color="brand.main" fontWeight="600" textDecor="underline">
-        RoomeyFinder's Terms of Service
+        RoomeyFinder&apos;s Terms of Service
       </Link>
       ,{" "}
       <Link href="#" color="brand.main" fontWeight="600" textDecor="underline">

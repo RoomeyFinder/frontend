@@ -41,7 +41,7 @@ export default function useHandleGoogleToken(onSuccess?: () => void) {
         if (response.statusCode === 302) router.push("/signup")
       }
     },
-    [fetchData, updateToken, updateUser, router]
+    [fetchData, updateToken, updateUser, router, onSuccess]
   )
   return handleGoogleToken
 }
