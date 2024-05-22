@@ -22,7 +22,6 @@ import { FavoritesContext } from "../_providers/FavoritesProvider"
 import useAppToast from "../_hooks/useAppToast"
 import { Listing } from "../_types/Listings"
 import { useRouter } from "next/navigation"
-import { UserContext } from "../_providers/UserProvider"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
 import { AuthContext } from "../_providers/AuthContext"
 
