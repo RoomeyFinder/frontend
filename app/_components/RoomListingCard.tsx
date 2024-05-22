@@ -22,6 +22,8 @@ import { FavoritesContext } from "../_providers/FavoritesProvider"
 import useAppToast from "../_hooks/useAppToast"
 import { Listing } from "../_types/Listings"
 import { useRouter } from "next/navigation"
+import { UserContext } from "../_providers/UserProvider"
+import { AuthModalContext } from "../_providers/AuthModalProvider"
 
 export default function RoomListingCard({
   variant,
@@ -46,8 +48,15 @@ export default function RoomListingCard({
   listingId: string
 }) {
   const router = useRouter()
+  const { user } = useContext(UserContext)
+  const { open: showAuthModal } = useContext(AuthModalContext)
+  
   return (
     <Flex
+      onClick={() =>
+        user ? router.push(`/ads/${listingId}`) : showAuthModal()
+      }
+      _hover={{ shadow: "md", background: "white" }}
       w="95dvw"
       padding={variant === "outlined" ? "1rem" : "0"}
       maxW={{ base: "32rem", sm: "28.3rem" }}
@@ -59,7 +68,6 @@ export default function RoomListingCard({
       borderRadius="1.2rem"
       background="transparent"
       cursor="pointer"
-      _hover={{ background: "white" }}
     >
       {showFavoriteButton && (
         <FavouriteButton
@@ -84,12 +92,7 @@ export default function RoomListingCard({
           )}
         />
       </Box>
-      <Box
-        onClick={() => router.push(`/ads/${listingId}`)}
-        _hover={{ shadow: "md" }}
-        p=".5rem"
-        roundedBottom="1.2rem"
-      >
+      <Box p=".5rem" roundedBottom="1.2rem">
         <OwnersInfo ownersName={ownersName} />
         <AboutSection
           rentAmount={rentAmount}
@@ -109,7 +112,7 @@ export function FavouriteButton({
   type,
   listingId,
   buttonProps = {},
-  useConfirmation = true
+  useConfirmation = true,
 }: {
   color?: string
   listingId: string
@@ -151,7 +154,7 @@ export function FavouriteButton({
       method: "delete",
     })
     if (res.statusCode === 200) deleteSingleFavorite(res.favorite)
-    else 
+    else
       toast({ status: "error", title: res.message || "Something went wrong" })
     setLoading(false)
   }, [fetchData, favorite, deleteSingleFavorite, toast])
@@ -172,9 +175,9 @@ export function FavouriteButton({
         !isFavorite
           ? handleAddFavorite
           : () =>
-            useConfirmation
-              ? setShowRemoveConfirmation(true)
-              : handleRemoveFavorite()
+              useConfirmation
+                ? setShowRemoveConfirmation(true)
+                : handleRemoveFavorite()
       }
       as="button"
       pos="absolute"

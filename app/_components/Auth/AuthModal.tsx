@@ -2,6 +2,7 @@
 import {
   BoxProps,
   Button,
+  ButtonProps,
   Collapse,
   Heading,
   Modal,
@@ -140,7 +141,7 @@ function AuthModal({
             {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 ? (
               <AuthModalBackButton onClick={handleBackBtnClick} />
             ) : (
-              <AuthModalCloseButton />
+              <AuthModalCloseButton onClick={onClose} />
             )}
             <ModalHeading
               usersFirstName={usersFirstName}
@@ -270,7 +271,7 @@ function UseAnotherAccountText({ handleClick }: { handleClick: () => void }) {
   )
 }
 
-function AuthModalCloseButton() {
+function AuthModalCloseButton({ onClick }: ButtonProps) {
   return (
     <ModalCloseButton
       _focusVisible={{
@@ -283,6 +284,7 @@ function AuthModalCloseButton() {
       left={{ base: "1.4rem", sm: "2.4rem" }}
       top="50%"
       transform="translateY(-50%)"
+      onClick={onClick}
     />
   )
 }
