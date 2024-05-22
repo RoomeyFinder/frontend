@@ -19,6 +19,7 @@ import { Suspense } from "react"
 import CenteredSpinner from "./_components/CenteredSpinner"
 import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
+import AuthModalProvider from "./_providers/AuthModalProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -38,24 +39,26 @@ export default function RootLayout({
               >
                 <AuthProvider>
                   <UserProvider>
-                    <SearchProvider>
-                      <ListingsProvider>
-                        <FavoritesProvider>
-                          <InterestsProvider>
-                            <MessengerProvider>
-                              <MessagesProvider>
-                                <NotificationProvider>
-                                  <GlobalLayout>
-                                    {children}
-                                    <AuthModal />
-                                  </GlobalLayout>
-                                </NotificationProvider>
-                              </MessagesProvider>
-                            </MessengerProvider>
-                          </InterestsProvider>
-                        </FavoritesProvider>
-                      </ListingsProvider>
-                    </SearchProvider>
+                    <AuthModalProvider>
+                      <SearchProvider>
+                        <ListingsProvider>
+                          <FavoritesProvider>
+                            <InterestsProvider>
+                              <MessengerProvider>
+                                <MessagesProvider>
+                                  <NotificationProvider>
+                                    <GlobalLayout>
+                                      {children}
+                                      <AuthModal />
+                                    </GlobalLayout>
+                                  </NotificationProvider>
+                                </MessagesProvider>
+                              </MessengerProvider>
+                            </InterestsProvider>
+                          </FavoritesProvider>
+                        </ListingsProvider>
+                      </SearchProvider>
+                    </AuthModalProvider>
                   </UserProvider>
                 </AuthProvider>
               </GoogleOAuthProvider>

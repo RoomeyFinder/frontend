@@ -6,7 +6,7 @@ import { AuthContext } from "../_providers/AuthContext"
 import { UserContext } from "../_providers/UserProvider"
 import useAxios from "./useAxios"
 
-export default function useHandleGoogleToken() {
+export default function useHandleGoogleToken(onSuccess?: () => void) {
   const router = useRouter()
   const { fetchData } = useAxios()
   const { updateUser } = useContext(UserContext)
@@ -30,6 +30,7 @@ export default function useHandleGoogleToken() {
         },
       })
       if (response.statusCode === 200 || response.statusCode === 201) {
+        onSuccess && onSuccess()
         updateToken(response.token, false)
         updateUser(response.user, false)
       } else {

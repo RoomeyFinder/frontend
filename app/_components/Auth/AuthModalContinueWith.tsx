@@ -7,9 +7,11 @@ import GoogleSSOButton from "./GoogleSSOButton"
 export default function ContinueWithProvider({
   email,
   ssoProvider,
+  handleSuccess,
 }: {
   email: string
   ssoProvider?: "google" | "facebook"
+  handleSuccess: () => void
 }) {
   return (
     <>
@@ -26,7 +28,7 @@ export default function ContinueWithProvider({
           <SmallEmailIcon />
           {obfuscateEmail(email)}
         </Text>
-        {ssoProvider === "google" ? <GoogleSSOButton /> : <FacebookSSOButton />}
+        {ssoProvider === "google" ? <GoogleSSOButton /> : <FacebookSSOButton onSuccess={handleSuccess} />}
       </VStack>
     </>
   )

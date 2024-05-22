@@ -1,25 +1,23 @@
 import useAxios from "@/app/_hooks/useAxios"
 import { Box, Text, VStack } from "@chakra-ui/react"
-import {
-  FormEvent,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from "react"
+import { FormEvent, useCallback, useContext, useEffect, useState } from "react"
 import User from "@/app/_types/User"
 import { ResendCodeButton } from "@/app/signup/_EmailVerification"
 import PinInputElement from "../PinInputElement"
 import ErrorText from "./ErrorText"
 import toast from "react-hot-toast"
 import { FormSubmitButton } from "./SignupInputs"
+import { AuthContext } from "@/app/_providers/AuthContext"
+import { UserContext } from "@/app/_providers/UserProvider"
 
 export default function ConfirmEmailForm({
   email,
   handleSubmission,
+  handleSuccess,
 }: {
   email: string
   handleSubmission: (res: { user?: User; statusCode: number }) => void
+  handleSuccess: () => void
 }) {
   const [prevCode, setPrevCode] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
@@ -27,6 +25,8 @@ export default function ConfirmEmailForm({
     verificationCode: "",
     api: "",
   })
+  const { updateToken } = useContext(AuthContext)
+  const { updateUser } = useContext(UserContext)
   const [isSubmiting, setIsSubmitting] = useState(false)
   const { fetchData } = useAxios()
   const verifyEmail = useCallback(async () => {
@@ -45,6 +45,9 @@ export default function ConfirmEmailForm({
     })
     console.log(res)
     if (res.statusCode === 200) {
+      updateToken(res.token)
+      updateUser(res.user)
+      handleSuccess
       setVerificationCode("")
       setError({
         api: "",
@@ -63,10 +66,18 @@ export default function ConfirmEmailForm({
     handleSubmission,
     isSubmiting,
     prevCode,
+    handleSuccess,
+    updateToken,
+    updateUser,
   ])
 
   useEffect(() => {
-    verificationCode.length === 6 && verifyEmail()
+    const autoSubmitTimeout = setTimeout(() => {
+      verificationCode.length === 6 && verifyEmail()
+    }, 800)
+    return () => {
+      clearTimeout(autoSubmitTimeout)
+    }
   }, [verificationCode])
 
   const resendVerificationEmail = useCallback(async () => {

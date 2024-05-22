@@ -3,8 +3,12 @@ import useHandleGoogleToken from "@/app/_hooks/useHandleGoogleToken"
 import { useGoogleLogin } from "@react-oauth/google"
 import SSOButton from "./SSOButton"
 
-export default function GoogleSSOButton() {
-  const handleGoogleToken = useHandleGoogleToken()
+export default function GoogleSSOButton({
+  onSuccess,
+}: {
+  onSuccess?: () => void
+  }) {
+  const handleGoogleToken = useHandleGoogleToken(onSuccess)
   const googleSignIn = useGoogleLogin({
     onSuccess: handleGoogleToken,
   })

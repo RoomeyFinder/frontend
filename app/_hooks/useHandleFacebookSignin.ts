@@ -6,7 +6,7 @@ import { UserContext } from "../_providers/UserProvider"
 import useAxios from "./useAxios"
 import { FBUser } from "../_providers/FacebookProvider"
 
-export default function useHandleFacebookLogin() {
+export default function useHandleFacebookLogin(onSuccess?: () => void) {
   const router = useRouter()
   const { fetchData } = useAxios()
   const { updateUser } = useContext(UserContext)
@@ -23,6 +23,7 @@ export default function useHandleFacebookLogin() {
       })
       console.log(response, "ssfac")
       if (response.statusCode === 200 || response.statusCode === 201) {
+        onSuccess && onSuccess()
         updateToken(response.token, false)
         updateUser(response.user, false)
       } else {

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react"
 import { DividerWithCenteredText } from "../PremiumModal"
 import EmailCheckForm, { AccountCheckResponse } from "./EmailCheckForm"
-import { useCallback, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 import useManageStageFlow from "@/app/_hooks/useManageStageFlow"
 import PasswordForm from "./PasswordForm"
 import BackChevron from "@/app/_assets/SVG/BackChevron"
@@ -25,6 +25,9 @@ import FacebookSSOButton from "./FacebookSSOButton"
 import GoogleSSOButton from "./GoogleSSOButton"
 import User from "@/app/_types/User"
 import ConfirmEmailForm from "./ConfirmEmailForm"
+import { obfuscateEmail } from "@/app/_utils"
+import toast from "react-hot-toast"
+import { AuthModalContext } from "@/app/_providers/AuthModalProvider"
 
 const modalContentProps: BoxProps = {
   bgColor: "white",
@@ -42,7 +45,19 @@ const modalHeaderProps: BoxProps = {
   borderBottom: "1px solid #dddddd",
 }
 
-export default function AuthModal() {
+export default function AuthModalContainer() {
+  const { isOpen, close } = useContext(AuthModalContext)
+
+  return isOpen ? <AuthModal isOpen={isOpen} onClose={close} /> : null
+}
+
+function AuthModal({
+  isOpen,
+  onClose,
+}: {
+  onClose: () => void
+  isOpen: boolean
+}) {
   const [accountIsSSOProvided, setAccountIsSSOProvided] = useState(false)
   const [usersFirstName, setUsersFirstName] = useState("")
   const [nonSSOHeading, setNonSSOHeading] = useState("Log in")
@@ -97,9 +112,25 @@ export default function AuthModal() {
     [navigateToStage]
   )
 
+  const handleAuthSuccess = useCallback(() => {
+    toast.success(
+      usersFirstName
+        ? `Welcome back, ${usersFirstName}!`
+        : `You are signed in!`,
+      {
+        style: {
+          textTransform: "capitalize",
+        },
+        duration: 5000,
+      }
+    )
+    //push to /dashboard
+    close()
+  }, [usersFirstName, close])
+
   return (
     <>
-      <Modal isOpen={true} onClose={() => {}} isCentered={false}>
+      <Modal isOpen={isOpen} onClose={close} isCentered={false}>
         <ModalOverlay bgColor="#22222261" />
         <ModalContent
           {...modalContentProps}
@@ -132,13 +163,21 @@ export default function AuthModal() {
                 <Collapse in={hasAccount === true && !ssoProvider}>
                   <PasswordForm
                     email={email}
+                    handleSuccess={handleAuthSuccess}
                     handleForgotPasswordClick={handleGoBackFromEmailCheck}
+                    handleUnverifiedEmail={() => {
+                      toast(
+                        `A verification code has been sent to ${obfuscateEmail(email)}`
+                      )
+                      navigateToStage(2)
+                    }}
                   />
                 </Collapse>
                 <Collapse in={hasAccount === true && ssoProvider !== undefined}>
                   <ContinueWithProvider
                     ssoProvider={ssoProvider}
                     email={email}
+                    handleSuccess={handleAuthSuccess}
                   />
                   <UseAnotherAccountText
                     handleClick={handleGoBackFromEmailCheck}
@@ -154,14 +193,18 @@ export default function AuthModal() {
                 </Collapse>
               </Collapse>
               <Collapse in={currentStage === 2}>
-                <ConfirmEmailForm handleSubmission={() => {}} email={email} />
+                <ConfirmEmailForm
+                  handleSuccess={handleAuthSuccess}
+                  handleSubmission={() => {}}
+                  email={email}
+                />
               </Collapse>
               <Collapse in={currentStage === 0}>
                 <VStack alignItems="start" gap="1.6rem" w="100%">
                   <DividerWithCenteredText text="or" />
                   <VStack gap="1.6rem" w="full">
-                    <FacebookSSOButton />
-                    <GoogleSSOButton />
+                    <FacebookSSOButton onSuccess={handleAuthSuccess} />
+                    <GoogleSSOButton onSuccess={handleAuthSuccess} />
                   </VStack>
                 </VStack>
               </Collapse>
@@ -195,7 +238,9 @@ function ModalHeading({
         </>
       )}
       {!accountIsSSOProvided && currentStage === 0 && <>Log in or sign up</>}
-      {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 && <>{nonSSOHeading}</>}
+      {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 && (
+        <>{nonSSOHeading}</>
+      )}
       {currentStage > 1 && <>Verify Email</>}
     </Heading>
   )
