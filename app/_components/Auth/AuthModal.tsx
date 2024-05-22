@@ -126,13 +126,13 @@ function AuthModal({
       }
     )
     //push to /dashboard
-    close()
-  }, [usersFirstName, close])
+    onClose()
+  }, [usersFirstName, onClose])
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={close} isCentered={false}>
-        <ModalOverlay bgColor="#22222261" />
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={false}>
+        <ModalOverlay bgColor="#22222261" onClick={onClose} />
         <ModalContent
           {...modalContentProps}
           maxW={currentStage > 1 ? "59rem" : "48.5rem"}
