@@ -24,6 +24,7 @@ import { Listing } from "../_types/Listings"
 import { useRouter } from "next/navigation"
 import { UserContext } from "../_providers/UserProvider"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
+import { AuthContext } from "../_providers/AuthContext"
 
 export default function RoomListingCard({
   variant,
@@ -48,13 +49,13 @@ export default function RoomListingCard({
   listingId: string
 }) {
   const router = useRouter()
-  const { user } = useContext(UserContext)
+  const { token } = useContext(AuthContext)
   const { open: showAuthModal } = useContext(AuthModalContext)
 
   return (
     <Flex
       onClick={() =>
-        user ? router.push(`/ads/${listingId}`) : showAuthModal()
+        token ? router.push(`/ads/${listingId}`) : showAuthModal()
       }
       _hover={{ shadow: "md", background: "white" }}
       w="95dvw"
@@ -175,9 +176,9 @@ export function FavouriteButton({
         !isFavorite
           ? handleAddFavorite
           : () =>
-            useConfirmation
-              ? setShowRemoveConfirmation(true)
-              : handleRemoveFavorite()
+              useConfirmation
+                ? setShowRemoveConfirmation(true)
+                : handleRemoveFavorite()
       }
       as="button"
       pos="absolute"

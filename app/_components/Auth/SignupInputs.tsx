@@ -189,6 +189,9 @@ export function FormSubmitButton(props: ButtonProps) {
       fontWeight="600"
       type="submit"
       loadingText="Please wait"
+      _loading={{
+        bg: "brand.50"
+      }}
       {...props}
     >
       {props.children || <>Agree and continue</>}
