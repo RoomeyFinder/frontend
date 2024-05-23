@@ -111,7 +111,6 @@ function AuthModal({
     setAccountIsSSOProvided(false)
     setUsersFirstName("")
     navigateToStage(3)
-    console.log("djkad;jkfaa", "currentStage")
   }, [navigateToStage])
 
   const handleSignupResponse = useCallback(

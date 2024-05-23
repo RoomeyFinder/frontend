@@ -43,7 +43,6 @@ export default function ConfirmEmailForm({
       body: { email: email },
       method: "post",
     })
-    console.log(res)
     if (res.statusCode === 200) {
       updateToken(res.token)
       updateUser(res.user)

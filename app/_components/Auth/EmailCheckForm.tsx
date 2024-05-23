@@ -26,7 +26,6 @@ export default function EmailCheckForm({
   const handleEmailCheck: FormEventHandler = useCallback(
     async (e) => {
       e.preventDefault()
-      console.log(email)
       if (email.length === 0) return setError("Please provide an email!")
       if (!validateEmail(email)) return setError("Email address is invalid!")
       setIsSubmitting(true)

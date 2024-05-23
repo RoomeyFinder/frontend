@@ -39,7 +39,6 @@ export default function PasswordForm({
           password,
         },
       })
-      console.log(res, console)
       if (res.statusCode === 200) {
         updateUser(res.user)
         updateToken(res.token)
