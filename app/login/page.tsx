@@ -81,7 +81,7 @@ export default function Login() {
         heading="Sign In"
         mode="signin"
         submitButtonText="continue"
-        showAuthProviderMethods
+        showAuthProviderMethods={false}
       >
         <LoginForm
           error={error}

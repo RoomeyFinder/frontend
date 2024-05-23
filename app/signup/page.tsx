@@ -2,7 +2,7 @@
 import AuthFormLayout from "../_components/Auth/AuthFormLayout"
 import Stage from "./Stage"
 import ProfileInitialsForm from "./_ProfileInitials"
-import { FormEvent, useContext, useEffect } from "react"
+import { useContext, useEffect } from "react"
 import SignupProvider from "./_ContextProvider"
 import ContactForm from "./_Contact"
 import EmailVerficationForm from "./_EmailVerification"
@@ -65,15 +65,7 @@ function SignupConsumer() {
             handleBackButtonClick={() => totalStages.goToPrevStage()}
           >
             <>
-              <Box
-                as="form"
-                onSubmit={(e: FormEvent) => {
-                  e.preventDefault()
-                }}
-                display="flex"
-                flexDir="column"
-                gap="3rem"
-              >
+              <Box display="flex" flexDir="column" gap="3rem">
                 <SignupProgress
                   progressOnePercentage={totalStages.currentStage > 0 ? 100 : 0}
                   progressTwoPercentage={totalStages.currentStage > 1 ? 100 : 0}

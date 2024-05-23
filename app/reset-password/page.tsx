@@ -3,8 +3,6 @@ import AuthFormLayout from "../_components/Auth/AuthFormLayout"
 import { useCallback, useContext, useState } from "react"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { useRouter, useSearchParams } from "next/navigation"
-import { UserContext } from "../_providers/UserProvider"
-import { AuthContext } from "../_providers/AuthContext"
 import ResetPasswordForm from "./_Form"
 import toast from "react-hot-toast"
 import { isStrongPassword } from "../_utils"
@@ -32,9 +30,6 @@ export default function Login() {
     password: "",
   })
   const { fetchData } = useAxios()
-
-  const { updateUser } = useContext(UserContext)
-  const { updateToken } = useContext(AuthContext)
 
   const handleSubmit = useCallback(async () => {
     if (!passwordResetData.password)
@@ -73,7 +68,7 @@ export default function Login() {
     } else
       toast.error(res.message || "Something went wrong", { duration: 5000 })
     setLoading(false)
-  }, [fetchData, passwordResetData, updateToken, updateUser, searchParams])
+  }, [fetchData, passwordResetData, searchParams])
 
   if (passwordResetSuccess)
     return (
