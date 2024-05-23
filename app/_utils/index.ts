@@ -70,3 +70,11 @@ export function isUnderage(dob: string) {
 export function formatNumberToTwoDigits(num: number) {
   return num.toString().padStart(2, "0")
 }
+export function isStrongPassword(password: string): boolean {
+  if (password.length < 8) return false
+  const hasUpperCase = /[A-Z]/.test(password)
+  const hasLowerCase = /[a-z]/.test(password)
+  const hasNumber = /\d/.test(password)
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar
+}

@@ -19,7 +19,6 @@ export default function LoginForm({
       pb={{ base: "3.5rem", md: "5rem" }}
     >
       <Flex
-        as="form"
         gap="3rem"
         flexWrap={{ base: "wrap", sm: "nowrap" }}
         mb="1.5rem"
