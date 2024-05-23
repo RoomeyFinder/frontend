@@ -40,3 +40,41 @@ export const validateEmail = (email: string) => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )
 }
+
+export function obfuscateEmail(email?: string) {
+  if (!email) return
+  const [localPart, domainPart] = email.split("@")
+  const obfuscatedLocalPart = localPart.slice(0, 2) + "•••••"
+  const [domainName, topLevelDomain] = domainPart.split(".")
+  const obfuscatedDomainName = domainName.charAt(0) + "•••••"
+  const obfuscatedEmail = `${obfuscatedLocalPart}@${obfuscatedDomainName}.${topLevelDomain}`
+
+  return obfuscatedEmail
+}
+
+export function isUnderage(dob: string) {
+  const birthDate = new Date(dob)
+  if (isNaN(birthDate.getTime())) {
+    throw new Error("Invalid date format")
+  }
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDifference = today.getMonth() - birthDate.getMonth()
+  const dayDifference = today.getDate() - birthDate.getDate()
+  if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+    age--
+  }
+  return age < 16
+}
+
+export function formatNumberToTwoDigits(num: number) {
+  return num.toString().padStart(2, "0")
+}
+export function isStrongPassword(password: string): boolean {
+  if (password.length < 8) return false
+  const hasUpperCase = /[A-Z]/.test(password)
+  const hasLowerCase = /[a-z]/.test(password)
+  const hasNumber = /\d/.test(password)
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar
+}

@@ -339,7 +339,7 @@ function TermsOfService() {
 export function DividerWithCenteredText({ text }: { text: ReactNode }) {
   return (
     <Box pos="relative" py=".8rem" w="full">
-      <Text h="1px" w="full" bg="gray.100">
+      <Text h="1px" w="full" bg="#dddddd">
         <Text
           as="span"
           textAlign="center"

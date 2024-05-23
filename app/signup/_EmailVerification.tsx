@@ -3,6 +3,7 @@ import Countdown, { CountdownRendererFn } from "react-countdown"
 import { useCallback, useEffect, useRef, useState } from "react"
 import PinInputElement from "../_components/PinInputElement"
 import ErrorText from "../_components/Auth/ErrorText"
+import { formatNumberToTwoDigits } from "../_utils"
 
 export default function EmailVerficationForm({
   formData,
@@ -41,13 +42,16 @@ export default function EmailVerficationForm({
         }
         value={formData.verificationToken as string}
       />
-      {error.verificationToken && <ErrorText>{error.verificationToken}</ErrorText>}
+      {error.verificationToken && (
+        <ErrorText>{error.verificationToken}</ErrorText>
+      )}
+      <br />
       <ResendCodeButton onClick={handleResendClick} />
     </Box>
   )
 }
 
-function ResendCodeButton({ onClick }: { onClick: () => void }) {
+export function ResendCodeButton({ onClick }: { onClick: () => void }) {
   const countRef = useRef<Countdown | null>(null)
   const [time, setTime] = useState(Date.now() + 180000)
   const renderer: CountdownRendererFn = ({ completed, minutes, seconds }) => {
@@ -55,14 +59,16 @@ function ResendCodeButton({ onClick }: { onClick: () => void }) {
       <Text
         as="button"
         type="button"
+        cursor="pointer"
         disabled={!completed}
+        _disabled={{
+          cursor: "not-allowed"
+        }}
         onClick={() => {
           setTime(Date.now() + 180000)
           onClick()
         }}
-        mt="3rem"
         color="black"
-        _disabled={{ cursor: "text" }}
         fontSize={{ base: "1.4rem", md: "1.6rem" }}
       >
         {completed ? (
@@ -70,7 +76,7 @@ function ResendCodeButton({ onClick }: { onClick: () => void }) {
         ) : (
           <>
             <Text color="gray.100" as="span">
-              Resend Code ( {minutes}:{seconds} )
+              Resend Code ( {formatNumberToTwoDigits(minutes)}:{formatNumberToTwoDigits(seconds)} )
             </Text>
           </>
         )}

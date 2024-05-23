@@ -1,6 +1,14 @@
 "use client"
-import { Heading, Box, Text, Link, Button, Flex } from "@chakra-ui/react"
-import { ReactNode, useContext, useEffect, useMemo } from "react"
+import {
+  Heading,
+  Box,
+  Text,
+  Link,
+  Button,
+  Flex,
+  ButtonProps,
+} from "@chakra-ui/react"
+import { FormEvent, KeyboardEvent, ReactNode, useContext, useEffect, useMemo } from "react"
 // import AuthProviderMethods from "./AuthProviderMethods"
 import { useSearchParams } from "next/navigation"
 import { AuthContext } from "@/app/_providers/AuthContext"
@@ -32,10 +40,11 @@ export default function AuthFormLayout({
   showBackButton = false,
   handleBackButtonClick,
   showAuthProviderMethods,
+  submitButtonProps = {},
 }: {
   children: ReactNode | ReactNode[]
   submitButtonText: string
-  mode: "signin" | "signup"
+  mode?: "signin" | "signup"
   heading: string
   handleSubmit: () => void
   submitButtonType?: "button" | "submit" | "reset"
@@ -44,6 +53,7 @@ export default function AuthFormLayout({
   showBackButton?: boolean
   handleBackButtonClick?: () => void
   showAuthProviderMethods?: boolean
+  submitButtonProps?: ButtonProps
 }) {
   const { isAuthorized, loading: loadingAuthState } = useContext(AuthContext)
 
@@ -61,30 +71,37 @@ export default function AuthFormLayout({
         w="85dvw"
         maxW="85.9rem"
         mx="auto"
-        onKeyDown={(e) => {
+        as="form"
+        onSubmit={(e: FormEvent) => {
+          e.preventDefault()
+          handleSubmit()
+        }}
+        onKeyDown={(e: KeyboardEvent) => {
           if (e.key === "Enter") handleSubmit()
         }}
       >
         <Heading as="h1" w="max-content" mb="1rem" size="base" variant="700">
           {heading}
         </Heading>
-        <Flex as="p" gap="1rem" alignItems="center">
-          <Text as="span" fontSize="1.6rem" lineHeight="150%">
-            {modeTexts[mode].prompt}{" "}
-          </Text>
-          <Text
-            as={Link}
-            href={modeTexts[mode].link}
-            fontSize="1.4rem"
-            color="gray.100"
-            textTransform="uppercase"
-            fontWeight="700"
-            transition="all 250ms ease"
-            _hover={{ color: "gray.300" }}
-          >
-            {modeTexts[mode].linkText}
-          </Text>
-        </Flex>
+        {mode && (
+          <Flex as="p" gap="1rem" alignItems="center">
+            <Text as="span" fontSize="1.6rem" lineHeight="150%">
+              {modeTexts[mode].prompt}{" "}
+            </Text>
+            <Text
+              as={Link}
+              href={modeTexts[mode].link}
+              fontSize="1.4rem"
+              color="gray.100"
+              textTransform="uppercase"
+              fontWeight="700"
+              transition="all 250ms ease"
+              _hover={{ color: "gray.300" }}
+            >
+              {modeTexts[mode].linkText}
+            </Text>
+          </Flex>
+        )}
         <Box>{children}</Box>
         <Flex
           justifyContent="space-between"
@@ -147,6 +164,7 @@ export default function AuthFormLayout({
             maxW={{ md: "19.8rem" }}
             lineHeight="150%"
             padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}
+            {...submitButtonProps}
           >
             {submitButtonText}
           </Button>
