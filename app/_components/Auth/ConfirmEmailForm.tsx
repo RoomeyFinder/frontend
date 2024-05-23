@@ -1,6 +1,6 @@
 import useAxios from "@/app/_hooks/useAxios"
 import { Box, Text, VStack } from "@chakra-ui/react"
-import { FormEvent, useCallback, useContext, useEffect, useState } from "react"
+import { FormEvent, useCallback, useContext, useState } from "react"
 import User from "@/app/_types/User"
 import { ResendCodeButton } from "@/app/signup/_EmailVerification"
 import PinInputElement from "../PinInputElement"
@@ -47,7 +47,7 @@ export default function ConfirmEmailForm({
     if (res.statusCode === 200) {
       updateToken(res.token)
       updateUser(res.user)
-      handleSuccess
+      handleSuccess()
       setVerificationCode("")
       setError({
         api: "",
@@ -69,15 +69,6 @@ export default function ConfirmEmailForm({
     updateToken,
     updateUser,
   ])
-
-  useEffect(() => {
-    const autoSubmitTimeout = setTimeout(() => {
-      verificationCode.length === 6 && verifyEmail()
-    }, 800)
-    return () => {
-      clearTimeout(autoSubmitTimeout)
-    }
-  }, [verificationCode, verifyEmail])
 
   const resendVerificationEmail = useCallback(async () => {
     const res = await fetchData({

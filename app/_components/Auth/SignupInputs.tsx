@@ -190,7 +190,10 @@ export function FormSubmitButton(props: ButtonProps) {
       type="submit"
       loadingText="Please wait"
       _loading={{
-        bg: "brand.50"
+        bg: "brand.50",
+        _hover: {
+          bg: "brand.50",
+        },
       }}
       {...props}
     >

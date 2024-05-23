@@ -1,9 +1,10 @@
 import useAxios from "@/app/_hooks/useAxios"
-import { Box, Button, Input } from "@chakra-ui/react"
+import { Box, Input } from "@chakra-ui/react"
 import { FormEventHandler, useCallback, useState } from "react"
 import ErrorText from "./ErrorText"
 import { getErrorPropsV1 } from "@/app/signup/utils"
 import { validateEmail } from "@/app/_utils"
+import { FormSubmitButton } from "./SignupInputs"
 
 export type AccountCheckResponse = {
   statusCode: number
@@ -69,7 +70,7 @@ export default function EmailCheckForm({
           />
           {error && <ErrorText>{error}</ErrorText>}
         </Box>
-        <Button
+        <FormSubmitButton
           variant="brand"
           cursor="pointer"
           py="1.3rem"
@@ -80,7 +81,7 @@ export default function EmailCheckForm({
           loadingText="Please wait"
         >
           Continue
-        </Button>
+        </FormSubmitButton>
       </Box>
     </>
   )

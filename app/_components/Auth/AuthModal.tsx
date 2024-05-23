@@ -29,6 +29,7 @@ import ConfirmEmailForm from "./ConfirmEmailForm"
 import { obfuscateEmail } from "@/app/_utils"
 import toast from "react-hot-toast"
 import { AuthModalContext } from "@/app/_providers/AuthModalProvider"
+import ForgotPasswordForm from "./ForgotPasswordForm"
 
 const modalContentProps: BoxProps = {
   bgColor: "white",
@@ -63,7 +64,7 @@ function AuthModal({
   const [usersFirstName, setUsersFirstName] = useState("")
   const [nonSSOHeading, setNonSSOHeading] = useState("Log in")
   const { currentStage, goToNextStage, navigateToStage } = useManageStageFlow({
-    maxStage: 2,
+    maxStage: 3,
     minStage: 0,
     start: 0,
   })
@@ -98,9 +99,19 @@ function AuthModal({
   }, [navigateToStage])
 
   const handleBackBtnClick = useCallback(() => {
+    if (currentStage === 1) {
+      setAccountIsSSOProvided(false)
+      setUsersFirstName("")
+    }
+    const stageToGoBackTo = currentStage === 3 ? 1 : currentStage - 1
+    navigateToStage(stageToGoBackTo)
+  }, [navigateToStage, currentStage])
+
+  const handleForgotPasswordClick = useCallback(() => {
     setAccountIsSSOProvided(false)
     setUsersFirstName("")
-    navigateToStage(0)
+    navigateToStage(3)
+    console.log("djkad;jkfaa", "currentStage")
   }, [navigateToStage])
 
   const handleSignupResponse = useCallback(
@@ -131,24 +142,26 @@ function AuthModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={false}>
-        <ModalOverlay bgColor="#22222261" onClick={onClose} />
+      <Modal isOpen={isOpen} onClose={() => {}} isCentered={false}>
+        <ModalOverlay bgColor="#22222261" />
         <ModalContent
           {...modalContentProps}
           maxW={currentStage > 1 ? "59rem" : "48.5rem"}
         >
           <ModalHeader {...modalHeaderProps}>
-            {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 ? (
+            {!accountIsSSOProvided && currentStage > 0 && currentStage !== 2 ? (
               <AuthModalBackButton onClick={handleBackBtnClick} />
             ) : (
               <AuthModalCloseButton onClick={onClose} />
             )}
-            <ModalHeading
-              usersFirstName={usersFirstName}
-              accountIsSSOProvided={accountIsSSOProvided}
-              currentStage={currentStage}
-              nonSSOHeading={nonSSOHeading}
-            />
+            {
+              <ModalHeading
+                usersFirstName={usersFirstName}
+                accountIsSSOProvided={accountIsSSOProvided}
+                currentStage={currentStage}
+                nonSSOHeading={nonSSOHeading}
+              />
+            }
           </ModalHeader>
           <ModalBody p="2.4rem" display="flex" flexDir="column" gap="2.4rem">
             {!accountIsSSOProvided && currentStage === 0 && (
@@ -160,12 +173,12 @@ function AuthModal({
               <Collapse in={currentStage === 0}>
                 <EmailCheckForm handleStatus={handleEmailCheckStatus} />
               </Collapse>
-              <Collapse in={currentStage === 1}>
+              <Collapse in={currentStage === 1} unmountOnExit>
                 <Collapse in={hasAccount === true && !ssoProvider}>
                   <PasswordForm
                     email={email}
                     handleSuccess={handleAuthSuccess}
-                    handleForgotPasswordClick={handleGoBackFromEmailCheck}
+                    handleForgotPasswordClick={handleForgotPasswordClick}
                     handleUnverifiedEmail={() => {
                       toast(
                         `A verification code has been sent to ${obfuscateEmail(email)}`
@@ -199,6 +212,9 @@ function AuthModal({
                   handleSubmission={() => {}}
                   email={email}
                 />
+              </Collapse>
+              <Collapse in={currentStage === 3}>
+                <ForgotPasswordForm handleSuccess={onClose} email={email} />
               </Collapse>
               <Collapse in={currentStage === 0}>
                 <VStack alignItems="start" gap="1.6rem" w="100%">
@@ -242,7 +258,8 @@ function ModalHeading({
       {!accountIsSSOProvided && currentStage > 0 && currentStage < 2 && (
         <>{nonSSOHeading}</>
       )}
-      {currentStage > 1 && <>Verify Email</>}
+      {currentStage === 2 && <>Verify Email</>}
+      {currentStage === 3 && <>Forgot password?</>}
     </Heading>
   )
 }

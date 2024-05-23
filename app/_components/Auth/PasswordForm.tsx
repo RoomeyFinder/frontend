@@ -1,11 +1,12 @@
 import useAxios from "@/app/_hooks/useAxios"
-import { Box, Button, Text, VStack } from "@chakra-ui/react"
+import { Box, Text, VStack } from "@chakra-ui/react"
 import { FormEventHandler, useCallback, useContext, useState } from "react"
 import ErrorText from "./ErrorText"
 import { getErrorPropsV1 } from "@/app/signup/utils"
 import AuthPasswordInput from "./AuthPasswordInput"
 import { AuthContext } from "@/app/_providers/AuthContext"
 import { UserContext } from "@/app/_providers/UserProvider"
+import { FormSubmitButton } from "./SignupInputs"
 
 export default function PasswordForm({
   email,
@@ -83,7 +84,7 @@ export default function PasswordForm({
           />
           {error && <ErrorText>{error}</ErrorText>}
         </Box>
-        <Button
+        <FormSubmitButton
           variant="brand"
           cursor="pointer"
           py="1.3rem"
@@ -94,7 +95,7 @@ export default function PasswordForm({
           loadingText="Please wait"
         >
           Login
-        </Button>
+        </FormSubmitButton>
       </Box>
       <Text
         onClick={handleForgotPasswordClick}
