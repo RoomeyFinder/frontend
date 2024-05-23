@@ -142,7 +142,7 @@ function AuthModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => {}} isCentered={false}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={false}>
         <ModalOverlay bgColor="#22222261" />
         <ModalContent
           {...modalContentProps}
