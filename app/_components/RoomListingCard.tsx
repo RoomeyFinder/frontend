@@ -175,9 +175,9 @@ export function FavouriteButton({
         !isFavorite
           ? handleAddFavorite
           : () =>
-              useConfirmation
-                ? setShowRemoveConfirmation(true)
-                : handleRemoveFavorite()
+            useConfirmation
+              ? setShowRemoveConfirmation(true)
+              : handleRemoveFavorite()
       }
       as="button"
       pos="absolute"
