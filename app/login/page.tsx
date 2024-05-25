@@ -7,6 +7,8 @@ import { useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { UserContext } from "../_providers/UserProvider"
 import { AuthContext } from "../_providers/AuthContext"
+import { useAppDispatch } from "../_redux"
+import { authenticate, updateUser } from "../_redux/slices/auth.slice"
 
 export default function Login() {
   const router = useRouter()
@@ -35,10 +37,7 @@ export default function Login() {
     },
     []
   )
-
-  const { updateUser } = useContext(UserContext)
-  const { updateToken } = useContext(AuthContext)
-
+  const dispatch = useAppDispatch()
   const handleSubmit = useCallback(async () => {
     const invalids = ["email", "password"].filter(
       (it) => Boolean(loginData[it as keyof typeof loginData]) === false
@@ -57,13 +56,19 @@ export default function Login() {
       sessionStorage.setItem("unverifiedEmail", loginData.email)
       router.push("/signup")
     } else if (res.statusCode === 200) {
-      if (loginData.keepSignedIn) {
-        updateToken(res.token, false)
-        updateUser(res.user, false)
-      } else {
-        updateToken(res.token, true)
-        updateUser(res.user, true)
-      }
+      dispatch(
+        authenticate({
+          user: res.user,
+          token: res.token,
+        })
+      )
+      // if (loginData.keepSignedIn) {
+      //   updateToken(res.token, false)
+      //   updateUser(res.user, false)
+      // } else {
+      //   updateToken(res.token, true)
+      //   updateUser(res.user, true)
+      // }
       toast({ status: "success", description: "You are signed in" })
     } else
       toast({
@@ -71,7 +76,7 @@ export default function Login() {
         description: res.message || "Something went wrong",
       })
     setLoading(false)
-  }, [fetchData, loginData, toast, updateToken, updateUser, router])
+  }, [fetchData, loginData, toast, dispatch, updateUser, router])
 
   return (
     <>

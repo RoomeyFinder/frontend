@@ -5,6 +5,7 @@ import { useCallback, useContext, useEffect, useRef } from "react"
 import { UserContext } from "@/app/_providers/UserProvider"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import DownChevron from "@/app/_assets/SVG/DownChevron"
+import { useAppSelector } from "@/app/_redux"
 
 export default function Conversation({
   messages,
@@ -13,7 +14,7 @@ export default function Conversation({
   messages: MessageInterface[]
   canScrollToLatestMessage: boolean
 }) {
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
   const { socket } = useContext(MessengerContext)
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 

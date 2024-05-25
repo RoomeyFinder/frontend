@@ -16,12 +16,13 @@ import { useCallback, useContext, useMemo, useState } from "react"
 import Banner from "./Banner"
 import { MessagesContext } from "@/app/_providers/MessagesProvider"
 import NoConversation from "./NoConversations"
+import { useAppSelector } from "@/app/_redux"
 
 export default function Conversations() {
   const { messages } = useContext(MessagesContext)
   const { updateActiveConversation, conversations, activeConversation } =
     useContext(MessengerContext)
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
   const getOtherUser = useCallback(
     (conversation: Conversation) => {
       if (conversation?.creator?._id === user?._id)

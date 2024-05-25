@@ -15,6 +15,7 @@ import ListingForm from "../_components/ListingForm"
 import BackButton from "@/app/_components/BackButton"
 import { SearchContext } from "@/app/_providers/SearchProvider"
 import toast from "react-hot-toast"
+import { useAppSelector } from "@/app/_redux"
 
 export default function ListingPage() {
   const router = useRouter()
@@ -35,7 +36,7 @@ export default function ListingPage() {
       ),
     [rooms, listingId, isEditing, listings]
   )
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
   const isOwnListing = useMemo(
     () => user?._id === listing?.owner?._id,
     [user?._id, listing?.owner?._id]

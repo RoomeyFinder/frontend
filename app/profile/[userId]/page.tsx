@@ -9,6 +9,7 @@ import { FavoritesContext } from "@/app/_providers/FavoritesProvider"
 import User from "@/app/_types/User"
 import Empty from "@/app/_components/Empty"
 import NotFound from "@/app/_assets/SVG/NotFound"
+import { useAppSelector } from "@/app/_redux"
 
 export default function Profile() {
   return (
@@ -26,7 +27,7 @@ export default function Profile() {
 
 function Renderer() {
   const { roomies, loadingRoomies } = useContext(SearchContext)
-  const { user: loggedInUser } = useContext(UserContext)
+  const { user: loggedInUser } = useAppSelector(store => store.auth)
   const { favorites } = useContext(FavoritesContext)
   const params = useParams()
   const user = useMemo(() => {

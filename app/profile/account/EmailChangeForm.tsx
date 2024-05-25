@@ -4,6 +4,8 @@ import PinInputElement from "@/app/_components/PinInputElement"
 import useAxios, { RequestBody } from "@/app/_hooks/useAxios"
 import useManageStageFlow from "@/app/_hooks/useManageStageFlow"
 import { UserContext } from "@/app/_providers/UserProvider"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { updateUser } from "@/app/_redux/slices/auth.slice"
 import Stage from "@/app/signup/Stage"
 import {
   Flex,
@@ -26,13 +28,13 @@ import toast from "react-hot-toast"
 
 export default function EmailChangeForm() {
   const { fetchData } = useAxios()
-  const { currentStage, navigateToStage, goToNextStage } =
-    useManageStageFlow({
-      maxStage: 3,
-      minStage: 1,
-      start: 1,
-    })
-  const { user, updateUser } = useContext(UserContext)
+  const { currentStage, navigateToStage, goToNextStage } = useManageStageFlow({
+    maxStage: 3,
+    minStage: 1,
+    start: 1,
+  })
+  const { user } = useAppSelector((store) => store.auth)
+  const dispatch = useAppDispatch()
   const [error, setError] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [newEmail, setNewEmail] = useState("")
@@ -76,10 +78,10 @@ export default function EmailChangeForm() {
       navigateToStage(1)
       setEmailConfirmationCode("")
       setError(false)
-      updateUser(res.user)
+      dispatch(updateUser(res.user))
     }
     setLoading(false)
-  }, [newEmail, sendRequest, emailVerificationCode, navigateToStage, updateUser])
+  }, [newEmail, sendRequest, emailVerificationCode, navigateToStage])
 
   const handleSubmitNewEmail = useCallback(async () => {
     if (newEmail.length === 0) return

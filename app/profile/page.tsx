@@ -5,6 +5,9 @@ import { Box, Flex, Spinner } from "@chakra-ui/react"
 import { Suspense, useContext } from "react"
 import { UserContext } from "../_providers/UserProvider"
 import ProfileView from "./_components/ProfileView"
+import { useAppDispatch, useAppSelector } from "../_redux"
+import { updateUser } from "../_redux/slices/auth.slice"
+import User from "../_types/User"
 
 export default function Profile() {
   return (
@@ -21,7 +24,8 @@ export default function Profile() {
 }
 
 function Renderer() {
-  const { loading, user, updateUser } = useContext(UserContext)
+  const { loading, user } = useAppSelector((store) => store.auth)
+  const dispatch = useAppDispatch()
   const searchParams = useSearchParams()
   if (loading) {
     return (
@@ -33,7 +37,10 @@ function Renderer() {
   if (searchParams.get("edit") === "true" && user !== null) {
     return (
       <Box>
-        <ProfileEditForm updateUser={updateUser} userData={user} />
+        <ProfileEditForm
+          updateUser={(data: User) => dispatch(updateUser(data))}
+          userData={user}
+        />
       </Box>
     )
   }

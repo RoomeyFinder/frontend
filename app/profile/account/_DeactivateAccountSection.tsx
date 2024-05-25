@@ -2,6 +2,8 @@
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import useAxios from "@/app/_hooks/useAxios"
 import { UserContext } from "@/app/_providers/UserProvider"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { logout } from "@/app/_redux/slices/auth.slice"
 import {
   Box,
   Button,
@@ -17,7 +19,8 @@ import { useCallback, useContext, useState } from "react"
 export default function DeactivateAccountSection() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
-  const { user, logout } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
+  const dispatch = useAppDispatch()
 
   const { fetchData } = useAxios()
   const deactivateAccount = useCallback(async () => {
@@ -27,10 +30,10 @@ export default function DeactivateAccountSection() {
       method: "delete",
     })
     if (res.statusCode === 200) {
-      logout()
+      dispatch(logout())
     }
     setIsDeleting(false)
-  }, [fetchData, user?._id, logout])
+  }, [fetchData, user?._id])
 
   return (
     <Box>
@@ -39,7 +42,7 @@ export default function DeactivateAccountSection() {
       </Heading>
       <Flex alignItems="center" gap="2rem">
         <Button
-          onClick={() => logout()}
+          onClick={() => dispatch(logout())}
           fontSize="1.6rem"
           fontWeight="600"
           lineHeight="2.4rem"

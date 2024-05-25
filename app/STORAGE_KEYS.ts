@@ -1,0 +1,8 @@
+const STORAGE_KEYS = {
+  RF_USER_STORE: "RF_USER_STORE",
+  RF_TOKEN: "RF_TOKEN",
+  RF_USER_EMAIL: "RF_USER_EMAIL",
+  RF_USER: "RF_USER",
+}
+
+export default STORAGE_KEYS

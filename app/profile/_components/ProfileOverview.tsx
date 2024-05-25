@@ -25,6 +25,8 @@ import { PersonIconTwo } from "@/app/_assets/SVG/PersonIcon"
 import InterestLimitModal from "@/app/_components/PremiumModal"
 import { timeAgo } from "@/app/_utils/date"
 import ActiveBall from "@/app/_assets/SVG/ActiveBall"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { updateUser } from "@/app/_redux/slices/auth.slice"
 
 const genderMapping = {
   Female: "F",
@@ -204,7 +206,8 @@ export function InterestButton({
 }) {
   const router = useRouter()
   const { fetchData } = useAxios()
-  const { user, updateUser } = useContext(UserContext)
+  const { user } = useAppSelector((store) => store.auth)
+  const dispatch = useAppDispatch()
   const { addNewInterest, interests } = useContext(InterestsContext)
   const [sendingInterest, setSendingInterest] = useState(false)
   const [showPremiumModal, setShowPremiumModal] = useState(false)
@@ -239,17 +242,19 @@ export function InterestButton({
     else if (res.statusCode === 201) {
       addNewInterest(res.interest)
       user &&
-        updateUser({
-          ...user,
-          countOfInterestsLeft: user.countOfInterestsLeft - 1,
-        })
+        dispatch(
+          updateUser({
+            ...user,
+            countOfInterestsLeft: user.countOfInterestsLeft - 1,
+          })
+        )
     } else
       toast.error(
         res.message ||
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
     setSendingInterest(false)
-  }, [fetchData, doc, docType, addNewInterest, docOwner, user, updateUser])
+  }, [fetchData, doc, docType, addNewInterest, docOwner, user])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"

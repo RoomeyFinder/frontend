@@ -20,6 +20,8 @@ import CenteredSpinner from "./_components/CenteredSpinner"
 import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
+import ReduxProvider from "./_providers/ReduxProvider"
+import LayoutDispatchProvider from "./_providers/LayoutDispatchProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -37,8 +39,10 @@ export default function RootLayout({
               <GoogleOAuthProvider
                 clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
               >
-                <AuthProvider>
-                  <UserProvider>
+                {/* <AuthProvider>
+                  <UserProvider> */}
+                <ReduxProvider>
+                  <LayoutDispatchProvider>
                     <AuthModalProvider>
                       <SearchProvider>
                         <ListingsProvider>
@@ -59,8 +63,10 @@ export default function RootLayout({
                         </ListingsProvider>
                       </SearchProvider>
                     </AuthModalProvider>
-                  </UserProvider>
-                </AuthProvider>
+                  </LayoutDispatchProvider>
+                </ReduxProvider>
+                {/* </UserProvider> */}
+                {/* </AuthProvider> */}
               </GoogleOAuthProvider>
             </LocalForageProvider>
             <script

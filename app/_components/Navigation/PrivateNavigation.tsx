@@ -33,6 +33,7 @@ import { PremiumModalInfoOnly } from "../PremiumModal"
 import { FooterLink } from "../AppFooter"
 import UserSettingsIcon from "@/app/_assets/SVG/UserSettingsIcon"
 import UserIconSmall from "@/app/_assets/SVG/UserIconSmall"
+import { useAppSelector } from "@/app/_redux"
 
 export default function PrivateNavigation() {
   const router = useRouter()
@@ -77,7 +78,7 @@ export default function PrivateNavigation() {
 }
 
 function MobileNavigation() {
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector((store) => store.auth)
   return (
     <>
       <Menu>
@@ -215,7 +216,7 @@ function MainPrivateNav() {
 // }
 
 function InterestsAccessCount() {
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector((store) => store.auth)
   return (
     <Box p=".8rem">
       <Flex

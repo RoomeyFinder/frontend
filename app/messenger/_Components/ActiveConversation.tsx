@@ -24,6 +24,7 @@ import { MessagesContext } from "@/app/_providers/MessagesProvider"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
 import { UserContext } from "@/app/_providers/UserProvider"
 import User from "@/app/_types/User"
+import { useAppSelector } from "@/app/_redux"
 
 export default function ActiveConversation() {
   const [isUserIntentionallyScrolling, setIsUserIntentionallyScrolling] =
@@ -32,7 +33,7 @@ export default function ActiveConversation() {
   const { activeConversation, closeActiveConversation, socket } =
     useContext(MessengerContext)
   const { messages } = useContext(MessagesContext)
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
 
   const recipient = useMemo(() => {
     if (activeConversation?.creator?._id === user?._id)

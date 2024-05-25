@@ -31,11 +31,12 @@ import CenteredSpinner from "../_components/CenteredSpinner"
 import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
 import useActOnInterest from "../_hooks/useActOnInterest"
 import Empty from "../_components/Empty"
+import { useAppSelector } from "../_redux"
 
 export default function Page() {
   const { interests, loading, failedToFetch, reloadInterests } =
     useContext(InterestsContext)
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
   const searchParams = useSearchParams()
   const currentDisplay = useMemo(
     () => (searchParams.get("filter") || "received") as "sent" | "received",
