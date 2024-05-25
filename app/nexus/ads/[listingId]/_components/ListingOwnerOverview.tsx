@@ -5,7 +5,7 @@ import DotSeparator from "@/app/_components/DotSeparator"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
 import { Listing } from "@/app/_types/Listings"
 import { pluralizeText } from "@/app/_utils"
-import { InterestButton } from "@/app/profile/_components/ProfileOverview"
+import { InterestButton } from "@/app/nexus/profile/_components/ProfileOverview"
 import {
   HStack,
   VStack,

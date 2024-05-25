@@ -5,7 +5,7 @@ import SearchIcon from "../_assets/SVG/SearchIcon"
 import { useCallback, useContext } from "react"
 import PersonIcon from "../_assets/SVG/PersonIcon"
 import HouseIcon from "../_assets/SVG/HouseIcon"
-import CustomSelect from "../ads/_components/CustomSelect"
+import CustomSelect from "../nexus/ads/_components/CustomSelect"
 import { usePathname, useRouter } from "next/navigation"
 import { SearchContext } from "../_providers/SearchProvider"
 

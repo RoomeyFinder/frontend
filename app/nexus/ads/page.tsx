@@ -3,13 +3,13 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
 import ListingForm from "./_components/ListingForm"
-import MyAdsHeader from "../_components/PageHeader"
-import EditableListingCard from "../_components/EditableListingCard"
-import { ListingsContext } from "../_providers/ListingsProvider"
-import CenteredSpinner from "../_components/CenteredSpinner"
-import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
-import Empty from "../_components/Empty"
-import BackButton from "../_components/BackButton"
+import MyAdsHeader from "../../_components/PageHeader"
+import EditableListingCard from "../../_components/EditableListingCard"
+import { ListingsContext } from "../../_providers/ListingsProvider"
+import CenteredSpinner from "../../_components/CenteredSpinner"
+import FailureUIWithRetryButton from "../../_components/FailureUIWithRetryButton"
+import Empty from "../../_components/Empty"
+import BackButton from "../../_components/BackButton"
 
 export default function MyAds() {
   return (
@@ -53,13 +53,7 @@ function Renderer() {
 
   if (searchParams.get("new") === "true") {
     return (
-      <Box
-        alignItems="start"
-        py="3rem"
-        gap="3rem"
-        w="86%"
-        mx="auto"
-      >
+      <Box alignItems="start" py="3rem" gap="3rem" w="86%" mx="auto">
         <BackButton />
         <ListingForm edit={false} />
       </Box>

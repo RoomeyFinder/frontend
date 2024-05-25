@@ -1,10 +1,10 @@
 "use client"
 import { Box, HStack, Heading, VStack } from "@chakra-ui/react"
 import CustomRadioGroup from "@/app/_components/CustomRadio"
-import NotificationItem from "../_components/Notifications/NotificationItem"
+import NotificationItem from "../../_components/Notifications/NotificationItem"
 import { useContext, useMemo, useState } from "react"
-import { NotificationsContext } from "../_providers/NotificationsProvider"
-import { NotificationVariant } from "../_types/Notification"
+import { NotificationsContext } from "../../_providers/NotificationsProvider"
+import { NotificationVariant } from "../../_types/Notification"
 
 export default function Page() {
   const { notifications } = useContext(NotificationsContext)

@@ -16,10 +16,10 @@ import {
   DragEventHandler,
   ReactNode,
 } from "react"
-import DragOverFileInput from "../../_components/DragOverFileInput"
-import ConfirmAction from "../../_components/ConfirmAction"
-import ProfileAvatar from "../../_components/ProfileAvatar"
-import { PreviewablePhoto } from "../../_types"
+import DragOverFileInput from "../../../_components/DragOverFileInput"
+import ConfirmAction from "../../../_components/ConfirmAction"
+import ProfileAvatar from "../../../_components/ProfileAvatar"
+import { PreviewablePhoto } from "../../../_types"
 import TimesIcon from "@/app/_assets/SVG/TimesIcon"
 
 export default function PhotosUploadSection({
@@ -155,10 +155,7 @@ function UploadedPhotosSection({
             />
           }
           onConfirm={() => {
-            removeFile(
-              p.preview as string,
-              p.index as number,
-            )
+            removeFile(p.preview as string, p.index as number)
           }}
           containerProps={{ rounded: "3em", overflow: "hidden" }}
         />

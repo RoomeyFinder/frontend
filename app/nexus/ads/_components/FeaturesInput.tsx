@@ -12,8 +12,8 @@ import {
   HStack,
 } from "@chakra-ui/react"
 import { useCallback, useMemo, useRef } from "react"
-import useFilterListByText from "../../_hooks/useFilterStringListByText"
-import useCategorizeListOfObjects from "../../_hooks/useCategorizeListOfObjects"
+import useFilterListByText from "../../../_hooks/useFilterStringListByText"
+import useCategorizeListOfObjects from "../../../_hooks/useCategorizeListOfObjects"
 
 export default function FeatureInput({
   selectedItems,
@@ -197,7 +197,7 @@ export function FeatureTag({
   editable = false,
   bg,
   padding,
-  rounded
+  rounded,
 }: {
   item: {
     category: string
