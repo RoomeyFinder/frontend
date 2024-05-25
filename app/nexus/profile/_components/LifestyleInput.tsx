@@ -10,8 +10,8 @@ import {
   Heading,
 } from "@chakra-ui/react"
 import { useCallback, useMemo, useRef } from "react"
-import useFilterListByText from "../../_hooks/useFilterStringListByText"
-import useCategorizeListOfObjects from "../../_hooks/useCategorizeListOfObjects"
+import useFilterListByText from "../../../_hooks/useFilterStringListByText"
+import useCategorizeListOfObjects from "../../../_hooks/useCategorizeListOfObjects"
 
 export default function LifestyleInput({
   selectedItems,

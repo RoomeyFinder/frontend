@@ -2,12 +2,11 @@
 import { useSearchParams } from "next/navigation"
 import ProfileEditForm from "./_components/ProfileEditForm"
 import { Box, Flex, Spinner } from "@chakra-ui/react"
-import { Suspense, useContext } from "react"
-import { UserContext } from "../_providers/UserProvider"
+import { Suspense } from "react"
 import ProfileView from "./_components/ProfileView"
-import { useAppDispatch, useAppSelector } from "../_redux"
-import { updateUser } from "../_redux/slices/auth.slice"
-import User from "../_types/User"
+import { useAppDispatch, useAppSelector } from "../../_redux"
+import { updateUser } from "../../_redux/slices/auth.slice"
+import User from "../../_types/User"
 
 export default function Profile() {
   return (

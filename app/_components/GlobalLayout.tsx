@@ -4,6 +4,8 @@ import AppHeader from "./AppHeader"
 import { Box, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
 import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
+import { usePathname } from "next/navigation"
+import NexusLayout from "./NexusLayout/NexusLayout"
 
 export default function GlobalLayout({
   children,
@@ -11,6 +13,9 @@ export default function GlobalLayout({
   children: ReactNode | ReactNode[]
 }) {
   useListenForMessengerEvents()
+  const pathname = usePathname()
+
+  if (pathname.includes("nexus")) return <NexusLayout>{children}</NexusLayout>
   return (
     <Box>
       <AppHeader />

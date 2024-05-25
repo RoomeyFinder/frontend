@@ -16,7 +16,7 @@ import {
   TextProps,
   VStack,
 } from "@chakra-ui/react"
-import { FeatureTag } from "../ads/_components/FeaturesInput"
+import { FeatureTag } from "../nexus/ads/_components/FeaturesInput"
 import EyeIcon from "../_assets/SVG/EyeIcon"
 import ThreeDotIcon from "../_assets/SVG/ThreeDotIcon"
 import { Listing } from "../_types/Listings"

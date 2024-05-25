@@ -14,29 +14,28 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import MyAdsHeader from "../_components/PageHeader"
-import CheckIcon from "../_assets/SVG/CheckIcon"
-import { TimesIconSmall } from "../_assets/SVG/TimesIcon"
-import { InterestsContext } from "../_providers/InterestsProvider"
+import MyAdsHeader from "../../_components/PageHeader"
+import CheckIcon from "../../_assets/SVG/CheckIcon"
+import { TimesIconSmall } from "../../_assets/SVG/TimesIcon"
+import { InterestsContext } from "../../_providers/InterestsProvider"
 import { useCallback, useContext, useMemo, useState } from "react"
-import { UserContext } from "../_providers/UserProvider"
 import { useSearchParams } from "next/navigation"
-import InterestInterface from "../_types/Interest"
-import { FavoriteType } from "../_types/Favorites"
-import { Listing } from "../_types/Listings"
-import User from "../_types/User"
-import TimeSince from "../_components/TimeSince"
+import InterestInterface from "../../_types/Interest"
+import { FavoriteType } from "../../_types/Favorites"
+import { Listing } from "../../_types/Listings"
+import User from "../../_types/User"
+import TimeSince from "../../_components/TimeSince"
 import { useRouter } from "next/navigation"
-import CenteredSpinner from "../_components/CenteredSpinner"
-import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
-import useActOnInterest from "../_hooks/useActOnInterest"
-import Empty from "../_components/Empty"
-import { useAppSelector } from "../_redux"
+import CenteredSpinner from "../../_components/CenteredSpinner"
+import FailureUIWithRetryButton from "../../_components/FailureUIWithRetryButton"
+import useActOnInterest from "../../_hooks/useActOnInterest"
+import Empty from "../../_components/Empty"
+import { useAppSelector } from "../../_redux"
 
 export default function Page() {
   const { interests, loading, failedToFetch, reloadInterests } =
     useContext(InterestsContext)
-  const { user } = useAppSelector(store => store.auth)
+  const { user } = useAppSelector((store) => store.auth)
   const searchParams = useSearchParams()
   const currentDisplay = useMemo(
     () => (searchParams.get("filter") || "received") as "sent" | "received",

@@ -71,9 +71,7 @@ export default function SignupProvider({
     else toast.error(res.message)
     setLoading(false)
   }, [contactDetails.formData.email, fetchData])
-
-  // const { updateUser } = useContext(UserContext)
-  // const { updateToken } = useContext(AuthContext)
+  
   const dispatch = useAppDispatch()
 
   const verifyEmail = useCallback(
