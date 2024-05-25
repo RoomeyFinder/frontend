@@ -26,10 +26,7 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
         bg="white"
       >
         <Box w="full" pos="sticky">
-          <NexusHeading
-            isMenuOpen={openMenu}
-            handleToggleMenu={() => setOpenMenu((prev) => !prev)}
-          />
+          <NexusHeading handleToggleMenu={() => setOpenMenu((prev) => !prev)} />
         </Box>
         <Show above="md">
           <SimpleGrid

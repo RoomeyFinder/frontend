@@ -19,14 +19,14 @@ export const UserContext = createContext<{
   loading: boolean
   updateLoading: (upd?: boolean) => void
   logout: () => void
-}>({
-  user: null,
-  updateUser: () => {},
-  deleteUser: () => {},
-  updateLoading: () => {},
-  logout: () => {},
-  loading: true,
-})
+    }>({
+      user: null,
+      updateUser: () => {},
+      deleteUser: () => {},
+      updateLoading: () => {},
+      logout: () => {},
+      loading: true,
+    })
 
 export default function UserProvider({
   children,

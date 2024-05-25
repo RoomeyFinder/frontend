@@ -29,15 +29,6 @@ export const AuthContext = createContext<{
       loading: true,
     })
 
-const privatePaths = [
-  "/profile",
-  "/ads",
-  "/favorites",
-  "/interests",
-  "/notifications",
-  "/messenger",
-]
-
 export default function AuthProvider({
   children,
 }: {
@@ -56,7 +47,7 @@ export default function AuthProvider({
   const isAuthorized = useMemo(() => token !== null, [token])
 
   const resetAuthorization = useCallback(async () => {
-    if(!isAuthorized) return 
+    if (!isAuthorized) return
     updateLoading(true)
     await deleteToken()
     await localforage.clear()
@@ -70,15 +61,9 @@ export default function AuthProvider({
     if (
       !loading &&
       isAuthorized === false &&
-      privatePaths.some((path) =>
-        pathname.toLowerCase().startsWith(path.toLowerCase())
-      )
+      pathname.toLowerCase().includes("nexus")
     )
-      if (
-        privatePaths.some((path) =>
-          pathname.toLowerCase().startsWith(path.toLowerCase())
-        )
-      )
+      if (pathname.toLowerCase().includes("nexus"))
         router.push(`/login?next=${currentUrl + window.location.search}`)
   }, [pathname, router, isAuthorized, loading])
 

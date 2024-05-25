@@ -5,33 +5,17 @@ import { useRouter } from "next/navigation"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
+import { UserContext } from "@/app/_providers/UserProvider"
+import { useContext } from "react"
 
-const x = [
-  {
-    name: "Chats",
-    href: "/nexus/messenger",
-    icon: MessageIcon,
-    hideAbove: "md",
-    showBelow: "md",
-    isIcon: true,
-  },
-  {
-    name: "Notifications",
-    href: "/nexus/notifications",
-    icon: NotificationIcon,
-    hideAbove: "md",
-    showBelow: "md",
-    isIcon: true,
-  },
-]
 export default function NexusHeading({
-  isMenuOpen,
   handleToggleMenu,
 }: {
-  isMenuOpen: boolean
   handleToggleMenu: () => void
 }) {
   const router = useRouter()
+  const { logout } = useContext(UserContext)
+
   return (
     <>
       <Flex
@@ -39,20 +23,19 @@ export default function NexusHeading({
         bg="rgba(58, 134, 255, 0.05)"
         height="8rem"
         width="100dvw"
-        px={{ base: "2rem", sm: "4rem", md: "6rem" }}
+        px={{ base: "1.5rem", sm: "4rem", md: "6rem" }}
       >
         <Flex justifyContent="space-between" w="full" alignItems="center">
           <Box as="button" onClick={() => router.push("/")}>
             <AppLogo showTextLogoAlways />
           </Box>
-          <Show below="md">
+          <Flex alignItems="center" gap={{ base: "1rem", md: "4rem" }}>
             <IconButton
-              onClick={() => handleToggleMenu()}
-              icon={<HamburgerIcon />}
-              aria-label={"toggle-menu"}
-              w="5rem"
-              h="5rem"
-              bg="white"
+              aria-label="Notifications"
+              icon={<NotificationIcon />}
+              w={{ base: "3.8rem", md: "5rem" }}
+              h={{ base: "3.8rem", md: "5rem" }}
+              bg={{ base: "transparent", md: "white" }}
               color="brand.main"
               _hover={{
                 bg: "brand.10",
@@ -60,15 +43,28 @@ export default function NexusHeading({
               }}
               rounded="full"
             />
-          </Show>
-          <Show above="md">
-            <Flex alignItems="center" gap="4rem">
+            <IconButton
+              aria-label="Notifications"
+              icon={<MessageIcon />}
+              w={{ base: "3.8rem", md: "5rem" }}
+              h={{ base: "3.8rem", md: "5rem" }}
+              bg={{ base: "transparent", md: "white" }}
+              color="brand.main"
+              _hover={{
+                bg: "brand.10",
+                color: "brand.main",
+              }}
+              rounded="full"
+            />
+            <Show below="md">
+              {" "}
               <IconButton
-                aria-label="Notifications"
-                icon={<NotificationIcon />}
-                w="5rem"
-                h="5rem"
-                bg="white"
+                onClick={() => handleToggleMenu()}
+                icon={<HamburgerIcon />}
+                aria-label={"toggle-menu"}
+                w={{ base: "3.8rem", md: "5rem" }}
+                h={{ base: "3.8rem", md: "5rem" }}
+                bg={{ base: "transparent", md: "white" }}
                 color="brand.main"
                 _hover={{
                   bg: "brand.10",
@@ -76,19 +72,8 @@ export default function NexusHeading({
                 }}
                 rounded="full"
               />
-              <IconButton
-                aria-label="Notifications"
-                icon={<MessageIcon />}
-                w="5rem"
-                h="5rem"
-                bg="white"
-                color="brand.main"
-                _hover={{
-                  bg: "brand.10",
-                  color: "brand.main",
-                }}
-                rounded="full"
-              />
+            </Show>
+            <Show above="md">
               <Text
                 as="button"
                 display="flex"
@@ -106,11 +91,12 @@ export default function NexusHeading({
                   color: "brand.main",
                   bg: "brand.10",
                 }}
+                onClick={() => logout()}
               >
                 <LogoutIcon /> Logout
               </Text>
-            </Flex>
-          </Show>
+            </Show>
+          </Flex>
         </Flex>
       </Flex>
     </>
