@@ -1,5 +1,5 @@
 import { VStack } from "@chakra-ui/react"
-import User from "../../_types/User"
+import User from "../../../_types/User"
 import ProfileOverview from "./ProfileOverview"
 import LifeStyleOverview from "./LifestyleOverview"
 import AboutOverview from "./AboutOverview"
@@ -21,7 +21,7 @@ export default function ProfileView({
       w={{ base: "95dvw", sm: "75%", md: "64%" }}
       mx="auto"
     >
-      <BackButton/>
+      <BackButton />
       <ProfileOverview
         userData={userData}
         isOwner={isOwner}

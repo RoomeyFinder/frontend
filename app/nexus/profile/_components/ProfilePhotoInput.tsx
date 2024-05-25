@@ -1,7 +1,7 @@
 import { Flex, FormLabel, Show, Button, Text } from "@chakra-ui/react"
-import FilledPlusIcon from "../../_assets/SVG/FilledPlusIcon"
-import PlaceHolderAvatar from "../../_assets/SVG/PlaceHolderAvatar"
-import ProfileAvatar from "../../_components/ProfileAvatar"
+import FilledPlusIcon from "../../../_assets/SVG/FilledPlusIcon"
+import PlaceHolderAvatar from "../../../_assets/SVG/PlaceHolderAvatar"
+import ProfileAvatar from "../../../_components/ProfileAvatar"
 import { useEffect, useMemo } from "react"
 
 export default function ProfilePhotoInput({

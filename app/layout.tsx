@@ -20,6 +20,7 @@ import CenteredSpinner from "./_components/CenteredSpinner"
 import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
+import { usePathname } from "next/navigation"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -28,6 +29,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <html lang="en">
       <body>

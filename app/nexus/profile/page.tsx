@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation"
 import ProfileEditForm from "./_components/ProfileEditForm"
 import { Box, Flex, Spinner } from "@chakra-ui/react"
 import { Suspense, useContext } from "react"
-import { UserContext } from "../_providers/UserProvider"
+import { UserContext } from "../../_providers/UserProvider"
 import ProfileView from "./_components/ProfileView"
 
 export default function Profile() {

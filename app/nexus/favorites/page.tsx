@@ -6,17 +6,17 @@ import {
   Spinner,
 } from "@chakra-ui/react"
 import { Suspense, useContext, useMemo } from "react"
-import Empty from "../_components/Empty"
-import FavoritesHeader from "../_components/PageHeader"
-import { FavoritesContext } from "../_providers/FavoritesProvider"
-import ListingsGridLayout from "../_components/ListingsGridLayout"
-import CenteredSpinner from "../_components/CenteredSpinner"
-import RoomListingCard from "../_components/RoomListingCard"
-import RoomeyListingCard from "../_components/RoomeyListingCard"
-import { FavoriteType } from "../_types/Favorites"
-import User from "../_types/User"
-import { Listing } from "../_types/Listings"
-import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
+import Empty from "../../_components/Empty"
+import FavoritesHeader from "../../_components/PageHeader"
+import { FavoritesContext } from "../../_providers/FavoritesProvider"
+import ListingsGridLayout from "../../_components/ListingsGridLayout"
+import CenteredSpinner from "../../_components/CenteredSpinner"
+import RoomListingCard from "../../_components/RoomListingCard"
+import RoomeyListingCard from "../../_components/RoomeyListingCard"
+import { FavoriteType } from "../../_types/Favorites"
+import User from "../../_types/User"
+import { Listing } from "../../_types/Listings"
+import FailureUIWithRetryButton from "../../_components/FailureUIWithRetryButton"
 
 export default function Favorites() {
   return (

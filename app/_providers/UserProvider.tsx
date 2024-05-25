@@ -19,14 +19,14 @@ export const UserContext = createContext<{
   loading: boolean
   updateLoading: (upd?: boolean) => void
   logout: () => void
-    }>({
-      user: null,
-      updateUser: () => {},
-      deleteUser: () => {},
-      updateLoading: () => {},
-      logout: () => {},
-      loading: true,
-    })
+}>({
+  user: null,
+  updateUser: () => {},
+  deleteUser: () => {},
+  updateLoading: () => {},
+  logout: () => {},
+  loading: true,
+})
 
 export default function UserProvider({
   children,
@@ -55,20 +55,14 @@ export default function UserProvider({
     } else if (res.statusCode === 403) resetAuthorization()
     else setUser(fallbackUser)
     updateLoading(false)
-  }, [
-    fetchData,
-    resetAuthorization,
-    fallbackUser,
-    updateUser,
-    updateLoading
-  ])
-
+  }, [fetchData, resetAuthorization, fallbackUser, updateUser, updateLoading])
+  console.log(user, "useco")
   const logout = useCallback(() => {
     resetAuthorization()
   }, [resetAuthorization])
 
   useEffect(() => {
-    if (isAuthorized) fetchUser()
+    if (isAuthorized && !user) fetchUser()
     //  eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [])
 
