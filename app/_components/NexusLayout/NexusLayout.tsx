@@ -63,10 +63,6 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
                   h="3rem"
                   bg="brand.10"
                   color="brand.main"
-                  // _hover={{
-                  //   bg: "brand.main",
-                  //   color: "brand.main",
-                  // }}
                   size="xl"
                   pos="absolute"
                   rounded="full"
@@ -76,7 +72,7 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
                 <NexusSidebar />
               </DrawerContent>
             </Drawer>
-            <Box onClick={() => setOpenMenu(true)}>{children}</Box>
+            <Box>{children}</Box>
           </Box>
         </Show>
       </VStack>
