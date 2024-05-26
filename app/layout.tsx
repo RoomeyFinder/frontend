@@ -42,7 +42,6 @@ export default function RootLayout({
                   <LayoutDispatchProvider>
                     <AuthModalProvider>
                       <SearchProvider>
-                        <ListingsProvider>
                           <FavoritesProvider>
                             <InterestsProvider>
                               <MessengerProvider>
@@ -57,7 +56,6 @@ export default function RootLayout({
                               </MessengerProvider>
                             </InterestsProvider>
                           </FavoritesProvider>
-                        </ListingsProvider>
                       </SearchProvider>
                     </AuthModalProvider>
                   </LayoutDispatchProvider>

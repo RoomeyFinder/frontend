@@ -2,12 +2,22 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux"
 import authReducer from "./slices/auth.slice"
+import favoritesReducer from "./slices/favorites.slice"
 import listingsReducer from "./slices/listings.slice"
+import interestsReducer from "./slices/interests.slice"
+import notificationsReducer from "./slices/notifications.slice"
+import messagesReducer from "./slices/messages.slice"
+import conversationsReducer from "./slices/conversations.slice"
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     listings: listingsReducer,
+    favorites: favoritesReducer,
+    interests: interestsReducer,
+    notifications: notificationsReducer,
+    messages: messagesReducer,
+    conversations: conversationsReducer,
   },
 })
 

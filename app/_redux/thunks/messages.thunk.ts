@@ -3,20 +3,20 @@ import axiosFetcher from "@/app/_utils/axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import localforage from "localforage"
 
-export const fetchUserListings = createAsyncThunk(
-  "listings/fetchUserListings",
+export const fetchUserMessages = createAsyncThunk(
+  "messages/fetchUserMessages",
   async () => {
     const response = await axiosFetcher({
-      url: "/listings/me",
+      url: "/messages/me",
       method: "get",
     })
     const storedListings = await localforage.getItem(
       STORAGE_KEYS.RF_USER_LISTINGS
     )
     return {
-      listings:
+      messages:
         response.statusCode === 200
-          ? response.listings
+          ? response.messages
           : storedListings || [],
       statusCode: response.statusCode,
     }
