@@ -1,5 +1,7 @@
+import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import axiosFetcher from "@/app/_utils/axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
+import localforage from "localforage"
 
 export const checkAuthStatus = createAsyncThunk(
   "auth/checkAuthStatus",
@@ -8,9 +10,9 @@ export const checkAuthStatus = createAsyncThunk(
       url: "/users/me",
       method: "get",
     })
-    console.log(response)
+    const storedUser = await localforage.getItem(STORAGE_KEYS.RF_USER)
     return {
-      user: response.user || null,
+      user: response.statusCode === 200 ? response.user : storedUser || null,
       statusCode: response.statusCode,
     }
   }

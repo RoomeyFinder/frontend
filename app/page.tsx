@@ -25,11 +25,11 @@ import { SearchContext } from "./_providers/SearchProvider"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
 import RoomListingCard from "./_components/RoomListingCard"
 import { Listing } from "./_types/Listings"
-import { AuthContext } from "./_providers/AuthContext"
 import Empty from "./_components/Empty"
 import {
   RoomListingCardSkeleton,
 } from "./_components/Skeletons/ListingCardSkeleton"
+import { useAppSelector } from "./_redux"
 
 export default function Home() {
   const { roomies, rooms } = useContext(SearchContext)
@@ -144,7 +144,7 @@ function FeaturesSection() {
 }
 
 function ListingsSection() {
-  const { isAuthorized } = useContext(AuthContext)
+  const { user } = useAppSelector(store => store.auth)
   const {
     rooms,
     hasMoreRooms,
@@ -185,7 +185,7 @@ function ListingsSection() {
           <Heading variant="md">Latest Rooms</Heading>
           <RoomsList
             rooms={filteredRoomsBySearch}
-            allowFavoriting={isAuthorized}
+            allowFavoriting={user !== null}
             loading={loadingRooms}
             emptyTextValue={
               <>

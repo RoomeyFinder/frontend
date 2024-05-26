@@ -1,7 +1,6 @@
-import { useCallback, useContext } from "react"
+import { useCallback } from "react"
 import useAxios from "./useAxios"
-import { UserContext } from "../_providers/UserProvider"
-import { useAppDispatch, useAppSelector } from "../_redux"
+import { useAppDispatch } from "../_redux"
 import { updateUser } from "../_redux/slices/auth.slice"
 
 export default function PaymentStatusLoggers() {

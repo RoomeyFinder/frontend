@@ -22,7 +22,6 @@ import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import ConversationInput from "./ConversationInput"
 import { MessagesContext } from "@/app/_providers/MessagesProvider"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
-import { UserContext } from "@/app/_providers/UserProvider"
 import User from "@/app/_types/User"
 import { useAppSelector } from "@/app/_redux"
 

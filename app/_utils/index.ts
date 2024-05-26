@@ -1,4 +1,6 @@
+import localforage from "localforage"
 import { getGeocode, getZipCode, getLatLng } from "use-places-autocomplete"
+import STORAGE_KEYS from "../STORAGE_KEYS"
 
 export const rentDurationMapping: {
   annually: "year"
@@ -77,4 +79,15 @@ export function isStrongPassword(password: string): boolean {
   const hasNumber = /\d/.test(password)
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
   return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar
+}
+
+export async function getTokenFromStorage() {
+  let token = await localforage.getItem(STORAGE_KEYS.RF_TOKEN)
+  if (!token) {
+    token =
+      localStorage.getItem(STORAGE_KEYS.RF_TOKEN) ||
+      sessionStorage.getItem(STORAGE_KEYS.RF_TOKEN)
+    if (token && typeof token !== "object") token = JSON.parse(token as string)
+  }
+  return token
 }

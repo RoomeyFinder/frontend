@@ -4,8 +4,6 @@ import "./globals.css"
 import appendSharedMetaData from "./_metadata"
 import GlobalLayout from "./_components/GlobalLayout"
 import LocalForageProvider from "./_providers/localforage"
-import AuthProvider from "./_providers/AuthContext"
-import UserProvider from "./_providers/UserProvider"
 import ListingsProvider from "./_providers/ListingsProvider"
 import FavoritesProvider from "./_providers/FavoritesProvider"
 import SearchProvider from "./_providers/SearchProvider"
@@ -21,7 +19,7 @@ import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
 import ReduxProvider from "./_providers/ReduxProvider"
-import LayoutDispatchProvider from "./_providers/LayoutDispatchProvider"
+import LayoutDispatchProvider from "./_providers/LayoutClientProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -40,8 +38,6 @@ export default function RootLayout({
               <GoogleOAuthProvider
                 clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
               >
-                {/* <AuthProvider>
-                  <UserProvider> */}
                 <ReduxProvider>
                   <LayoutDispatchProvider>
                     <AuthModalProvider>
@@ -66,8 +62,6 @@ export default function RootLayout({
                     </AuthModalProvider>
                   </LayoutDispatchProvider>
                 </ReduxProvider>
-                {/* </UserProvider> */}
-                {/* </AuthProvider> */}
               </GoogleOAuthProvider>
             </LocalForageProvider>
             <script

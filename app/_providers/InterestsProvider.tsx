@@ -3,14 +3,14 @@ import {
   ReactNode,
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useState,
 } from "react"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import useAxios from "../_hooks/useAxios"
 import Interest from "../_types/Interest"
-import { AuthContext } from "./AuthContext"
+import { useAppDispatch, useAppSelector } from "../_redux"
+import { logout } from "../_redux/slices/auth.slice"
 
 export const InterestsContext = createContext<{
   interests: Interest[] | null
@@ -21,16 +21,16 @@ export const InterestsContext = createContext<{
   declineInterest: (interestId: string) => Promise<void>
   failedToFetch: boolean
   loading: boolean
-    }>({
-      interests: [],
-      reloadInterests: () => {},
-      addNewInterest: () => {},
-      unsendInterest: async () => {},
-      acceptInterest: async () => {},
-      declineInterest: async () => {},
-      loading: false,
-      failedToFetch: false,
-    })
+}>({
+  interests: [],
+  reloadInterests: () => {},
+  addNewInterest: () => {},
+  unsendInterest: async () => {},
+  acceptInterest: async () => {},
+  declineInterest: async () => {},
+  loading: false,
+  failedToFetch: false,
+})
 
 export default function InterestsProvider({
   children,
@@ -38,7 +38,8 @@ export default function InterestsProvider({
   children: ReactNode[] | ReactNode
 }) {
   const [failedToFetch, setFailedToFetch] = useState(false)
-  const { resetAuthorization, isAuthorized } = useContext(AuthContext)
+  const dispatch = useAppDispatch()
+  const { user } = useAppSelector((store) => store.auth)
   const { data: storedInterests, updateData: updateInterests } =
     useGetFromStorage<Interest[]>("RF_USER_INTERESTS")
   const [interests, setInterests] = useState<Interest[]>([])
@@ -53,9 +54,9 @@ export default function InterestsProvider({
     if (res.statusCode === 200) {
       updateInterests(res.interests, false)
       setInterests(res.interests)
-    } else if (res.statusCode === 403) resetAuthorization()
+    } else if (res.statusCode === 403) dispatch(logout())
     else setFailedToFetch(true)
-  }, [fetchData, updateInterests, resetAuthorization])
+  }, [fetchData, updateInterests, dispatch])
 
   const addNewInterest = useCallback(
     (newInterest: Interest) => {
@@ -73,7 +74,7 @@ export default function InterestsProvider({
 
   const unsendInterest = useCallback(
     async (interestId: string) => {
-      if (isFetching || !isAuthorized) return
+      if (isFetching || !user) return
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "delete",
@@ -86,11 +87,11 @@ export default function InterestsProvider({
         setInterests([...update])
       }
     },
-    [fetchData, updateInterests, interests, isAuthorized, isFetching]
+    [fetchData, updateInterests, interests, user, isFetching]
   )
   const acceptInterest = useCallback(
     async (interestId: string) => {
-      if (isFetching || !isAuthorized) return
+      if (isFetching || !user) return
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "put",
@@ -104,11 +105,11 @@ export default function InterestsProvider({
         setInterests([...interests])
       }
     },
-    [fetchData, updateInterests, interests, isAuthorized, isFetching]
+    [fetchData, updateInterests, interests, user, isFetching]
   )
   const declineInterest = useCallback(
     async (interestId: string) => {
-      if (isFetching || !isAuthorized) return
+      if (isFetching || !user) return
       const res = await fetchData({
         url: `/interests/${interestId}`,
         method: "put",
@@ -122,7 +123,7 @@ export default function InterestsProvider({
         setInterests([...update])
       }
     },
-    [fetchData, updateInterests, interests, isAuthorized, isFetching]
+    [fetchData, updateInterests, interests, user, isFetching]
   )
 
   useEffect(() => {

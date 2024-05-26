@@ -1,14 +1,13 @@
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import OverviewIcon from "@/app/_assets/SVG/OverviewIcon"
 import { sidebarLinks } from "@/app/_data/navLinks"
-import { UserContext } from "@/app/_providers/UserProvider"
 import { useAppSelector } from "@/app/_redux"
+import { logout } from "@/app/_redux/slices/auth.slice"
 import { Avatar, Box, Button, Flex, Show, Text, VStack } from "@chakra-ui/react"
 import { usePathname, useRouter } from "next/navigation"
-import { ReactNode, useContext } from "react"
+import { ReactNode } from "react"
 
 export default function NexusSidebar() {
-  const { logout } = useAppSelector(store => store.auth)
   return (
     <Box w="full" bg={{ md: "rgba(58, 134, 255, 0.05)" }} h="100%">
       <UserInfoHeading />

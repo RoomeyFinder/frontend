@@ -23,7 +23,7 @@ import useAppToast from "../_hooks/useAppToast"
 import { Listing } from "../_types/Listings"
 import { useRouter } from "next/navigation"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
-import { AuthContext } from "../_providers/AuthContext"
+import { useAppSelector } from "../_redux"
 
 export default function RoomListingCard({
   variant,
@@ -48,13 +48,13 @@ export default function RoomListingCard({
   listingId: string
 }) {
   const router = useRouter()
-  const { token } = useContext(AuthContext)
+  const { user } = useAppSelector((store) => store.auth)
   const { open: showAuthModal } = useContext(AuthModalContext)
 
   return (
     <Flex
       onClick={() =>
-        token ? router.push(`/ads/${listingId}`) : showAuthModal()
+        user ? router.push(`/ads/${listingId}`) : showAuthModal()
       }
       _hover={{ shadow: "md", background: "white" }}
       w="95dvw"
@@ -175,9 +175,9 @@ export function FavouriteButton({
         !isFavorite
           ? handleAddFavorite
           : () =>
-            useConfirmation
-              ? setShowRemoveConfirmation(true)
-              : handleRemoveFavorite()
+              useConfirmation
+                ? setShowRemoveConfirmation(true)
+                : handleRemoveFavorite()
       }
       as="button"
       pos="absolute"

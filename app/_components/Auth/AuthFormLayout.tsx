@@ -8,12 +8,11 @@ import {
   Flex,
   ButtonProps,
 } from "@chakra-ui/react"
-import { FormEvent, KeyboardEvent, ReactNode, useContext, useEffect, useMemo } from "react"
-// import AuthProviderMethods from "./AuthProviderMethods"
+import { FormEvent, KeyboardEvent, ReactNode, useEffect, useMemo } from "react"
 import { useSearchParams } from "next/navigation"
-import { AuthContext } from "@/app/_providers/AuthContext"
 import AuthProviderMethods from "./AuthProviderMethods"
 import RightArrow from "@/app/_assets/SVG/RightArrow"
+import { useAppSelector } from "@/app/_redux"
 
 const modeTexts = {
   signin: {
@@ -55,15 +54,16 @@ export default function AuthFormLayout({
   showAuthProviderMethods?: boolean
   submitButtonProps?: ButtonProps
 }) {
-  const { isAuthorized, loading: loadingAuthState } = useContext(AuthContext)
+  const { user, loading: loadingAuthState } = useAppSelector(
+    (store) => store.auth
+  )
 
   const searchParams = useSearchParams()
   const nextRoute = useMemo(() => searchParams.get("next"), [searchParams])
 
   useEffect(() => {
-    if (isAuthorized && !loadingAuthState)
-      window.location.replace(nextRoute || "/")
-  }, [isAuthorized, nextRoute, loadingAuthState])
+    if (user && !loadingAuthState) window.location.replace(nextRoute || "/")
+  }, [user, nextRoute, loadingAuthState])
 
   return (
     <Box as="main">

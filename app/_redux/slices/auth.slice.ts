@@ -9,13 +9,15 @@ interface IAuthState {
   user: User | null
   loading: boolean
   errorMessage: string
+  isUsingFallback: boolean
 }
 
 const initialState: IAuthState = {
   token: null,
   user: null,
-  loading: false,
+  loading: true,
   errorMessage: "",
+  isUsingFallback: false,
 }
 
 export const authSlice = createSlice({
@@ -64,14 +66,10 @@ export const authSlice = createSlice({
           }>
         ) => {
           const payload = action.payload
-          if (payload?.statusCode === 200) {
-            state.user = payload.user as User
-            localforage.setItem(STORAGE_KEYS.RF_USER, payload.user)
-          } else {
-            state.user = null
-            state.token = null
-          }
+          state.user = payload.user as User
+          localforage.setItem(STORAGE_KEYS.RF_USER, payload.user)
           state.loading = false
+          state.isUsingFallback = payload.statusCode !== 200
         }
       )
       .addCase(checkAuthStatus.rejected, (state) => {
@@ -83,6 +81,11 @@ export const authSlice = createSlice({
   },
 })
 
-export const { authenticate, logout, updateUser, updateErrorMessage, resetErrorMessage } =
-  authSlice.actions
+export const {
+  authenticate,
+  logout,
+  updateUser,
+  updateErrorMessage,
+  resetErrorMessage,
+} = authSlice.actions
 export default authSlice.reducer

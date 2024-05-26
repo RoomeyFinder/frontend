@@ -1,7 +1,6 @@
 "use client"
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import useAxios from "@/app/_hooks/useAxios"
-import { UserContext } from "@/app/_providers/UserProvider"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { logout } from "@/app/_redux/slices/auth.slice"
 import {
@@ -14,7 +13,7 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react"
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useState } from "react"
 
 export default function DeactivateAccountSection() {
   const [isDeleting, setIsDeleting] = useState(false)
@@ -33,7 +32,7 @@ export default function DeactivateAccountSection() {
       dispatch(logout())
     }
     setIsDeleting(false)
-  }, [fetchData, user?._id])
+  }, [fetchData, user?._id, dispatch])
 
   return (
     <Box>

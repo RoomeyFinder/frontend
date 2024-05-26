@@ -1,6 +1,5 @@
 "use client"
 import { MessengerContext } from "@/app/_providers/MessengerProvider"
-import { UserContext } from "@/app/_providers/UserProvider"
 import Conversation, { Message } from "@/app/_types/Conversation"
 import User from "@/app/_types/User"
 import {

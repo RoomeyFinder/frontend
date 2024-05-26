@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
-import { UserContext } from "@/app/_providers/UserProvider"
-import { useContext } from "react"
 import { useAppDispatch } from "@/app/_redux"
+import { logout } from "@/app/_redux/slices/auth.slice"
 
 export default function NexusHeading({
   handleToggleMenu,

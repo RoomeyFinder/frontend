@@ -2,6 +2,7 @@
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios"
 import localforage from "localforage"
 import STORAGE_KEYS from "../STORAGE_KEYS"
+import { getTokenFromStorage } from "."
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -21,15 +22,8 @@ export default async function axiosFetcher({
   body?: any
 }) {
   try {
-    let token = await localforage.getItem(STORAGE_KEYS.RF_TOKEN)
-    if (!token) {
-      token =
-        localStorage.getItem(STORAGE_KEYS.RF_TOKEN) ||
-        sessionStorage.getItem(STORAGE_KEYS.RF_TOKEN)
-      if (token && typeof token !== "object")
-        token = JSON.parse(token as string)
-    }
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+    axios.defaults.headers.common["Authorization"] =
+      `Bearer ${await getTokenFromStorage()}`
     const response = await axios[method](url, body, {
       ...headers,
       baseURL: baseURL || process.env.NEXT_PUBLIC_SERVER_URL,

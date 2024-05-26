@@ -1,16 +1,14 @@
 import useAxios from "@/app/_hooks/useAxios"
 import { Box, Text, VStack } from "@chakra-ui/react"
-import { FormEvent, useCallback, useContext, useState } from "react"
+import { FormEvent, useCallback, useState } from "react"
 import User from "@/app/_types/User"
 import { ResendCodeButton } from "@/app/signup/_EmailVerification"
 import PinInputElement from "../PinInputElement"
 import ErrorText from "./ErrorText"
 import toast from "react-hot-toast"
 import { FormSubmitButton } from "./SignupInputs"
-import { AuthContext } from "@/app/_providers/AuthContext"
-import { UserContext } from "@/app/_providers/UserProvider"
-import { useAppDispatch } from "@/app/_redux"
 import { authenticate } from "@/app/_redux/slices/auth.slice"
+import { useAppDispatch } from "@/app/_redux"
 
 export default function ConfirmEmailForm({
   email,

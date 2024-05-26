@@ -18,7 +18,6 @@ import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
 import ProfilePhotos, { ProfilePhotosModal } from "./ProfilePhotos"
 import { useRouter } from "next/navigation"
 import useAxios from "@/app/_hooks/useAxios"
-import { UserContext } from "@/app/_providers/UserProvider"
 import { InterestsContext } from "@/app/_providers/InterestsProvider"
 import toast from "react-hot-toast"
 import { PersonIconTwo } from "@/app/_assets/SVG/PersonIcon"
@@ -254,7 +253,7 @@ export function InterestButton({
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
     setSendingInterest(false)
-  }, [fetchData, doc, docType, addNewInterest, docOwner, user])
+  }, [fetchData, doc, docType, addNewInterest, docOwner, user,  dispatch])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"

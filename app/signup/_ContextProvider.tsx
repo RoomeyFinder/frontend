@@ -1,9 +1,7 @@
-import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
+import { ReactNode, useCallback, useMemo, useState } from "react"
 import useManageStageFlow from "../_hooks/useManageStageFlow"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import SignupContext from "./_Context"
-import { UserContext } from "../_providers/UserProvider"
-import { AuthContext } from "../_providers/AuthContext"
 import { validateEmail } from "../_utils"
 import toast from "react-hot-toast"
 import { useAppDispatch } from "../_redux"
@@ -105,6 +103,7 @@ export default function SignupProvider({
       emailVerificationDetails.formData.verificationToken,
       fetchData,
       contactDetails.formData.email,
+      dispatch
     ]
   )
   const handleSubmitButtonClick = useCallback(() => {

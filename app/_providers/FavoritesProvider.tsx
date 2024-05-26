@@ -3,14 +3,15 @@ import {
   ReactNode,
   createContext,
   useCallback,
-  useContext,
   useEffect,
   useState,
 } from "react"
 import useAxios from "../_hooks/useAxios"
-import { AuthContext } from "./AuthContext"
 import useGetFromStorage from "../_hooks/useGetFromStorage"
 import Favorite from "../_types/Favorites"
+import { logout } from "../_redux/slices/auth.slice"
+import { useDispatch } from "react-redux"
+import { useAppSelector } from "../_redux"
 
 export const FavoritesContext = createContext<{
   favorites: Favorite[] | null
@@ -23,18 +24,18 @@ export const FavoritesContext = createContext<{
   hasInitialized: boolean
   retriesCount: number
   retryInitialize: () => void
-    }>({
-      favorites: [],
-      removeFavorite: () => {},
-      addNewFavorite: () => {},
-      deleteSingleFavorite: () => {},
-      updateLoading: () => {},
-      deleteAllFavorites: () => {},
-      loading: true,
-      retriesCount: 0,
-      hasInitialized: false,
-      retryInitialize: () => {},
-    })
+}>({
+  favorites: [],
+  removeFavorite: () => {},
+  addNewFavorite: () => {},
+  deleteSingleFavorite: () => {},
+  updateLoading: () => {},
+  deleteAllFavorites: () => {},
+  loading: true,
+  retriesCount: 0,
+  hasInitialized: false,
+  retryInitialize: () => {},
+})
 
 export default function FavoritesProvider({
   children,
@@ -44,7 +45,8 @@ export default function FavoritesProvider({
   const [retriesCount, setRetriesCount] = useState(0)
   const [failedToFetch, setFailedToFetch] = useState(false)
   const [favorites, setFavorites] = useState<Favorite[]>([])
-  const { resetAuthorization, isAuthorized } = useContext(AuthContext)
+  const dispatch = useDispatch()
+  const { user } = useAppSelector((store) => store.auth)
   const {
     data: storedFavorites,
     updateData: updateAllFavorites,
@@ -56,7 +58,7 @@ export default function FavoritesProvider({
   const { fetchData } = useAxios()
 
   const fetchFavorites = useCallback(async () => {
-    if (!isAuthorized) return
+    if (!user) return
     updateLoading(true)
     const res = await fetchData({
       url: "/favorites/me",
@@ -67,7 +69,7 @@ export default function FavoritesProvider({
       setFavorites(res.favorites)
       setHasInitialized(true)
       updateLoading(false)
-    } else if (res.statusCode === 403) resetAuthorization()
+    } else if (res.statusCode === 403) dispatch(logout())
     else {
       setRetriesCount(retriesCount + 1)
 
@@ -78,10 +80,10 @@ export default function FavoritesProvider({
     }
   }, [
     fetchData,
-    resetAuthorization,
+    dispatch,
     updateAllFavorites,
     updateLoading,
-    isAuthorized,
+    user,
     retriesCount,
   ])
 

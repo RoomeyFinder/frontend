@@ -1,12 +1,10 @@
 "use client"
 import LoginForm from "./_Form"
 import AuthFormLayout from "../_components/Auth/AuthFormLayout"
-import { ChangeEventHandler, useCallback, useContext, useState } from "react"
+import { ChangeEventHandler, useCallback, useState } from "react"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
-import { UserContext } from "../_providers/UserProvider"
-import { AuthContext } from "../_providers/AuthContext"
 import { useAppDispatch } from "../_redux"
 import { authenticate, updateUser } from "../_redux/slices/auth.slice"
 

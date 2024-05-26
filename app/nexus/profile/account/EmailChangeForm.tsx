@@ -3,7 +3,6 @@ import InputLabel from "@/app/_components/InputLabel"
 import PinInputElement from "@/app/_components/PinInputElement"
 import useAxios, { RequestBody } from "@/app/_hooks/useAxios"
 import useManageStageFlow from "@/app/_hooks/useManageStageFlow"
-import { UserContext } from "@/app/_providers/UserProvider"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { updateUser } from "@/app/_redux/slices/auth.slice"
 import Stage from "@/app/signup/Stage"
@@ -20,7 +19,6 @@ import {
   ChangeEventHandler,
   FormEventHandler,
   useCallback,
-  useContext,
   useMemo,
   useState,
 } from "react"
@@ -119,6 +117,7 @@ export default function EmailChangeForm() {
       handleSubmitNewEmailAndConfirmationCode,
       handleSubmitNewEmail,
       goToNextStage,
+      dispatch
     ]
   )
 

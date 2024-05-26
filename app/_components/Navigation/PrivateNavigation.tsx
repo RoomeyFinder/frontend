@@ -26,14 +26,13 @@ import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 import NotificationsDropdown from "../Notifications/NotificationsDropdown"
-import { UserContext } from "@/app/_providers/UserProvider"
-import { useContext, useState } from "react"
-import GrowthIcon from "@/app/_assets/SVG/GrowthIcon"
+import {  useState } from "react"
 import { PremiumModalInfoOnly } from "../PremiumModal"
 import { FooterLink } from "../AppFooter"
 import UserSettingsIcon from "@/app/_assets/SVG/UserSettingsIcon"
 import UserIconSmall from "@/app/_assets/SVG/UserIconSmall"
 import { useAppSelector } from "@/app/_redux"
+import GrowthIcon from "@/app/_assets/SVG/GrowthIcon"
 
 export default function PrivateNavigation() {
   const router = useRouter()

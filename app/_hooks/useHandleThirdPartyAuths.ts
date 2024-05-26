@@ -1,8 +1,6 @@
 import { TokenResponse } from "@react-oauth/google"
 import { useCallback, useContext } from "react"
 import useAxios from "./useAxios"
-import { UserContext } from "../_providers/UserProvider"
-import { AuthContext } from "../_providers/AuthContext"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "../_redux"
