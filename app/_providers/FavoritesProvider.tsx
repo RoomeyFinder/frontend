@@ -92,14 +92,14 @@ export default function FavoritesProvider({
     updateLoading(true)
   }, [updateLoading])
 
-  useEffect(() => {
-    const initializeInterval = setInterval(() => {
-      if (hasInitialized === false && retriesCount < 10) fetchFavorites()
-    }, 3000)
-    return () => {
-      clearInterval(initializeInterval)
-    }
-  }, [fetchFavorites, hasInitialized, retriesCount])
+  // useEffect(() => {
+  //   const initializeInterval = setInterval(() => {
+  //     if (hasInitialized === false && retriesCount < 10) fetchFavorites()
+  //   }, 3000)
+  //   return () => {
+  //     clearInterval(initializeInterval)
+  //   }
+  // }, [fetchFavorites, hasInitialized, retriesCount])
 
   useEffect(() => {
     if (failedToFetch && storedFavorites !== null) {

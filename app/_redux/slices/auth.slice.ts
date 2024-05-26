@@ -38,6 +38,9 @@ export const authSlice = createSlice({
         ? { ...state.user, ...action.payload }
         : state.user
       state.token = action.payload.token
+      console.log(action.payload.token, "jhgfdszfghj")
+      localforage.setItem(STORAGE_KEYS.RF_TOKEN, action.payload.token)
+      localforage.setItem(STORAGE_KEYS.RF_USER, action.payload.user)
     },
     updateUser: (state, action: PayloadAction<Partial<User>>) => {
       state.user = state.user

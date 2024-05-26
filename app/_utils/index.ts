@@ -83,11 +83,6 @@ export function isStrongPassword(password: string): boolean {
 
 export async function getTokenFromStorage() {
   let token = await localforage.getItem(STORAGE_KEYS.RF_TOKEN)
-  if (!token) {
-    token =
-      localStorage.getItem(STORAGE_KEYS.RF_TOKEN) ||
-      sessionStorage.getItem(STORAGE_KEYS.RF_TOKEN)
-    if (token && typeof token !== "object") token = JSON.parse(token as string)
-  }
+  console.log(token, "djfads")
   return token
 }

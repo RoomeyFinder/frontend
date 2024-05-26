@@ -24,6 +24,7 @@ export default async function axiosFetcher({
   try {
     axios.defaults.headers.common["Authorization"] =
       `Bearer ${await getTokenFromStorage()}`
+    console.log(axios.defaults.headers.common["Authorization"], await getTokenFromStorage())
     const response = await axios[method](url, body, {
       ...headers,
       baseURL: baseURL || process.env.NEXT_PUBLIC_SERVER_URL,

@@ -1,5 +1,4 @@
 "use client"
-import { ListingsContext } from "@/app/_providers/ListingsProvider"
 import { Box, Divider, HStack, Heading, Hide, VStack } from "@chakra-ui/react"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useContext, useEffect, useMemo } from "react"
@@ -20,7 +19,7 @@ export default function ListingPage() {
   const router = useRouter()
   const params = useParams()
   const searchParams = useSearchParams()
-  const { listings } = useContext(ListingsContext)
+  const { listings } = useAppSelector((store) => store.listings)
   const { rooms, loadingRooms } = useContext(SearchContext)
   const listingId = useMemo(() => params.listingId, [params])
   const isEditing = useMemo(
@@ -35,7 +34,7 @@ export default function ListingPage() {
       ),
     [rooms, listingId, isEditing, listings]
   )
-  const { user } = useAppSelector(store => store.auth)
+  const { user } = useAppSelector((store) => store.auth)
   const isOwnListing = useMemo(
     () => user?._id === listing?.owner?._id,
     [user?._id, listing?.owner?._id]

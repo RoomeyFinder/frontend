@@ -1,17 +1,22 @@
 "use client"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
-import { Suspense, useContext, useMemo } from "react"
+import { Suspense, useEffect, useMemo } from "react"
 import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "../../_components/PageHeader"
 import EditableListingCard from "../../_components/EditableListingCard"
-import { ListingsContext } from "../../_providers/ListingsProvider"
 import CenteredSpinner from "../../_components/CenteredSpinner"
 import FailureUIWithRetryButton from "../../_components/FailureUIWithRetryButton"
 import Empty from "../../_components/Empty"
 import BackButton from "../../_components/BackButton"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
 
 export default function MyAds() {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    dispatch(fetchUserListings())
+  }, [dispatch])
   return (
     <Suspense
       fallback={
@@ -27,9 +32,11 @@ export default function MyAds() {
 
 function Renderer() {
   const searchParams = useSearchParams()
+  const dispatch = useAppDispatch()
   const router = useRouter()
-  const { listings, loading, failedToFetch, reloadListings, retriesCount } =
-    useContext(ListingsContext)
+  const { listings, loading, errorMessage, hasError } = useAppSelector(
+    (store) => store.listings
+  )
   const currentDisplay = useMemo(
     () =>
       (searchParams.get("filter") || "active") as
@@ -62,12 +69,12 @@ function Renderer() {
   return (
     <Box pos="relative" minH="80dvh">
       <MyAdsHeader
-        pathname="/ads"
+        pathname="/nexus/ads"
         heading={`${currentDisplay} ${!currentDisplay.toLowerCase().includes("drafts") ? "ads" : ""}`}
         filters={["active", "drafts", "deactivated"]}
       >
         <Button
-          onClick={() => router.push("/ads?new=true")}
+          onClick={() => router.push("/nexus/ads?new=true")}
           variant="brand-secondary"
           minW={{ md: "18.5rem" }}
           ml="auto"
@@ -75,10 +82,10 @@ function Renderer() {
           Create ad
         </Button>
       </MyAdsHeader>
-      {failedToFetch && !loading && retriesCount >= 10 && (
+      {hasError && !loading && (
         <FailureUIWithRetryButton
-          text="An error was encountered while trying to load your ads"
-          handleRetry={() => reloadListings()}
+          text={errorMessage}
+          handleRetry={() => dispatch(fetchUserListings())}
         />
       )}
       {listingsToDisplay.length === 0 && !loading && (
@@ -91,7 +98,7 @@ function Renderer() {
         <VStack
           py="5rem"
           alignItems="start"
-          w="90dvw"
+          w="100%"
           maxW={{ xl: "80%" }}
           mx="auto"
           justifyContent="center"

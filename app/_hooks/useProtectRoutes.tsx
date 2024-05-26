@@ -10,14 +10,14 @@ export default function useProtectRoutes() {
   const pathname = usePathname()
   const { loading, user } = useAppSelector((store) => store.auth)
 
-  const redirectWhenNotAuthorized = useCallback(() => {
-    const currentUrl = window.location.pathname
-    if (!loading && !user && pathname.toLowerCase().includes("nexus"))
-      if (pathname.toLowerCase().includes("nexus"))
-        router.push(`/login?next=${currentUrl + window.location.search}`)
-  }, [pathname, router, user, loading])
+  // const redirectWhenNotAuthorized = useCallback(() => {
+  //   const currentUrl = window.location.pathname
+  //   if (!loading && !user && pathname.toLowerCase().includes("nexus"))
+  //     if (pathname.toLowerCase().includes("nexus"))
+  //       router.push(`/login?next=${currentUrl + window.location.search}`)
+  // }, [pathname, router, user, loading])
 
-  useEffect(() => {
-    redirectWhenNotAuthorized()
-  }, [redirectWhenNotAuthorized])
+  // useEffect(() => {
+  //   redirectWhenNotAuthorized()
+  // }, [redirectWhenNotAuthorized])
 }

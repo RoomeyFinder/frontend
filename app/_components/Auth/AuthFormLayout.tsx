@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation"
 import AuthProviderMethods from "./AuthProviderMethods"
 import RightArrow from "@/app/_assets/SVG/RightArrow"
 import { useAppSelector } from "@/app/_redux"
+import toast from "react-hot-toast"
 
 const modeTexts = {
   signin: {
@@ -62,6 +63,7 @@ export default function AuthFormLayout({
   const nextRoute = useMemo(() => searchParams.get("next"), [searchParams])
 
   useEffect(() => {
+    toast.success(nextRoute)
     if (user && !loadingAuthState) window.location.replace(nextRoute || "/")
   }, [user, nextRoute, loadingAuthState])
 
