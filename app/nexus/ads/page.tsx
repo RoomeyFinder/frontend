@@ -1,16 +1,31 @@
 "use client"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  Flex,
+  GridItem,
+  HStack,
+  Heading,
+  SimpleGrid,
+  Slide,
+  Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  VStack,
+} from "@chakra-ui/react"
 import { Suspense, useEffect, useMemo } from "react"
-import ListingForm from "./_components/ListingForm"
 import MyAdsHeader from "../../_components/PageHeader"
 import EditableListingCard from "../../_components/EditableListingCard"
 import CenteredSpinner from "../../_components/CenteredSpinner"
 import FailureUIWithRetryButton from "../../_components/FailureUIWithRetryButton"
 import Empty from "../../_components/Empty"
-import BackButton from "../../_components/BackButton"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
+import { Listing } from "@/app/_types/Listings"
 
 export default function MyAds() {
   const dispatch = useAppDispatch()
@@ -31,85 +46,92 @@ export default function MyAds() {
 }
 
 function Renderer() {
-  const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
-  const router = useRouter()
   const { listings, loading, errorMessage, hasError } = useAppSelector(
     (store) => store.listings
   )
-  const currentDisplay = useMemo(
+  const activeListings = useMemo(
+    () => listings.filter((it) => it.isActivated === true),
+    [listings]
+  )
+  const draftListings = useMemo(
+    () => listings.filter((it) => it.isDraft === true),
+    [listings]
+  )
+  const deactivatedListings = useMemo(
     () =>
-      (searchParams.get("filter") || "active") as
-        | "active"
-        | "drafts"
-        | "deactivated",
-    [searchParams]
+      listings.filter((it) => it.isActivated === false && it.isDraft === false),
+    [listings]
   )
 
-  const listingsToDisplay = useMemo(() => {
-    if (!listings) return []
-    if (currentDisplay === "active")
-      return listings.filter((it) => it.isActivated === true)
-    else if (currentDisplay === "drafts")
-      return listings.filter((it) => it.isDraft === true)
-    else
-      return listings.filter(
-        (it) => it.isActivated === false && it.isDraft === false
-      )
-  }, [listings, currentDisplay])
-
-  if (searchParams.get("new") === "true") {
-    return (
-      <Box alignItems="start" py="3rem" gap="3rem" w="86%" mx="auto">
-        <BackButton />
-        <ListingForm edit={false} />
-      </Box>
-    )
-  }
   return (
-    <Box pos="relative" minH="80dvh">
-      <MyAdsHeader
-        pathname="/nexus/ads"
-        heading={`${currentDisplay} ${!currentDisplay.toLowerCase().includes("drafts") ? "ads" : ""}`}
-        filters={["active", "drafts", "deactivated"]}
+    <Box pos="relative" minH="120dvh" py="4rem">
+      <Heading
+        px={{ base: "2rem", md: "5rem" }}
+        fontSize={{base: "2.6rem", sm:"3.6rem"}}
+        fontWeight="500"
+        mb="2.5rem"
       >
-        <Button
-          onClick={() => router.push("/nexus/ads?new=true")}
-          variant="brand-secondary"
-          minW={{ md: "18.5rem" }}
-          ml="auto"
-        >
-          Create ad
-        </Button>
-      </MyAdsHeader>
+        My Ads
+      </Heading>
+      <Tabs isFitted variant="line" colorScheme="blackAlpha" size="lg">
+        <TabList fontSize="1.4rem">
+          <Tab px="0" fontSize={{ base: "1.4rem", md: "1.6rem" }} fontWeight="600">
+            Active ({activeListings.length})
+          </Tab>
+          <Tab px="0" fontSize={{ base: "1.4rem", md: "1.6rem" }} fontWeight="600">
+            Drafts ({draftListings.length})
+          </Tab>
+          <Tab px="0" fontSize={{ base: "1.4rem", md: "1.6rem" }} fontWeight="600">
+            Deactivated ({deactivatedListings.length})
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel px="0">
+            <ListingsDisplay listings={activeListings} />
+          </TabPanel>
+          <TabPanel px="0">
+            <ListingsDisplay listings={draftListings} />
+          </TabPanel>
+          <TabPanel px="0">
+            <ListingsDisplay listings={deactivatedListings} />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
       {hasError && !loading && (
         <FailureUIWithRetryButton
           text={errorMessage}
           handleRetry={() => dispatch(fetchUserListings())}
         />
       )}
-      {listingsToDisplay.length === 0 && !loading && (
+      {/* {listingsToDisplay.length === 0 && !loading && (
         <Empty
           heading={`You do not have any ${currentDisplay} ${currentDisplay !== "drafts" ? "ads" : ""}`}
           text={"Ads you create will appear here."}
         />
-      )}
-      {listingsToDisplay.length > 0 && !loading && (
-        <VStack
-          py="5rem"
-          alignItems="start"
-          w="100%"
-          maxW={{ xl: "80%" }}
-          mx="auto"
-          justifyContent="center"
-          gap="1.8rem"
-        >
-          {listingsToDisplay.map((listing) => (
-            <EditableListingCard listing={listing} key={listing._id} />
-          ))}
-        </VStack>
-      )}
+      )} */}
+
       {loading && <CenteredSpinner />}
     </Box>
+  )
+}
+
+function ListingsDisplay({ listings }: { listings: Listing[] }) {
+  return (
+    <SimpleGrid
+      alignItems="stretch"
+      w="100%"
+      px={{ base: "2rem", md: "5rem" }}
+      py="4rem"
+      justifyContent="center"
+      gap="1.8rem"
+      columns={{ base: 1, sm: 2 }}
+    >
+      {listings.map((listing) => (
+        <GridItem key={listing._id}>
+          <EditableListingCard listing={listing} />
+        </GridItem>
+      ))}
+    </SimpleGrid>
   )
 }

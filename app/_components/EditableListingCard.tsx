@@ -26,6 +26,9 @@ import useAppToast from "../_hooks/useAppToast"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import { useRouter } from "next/navigation"
 import { pluralizeText } from "../_utils"
+import EditIcon from "../_assets/SVG/EditIcon"
+import EditSVG from "../_assets/SVG/Edit"
+import TrashIcon from "../_assets/SVG/TrashIcon"
 
 const actionBasedOnStatus = {
   active: "Deactivate",
@@ -75,28 +78,25 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
         <Box>
           <Heading
             fontSize="1.6rem"
-            fontWeight="400"
+            fontWeight="600"
             lineHeight="1.6rem"
             mb="1rem"
             noOfLines={1}
           >
-            Looking for {listing.lookingFor}.
+            {listing.streetAddress}
           </Heading>
           <Flex gap={{ base: ".6rem", md: "1rem" }} alignItems="center">
             <Text fontSize="1.4rem" fontWeight="600" color="gray.main">
-              <Show below="lg">
-                <Text
-                  as="span"
-                  fontSize="1.4rem"
-                  fontWeight="600"
-                  color="gray.main"
-                >
-                  {listing.features?.length || 0}&nbsp;
-                </Text>
-              </Show>
+              <Text
+                as="span"
+                fontSize="1.4rem"
+                fontWeight="600"
+                color="gray.main"
+              >
+                {listing.features?.length || 0}&nbsp;
+              </Text>
               Features
             </Text>
-            <ListingFeatures features={listing?.features || []} />
             <Flex as={Text} alignItems="center" fontSize="1.4rem" gap=".8rem">
               <EyeIcon />
               {listing.viewsCount}
@@ -104,10 +104,18 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
           </Flex>
         </Box>
       </Flex>
-      <ListingActions
-        listingId={listing._id as string}
-        primaryActionText={actionBasedOnStatus[status]}
-      />
+      <Flex gap={{base: ".8rem", md: "1rem"}} alignItems="center">
+        <TextButton aria-label="Edit" as={IconButton}>
+          <EditSVG />
+        </TextButton>
+        <TextButton color="red.main" aria-label="Delete" as={IconButton}>
+          <TrashIcon />
+        </TextButton>
+        <ListingActions
+          listingId={listing._id as string}
+          primaryActionText={actionBasedOnStatus[status]}
+        />
+      </Flex>
     </Flex>
   )
 }
@@ -120,8 +128,7 @@ function ListingActions({
   listingId: string
 }) {
   const router = useRouter()
-  const { updateListing, deleteListing } =
-    useContext(ListingsContext)
+  const { updateListing, deleteListing } = useContext(ListingsContext)
   const toast = useAppToast()
   const { fetchData } = useAxios()
 
@@ -144,81 +151,51 @@ function ListingActions({
     [toast, updateListing, listingId, router, fetchData, deleteListing]
   )
 
-  const renderButtons = useCallback(() => {
-    return (
-      <>
-        <TextButton
-          onClick={(e) => {
-            e.stopPropagation()
-            handleAction(getActionFetchOptions(primaryActionText, listingId))
-          }}
-        >
-          {primaryActionText}
-        </TextButton>
-        {primaryActionText !== "Continue editing" && (
-          <TextButton
-            onClick={(e) => {
-              e.stopPropagation()
-              handleAction(getActionFetchOptions("Continue editing", listingId))
-            }}
-          >
-            Edit
-          </TextButton>
-        )}
-        <TextButton
-          color="red.main"
-          onClick={(e) => {
-            e.stopPropagation()
-            handleAction(getActionFetchOptions("Delete", listingId))
-          }}
-        >
-          Delete
-        </TextButton>
-      </>
-    )
-  }, [primaryActionText, listingId, handleAction])
-
   return (
     <>
-      <Show below="md">
-        <Popover placement="bottom-start">
-          <PopoverTrigger>
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-              color="gray.main"
-              _hover={{ color: "brand.main", bg: "transparent" }}
-              p="1rem"
-              bg="transparent"
-              aria-label="toggle options"
-              h="unset"
-              w="unset"
-            >
-              <ThreeDotIcon />
-            </IconButton>
-          </PopoverTrigger>
-          <PopoverContent
-            bg="white"
-            boxShadow="0px 0px 20px 1px #00000012"
-            border="0"
-            w="max-content"
+      {/* <Show below="md"> */}
+      <Popover placement="bottom-start">
+        <PopoverTrigger>
+          <IconButton
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+            color="gray.main"
+            _hover={{ color: "brand.main", bg: "transparent" }}
             p="1rem"
-            rounded="1.2rem"
+            bg="transparent"
+            aria-label="toggle options"
+            h="unset"
+            w="unset"
           >
-            <PopoverBody>
-              <VStack spacing="1.5rem" alignItems="start">
-                {renderButtons()}
-              </VStack>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-      </Show>
-      <Show above="md">
-        <HStack spacing="1.5rem" alignItems="start">
-          {renderButtons()}
-        </HStack>
-      </Show>
+            <ThreeDotIcon />
+          </IconButton>
+        </PopoverTrigger>
+        <PopoverContent
+          bg="white"
+          boxShadow="0px 0px 20px 1px #00000012"
+          border="0"
+          w="max-content"
+          p="1rem"
+          rounded="1.2rem"
+        >
+          <PopoverBody>
+            <VStack spacing="1.5rem" alignItems="start">
+              <TextButton
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleAction(
+                    getActionFetchOptions(primaryActionText, listingId)
+                  )
+                }}
+                w="full"
+              >
+                {primaryActionText}
+              </TextButton>
+            </VStack>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
     </>
   )
 }
@@ -228,14 +205,14 @@ const getActionFetchOptions = (
   listingId: string
 ): FetchOptions => {
   switch (primaryActionText) {
-  case "Activate":
-    return { url: `/listings/${listingId}/activate`, method: "put" }
-  case "Deactivate":
-    return { url: `/listings/${listingId}/deactivate`, method: "put" }
-  case "Delete":
-    return { url: `/listings/${listingId}`, method: "delete" }
-  default:
-    return { url: "/", method: "get" }
+    case "Activate":
+      return { url: `/listings/${listingId}/activate`, method: "put" }
+    case "Deactivate":
+      return { url: `/listings/${listingId}/deactivate`, method: "put" }
+    case "Delete":
+      return { url: `/listings/${listingId}`, method: "delete" }
+    default:
+      return { url: "/", method: "get" }
   }
 }
 
@@ -246,45 +223,15 @@ function TextButton({
   return (
     <Text
       as="button"
+      aria-label={rest["aria-label"]}
       fontSize="1.6rem"
       fontWeight="600"
       lineHeight="1.6rem"
+      bg="transparent"
+      _hover={{ bg: "brand.10" }}
       {...rest}
     >
       {children}
     </Text>
-  )
-}
-
-function ListingFeatures({ features }: { features: Listing["features"] }) {
-  const additionalFeatures = useMemo(() => {
-    if (features) {
-      if (features.length >= 5) return features.length - 3
-    }
-  }, [features])
-  return (
-    <Show above="lg">
-      <HStack gap="1.2rem">
-        {features?.map((feature, idx) => (
-          <Fragment key={feature._id}>
-            {idx < 3 && (
-              <FeatureTag
-                item={feature}
-                editable={false}
-                bg="#D9D9D9"
-                padding="1rem 2rem"
-                rounded=".5rem"
-              />
-            )}
-          </Fragment>
-        ))}
-        {additionalFeatures && (
-          <Text fontWeight="semibold" fontSize="1.2rem" color="gray.main">
-            +{additionalFeatures}{" "}
-            {pluralizeText("more feature", additionalFeatures, "s")}
-          </Text>
-        )}
-      </HStack>
-    </Show>
   )
 }
