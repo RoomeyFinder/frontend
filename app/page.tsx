@@ -2,17 +2,17 @@
 import {
   Box,
   Button,
-  Divider,
+  // Divider,
   Flex,
   Heading,
   Link,
   Text,
 } from "@chakra-ui/react"
-import PublishAdClicker from "./_components/PublishAdClicker"
+// import PublishAdClicker from "./_components/PublishAdClicker"
 import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
-import PeopleGroup from "./_assets/SVG/PeopleGroup"
+// import PeopleGroup from "./_assets/SVG/PeopleGroup"
 import {
   LegacyRef,
   ReactNode,
@@ -26,21 +26,18 @@ import ListingsGridLayout from "./_components/ListingsGridLayout"
 import RoomListingCard from "./_components/RoomListingCard"
 import { Listing } from "./_types/Listings"
 import Empty from "./_components/Empty"
-import {
-  RoomListingCardSkeleton,
-} from "./_components/Skeletons/ListingCardSkeleton"
 import { useAppSelector } from "./_redux"
+import { RoomListingCardSkeleton } from "./_components/Skeletons/ListingCardSkeleton"
+import Image from "next/image"
+import heroImage from "./_assets/images/hero-image.jpg"
+import ForRent from "./_assets/SVG/ForRent"
 
 export default function Home() {
-  const { roomies, rooms } = useContext(SearchContext)
   return (
     <>
       <Hero />
-      {rooms.length <= 12 && roomies.length <= 12 ? (
-        <ListingsSection />
-      ) : (
-        <FeaturesSection />
-      )}
+      <FeaturesSection />
+      <ListingsSection />
     </>
   )
 }
@@ -50,19 +47,25 @@ function Hero() {
     <>
       <Flex
         minH="40dvh"
-        bg="white.200"
-        textAlign="center"
-        justifyContent="center"
+        bg="white"
+        justifyContent="space-between"
         alignItems="center"
-        py={{ base: "8rem", md: "14.6rem" }}
+        flexDir={{ base: "column", md: "row" }}
+        px={{ base: "3rem", md: "8rem", lg: "8rem" }}
+        py={{ base: "5rem", md: "10rem" }}
       >
-        <Box as="main" maxW="80rem" w="95dvw">
-          <Heading as="h1" variant="xl" mb="2.5rem">
+        <Box as="main">
+          <Heading
+            as="h1"
+            variant="xl"
+            mb="2.5rem"
+            fontSize={{ base: "4rem", md: "7rem" }}
+          >
             Find Roomies & Rooms.
           </Heading>
-          <Divider borderColor="gray.100" />
+
           <Text
-            fontSize={{ base: "1.3rem", md: "1.6rem" }}
+            fontSize={{ base: "1.6rem", md: "2rem" }}
             color="gray.main"
             mb="4.9rem"
             lineHeight="2.2rem"
@@ -71,17 +74,24 @@ function Hero() {
             professional seeking a shared living space, or a homeowner looking
             for a compatible roommate, we&apos;ve got you covered.
           </Text>
-          <Button display="block" mx="auto" variant="main" mb="4.5rem">
-            <PublishAdClicker>Publish Your Ad</PublishAdClicker>
-          </Button>
-          <Link
-            color="gray.main"
-            fontSize={{ base: "1.3rem", md: "1.675rem" }}
-            lineHeight="0"
-            href="/help"
+          <Button
+            px="3rem"
+            py="1.5rem"
+            as={Link}
+            href="/signup"
+            variant={"brand"}
+            fontSize="2rem"
+            width="fit-content"
+            fontWeight="700"
           >
-            Info & Advice
-          </Link>
+            Get Started
+          </Button>
+        </Box>
+        <Box maxW={{ base: "100vw", md: "50vw", lg: "50vw" }}>
+          <Image
+            src={heroImage}
+            alt="Hero image for Roomeyfinder. Two ladies sitting on a blue couch having coffee"
+          />
         </Box>
       </Flex>
     </>
@@ -93,48 +103,52 @@ function FeaturesSection() {
     <>
       <Flex
         minH="40dvh"
-        bg="white"
+        bg="#f5f9ff"
         textAlign="center"
         justifyContent="center"
         w="100%"
-        py={{ base: "8rem", md: "5rem" }}
+        px={{ base: "3rem", md: "8rem", lg: "8rem" }}
+        py={{ base: "5rem", md: "8rem" }}
       >
-        <Box as="section" w="95dvw">
-          <Heading as="h1" variant="md" mb="3rem">
+        <Box as="section">
+          <Heading
+            as="h1"
+            variant="md"
+            mb="3rem"
+            fontSize={{ base: "3rem", md: "5rem" }}
+          >
             What Roomeyfinder offers
           </Heading>
           <Text
-            fontSize={{ base: "1.3rem", md: "1.6rem" }}
-            color="gray.main"
+            fontSize={{ base: "1.7rem", md: "2.6rem" }}
             mb="5rem"
             maxW="80rem"
             mx="auto"
-            lineHeight="2.2rem"
+            lineHeight="3rem"
           >
-            Roomeyfinder helps you find roommates who are schoolmates with ease.
-            We make finding your ideal living situation one less hassle.
+            Find your perfect roommate effortlessly.
           </Text>
           <Flex
             as="ul"
             flexWrap="wrap"
-            gap="5rem"
+            gap="3rem"
             w="full"
             justifyContent="center"
           >
             <FeatureCard
-              iconChild={<PeopleGroup />}
+              iconChild={<ForRent />}
               heading="List your space"
               body="Roomeyfinder helps you effortlessly project and list your available living spaces. Our platform serves as a dedicated avenue to showcase your space and connect with individuals searching for their ideal space."
             />
             <FeatureCard
               iconChild={<Handlens />}
               heading="Find a new space"
-              body=" We are here to help you find the perfect living space. Our platform is designed to provide a seamless avenue for discovering spaces that match your preferences. We provide access to a detailed selection of spaces  to help you make informed decisions."
+              body=" Our platform is designed to provide a seamless avenue for discovering spaces that match your preferences. We provide access to a detailed selection of spaces  to help you make the best choice."
             />
             <FeatureCard
               iconChild={<ChatIcon />}
               heading="Message potential roommates"
-              body="Message and get in touch with potential roommates in order to get to k now each other better by using the Roomeyfinder messaging system."
+              body="Message and get in touch with potential roommates in order to get to know each other  by using the Roomeyfinder messaging system."
             />
           </Flex>
         </Box>
@@ -144,15 +158,9 @@ function FeaturesSection() {
 }
 
 function ListingsSection() {
-  const { user } = useAppSelector(store => store.auth)
-  const {
-    rooms,
-    hasMoreRooms,
-    loadMoreRooms,
-    loadingRooms,
-    search,
-    focus,
-  } = useContext(SearchContext)
+  const { user } = useAppSelector((store) => store.auth)
+  const { rooms, hasMoreRooms, loadMoreRooms, loadingRooms, search, focus } =
+    useContext(SearchContext)
 
   const roomsSectionRef = useRef<HTMLDivElement | null>(null)
   const allListingsRef = useRef<HTMLDivElement | null>(null)
@@ -182,7 +190,9 @@ function ListingsSection() {
     <>
       <Box ref={allListingsRef}>
         <ListSectionContainer sectionRef={roomsSectionRef}>
-          <Heading variant="md">Latest Rooms</Heading>
+          <Heading pl="1.2rem" variant="md">
+            Latest Rooms
+          </Heading>
           <RoomsList
             rooms={filteredRoomsBySearch}
             allowFavoriting={user !== null}
@@ -306,7 +316,11 @@ function ContinueExploring({
         fontWeight={{ md: "400" }}
         padding={{ md: "0" }}
         _hover={{
-          md: { bg: "transparent", color: "black", textDecor: "underline" },
+          md: {
+            bg: "transparent",
+            color: "black",
+            textDecor: "underline",
+          },
         }}
         _active={{ bg: "transparent" }}
       >

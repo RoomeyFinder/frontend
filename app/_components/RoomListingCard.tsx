@@ -56,7 +56,6 @@ export default function RoomListingCard({
       onClick={() =>
         user ? router.push(`/ads/${listingId}`) : showAuthModal()
       }
-      _hover={{ shadow: "md", background: "white" }}
       w="95dvw"
       padding={variant === "outlined" ? "1rem" : "0"}
       maxW={{ base: "32rem", sm: "28.3rem" }}
@@ -137,11 +136,18 @@ export function FavouriteButton({
       doc: listingId,
       type,
     }
-    const res = await fetchData({ url: "/favorites/me", method: "post", body })
+    const res = await fetchData({
+      url: "/favorites/me",
+      method: "post",
+      body,
+    })
     if (res.statusCode === 201) {
       addNewFavorite(res.favorite)
     } else
-      toast({ status: "error", title: res.message || "Something went wrong" })
+      toast({
+        status: "error",
+        title: res.message || "Something went wrong",
+      })
     setLoading(false)
   }, [type, fetchData, toast, addNewFavorite, listingId])
 
@@ -155,7 +161,10 @@ export function FavouriteButton({
     })
     if (res.statusCode === 200) deleteSingleFavorite(res.favorite)
     else
-      toast({ status: "error", title: res.message || "Something went wrong" })
+      toast({
+        status: "error",
+        title: res.message || "Something went wrong",
+      })
     setLoading(false)
   }, [fetchData, favorite, deleteSingleFavorite, toast])
 
@@ -258,7 +267,7 @@ function OwnersInfo({ ownersName }: { ownersName: string }) {
 
 function AboutSection({
   title,
-  ownersOccupation,
+  // ownersOccupation,
   location,
   apartmentType,
   rentAmount,
@@ -287,11 +296,6 @@ function AboutSection({
       >
         <Text as="span" whiteSpace="nowrap">
           {apartmentType}
-        </Text>
-
-        <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
-        <Text as="span" noOfLines={1} maxW="6.7rem">
-          {ownersOccupation}
         </Text>
 
         <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
