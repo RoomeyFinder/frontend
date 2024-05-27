@@ -1,8 +1,14 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
+  Button,
   ButtonProps,
   Flex,
-  HStack,
   Heading,
   IconButton,
   Image,
@@ -11,24 +17,33 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
-  Show,
   Text,
   TextProps,
   VStack,
 } from "@chakra-ui/react"
-import { FeatureTag } from "../nexus/ads/_components/FeaturesInput"
 import EyeIcon from "../_assets/SVG/EyeIcon"
 import ThreeDotIcon from "../_assets/SVG/ThreeDotIcon"
 import { Listing } from "../_types/Listings"
-import { Fragment, useCallback, useContext, useMemo } from "react"
+import {
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import useAxios, { FetchOptions } from "../_hooks/useAxios"
-import useAppToast from "../_hooks/useAppToast"
 import { ListingsContext } from "../_providers/ListingsProvider"
 import { useRouter } from "next/navigation"
-import { pluralizeText } from "../_utils"
-import EditIcon from "../_assets/SVG/EditIcon"
 import EditSVG from "../_assets/SVG/Edit"
 import TrashIcon from "../_assets/SVG/TrashIcon"
+import toast from "react-hot-toast"
+import { useAppDispatch } from "../_redux"
+import {
+  activateListing,
+  deactivateListing,
+  deleteListing,
+} from "../_redux/thunks/listings.thunk"
 
 const actionBasedOnStatus = {
   active: "Deactivate",
@@ -36,8 +51,18 @@ const actionBasedOnStatus = {
   draft: "Continue editing",
 }
 
+const buttonProps = {
+  bg: "transparent",
+  fontSize: "1.6rem",
+  fontWeight: "600",
+  lineHeight: "1.6rem",
+  _hover: { bg: "brand.10" },
+}
+
 export default function EditableListingCard({ listing }: { listing: Listing }) {
   const router = useRouter()
+  const dispatch = useAppDispatch()
+  const [showConfirmDeletion, setShowConfirmDeletion] = useState(false)
   const status = useMemo(() => {
     if (listing.isActivated) return "active"
     if (listing.isDraft) return "draft"
@@ -60,14 +85,18 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       w="100%"
       px={{ base: "1rem", md: "2rem" }}
       py="1rem"
-      onClick={() => {
-        if (isActivated) {
-          router.push(`/ads/${listing._id}`)
-        }
-      }}
       _hover={{ textDecor: "none", boxShadow: isActivated ? "md" : "" }}
     >
-      <Flex alignItems="center" gap="1rem">
+      <Flex
+        alignItems="center"
+        gap="1rem"
+        onClick={() => {
+          if (isActivated) {
+            router.push(`/ads/${listing._id}`)
+          }
+        }}
+        as="button"
+      >
         <Image
           alt=""
           w={{ base: "5rem", md: "7rem" }}
@@ -104,14 +133,33 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
           </Flex>
         </Box>
       </Flex>
-      <Flex gap={{base: ".8rem", md: "1rem"}} alignItems="center">
-        <TextButton aria-label="Edit" as={IconButton}>
-          <EditSVG />
-        </TextButton>
-        <TextButton color="red.main" aria-label="Delete" as={IconButton}>
-          <TrashIcon />
-        </TextButton>
+      <Flex gap={{ base: ".8rem", md: "1rem" }} alignItems="center">
+        <IconButton
+          aria-label="Edit"
+          onClick={() => router.push(`/nexus/ads/edit?id=${listing._id}`)}
+          icon={<EditSVG />}
+          {...buttonProps}
+        />
+        <IconButton
+          color="red.main"
+          aria-label="Delete"
+          onClick={(e) => {
+            e.stopPropagation()
+            setShowConfirmDeletion(true)
+          }}
+          icon={<TrashIcon />}
+          {...buttonProps}
+        />
+        <ConfirmDeleteDialog
+          isOpen={showConfirmDeletion}
+          onClose={() => setShowConfirmDeletion(false)}
+          handleConfirmation={() => {
+            return dispatch(deleteListing(listing._id))
+          }}
+          heading="Delete Ad"
+        />
         <ListingActions
+          isActiveListing={listing.isActivated === true}
           listingId={listing._id as string}
           primaryActionText={actionBasedOnStatus[status]}
         />
@@ -123,37 +171,30 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
 function ListingActions({
   primaryActionText,
   listingId,
+  isActiveListing,
 }: {
   primaryActionText: string
   listingId: string
+  isActiveListing: boolean
 }) {
   const router = useRouter()
-  const { updateListing, deleteListing } = useContext(ListingsContext)
-  const toast = useAppToast()
-  const { fetchData } = useAxios()
-
-  const handleAction = useCallback(
-    async (options: FetchOptions) => {
-      if (options.url === "/") return router.push(`/ads/${listingId}?edit=true`)
-      toast.closeAll()
-      const res = await fetchData(options)
-      toast({
-        status: res.statusCode >= 400 ? "error" : "success",
-        title:
-          options.method === "delete" ? "Deleted successfully" : res.message,
-      })
-      if (options.method === "delete") {
-        deleteListing(listingId)
-      }
-      if (res.statusCode === 200 && res.listing)
-        updateListing(res.listing as Listing)
-    },
-    [toast, updateListing, listingId, router, fetchData, deleteListing]
-  )
+  const dispatch = useAppDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+  const handleAction = useCallback(async () => {
+    if (primaryActionText === actionBasedOnStatus.draft)
+      return router.push(`/ads/${listingId}?edit=true`)
+    if (isLoading) return
+    setIsLoading(true)
+    dispatch(
+      isActiveListing
+        ? deactivateListing(listingId)
+        : activateListing(listingId)
+    )
+    setIsLoading(false)
+  }, [listingId, dispatch, router, isLoading])
 
   return (
     <>
-      {/* <Show below="md"> */}
       <Popover placement="bottom-start">
         <PopoverTrigger>
           <IconButton
@@ -184,10 +225,9 @@ function ListingActions({
               <TextButton
                 onClick={(e) => {
                   e.stopPropagation()
-                  handleAction(
-                    getActionFetchOptions(primaryActionText, listingId)
-                  )
+                  handleAction()
                 }}
+                isLoading={isLoading}
                 w="full"
               >
                 {primaryActionText}
@@ -209,8 +249,6 @@ const getActionFetchOptions = (
       return { url: `/listings/${listingId}/activate`, method: "put" }
     case "Deactivate":
       return { url: `/listings/${listingId}/deactivate`, method: "put" }
-    case "Delete":
-      return { url: `/listings/${listingId}`, method: "delete" }
     default:
       return { url: "/", method: "get" }
   }
@@ -221,17 +259,65 @@ function TextButton({
   ...rest
 }: TextProps & LinkProps & ButtonProps) {
   return (
-    <Text
-      as="button"
-      aria-label={rest["aria-label"]}
-      fontSize="1.6rem"
-      fontWeight="600"
-      lineHeight="1.6rem"
-      bg="transparent"
-      _hover={{ bg: "brand.10" }}
-      {...rest}
-    >
+    <Button aria-label={rest["aria-label"]} {...buttonProps} {...rest}>
       {children}
-    </Text>
+    </Button>
+  )
+}
+
+function ConfirmDeleteDialog({
+  isOpen,
+  onClose,
+  heading,
+  handleConfirmation,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  handleConfirmation: () => {}
+  heading: ReactNode | ReactNode[]
+}) {
+  const cancelRef = useRef(null)
+  return (
+    <AlertDialog
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      onClose={onClose}
+    >
+      <AlertDialogOverlay>
+        <AlertDialogContent bg="white">
+          <AlertDialogHeader fontSize="1.8rem" fontWeight="bold">
+            {heading}
+          </AlertDialogHeader>
+
+          <AlertDialogBody fontSize="1.4rem">
+            Are you sure? You can't undo this action afterwards.
+          </AlertDialogBody>
+
+          <AlertDialogFooter>
+            <Button
+              bg="white.400"
+              _hover={{ bg: "brand.10" }}
+              ref={cancelRef}
+              onClick={onClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              colorScheme="red"
+              h="unset"
+              px="1rem"
+              py=".5rem"
+              ml={3}
+              onClick={() => {
+                handleConfirmation()
+                onClose()
+              }}
+            >
+              Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
   )
 }

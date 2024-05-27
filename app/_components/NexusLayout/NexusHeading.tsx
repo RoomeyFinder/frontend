@@ -81,15 +81,15 @@ export default function NexusHeading({
                 fontSize="1.5rem"
                 fontWeight="600"
                 gap="1.2rem"
-                color="white"
+                bg="brand.10"
                 rounded="1.2rem"
-                bg="brand.main"
+                color="brand.main"
                 h="5rem"
                 px="1.5rem"
                 transition="all 250ms ease"
                 _hover={{
-                  color: "brand.main",
-                  bg: "brand.10",
+                  color: "white",
+                  bg: "brand.main",
                 }}
                 onClick={() => dispatch(logout())}
               >
