@@ -77,7 +77,7 @@ function Renderer() {
   }, [dispatch, hasError])
 
   return (
-    <Box pos="relative" py="4rem">
+    <Box pos="relative" py="2rem">
       {withPrependPortal(
         <AppNotification
           onClose={() => {
@@ -89,13 +89,13 @@ function Renderer() {
         document.body
       )}
       <Flex
-        mb={{ base: "2.5rem", md: "4rem" }}
+        mb={{ base: "2.3rem", }}
         w="full"
         alignItems="center"
         justifyContent="space-between"
         px={{ base: "2rem", md: "5rem" }}
       >
-        <Heading fontSize={{ base: "2.6rem", sm: "3.6rem" }} fontWeight="500">
+        <Heading fontSize={{ base: "2.6rem", sm: "3.2rem" }} fontWeight="500">
           My Ads
         </Heading>
         <Button

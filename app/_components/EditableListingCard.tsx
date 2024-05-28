@@ -111,6 +111,7 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
             lineHeight="1.6rem"
             mb="1rem"
             noOfLines={1}
+            textAlign="left"
           >
             {listing.streetAddress}
           </Heading>
