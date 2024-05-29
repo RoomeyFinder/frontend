@@ -59,7 +59,7 @@ function Renderer() {
     [favorites]
   )
   return (
-    <Box pos="relative" py="2rem">
+    <Box pos="relative" py="3rem">
       {withPrependPortal(
         <AppNotification
           onClose={() => {
@@ -71,7 +71,7 @@ function Renderer() {
         document.body
       )}
       <Heading
-        mb={{ base: "3.2rem" }}
+        mb={{ base: "2.2rem" }}
         w="full"
         px={{ base: "2rem", md: "5rem" }}
         fontSize={{ base: "2.6rem", sm: "3.2rem" }}
