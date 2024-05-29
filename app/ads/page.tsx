@@ -1,0 +1,118 @@
+"use client"
+import { Box, Flex, Heading, Spinner } from "@chakra-ui/react"
+import { LegacyRef, ReactNode, Suspense, useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
+import { Listing } from "@/app/_types/Listings"
+import { resetError } from "@/app/_redux/slices/listings.slice"
+import { useRouter } from "next/navigation"
+import Loading from "../_assets/SVG/Loading"
+import Empty from "../_components/Empty"
+import ListingsGridLayout from "../_components/ListingsGridLayout"
+import RoomListingCard from "../_components/RoomListingCard"
+import { RoomListingCardSkeleton } from "../_components/Skeletons/ListingCardSkeleton"
+import { fetchListings } from "../_redux/thunks/search.thunk"
+
+export default function Search() {
+  const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    !hasFetchedInitialListings && dispatch(fetchListings())
+  }, [dispatch, hasFetchedInitialListings])
+  return <ListingsSection />
+}
+
+function ListingsSection() {
+  const { user } = useAppSelector((store) => store.auth)
+  const { listings, loading } = useAppSelector((store) => store.search)
+  if (listings.length === 0 && !loading) return null
+  return (
+    <>
+      <>
+        <ListSectionContainer>
+          <Heading variant="md">Latest Rooms</Heading>
+          {loading ? (
+            <Box opacity=".8" mx="auto" w="100%" maxW="40rem">
+              <Loading />
+            </Box>
+          ) : (
+            <RoomsList
+              rooms={listings}
+              allowFavoriting={user !== null}
+              loading={loading}
+              emptyTextValue={<>No rooms found</>}
+            />
+          )}
+        </ListSectionContainer>
+      </>
+    </>
+  )
+}
+
+function ListSectionContainer({
+  children,
+}: {
+  children: ReactNode | ReactNode[]
+}) {
+  return (
+    <Box
+      w={{ base: "95dvw", md: "full" }}
+      maxW={{ base: "94%", xl: "none" }}
+      mx="auto"
+      display="flex"
+      flexDir="column"
+      gap="3rem"
+      py={{ base: "3rem", md: "6rem" }}
+    >
+      {children}
+    </Box>
+  )
+}
+
+function RoomsList({
+  rooms,
+  allowFavoriting,
+  loading,
+  emptyTextValue,
+}: {
+  rooms: Listing[]
+  allowFavoriting: boolean
+  loading: boolean
+  emptyTextValue: ReactNode
+}) {
+  if (loading)
+    return (
+      <ListingsGridLayout
+        list={new Array(12).fill(1).map((_, idx) => (
+          <RoomListingCardSkeleton key={idx} />
+        ))}
+      />
+    )
+  if (rooms.length === 0 && !loading)
+    return <Empty heading="Oops" text={emptyTextValue} />
+  return (
+    <>
+      <ListingsGridLayout
+        list={rooms.map((room) => (
+          <RoomListingCard
+            key={room._id}
+            ownersName={room.owner?.firstName as string}
+            ownersOccupation={room.owner?.occupation as string}
+            city={room.city as string}
+            rentAmount={room.rentAmount as number}
+            rentDuration={room.rentDuration as any}
+            title={room.lookingFor as string}
+            images={room.photos as []}
+            showFavoriteButton={allowFavoriting}
+            listingId={room._id as string}
+            listing={room}
+            variant="outlined"
+          />
+        ))}
+        justifyContent="start"
+        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        alignItems="stretch"
+      ></ListingsGridLayout>
+    </>
+  )
+}
