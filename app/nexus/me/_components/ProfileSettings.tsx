@@ -28,17 +28,17 @@ export default function ProfileSettings({ user }: { user: User | null }) {
           display="flex"
           alignItems="start"
           gap="1.4rem"
-          fontSize="2.8rem"
+          fontSize="2rem"
         >
           Settings
         </Heading>
-        <Text fontSize="1.6rem" color="gray.main">
+        <Text fontSize="1.4rem" color="gray.main"     fontWeight="500">
           Manage your account preferences
         </Text>
         <VStack
-          fontWeight="600"
+     
           alignItems="start"
-          fontSize="1.6rem"
+          fontSize="1.4rem"
           w="full"
           color="gray.main"
         >
@@ -54,6 +54,7 @@ export default function ProfileSettings({ user }: { user: User | null }) {
         top="70%"
         right="0"
         transform="translateY(-50%)"
+        opacity=".3"
       >
         <Settings />
       </Box>

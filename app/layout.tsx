@@ -28,7 +28,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-
   return (
     <html lang="en">
       <body>
@@ -41,22 +40,10 @@ export default function RootLayout({
                 <ReduxProvider>
                   <LayoutDispatchProvider>
                     <AuthModalProvider>
-                      <SearchProvider>
-                          <FavoritesProvider>
-                            <InterestsProvider>
-                              <MessengerProvider>
-                                <MessagesProvider>
-                                  <NotificationProvider>
-                                    <GlobalLayout>
-                                      {children}
-                                      <AuthModal />
-                                    </GlobalLayout>
-                                  </NotificationProvider>
-                                </MessagesProvider>
-                              </MessengerProvider>
-                            </InterestsProvider>
-                          </FavoritesProvider>
-                      </SearchProvider>
+                      <GlobalLayout>
+                        {children}
+                        <AuthModal />
+                      </GlobalLayout>
                     </AuthModalProvider>
                   </LayoutDispatchProvider>
                 </ReduxProvider>

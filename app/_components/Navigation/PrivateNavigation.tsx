@@ -1,12 +1,10 @@
 "use client"
-import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
 import {
   Avatar,
   Box,
   Text,
   Button,
   Flex,
-  Icon,
   Menu,
   MenuButton,
   MenuDivider,
@@ -17,41 +15,31 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  HStack,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import { baseNavItemStyles } from "./SupportNavList"
-import { privateLinks } from "../../_data/navLinks"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
 import NotificationsDropdown from "../Notifications/NotificationsDropdown"
-import {  useState } from "react"
-import { PremiumModalInfoOnly } from "../PremiumModal"
-import { FooterLink } from "../AppFooter"
-import UserSettingsIcon from "@/app/_assets/SVG/UserSettingsIcon"
-import UserIconSmall from "@/app/_assets/SVG/UserIconSmall"
-import { useAppSelector } from "@/app/_redux"
-import GrowthIcon from "@/app/_assets/SVG/GrowthIcon"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import LogoutIcon from "@/app/_assets/SVG/Logout"
+import UserIcon from "@/app/_assets/SVG/UserIcon"
+import { logout } from "@/app/_redux/slices/auth.slice"
 
 export default function PrivateNavigation() {
   const router = useRouter()
   return (
     <Flex alignItems="center" gap="4rem">
+      <Button
+        variant="brand-secondary"
+        fontWeight="600"
+        display={{ base: "none", sm: "block" }}
+      >
+        Create ad
+      </Button>
       <Show above="md">
         <Flex gap="4rem">
-          <HStack gap="6rem" w="100%">
-            <FooterLink href="/profile">My Profile</FooterLink>
-            {privateLinks.map((link) => (
-              <Show above={link.showBelow} key={link.name}>
-                {!link.isIcon && (
-                  <FooterLink href={link.href} key={link.name}>
-                    {link.name}
-                  </FooterLink>
-                )}
-              </Show>
-            ))}
-          </HStack>
           <Text as="button" onClick={() => router.push("/messenger")}>
             <StandAloneIcon>
               <MessageIcon />
@@ -95,23 +83,19 @@ function MobileNavigation() {
             >
               <Flex
                 as="span"
-                boxShadow={
-                  isOpen ? "" : "0px 0px 1.5px 0px rgba(0, 0, 0, 0.05)"
-                }
                 rounded="1rem"
                 gap="2rem"
-                py=".5rem"
-                px="1rem"
-                border="1px solid"
-                borderColor="white.100"
                 alignItems="center"
                 color={isOpen ? "brand.main" : "black"}
               >
-                <Icon as={HamburgerIcon} />
                 <Avatar
-                  name={user?.firstName || "Roomey"}
+                  name={user?.firstName}
                   color="white"
                   background="brand.main"
+                  w="4rem"
+                  h="4rem"
+                  size="lg"
+                  fontWeight="500"
                 />
               </Flex>
             </MenuButton>
@@ -137,45 +121,34 @@ function MobileNavigation() {
 
 function MainPrivateNav() {
   const router = useRouter()
-  const [showPremiumModal, setShowPremiumModal] = useState(false)
+  const dispatch = useAppDispatch()
 
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
-        <Show below="md">
-          <PrivateMenuItem onClick={() => router.push("/profile")}>
-            <PrivateMenuIcon width="2rem" as={UserIconSmall} />
-            <Text as="span">My Profile</Text>
-          </PrivateMenuItem>
-          <PrivateMenuDivider />
-        </Show>
-        {privateLinks.map((link, idx, arr) => (
-          <Show key={link.name} below={link.showBelow}>
-            <PrivateMenuItem onClick={() => router.push(link.href)}>
-              <PrivateMenuIcon as={link.icon} />
-              {link.name}
-            </PrivateMenuItem>
-            {idx < arr.length - 1 && <PrivateMenuDivider />}
-          </Show>
-        ))}
-        <PrivateMenuItem onClick={() => router.push("/profile/account")}>
-          <PrivateMenuIcon as={UserSettingsIcon} />
-          <Text as="span">Account</Text>
+        <PrivateMenuItem onClick={() => router.push("/nexus/me")}>
+          <PrivateMenuIcon width="2rem" as={UserIcon} />
+          <Text as="span">Dashboard</Text>
         </PrivateMenuItem>
         <PrivateMenuDivider />
-        <PrivateMenuItem
+        <PrivateMenuItem onClick={() => dispatch(logout())}>
+          <PrivateMenuIcon as={LogoutIcon} />
+          <Text as="span">Logout</Text>
+        </PrivateMenuItem>
+        <PrivateMenuDivider />
+        {/* <PrivateMenuItem
           closeOnSelect={true}
           onClick={() => setShowPremiumModal(true)}
         >
           <PrivateMenuIcon as={GrowthIcon} />
           Premium
-        </PrivateMenuItem>
+        </PrivateMenuItem> */}
       </Flex>
       <InterestsAccessCount />
-      <PremiumModalInfoOnly
+      {/*  <PremiumModalInfoOnly
         show={showPremiumModal}
         onClose={() => setShowPremiumModal(false)}
-      />
+      /> */}
     </>
   )
 }

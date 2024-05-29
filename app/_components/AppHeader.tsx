@@ -8,21 +8,19 @@ export default function AppHeader() {
   const pathname = usePathname()
   return (
     <Flex
-      data-testid='header'
-      as='header'
-      position='sticky'
-      zIndex='150'
-      top='0'
-      h='9dvh'
-      minH='8rem'
-      justifyContent={{ base: "space-between", "2xl": "space-around" }}
+      data-testid="header"
+      as="header"
+      position="sticky"
+      zIndex="150"
+      top="0"
+      minH="8rem"
+      justifyContent={{ base: "space-between" }}
       px={{ base: "5.5%", md: "5.5%" }}
-      // border='1px solid'
-      // borderColor='white.100'
-      boxShadow='1px 1px 3px 0px rgba(0,0,0,0.3);'
-      bg='white.main'>
-      <Flex href='/' as={Link}>
-        <AppLogo showTextLogoAlways={pathname !== "/"} />
+      boxShadow="0px 2px 0px 0px rgba(0,0,0,0.05);"
+      bg="white.main"
+    >
+      <Flex href="/" as={Link} aria-label="home-page">
+        <AppLogo showTextLogoAlways />
       </Flex>
       <Navigation />
     </Flex>

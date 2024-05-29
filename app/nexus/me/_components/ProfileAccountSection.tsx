@@ -22,20 +22,14 @@ export default function ProfileAccountInfoSection({
           display="flex"
           alignItems="start"
           gap="1.4rem"
-          fontSize="2.8rem"
+          fontSize="2rem"
         >
           Password & Account
         </Heading>
-        <Text fontSize="1.6rem" color="gray.main">
+        <Text fontSize="1.4rem" color="gray.main" fontWeight="500">
           Update your password and secure your account
         </Text>
-        <VStack
-          fontWeight="600"
-          alignItems="start"
-          fontSize="1.6rem"
-          w="full"
-          color="gray.main"
-        >
+        <VStack alignItems="start" fontSize="1.4rem" w="full" color="gray.main">
           <Link>Change email address</Link>
           <Link>Change password</Link>
           <Link>Two Factor Authentication</Link>
@@ -51,7 +45,7 @@ export default function ProfileAccountInfoSection({
           base: "scale(.5) translateY(-50%)",
           sm: "translateY(-50%)",
         }}
-        opacity=".4"
+        opacity=".3"
         zIndex="-1"
       >
         <Padlock />

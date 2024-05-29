@@ -7,6 +7,7 @@ import listingsReducer from "./slices/listings.slice"
 import interestsReducer from "./slices/interests.slice"
 import notificationsReducer from "./slices/notifications.slice"
 import messagesReducer from "./slices/messages.slice"
+import searchReducer from "./slices/search.slice"
 import conversationsReducer from "./slices/conversations.slice"
 
 const store = configureStore({
@@ -18,6 +19,7 @@ const store = configureStore({
     notifications: notificationsReducer,
     messages: messagesReducer,
     conversations: conversationsReducer,
+    search: searchReducer
   },
 })
 

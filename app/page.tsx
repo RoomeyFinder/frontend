@@ -1,18 +1,8 @@
 "use client"
-import {
-  Box,
-  Button,
-  // Divider,
-  Flex,
-  Heading,
-  Link,
-  Text,
-} from "@chakra-ui/react"
-// import PublishAdClicker from "./_components/PublishAdClicker"
+import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react"
 import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
-// import PeopleGroup from "./_assets/SVG/PeopleGroup"
 import {
   LegacyRef,
   ReactNode,
@@ -31,6 +21,8 @@ import { RoomListingCardSkeleton } from "./_components/Skeletons/ListingCardSkel
 import Image from "next/image"
 import heroImage from "./_assets/images/hero-image.jpg"
 import ForRent from "./_assets/SVG/ForRent"
+import Loading from "./_assets/SVG/Loading"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
   return (
@@ -43,6 +35,7 @@ export default function Home() {
 }
 
 function Hero() {
+  const { user } = useAppSelector((store) => store.auth)
   return (
     <>
       <Flex
@@ -58,6 +51,7 @@ function Hero() {
           <Heading
             as="h1"
             variant="xl"
+            fontWeight="500"
             mb="2.5rem"
             fontSize={{ base: "4rem", md: "7rem" }}
           >
@@ -68,7 +62,7 @@ function Hero() {
             fontSize={{ base: "1.6rem", md: "2rem" }}
             color="gray.main"
             mb="4.9rem"
-            lineHeight="2.2rem"
+            lineHeight="150%"
           >
             Whether you&apos;re a student searching for a cozy apartment, a
             professional seeking a shared living space, or a homeowner looking
@@ -78,7 +72,7 @@ function Hero() {
             px="3rem"
             py="1.5rem"
             as={Link}
-            href="/signup"
+            href={user ? "/nexus/me" : "/signup"}
             variant={"brand"}
             fontSize="2rem"
             width="fit-content"
@@ -116,6 +110,7 @@ function FeaturesSection() {
             variant="md"
             mb="3rem"
             fontSize={{ base: "3rem", md: "5rem" }}
+            fontWeight="600"
           >
             What Roomeyfinder offers
           </Heading>
@@ -159,56 +154,31 @@ function FeaturesSection() {
 
 function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)
-  const { rooms, hasMoreRooms, loadMoreRooms, loadingRooms, search, focus } =
-    useContext(SearchContext)
-
-  const roomsSectionRef = useRef<HTMLDivElement | null>(null)
-  const allListingsRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (focus === "rooms")
-      roomsSectionRef.current?.firstElementChild?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      })
-  }, [focus])
-
-  const filteredRoomsBySearch = useMemo(() => {
-    if (!search) return rooms
-    else {
-      const isMatch = (obj: { [x: string]: any }) =>
-        JSON.stringify(Object.values(obj))
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      const roomsFiltered = rooms.filter((room) => isMatch(room))
-      return roomsFiltered
-    }
-  }, [rooms, search])
-
+  const { listings, loading } = useAppSelector((store) => store.search)
+  const router = useRouter()
+  if (listings.length === 0 && !loading) return null
   return (
     <>
-      <Box ref={allListingsRef}>
-        <ListSectionContainer sectionRef={roomsSectionRef}>
-          <Heading pl="1.2rem" variant="md">
-            Latest Rooms
-          </Heading>
-          <RoomsList
-            rooms={filteredRoomsBySearch}
-            allowFavoriting={user !== null}
-            loading={loadingRooms}
-            emptyTextValue={
-              <>
-                No rooms found
-                {search && <Text as="b"> {search}</Text>}
-              </>
-            }
-          />
-          {rooms.length > 0 && (
+      <Box>
+        <ListSectionContainer>
+          <Heading variant="md">Latest Rooms</Heading>
+          {loading ? (
+            <Box opacity=".8" mx="auto" w="100%" maxW="40rem">
+              <Loading />
+            </Box>
+          ) : (
+            <RoomsList
+              rooms={listings}
+              allowFavoriting={user !== null}
+              loading={loading}
+              emptyTextValue={<>No rooms found</>}
+            />
+          )}
+          {listings.length > 0 && (
             <ContinueExploring
               text="rooms"
-              onClick={() => loadMoreRooms()}
-              show={hasMoreRooms}
+              onClick={() => router.push("/ads")}
+              show={true}
             />
           )}
         </ListSectionContainer>
@@ -227,7 +197,7 @@ function ListSectionContainer({
   return (
     <Box
       w={{ base: "95dvw", md: "full" }}
-      maxW={{ md: "84%" }}
+      maxW={{ base: "94%", xl: "none" }}
       mx="auto"
       display="flex"
       flexDir="column"
@@ -277,6 +247,7 @@ function RoomsList({
             showFavoriteButton={allowFavoriting}
             listingId={room._id as string}
             listing={room}
+            variant="outlined"
           />
         ))}
         justifyContent="start"

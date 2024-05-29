@@ -17,7 +17,7 @@ export default function GlobalLayout({
 
   if (pathname.includes("nexus")) return <NexusLayout>{children}</NexusLayout>
   return (
-    <Box>
+    <Box maxW="144rem" mx="auto">
       <AppHeader />
       <Flex
         justifyContent="center"

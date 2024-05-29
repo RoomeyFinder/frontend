@@ -118,7 +118,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
         w="full"
         pos="absolute"
         bottom="-18rem"
-        opacity=".4"
+        opacity=".3"
       >
         <Island />
       </Box>

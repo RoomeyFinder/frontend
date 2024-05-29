@@ -6,7 +6,6 @@ import InstagramIcon from "../_assets/SVG/InstagramIcon"
 import MessageIcon from "../_assets/SVG/MessageIcon"
 import NotificationIcon from "../_assets/SVG/NotificationIcon"
 import UserIcon from "../_assets/SVG/UserIcon"
-import UserIconSmall from "../_assets/SVG/UserIconSmall"
 import XIcon from "../_assets/SVG/XIcon"
 
 export const privateLinks = [
