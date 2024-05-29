@@ -14,7 +14,6 @@ export const fetchUserListings = createAsyncThunk(
     const storedListings = await localforage.getItem(
       STORAGE_KEYS.RF_USER_LISTINGS
     )
-    console.log("done")
     return {
       listings:
         response.statusCode === 200 ? response.listings : storedListings || [],

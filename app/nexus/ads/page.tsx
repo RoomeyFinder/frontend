@@ -26,6 +26,7 @@ import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/listings.slice"
 import NoResults from "@/app/_assets/SVG/NoResults"
 import { useRouter } from "next/navigation"
+import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 
 export default function MyAds() {
   const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
@@ -172,40 +173,23 @@ function ListingsDisplay({
   if (listings.length === 0 && !loading)
     return (
       <>
-        <VStack
-          gap="1rem"
-          minH="50dvh"
-          w="full"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <NoResults />
-          <Flex
-            alignItems="center"
-            flexDir="column"
-            gap="1rem"
-            lineHeight="normal"
-            color="black"
-            textAlign="center"
-          >
-            <Text
-              as="h2"
-              fontSize={{ base: "2rem", md: "2.8rem" }}
-              fontWeight="500"
-            >
+        <NoResultsDisplay
+          heading={
+            <>
+              {" "}
               {`You do not have any `}
               <b>{currentDisplay}</b>
               {`${currentDisplay !== "drafts" ? "ads" : ""}`}
-            </Text>
-            <Text
-              fontSize={{ base: "1.4rem", md: "1.8rem" }}
-              _firstLetter={{ textTransform: "uppercase" }}
-            >
+            </>
+          }
+          body={
+            <>
+              {" "}
               {currentDisplay} {`${currentDisplay !== "drafts" ? "ads" : ""}`}
               you create will appear here.
-            </Text>
-          </Flex>
-        </VStack>
+            </>
+          }
+        />
       </>
     )
   return (

@@ -276,8 +276,12 @@ function RoomsList({
             images={room.photos as []}
             showFavoriteButton={allowFavoriting}
             listingId={room._id as string}
+            listing={room}
           />
         ))}
+        justifyContent="start"
+        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        alignItems="stretch"
       ></ListingsGridLayout>
     </>
   )

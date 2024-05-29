@@ -15,17 +15,23 @@ import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
 import { Photo } from "../_types/User"
-import { useCallback, useContext, useMemo, useState } from "react"
+import {
+  MouseEventHandler,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react"
 import { FavoriteType } from "../_types/Favorites"
-import useAxios from "../_hooks/useAxios"
-import { FavoritesContext } from "../_providers/FavoritesProvider"
 import useAppToast from "../_hooks/useAppToast"
 import { Listing } from "../_types/Listings"
 import { useRouter } from "next/navigation"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
-import { useAppSelector } from "../_redux"
+import { useAppDispatch, useAppSelector } from "../_redux"
+import { addFavorite, deleteFavorite } from "../_redux/thunks/favorites.thunk"
 
 export default function RoomListingCard({
+  listing,
   variant,
   showFavoriteButton = false,
   ownersName,
@@ -46,6 +52,7 @@ export default function RoomListingCard({
   title: string
   images: Photo[]
   listingId: string
+  listing: Listing
 }) {
   const router = useRouter()
   const { user } = useAppSelector((store) => store.auth)
@@ -56,9 +63,8 @@ export default function RoomListingCard({
       onClick={() =>
         user ? router.push(`/ads/${listingId}`) : showAuthModal()
       }
-      w="95dvw"
+      w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
-      maxW={{ base: "32rem", sm: "28.3rem" }}
       alignItems="start"
       flexDir="column"
       gap=".5rem"
@@ -83,9 +89,9 @@ export default function RoomListingCard({
               key={slide.secure_url}
               src={slide.secure_url}
               w="100%"
-              h="100%"
-              minH="27.7rem"
+              h="27.7rem"
               rounded="1.2rem"
+              objectFit="cover"
               alt=""
             />
           )}
@@ -96,10 +102,15 @@ export default function RoomListingCard({
         <AboutSection
           rentAmount={rentAmount}
           rentDuration={rentDuration}
-          title={"Single Bedroom in Beautiful Mbuoba for lease just testing"}
+          title={listing?.streetAddress as string}
           ownersOccupation={ownersOccupation}
           location={"Port Harcourt"}
-          apartmentType={"4 Rooms"}
+          apartmentType={
+            listing.isStudioApartment
+              ? "Studio apartment"
+              : `${listing.numberOfBedrooms} Bedrooms`
+          }
+          featuresCount={listing.features?.length || 0}
         />
       </Box>
     </Flex>
@@ -120,54 +131,14 @@ export function FavouriteButton({
   useConfirmation?: boolean
 }) {
   const toast = useAppToast()
-  const { addNewFavorite, favorites, deleteSingleFavorite } =
-    useContext(FavoritesContext)
-  const { fetchData } = useAxios()
+  const { favorites } = useAppSelector((store) => store.favorites)
+  const dispatch = useAppDispatch()
   const favorite = useMemo(
     () => favorites?.find((it) => it.doc?._id === listingId),
     [favorites, listingId]
   )
   const isFavorite = useMemo(() => Boolean(favorite), [favorite])
   const [loading, setLoading] = useState(false)
-  const handleAddFavorite = useCallback(async () => {
-    toast.closeAll()
-    setLoading(true)
-    const body = {
-      doc: listingId,
-      type,
-    }
-    const res = await fetchData({
-      url: "/favorites/me",
-      method: "post",
-      body,
-    })
-    if (res.statusCode === 201) {
-      addNewFavorite(res.favorite)
-    } else
-      toast({
-        status: "error",
-        title: res.message || "Something went wrong",
-      })
-    setLoading(false)
-  }, [type, fetchData, toast, addNewFavorite, listingId])
-
-  const handleRemoveFavorite = useCallback(async () => {
-    if (!favorite) return
-    toast.closeAll()
-    setLoading(true)
-    const res = await fetchData({
-      url: `/favorites/${favorite?._id}`,
-      method: "delete",
-    })
-    if (res.statusCode === 200) deleteSingleFavorite(res.favorite)
-    else
-      toast({
-        status: "error",
-        title: res.message || "Something went wrong",
-      })
-    setLoading(false)
-  }, [fetchData, favorite, deleteSingleFavorite, toast])
-
   const getChildren = useCallback(
     () =>
       loading ? (
@@ -178,16 +149,24 @@ export function FavouriteButton({
     [loading, isFavorite]
   )
   const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false)
+
+  const handleFavoriteClick: MouseEventHandler = useCallback(
+    (e) => {
+      e.stopPropagation()
+      setLoading(true)
+      if (!favorite) dispatch(addFavorite({ doc: listingId, type }))
+      else {
+        useConfirmation
+          ? setShowRemoveConfirmation(true)
+          : dispatch(deleteFavorite(favorite?._id))
+      }
+      setLoading(false)
+    },
+    [dispatch, favorite]
+  )
   return (
     <Box
-      onClick={
-        !isFavorite
-          ? handleAddFavorite
-          : () =>
-              useConfirmation
-                ? setShowRemoveConfirmation(true)
-                : handleRemoveFavorite()
-      }
+      onClick={handleFavoriteClick}
       as="button"
       pos="absolute"
       color={color || "inherit"}
@@ -225,8 +204,10 @@ export function FavouriteButton({
             _hover={{ bg: "red.main", color: "white" }}
             onClick={(e) => {
               e.stopPropagation()
-              handleRemoveFavorite()
+              setLoading(true)
+              dispatch(deleteFavorite(favorite?._id))
               setShowRemoveConfirmation(false)
+              setLoading(false)
             }}
           >
             Remove
@@ -252,7 +233,7 @@ export function FavouriteButton({
 function OwnersInfo({ ownersName }: { ownersName: string }) {
   return (
     <Flex gap=".8rem" alignItems="center">
-      <Avatar w={25} h={25} src={imgOne.src} />
+      <Avatar w={35} h={35} src={imgOne.src} />
       <Heading
         as="h6"
         fontSize="1.6rem"
@@ -267,11 +248,10 @@ function OwnersInfo({ ownersName }: { ownersName: string }) {
 
 function AboutSection({
   title,
-  // ownersOccupation,
-  location,
   apartmentType,
   rentAmount,
   rentDuration,
+  featuresCount,
 }: {
   title: string
   ownersOccupation: string
@@ -279,17 +259,23 @@ function AboutSection({
   apartmentType: string
   rentDuration: Listing["rentDuration"]
   rentAmount: number
+  featuresCount: number
 }) {
   return (
     <Flex flexDir="column" textAlign="left" gap=".5rem">
-      <Heading noOfLines={1} as="h6" fontSize="1.6rem" lineHeight="1.8rem">
+      <Heading
+        noOfLines={1}
+        as="h6"
+        fontSize="1.6rem"
+        mt="1rem"
+        lineHeight="1.8rem"
+      >
         {title}
       </Heading>
       <Text
         fontSize="1.6rem"
         lineHeight="1.8rem"
         color="gray.main"
-        // noOfLines={1}
         display="flex"
         gap="1rem"
         alignItems="center"
@@ -297,9 +283,8 @@ function AboutSection({
         <Text as="span" whiteSpace="nowrap">
           {apartmentType}
         </Text>
-
         <DotSeparator backgroundColor="gray.100" w=".4rem" h=".4rem" />
-        <Text as="span">{location}</Text>
+        <Text as="span">{featuresCount} features</Text>
       </Text>
       <Text as="b" fontSize="1.6rem" lineHeight="1.8rem">
         ₦{rentAmount.toLocaleString("en-us")}/
