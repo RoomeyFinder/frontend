@@ -10,7 +10,7 @@ import { ReactNode } from "react"
 export default function NexusSidebar() {
   const dispatch = useAppDispatch()
   return (
-    <Box w="full" bg={{ md: "rgba(58, 134, 255, 0.05)" }} h="100%">
+    <Box w="full" bg={{ md: "#3a86ff0d" }} h="100%">
       <UserInfoHeading />
       <VStack
         as="ul"

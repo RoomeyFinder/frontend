@@ -7,6 +7,11 @@ export default interface User {
     id: string
     _id: string
   }
+  coverImage: {
+    secure_url: string
+    id: string
+    _id: string
+  }
   isProfileComplete: boolean
   firstName: string
   lastName: string

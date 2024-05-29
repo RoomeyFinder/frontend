@@ -78,7 +78,7 @@ function Renderer() {
   }, [dispatch, hasError])
 
   return (
-    <Box pos="relative" py="2rem">
+    <Box pos="relative" py="3rem">
       {withPrependPortal(
         <AppNotification
           onClose={() => {
@@ -90,7 +90,7 @@ function Renderer() {
         document.body
       )}
       <Flex
-        mb={{ base: "2.3rem", }}
+        mb={{ base: "1.3rem", }}
         w="full"
         alignItems="center"
         justifyContent="space-between"
