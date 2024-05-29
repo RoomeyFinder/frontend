@@ -76,13 +76,6 @@ export const sidebarLinks = [
     icon: HeartShineIcon,
     hideAbove: "",
     showBelow: "md",
-  },
-  {
-    name: "Account",
-    href: "/nexus/account",
-    icon: UserIconSmall,
-    hideAbove: "",
-    showBelow: "md",
   }
 ]
 
