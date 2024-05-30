@@ -3,15 +3,7 @@ import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react"
 import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
-import {
-  LegacyRef,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react"
-import { SearchContext } from "./_providers/SearchProvider"
+import { LegacyRef, ReactNode } from "react"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
 import RoomListingCard from "./_components/RoomListingCard"
 import { Listing } from "./_types/Listings"
@@ -270,37 +262,26 @@ function ContinueExploring({
   if (!show) return null
   return (
     <Text
-      color={{ base: "black", md: "brand.main" }}
-      fontWeight={{ base: "600", md: "400" }}
+      onClick={onClick}
+      as="button"
+      color="brand.main"
       fontSize={{ base: "1.6rem", md: "1.9rem" }}
       display="flex"
-      flexDir={{ base: "column", md: "row" }}
       justifyContent={{ base: "center", md: "start" }}
       alignItems={{ base: "center", md: "baseline" }}
       gap="1.6rem"
       p="0"
       h="unset"
+      _hover={{
+        md: {
+          bg: "transparent",
+          color: "black",
+          textDecor: "underline",
+        },
+      }}
+      _active={{ bg: "transparent" }}
     >
       Continue exploring {text}
-      <Button
-        onClick={onClick}
-        fontSize={{ base: "1.4rem", md: "1.6rem" }}
-        variant="brand-secondary"
-        bgColor={{ md: "transparent !important" }}
-        color={{ md: "gray.main !important" }}
-        fontWeight={{ md: "400" }}
-        padding={{ md: "0" }}
-        _hover={{
-          md: {
-            bg: "transparent",
-            color: "black",
-            textDecor: "underline",
-          },
-        }}
-        _active={{ bg: "transparent" }}
-      >
-        Show more
-      </Button>
     </Text>
   )
 }

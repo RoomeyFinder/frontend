@@ -69,7 +69,7 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
                   right="1.5rem"
                   top="1.5rem"
                 />
-                <NexusSidebar />
+                <NexusSidebar closeSidebar={() => setOpenMenu(false)} />
               </DrawerContent>
             </Drawer>
             <Box>{children}</Box>

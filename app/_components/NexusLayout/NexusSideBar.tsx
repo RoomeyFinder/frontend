@@ -7,7 +7,11 @@ import { Avatar, Box, Button, Flex, Show, Text, VStack } from "@chakra-ui/react"
 import { usePathname, useRouter } from "next/navigation"
 import { ReactNode } from "react"
 
-export default function NexusSidebar() {
+export default function NexusSidebar({
+  closeSidebar,
+}: {
+  closeSidebar?: () => void
+}) {
   const dispatch = useAppDispatch()
   return (
     <Box w="full" bg={{ md: "#3a86ff0d" }} h="100%">
@@ -25,7 +29,12 @@ export default function NexusSidebar() {
           <SidebarLink href="/nexus" text="Overview" icon={<OverviewIcon />} />
         </Box>
         {sidebarLinks.map((link) => (
-          <Box key={link.href} as="li" w="full">
+          <Box
+            key={link.href}
+            as="li"
+            w="full"
+            onClick={() => closeSidebar && closeSidebar()}
+          >
             <SidebarLink href={link.href} text={link.name} icon={link.icon()} />
           </Box>
         ))}
