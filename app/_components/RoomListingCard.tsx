@@ -34,24 +34,9 @@ export default function RoomListingCard({
   listing,
   variant,
   showFavoriteButton = false,
-  ownersName,
-  ownersOccupation,
-  // city,
-  rentAmount,
-  rentDuration,
-  images,
-  listingId,
 }: {
   variant?: "outlined" | "default"
   showFavoriteButton?: boolean
-  ownersName: string
-  ownersOccupation: string
-  city: string
-  rentAmount: number
-  rentDuration: Listing["rentDuration"]
-  title: string
-  images: Photo[]
-  listingId: string
   listing: Listing
 }) {
   const router = useRouter()
@@ -61,7 +46,7 @@ export default function RoomListingCard({
   return (
     <Flex
       onClick={() =>
-        user ? router.push(`/ads/${listingId}`) : showAuthModal()
+        user ? router.push(`/ads/${listing._id}`) : showAuthModal()
       }
       w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
@@ -77,13 +62,13 @@ export default function RoomListingCard({
       {showFavoriteButton && (
         <FavouriteButton
           color="white"
-          listingId={listingId}
+          listingId={listing._id}
           type={FavoriteType.LISTING}
         />
       )}
       <Box w="full" pos="relative">
         <ListingCardImageCarousel
-          slides={images}
+          slides={listing.photos}
           swiperSlideContent={({ slide }) => (
             <Image
               key={slide.secure_url}
@@ -98,12 +83,14 @@ export default function RoomListingCard({
         />
       </Box>
       <Box p=".5rem" roundedBottom="1.2rem">
-        <OwnersInfo ownersName={ownersName} />
+        <OwnersInfo
+          ownersName={`${listing.owner?.firstName} ${listing.owner?.lastName}`}
+        />
         <AboutSection
-          rentAmount={rentAmount}
-          rentDuration={rentDuration}
+          rentAmount={listing.rentAmount || 0}
+          rentDuration={listing.rentDuration}
           title={listing?.streetAddress as string}
-          ownersOccupation={ownersOccupation}
+          ownersOccupation={listing.owner?.occupation || ""}
           location={"Port Harcourt"}
           apartmentType={
             listing.isStudioApartment

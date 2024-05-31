@@ -1,7 +1,7 @@
 "use client"
 import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react"
 import { Suspense } from "react"
-import { useAppDispatch, useAppSelector } from "../../_redux"
+import { useAppSelector } from "../../_redux"
 import ProfileInfoSection from "./_components/ProfileInfoSection"
 import ProfilePremiumInfoSection from "./_components/ProfileAccountSection"
 import ProfileSettings from "./_components/ProfileSettings"
@@ -21,8 +21,7 @@ export default function Profile() {
 }
 
 function Renderer() {
-  const { loading, user } = useAppSelector((store) => store.auth)
-  const dispatch = useAppDispatch()
+  const { user } = useAppSelector((store) => store.auth)
 
   return (
     <Grid

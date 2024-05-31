@@ -187,7 +187,7 @@ function MainPrivateNav() {
 //   )
 // }
 
-function InterestsAccessCount() {
+export function InterestsAccessCount() {
   const { user } = useAppSelector((store) => store.auth)
   return (
     <Box p=".8rem">

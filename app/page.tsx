@@ -189,12 +189,12 @@ function ListSectionContainer({
   return (
     <Box
       w={{ base: "95dvw", md: "full" }}
-      maxW={{ base: "94%", xl: "none" }}
       mx="auto"
       display="flex"
       flexDir="column"
       gap="3rem"
       py={{ base: "3rem", md: "6rem" }}
+      px={{ base: "1.5rem", sm: "2rem", md: "6rem", lg: "7rem" }}
       ref={sectionRef}
     >
       {children}
@@ -227,20 +227,7 @@ function RoomsList({
     <>
       <ListingsGridLayout
         list={rooms.map((room) => (
-          <RoomListingCard
-            key={room._id}
-            ownersName={room.owner?.firstName as string}
-            ownersOccupation={room.owner?.occupation as string}
-            city={room.city as string}
-            rentAmount={room.rentAmount as number}
-            rentDuration={room.rentDuration as any}
-            title={room.lookingFor as string}
-            images={room.photos as []}
-            showFavoriteButton={allowFavoriting}
-            listingId={room._id as string}
-            listing={room}
-            variant="outlined"
-          />
+          <RoomListingCard key={room._id} listing={room} variant="outlined" />
         ))}
         justifyContent="start"
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}

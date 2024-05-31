@@ -2,7 +2,7 @@ import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import DotSeparator from "./DotSeparator"
-import { Photo } from "../_types/User"
+import User, { Photo } from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import { useRouter } from "next/navigation"
@@ -10,19 +10,11 @@ import { useRouter } from "next/navigation"
 export default function RoomeyListingCard({
   variant,
   isLocked = false,
-  name,
-  ageInYears,
-  about,
-  profileImage,
-  userId,
+  user,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
-  name: string
-  ageInYears: number
-  about: string
-  profileImage?: Photo
-  userId: string
+  user: User
 }) {
   const router = useRouter()
 
@@ -42,18 +34,26 @@ export default function RoomeyListingCard({
       _hover={{ background: "white", shadow: "md" }}
     >
       {!isLocked && (
-        <FavouriteButton listingId={userId} type={FavoriteType.USER} />
+        <FavouriteButton  listingId={user._id} type={FavoriteType.USER} />
       )}
       <ProfileAvatar
-        imageSrc={profileImage?.secure_url}
+        imageSrc={user.profileImage?.secure_url}
         width={180}
         height={180}
         showVerifiedBadge
       />
-      <NameAndAge name={name} ageInYears={ageInYears} />
+      <NameAndAge
+        name={`${user.firstName} ${user.lastName}`}
+        ageInYears={
+          user
+            ? new Date(Date.now()).getFullYear() -
+              new Date(user?.dob || Date.now()).getFullYear()
+            : 0
+        }
+      />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <Box onClick={() => router.push(`/profile/${userId}`)}>
-        <AboutSection about={about} />
+      <Box onClick={() => router.push(`/profiles/${user._id}`)}>
+        {user.about && <AboutSection about={user.about} />}
       </Box>
     </Flex>
   )

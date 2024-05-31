@@ -1,5 +1,4 @@
 import LogoutIcon from "@/app/_assets/SVG/Logout"
-import OverviewIcon from "@/app/_assets/SVG/OverviewIcon"
 import { sidebarLinks } from "@/app/_data/navLinks"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { logout } from "@/app/_redux/slices/auth.slice"
@@ -25,9 +24,6 @@ export default function NexusSidebar({
         h="80%"
         alignItems="start"
       >
-        <Box as="li" w="full">
-          <SidebarLink href="/nexus" text="Overview" icon={<OverviewIcon />} />
-        </Box>
         {sidebarLinks.map((link) => (
           <Box
             key={link.href}

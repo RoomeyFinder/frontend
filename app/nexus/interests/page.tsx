@@ -1,34 +1,15 @@
 "use client"
 import {
-  Avatar,
   Box,
-  Button,
-  Flex,
   Heading,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Show,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react"
-import CheckIcon from "../../_assets/SVG/CheckIcon"
-import { TimesIconSmall } from "../../_assets/SVG/TimesIcon"
-import { useCallback, useMemo, useState } from "react"
-import { useSearchParams } from "next/navigation"
-import { FavoriteType } from "../../_types/Favorites"
-import { Listing } from "../../_types/Listings"
-import User from "../../_types/User"
-import TimeSince from "../../_components/TimeSince"
-import { useRouter } from "next/navigation"
+import { useMemo } from "react"
 import CenteredSpinner from "../../_components/CenteredSpinner"
-import useActOnInterest from "../../_hooks/useActOnInterest"
 import { useAppDispatch, useAppSelector } from "../../_redux"
 import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
@@ -43,7 +24,6 @@ export default function Page() {
   )
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((store) => store.auth)
-  const searchParams = useSearchParams()
   const sentInterests = useMemo(() => {
     return (interests || []).filter(
       (interest) => interest.sender?._id === user?._id
