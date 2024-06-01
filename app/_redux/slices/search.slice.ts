@@ -15,7 +15,7 @@ interface ISearchState {
 
 const initialState: ISearchState = {
   listings: [],
-  loading: false,
+  loading: true,
   errorMessage: "",
   isUsingFallback: false,
   hasError: false,

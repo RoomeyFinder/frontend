@@ -190,7 +190,7 @@ function MainPrivateNav() {
 export function InterestsAccessCount() {
   const { user } = useAppSelector((store) => store.auth)
   return (
-    <Box p=".8rem">
+    <Box p=".8rem" w="full">
       <Flex
         fontSize="1.4rem"
         fontWeight={700}
@@ -202,6 +202,7 @@ export function InterestsAccessCount() {
         bg="brand.10"
         p="1.25rem"
         rounded="1rem"
+        w="full"
       >
         <Text lineHeight="1" color="black">
           {user?.countOfInterestsLeft}

@@ -9,27 +9,22 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useContext, useEffect, useMemo } from "react"
+import { useParams } from "next/navigation"
+import { useCallback, useMemo } from "react"
 import ListingHeading from "./_components/ListingHeading"
 import ListingPhotos from "./_components/ListingPhotos"
 import ListingOwnerOverview from "./_components/ListingOwnerOverview"
-import ListingFeatures from "./_components/ListingFeatures"
 import ListingAbout from "./_components/ListingAbout"
 import ListingMap from "./_components/ListingMap"
 import ListingCTAs from "./_components/ListingCTAs"
-import ListingForm from "../_components/ListingForm"
 import BackButton from "@/app/_components/BackButton"
-import { SearchContext } from "@/app/_providers/SearchProvider"
 import toast from "react-hot-toast"
 import { useAppSelector } from "@/app/_redux"
-import NoResults from "@/app/_assets/SVG/NoResults"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
+import ListingFeatures from "./_components/ListingFeatures"
 
 export default function ListingPage() {
-  const router = useRouter()
   const params = useParams()
-  const searchParams = useSearchParams()
   const { listings, loading } = useAppSelector((store) => store.search)
   const listingId = useMemo(() => params.listingId, [params])
 
@@ -81,25 +76,27 @@ export default function ListingPage() {
   return (
     <>
       <VStack
-        gap={{ base: "3rem", md: "5rem" }}
+        gap={{ base: "3rem"}}
         alignItems="start"
         w="95%"
-        maxW={{ sm: "95%", xl: "160rem" }}
+        maxW={{ sm: "95%", xl: "120rem" }}
         mx="auto"
-        pt={{ base: "4rem", md: "6rem" }}
+        pt={{ base: "4rem", md: "2rem" }}
         pb={{ base: "8rem", md: "12rem" }}
       >
         <HStack w="full">
-          <VStack gap="1rem" alignItems="start" w="full">
+          <VStack gap="1.5rem" alignItems="start" w="full">
             <BackButton />
             {listing && (
-              <ListingHeading
-                handleShare={handleShare}
-                isOwnListing={isOwnListing}
-                listing={listing}
-              />
+              <>
+                <ListingHeading
+                  handleShare={handleShare}
+                  isOwnListing={isOwnListing}
+                  listing={listing}
+                />
+                <ListingPhotos photos={listing?.photos} />
+              </>
             )}
-            <ListingPhotos photos={listing?.photos} />
           </VStack>
         </HStack>
         {listing && (
@@ -111,7 +108,7 @@ export default function ListingPage() {
             md: ".3rem solid #3A86FF1A",
           }}
         />
-        {/* <ListingFeatures listing={listing} /> */}
+        {listing && <ListingFeatures listing={listing} />}
         {listing && <ListingAbout listing={listing} />}
         <Hide above="sm">
           <Box w="100%" h="30rem">

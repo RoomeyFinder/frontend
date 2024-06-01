@@ -50,7 +50,7 @@ function ListingFeature({
           border="1px solid"
           borderColor="gray.main"
           rounded="1.5rem"
-          p=".5rem 1rem"
+          p=".5rem"
           h={{ sm: "6.6rem", md: "9.6rem" }}
           justifyContent="center"
           gap=".6rem"
