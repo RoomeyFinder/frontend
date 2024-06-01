@@ -13,10 +13,12 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
+import { useRouter } from "next/navigation"
 
 export default function ProfileInfoSection({ user }: { user: User | null }) {
+  const router = useRouter()
   return (
-    <VStack overflow="hidden" gap="3rem" pos="relative" h="full" pb="3rem" >
+    <VStack overflow="hidden" gap="3rem" pos="relative" h="full" pb="3rem">
       <Avatar
         w={{ base: "100%" }}
         h={{ base: "25rem" }}
@@ -109,6 +111,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
         gap="1.6rem"
         alignItems="center"
         fontWeight="600"
+        onClick={() => router.push("/nexus/me/edit")}
       >
         Edit Profile <EditSVG />
       </Button>
