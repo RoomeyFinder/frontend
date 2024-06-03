@@ -12,6 +12,7 @@ import {
   Link,
   Text,
   VStack,
+  Image,
 } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 
@@ -19,12 +20,16 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
   const router = useRouter()
   return (
     <VStack overflow="hidden" gap="3rem" pos="relative" h="full" pb="3rem">
-      <Avatar
+      <Image
         w={{ base: "100%" }}
         h={{ base: "25rem" }}
-        roundedTop="2.5rem"
-        roundedBottom="0"
-        src={user?.profileImage?.secure_url}
+        borderRadius="0"
+        borderTopLeftRadius="2.5rem"
+        borderTopRightRadius="2.5rem"
+        borderBottomLeftRadius="0"
+        borderBottomRightRadius="0"
+        objectFit="cover"
+        src={user?.coverImage?.secure_url || ""}
       />
       <Avatar
         w={{ base: "6rem", lg: "8rem" }}
@@ -34,6 +39,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
         left={{ base: "2rem", lg: "3rem" }}
         src={user?.profileImage?.secure_url}
         bg="gray.300"
+        border="2px solid white"
       />
       <VStack
         w="full"

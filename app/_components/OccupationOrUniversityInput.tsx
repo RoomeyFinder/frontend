@@ -1,8 +1,4 @@
-import {
-  GridItem,
-  ResponsiveValue,
-  SimpleGrid,
-} from "@chakra-ui/react"
+import { BoxProps, GridItem, InputProps, ResponsiveValue, SimpleGrid } from "@chakra-ui/react"
 import CustomRadioGroup from "./CustomRadio"
 import nigerian_universities from "@/app/_data/nigerian_universities"
 import occupations from "@/app/_data/occupations.json"
@@ -19,22 +15,25 @@ export default function OccupationOrUniversityInput({
   inputVariant,
   columns,
 }: {
-  errorProps?: { [x: string]: string }
+  errorProps?: BoxProps | InputProps
   isStudent: boolean
   toggleIsStudent: (newValue: boolean) => void
   inputName: string
   inputValue: string
   handleChange: (inputName: string, newValue: string) => void
-  spacing?: ResponsiveValue<
+  spacing?:
+    | string
     | number
-    | (string & Record<string, never>)
-    | "-moz-initial"
-    | "inherit"
-    | "initial"
-    | "revert"
-    | "revert-layer"
-    | "unset"
-  >
+    | ResponsiveValue<
+        | number
+        | (string & Record<string, never>)
+        | "-moz-initial"
+        | "inherit"
+        | "initial"
+        | "revert"
+        | "revert-layer"
+        | "unset"
+      >
   inputVariant?: string
   columns?: ResponsiveValue<number> | undefined
 }) {
@@ -45,6 +44,7 @@ export default function OccupationOrUniversityInput({
       alignItems="center"
       columns={columns || { base: 1, sm: 2 }}
       spacing={spacing || { base: "1.8rem", sm: "3rem" }}
+      w="full"
     >
       <GridItem>
         <CustomRadioGroup

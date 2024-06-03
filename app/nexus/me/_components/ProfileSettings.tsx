@@ -32,16 +32,10 @@ export default function ProfileSettings({ user }: { user: User | null }) {
         >
           Settings
         </Heading>
-        <Text fontSize="1.4rem" color="gray.main"     fontWeight="500">
+        <Text fontSize="1.4rem" color="gray.main" fontWeight="500">
           Manage your account preferences
         </Text>
-        <VStack
-     
-          alignItems="start"
-          fontSize="1.4rem"
-          w="full"
-          color="gray.main"
-        >
+        <VStack alignItems="start" fontSize="1.4rem" w="full" color="gray.main">
           <Link>Manage subscriptions</Link>
           <Link>Profile settings</Link>
           <Link>Deactivate account</Link>
