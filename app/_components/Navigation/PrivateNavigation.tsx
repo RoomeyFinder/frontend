@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import UserIcon from "@/app/_assets/SVG/UserIcon"
 import { logout } from "@/app/_redux/slices/auth.slice"
+import DownChevron from "@/app/_assets/SVG/DownChevron"
 
 export default function PrivateNavigation() {
   const router = useRouter()
@@ -83,20 +84,19 @@ function MobileNavigation() {
             >
               <Flex
                 as="span"
+                fontSize="1.6rem"
                 rounded="1rem"
-                gap="2rem"
+                gap="1.6rem"
                 alignItems="center"
                 color={isOpen ? "brand.main" : "black"}
               >
-                <Avatar
-                  name={user?.firstName}
-                  color="white"
-                  background="brand.main"
-                  w="4rem"
-                  h="4rem"
-                  size="lg"
-                  fontWeight="500"
-                />
+                <Text as="span">
+                  Hello{" "}
+                  <Text as="span" textTransform="capitalize">
+                    {user?.firstName}
+                  </Text>
+                </Text>
+                <DownChevron />
               </Flex>
             </MenuButton>
             <MenuList
