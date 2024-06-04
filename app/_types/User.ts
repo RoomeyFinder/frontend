@@ -1,6 +1,3 @@
-
-
-
 export default interface User {
   profileImage: {
     secure_url: string
@@ -27,7 +24,6 @@ export default interface User {
   stateOfOrigin: string
   countryOfOrigin: string
   currentAddress: string
-  lifestyleTags?: { value: string; category: string }[]
   about: string
   countOfInterestsLeft: number
   photos: Photo[]
@@ -36,6 +32,21 @@ export default interface User {
   isOnline?: boolean
   premiumPurchaseExpiry?: string
   lastDateOfInterestReset: string
+  hasSetPreferences: boolean
+  preferences: {
+    lifestyle: string[]
+    isAgeVisibleOnProfile: boolean
+    isOccupationVisibleOnProfile: boolean
+    isStateOfOriginVisibleOnProfile: boolean
+    targetLocation: {
+      type: string
+      coordinates: number[]
+    }
+    targetCity: string
+    targetState: string
+    earliestMoveDate: string
+    lookingFor: "room" | "roommate" | "both"
+  }
 }
 
 export type Photo = {

@@ -6,6 +6,7 @@ import AppFooter from "./AppFooter"
 import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
+import PreferencesReminder from "./PreferencesReminder"
 
 export default function GlobalLayout({
   children,
@@ -15,7 +16,12 @@ export default function GlobalLayout({
   useListenForMessengerEvents()
   const pathname = usePathname()
 
-  if (pathname.includes("nexus")) return <NexusLayout>{children}</NexusLayout>
+  if (pathname.includes("nexus")) return (
+    <NexusLayout>
+      <PreferencesReminder />
+      {children}
+    </NexusLayout>
+  )
   return (
     <Box maxW={{ "2xl": "144rem" }} mx="auto">
       <AppHeader />

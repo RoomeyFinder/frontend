@@ -2,6 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux"
 import authReducer from "./slices/auth.slice"
+import uiReducer from "./slices/ui.slice"
 import favoritesReducer from "./slices/favorites.slice"
 import listingsReducer from "./slices/listings.slice"
 import interestsReducer from "./slices/interests.slice"
@@ -19,7 +20,8 @@ const store = configureStore({
     notifications: notificationsReducer,
     messages: messagesReducer,
     conversations: conversationsReducer,
-    search: searchReducer
+    search: searchReducer,
+    ui: uiReducer,
   },
 })
 
