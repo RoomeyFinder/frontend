@@ -5,6 +5,7 @@ import HeartShineIcon from "../_assets/SVG/HeartShineIcon"
 import InstagramIcon from "../_assets/SVG/InstagramIcon"
 import MessageIcon from "../_assets/SVG/MessageIcon"
 import NotificationIcon from "../_assets/SVG/NotificationIcon"
+import OverviewIcon from "../_assets/SVG/OverviewIcon"
 import UserIcon from "../_assets/SVG/UserIcon"
 import XIcon from "../_assets/SVG/XIcon"
 
@@ -36,7 +37,7 @@ export const privateLinks = [
     icon: MessageIcon,
     hideAbove: "md",
     showBelow: "md",
-    isIcon: true
+    isIcon: true,
   },
   {
     name: "Notifications",
@@ -44,10 +45,17 @@ export const privateLinks = [
     icon: NotificationIcon,
     hideAbove: "md",
     showBelow: "md",
-    isIcon: true
+    isIcon: true,
   },
 ]
 export const sidebarLinks = [
+  {
+    name: "My Nexus",
+    href: "/nexus",
+    icon: OverviewIcon,
+    hideAbove: "",
+    showBelow: "md",
+  },
   {
     name: "My Profile",
     href: "/nexus/me",
@@ -75,7 +83,7 @@ export const sidebarLinks = [
     icon: HeartShineIcon,
     hideAbove: "",
     showBelow: "md",
-  }
+  },
 ]
 
 export const supportLinks = [

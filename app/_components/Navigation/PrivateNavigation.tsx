@@ -126,7 +126,7 @@ function MainPrivateNav() {
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav">
-        <PrivateMenuItem onClick={() => router.push("/nexus/me")}>
+        <PrivateMenuItem onClick={() => router.push("/nexus")}>
           <PrivateMenuIcon width="2rem" as={UserIcon} />
           <Text as="span">Dashboard</Text>
         </PrivateMenuItem>

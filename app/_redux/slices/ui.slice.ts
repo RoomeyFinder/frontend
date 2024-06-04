@@ -1,11 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 
 interface IUIState {
   showPreferencesReminder: boolean
+  hasClosedPreferenceReminder: boolean
 }
 
 const initialState: IUIState = {
   showPreferencesReminder: false,
+  hasClosedPreferenceReminder: false,
 }
 
 export const uiSlice = createSlice({
@@ -15,8 +17,9 @@ export const uiSlice = createSlice({
     showPreferencesReminder: (state) => {
       state.showPreferencesReminder = true
     },
-    hidePreferencesReminder: (state) => {
+    hidePreferencesReminder: (state, action: PayloadAction<boolean>) => {
       state.showPreferencesReminder = false
+      state.hasClosedPreferenceReminder = action.payload
     },
   },
   extraReducers: (builder) => {},

@@ -1,21 +1,36 @@
 "use client"
-import {
-  Box,
-  AlertDialogCloseButton,
-  Text,
-  Link,
-  CloseButton,
-} from "@chakra-ui/react"
-import { useRef, useState } from "react"
+import { Box, Text, Link, CloseButton, Fade } from "@chakra-ui/react"
+import { useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
-import { hidePreferencesReminder } from "../_redux/slices/ui.slice"
+import {
+  hidePreferencesReminder,
+  showPreferencesReminder,
+} from "../_redux/slices/ui.slice"
+import { usePathname } from "next/navigation"
 
 export default function PreferencesReminder() {
-  const { showPreferencesReminder } = useAppSelector((store) => store.ui)
+  const { user } = useAppSelector((store) => store.auth)
+  const { showPreferencesReminder: showReminder, hasClosedPreferenceReminder } =
+    useAppSelector((store) => store.ui)
   const dispatch = useAppDispatch()
-  if (!showPreferencesReminder) return null
+  const pathname = usePathname()
+  useEffect(() => {
+    let timeoutId
+    if (
+      !user?.hasSetPreferences &&
+      pathname === "/nexus" &&
+      !hasClosedPreferenceReminder
+    ) {
+      timeoutId = setTimeout(() => {
+        dispatch(showPreferencesReminder())
+      }, 1000)
+    }
+    if (showReminder && pathname !== "/nexus")
+      dispatch(hidePreferencesReminder(false))
+  }, [user, pathname, dispatch, hasClosedPreferenceReminder])
+
   return (
-    <>
+    <Fade in={showReminder} unmountOnExit>
       <Box
         left="full"
         right="5%"
@@ -27,6 +42,7 @@ export default function PreferencesReminder() {
         py="1.5rem"
         maxW="35rem"
         rounded="1.2rem"
+        zIndex="1000"
       >
         <CloseButton
           _focus={{
@@ -34,7 +50,7 @@ export default function PreferencesReminder() {
           }}
           ml="auto"
           size="xl"
-          onClick={() => dispatch(hidePreferencesReminder())}
+          onClick={() => dispatch(hidePreferencesReminder(true))}
         />
         <Box fontSize="1.6rem">
           <Text lineHeight="1.8">
@@ -51,6 +67,6 @@ export default function PreferencesReminder() {
           </Text>
         </Box>
       </Box>
-    </>
+    </Fade>
   )
 }
