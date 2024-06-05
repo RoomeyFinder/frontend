@@ -14,7 +14,6 @@ import imgOne from "../_assets/images/sample.png"
 import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
-import { Photo } from "../_types/User"
 import {
   MouseEventHandler,
   useCallback,

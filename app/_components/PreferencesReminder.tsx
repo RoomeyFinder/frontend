@@ -23,7 +23,7 @@ export default function PreferencesReminder() {
     ) {
       timeoutId = setTimeout(() => {
         dispatch(showPreferencesReminder())
-      }, 1000)
+      }, 5000)
     }
     if (showReminder && pathname !== "/nexus")
       dispatch(hidePreferencesReminder(false))
