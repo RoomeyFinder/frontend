@@ -45,7 +45,7 @@ export default interface User {
     targetCity: string
     targetState: string
     earliestMoveDate: string
-    lookingFor: "room" | "roommate" | "both"
+    lookingFor: "room" | "roommate" | "both" | "none"
   }
 }
 

@@ -33,14 +33,15 @@ export default function PreferencesReminder() {
     <Fade in={showReminder} unmountOnExit>
       <Box
         left="full"
-        right="5%"
-        top="10rem"
+        right={{ base: "1rem", sm: "5%" }}
+        top={{ base: "", md: "10rem" }}
+        bottom={{ base: "6rem", md: "unset" }}
         bg="white"
         shadow="xl"
         pos="fixed"
         px="2rem"
         py="1.5rem"
-        maxW="35rem"
+        maxW={{ base: "90dvw", sm: "35rem" }}
         rounded="1.2rem"
         zIndex="1000"
       >

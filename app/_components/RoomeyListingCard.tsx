@@ -21,8 +21,7 @@ export default function RoomeyListingCard({
   return (
     <Flex
       py="2rem"
-      w="95dvw"
-      maxW={{ base: "95dvw", sm: "28.3rem" }}
+      w="100%"
       alignItems="center"
       flexDir="column"
       gap="1.5rem"
@@ -99,9 +98,12 @@ function AboutSection({ about }: { about: string }) {
         fontSize="1.2rem"
         lineHeight="1.7rem"
         color="gray.main"
+        w="85%"
         maxW="24rem"
         noOfLines={3}
         h="4.6rem"
+        whiteSpace="wrap"
+        mx="auto"
       >
         {about}
       </Text>

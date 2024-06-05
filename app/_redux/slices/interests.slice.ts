@@ -23,7 +23,12 @@ const initialState: IAuthState = {
 export const interestsSlice = createSlice({
   name: "interests",
   initialState,
-  reducers: {},
+  reducers: {
+    resetError: (state) => {
+      state.errorMessage = ""
+      state.hasError = false
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsersInterests.pending, (store) => {
@@ -48,5 +53,5 @@ export const interestsSlice = createSlice({
   },
 })
 
-export const {} = interestsSlice.actions
+export const { resetError } = interestsSlice.actions
 export default interestsSlice.reducer

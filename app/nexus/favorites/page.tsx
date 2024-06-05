@@ -20,12 +20,11 @@ import User from "../../_types/User"
 import { Listing } from "../../_types/Listings"
 import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
-import { resetError } from "@/app/_redux/slices/listings.slice"
+import { resetError } from "@/app/_redux/slices/favorites.slice"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 
 export default function Favorites() {
-
   return (
     <Suspense
       fallback={
@@ -135,11 +134,7 @@ function FavoritesList({
     return (
       <NoResultsDisplay
         heading={<>Oops! Nothing here.</>}
-        body={
-          <>
-            {currentDisplay} you mark as favorite will appear here.
-          </>
-        }
+        body={<>{currentDisplay} you mark as favorite will appear here.</>}
       />
     )
   return (
@@ -169,32 +164,10 @@ function FavoriteComponent({
 }) {
   if (filter === "roomies") {
     const roomey = document as User
-    return (
-      <RoomeyListingCard
-        name={roomey?.firstName}
-        ageInYears={
-          new Date().getFullYear() - new Date(roomey?.dob).getFullYear()
-        }
-        about={roomey?.about}
-        userId={roomey?._id}
-        variant="outlined"
-      />
-    )
+    return <RoomeyListingCard user={roomey} variant="outlined" />
   }
   const listing = document as Listing
   return (
-    <RoomListingCard
-      ownersName={listing.owner?.firstName as string}
-      ownersOccupation={listing.owner?.occupation as string}
-      city={listing.city as string}
-      rentAmount={(listing.rentAmount || 0) as number}
-      rentDuration={listing.rentDuration as any}
-      title={listing.lookingFor as string}
-      images={listing.photos || []}
-      listingId={listing._id}
-      variant="outlined"
-      showFavoriteButton
-      listing={listing}
-    />
+    <RoomListingCard variant="outlined" showFavoriteButton listing={listing} />
   )
 }

@@ -29,7 +29,12 @@ const initialState: IAuthState = {
 export const favoritesSlice = createSlice({
   name: "listings",
   initialState,
-  reducers: {},
+  reducers: {
+    resetError: (state) => {
+      state.errorMessage = ""
+      state.hasError = false
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserFavorites.pending, (store) => {
@@ -116,5 +121,5 @@ export const favoritesSlice = createSlice({
   },
 })
 
-export const {} = favoritesSlice.actions
+export const { resetError } = favoritesSlice.actions
 export default favoritesSlice.reducer
