@@ -50,3 +50,23 @@ input:checked ~ .custom-toggle-dot {
 input::-webkit-calendar-picker-indicator {
   /* opacity: 0; */
 }
+.fqFVxM {
+  display: inline-block;
+  vertical-align: top;
+  stroke: currentColor;
+  fill: currentColor;
+  color: #3A86ff;
+  height: 1em;
+  width: 1em;
+  height: 80px;
+  width: 80px;
+  animation: spin 0.5s linear infinite;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

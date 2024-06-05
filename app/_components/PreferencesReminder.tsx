@@ -58,7 +58,8 @@ export default function PreferencesReminder() {
             <Link
               textDecor="underline"
               textUnderlineOffset=".3rem"
-              _hover={{ color: "brand.main" }}
+              color="brand.main"
+              _hover={{ color: "brand.main", filter: "brightness(120%)"  }}
               fontWeight="500"
             >
               Update your preferences

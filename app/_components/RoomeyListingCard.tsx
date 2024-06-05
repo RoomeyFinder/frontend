@@ -30,10 +30,11 @@ export default function RoomeyListingCard({
       borderRadius="1.2rem"
       background="transparent"
       cursor="pointer"
+      h="full"
       _hover={{ background: "white", shadow: "md" }}
     >
       {!isLocked && (
-        <FavouriteButton  listingId={user._id} type={FavoriteType.USER} />
+        <FavouriteButton listingId={user._id} type={FavoriteType.USER} />
       )}
       <ProfileAvatar
         imageSrc={user.profileImage?.secure_url}
@@ -72,6 +73,7 @@ function NameAndAge({
         fontSize="1.9rem"
         fontWeight="normal"
         lineHeight="1.9rem"
+        textTransform="capitalize"
       >
         {name}
       </Heading>

@@ -227,7 +227,10 @@ function OwnersInfo({ ownersName }: { ownersName: string }) {
         fontWeight="normal"
         lineHeight="1.6rem"
       >
-        Stay with {ownersName}
+        Stay with{" "}
+        <Text as="span" textTransform="capitalize">
+          {ownersName}
+        </Text>
       </Heading>
     </Flex>
   )
