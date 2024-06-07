@@ -155,9 +155,9 @@ function ListingsSection() {
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
           {loading ? (
-            <Box opacity=".8" mx="auto" w="100%" maxW="40rem">
+            <Flex justifyContent="center" opacity=".8" mx="auto" w="100%" maxW="40rem">
               <Loading />
-            </Box>
+            </Flex>
           ) : (
             <RoomsList
               rooms={listings}

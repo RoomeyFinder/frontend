@@ -5,7 +5,6 @@ import { useAppSelector } from "@/app/_redux"
 
 export default function Navigation() {
   const { user } = useAppSelector((store) => store.auth)
-  console.log(user)
   if (user) return <PrivateNavigation />
   return <PublicNavigation />
 }

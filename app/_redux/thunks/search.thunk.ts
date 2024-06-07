@@ -2,7 +2,6 @@ import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import axiosFetcher from "@/app/_utils/axios"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import localforage from "localforage"
-import toast from "react-hot-toast"
 
 export const fetchListings = createAsyncThunk(
   "listings/fetchListings",

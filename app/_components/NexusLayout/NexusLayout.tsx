@@ -12,11 +12,12 @@ import {
 import { ReactNode, useState } from "react"
 import NexusHeading from "./NexusHeading"
 import NexusSidebar from "./NexusSideBar"
+import LayoutClientProvider from "../../_providers/LayoutClientProvider"
 
 export default function NexusLayout({ children }: { children: ReactNode }) {
   const [openMenu, setOpenMenu] = useState(false)
   return (
-    <>
+    <LayoutClientProvider>
       <VStack
         w="full"
         alignItems="stretch"
@@ -77,6 +78,6 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
           </Box>
         </Show>
       </VStack>
-    </>
+    </LayoutClientProvider>
   )
 }

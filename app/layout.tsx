@@ -12,8 +12,6 @@ import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
 import ReduxProvider from "./_providers/ReduxProvider"
-import LayoutDispatchProvider from "./_providers/LayoutClientProvider"
-import { Box } from "@chakra-ui/react"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -32,14 +30,14 @@ export default function RootLayout({
                 clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
               >
                 <ReduxProvider>
-                  <LayoutDispatchProvider>
+                  <>
                     <AuthModalProvider>
                       <GlobalLayout>
                         {children}
                         <AuthModal />
                       </GlobalLayout>
                     </AuthModalProvider>
-                  </LayoutDispatchProvider>
+                  </>
                 </ReduxProvider>
               </GoogleOAuthProvider>
             </LocalForageProvider>

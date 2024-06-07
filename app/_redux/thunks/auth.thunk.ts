@@ -34,3 +34,19 @@ export const updatePreferences = createAsyncThunk(
     }
   }
 )
+export const updateSettings = createAsyncThunk(
+  "auth/updateSettings",
+  async (update: any) => {
+    const response = await axiosFetcher({
+      url: "/users/me/settings",
+      method: "put",
+      body: update,
+    })
+    const storedUser = await localforage.getItem(STORAGE_KEYS.RF_USER)
+    return {
+      user: response.statusCode === 200 ? response.user : storedUser || null,
+      statusCode: response.statusCode,
+      message: response.message,
+    }
+  }
+)

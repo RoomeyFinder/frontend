@@ -16,8 +16,8 @@ export default function LayoutDispatchProvider({
   children: ReactNode | ReactNode[]
 }) {
   const dispatch = useAppDispatch()
+  const { user } = useAppSelector((store) => store.auth)
   const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
-  const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
   const { hasFetchedRooms, hasFetchedRoomies } = useAppSelector(
     (store) => store.recommendations
   )
@@ -25,16 +25,17 @@ export default function LayoutDispatchProvider({
     dispatch(checkAuthStatus())
   }, [dispatch])
   useEffect(() => {
-    !hasFetchedInitialListings && dispatch(fetchListings())
-    !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
-    !hasFetchedRooms && dispatch(fetchRoomRecommendations())
-    !hasFetchedRoomies && dispatch(fetchRoomiesRecommendations())
+    if (user) {
+      !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
+      !hasFetchedRooms && dispatch(fetchRoomRecommendations())
+      !hasFetchedRoomies && dispatch(fetchRoomiesRecommendations())
+    }
   }, [
     dispatch,
     hasFetchedUserFavorites,
-    hasFetchedInitialListings,
     hasFetchedRoomies,
     hasFetchedRooms,
+    user,
   ])
   useProtectRoutes()
 
