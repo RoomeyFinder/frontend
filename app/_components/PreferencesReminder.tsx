@@ -6,9 +6,10 @@ import {
   hidePreferencesReminder,
   showPreferencesReminder,
 } from "../_redux/slices/ui.slice"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 export default function PreferencesReminder() {
+  const router = useRouter()
   const { user } = useAppSelector((store) => store.auth)
   const { showPreferencesReminder: showReminder, hasClosedPreferenceReminder } =
     useAppSelector((store) => store.ui)
@@ -17,7 +18,8 @@ export default function PreferencesReminder() {
   useEffect(() => {
     let timeoutId
     if (
-      !user?.hasSetPreferences &&
+      user &&
+      !user.hasSetPreferences &&
       pathname === "/nexus" &&
       !hasClosedPreferenceReminder
     ) {
@@ -59,8 +61,13 @@ export default function PreferencesReminder() {
               textDecor="underline"
               textUnderlineOffset=".3rem"
               color="brand.main"
-              _hover={{ color: "brand.main", filter: "brightness(120%)"  }}
+              _hover={{ color: "brand.main", filter: "brightness(120%)" }}
               fontWeight="500"
+              href="/nexus/me/preferences"
+              onClick={(e) => {
+                e.preventDefault()
+                router.push("/nexus/me/preferences")
+              }}
             >
               Update your preferences
             </Link>

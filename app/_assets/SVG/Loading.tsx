@@ -12,31 +12,23 @@ export default function Loading() {
         <title>Loading</title>
         <defs>
           <linearGradient id="__c11n_idwds59_a" x1=".5" y1="0" x2="0" y2=".5">
-            <stop stop-color="currentColor" stop-opacity="1"></stop>
-            <stop
-              stop-color="currentColor"
-              stop-opacity=".75"
-              offset="1"
-            ></stop>
+            <stop stopColor="currentColor" stopOpacity="1"></stop>
+            <stop stopColor="currentColor" stopOpacity=".75" offset="1"></stop>
           </linearGradient>
           <linearGradient id="__c11n_idwds59_b" x1="0" y1=".5" x2=".5" y2="1">
-            <stop stop-color="currentColor" stop-opacity=".75"></stop>
-            <stop stop-color="currentColor" stop-opacity=".5" offset="1"></stop>
+            <stop stopColor="currentColor" stopOpacity=".75"></stop>
+            <stop stopColor="currentColor" stopOpacity=".5" offset="1"></stop>
           </linearGradient>
           <linearGradient id="__c11n_idwds59_c" x1=".5" y1="1" x2="1" y2=".5">
-            <stop stop-color="currentColor" stop-opacity=".5"></stop>
-            <stop
-              stop-color="currentColor"
-              stop-opacity=".25"
-              offset="1"
-            ></stop>
+            <stop stopColor="currentColor" stopOpacity=".5"></stop>
+            <stop stopColor="currentColor" stopOpacity=".25" offset="1"></stop>
           </linearGradient>
           <linearGradient id="__c11n_idwds59_d" x1="1" y1=".5" x2="0" y2="0">
-            <stop stop-color="currentColor" stop-opacity=".25"></stop>
-            <stop stop-color="currentColor" stop-opacity="0" offset="1"></stop>
+            <stop stopColor="currentColor" stopOpacity=".25"></stop>
+            <stop stopColor="currentColor" stopOpacity="0" offset="1"></stop>
           </linearGradient>
         </defs>
-        <g fill="none" stroke-width="1.5">
+        <g fill="none" strokeWidth="1.5">
           <path
             stroke="url(#__c11n_idwds59_a)"
             d="M 5 1 A 4 4 0 0 0 1 5"

@@ -113,6 +113,9 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
       </>
       <Button
         variant="brand-secondary"
+        bg="brand.main"
+        color="white"
+        _hover={{ filter: "brightness(115%)" }}
         display="flex"
         gap="1.6rem"
         alignItems="center"
