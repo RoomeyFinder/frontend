@@ -10,6 +10,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  ResponsiveValue,
   Switch,
   VStack,
 } from "@chakra-ui/react"
@@ -149,11 +150,13 @@ export function ProfileModal({
   heading,
   isOpen,
   onClose = () => {},
+  maxWidth,
 }: {
   children: ReactNode | ReactNode[]
   heading: ReactNode | ReactNode[]
   isOpen: boolean
   onClose: () => void
+  maxWidth?: ResponsiveValue<any>
 }) {
   return (
     <>
@@ -163,9 +166,9 @@ export function ProfileModal({
           bg="white"
           rounded="1.2rem"
           py="3rem"
-          px="3rem"
-          w="85%"
-          maxW="45rem"
+          px={{ base: "2.5rem", md: "3rem" }}
+          w="95%"
+          maxW={maxWidth || "45rem"}
         >
           <ModalCloseButton size="2xl" top="1.5rem" right="2rem" p=".5rem" />
           <ModalHeader p="0" mb="3rem" fontSize="2rem">

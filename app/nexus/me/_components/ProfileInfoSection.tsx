@@ -2,6 +2,7 @@ import EditSVG from "@/app/_assets/SVG/Edit"
 import ExternalLink from "@/app/_assets/SVG/ExternalLink"
 import Island from "@/app/_assets/SVG/Island"
 import User from "@/app/_types/User"
+import defaultUserCoverImage from "@/app/_assets/images/default-user-cover.png"
 import {
   Avatar,
   AvatarGroup,
@@ -29,7 +30,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
         borderBottomLeftRadius="0"
         borderBottomRightRadius="0"
         objectFit="cover"
-        src={user?.coverImage?.secure_url || ""}
+        src={user?.coverImage?.secure_url || defaultUserCoverImage.src}
       />
       <Avatar
         w={{ base: "6rem", lg: "8rem" }}

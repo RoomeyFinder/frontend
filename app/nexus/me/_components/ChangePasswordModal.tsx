@@ -95,7 +95,7 @@ export default function ChangePasswordModal({
               {mainError}
             </ErrorText>
           )}
-          {user?.ssoProvider && user?.password && (
+          {!user?.ssoProvider && user?.password && (
             <VStack alignItems="start" w="full" justifyContent="space-between">
               <FormLabel htmlFor="old" fontSize="1.4rem" m="0" fontWeight="600">
                 Old password
