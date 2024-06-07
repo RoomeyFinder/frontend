@@ -54,6 +54,8 @@ export default interface User {
     isOccupationVisibleOnProfile: boolean
     isStateOfOriginVisibleOnProfile: boolean
   }
+  ssoProvider?: "google" | "facebook"
+  password: string
 }
 
 export type Photo = {

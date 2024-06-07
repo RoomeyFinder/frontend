@@ -50,3 +50,19 @@ export const updateSettings = createAsyncThunk(
     }
   }
 )
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (update: any) => {
+    const response = await axiosFetcher({
+      url: "/users/change-password",
+      method: "post",
+      body: update,
+    })
+    const storedUser = await localforage.getItem(STORAGE_KEYS.RF_USER)
+    return {
+      user: response.statusCode === 200 ? response.user : storedUser || null,
+      statusCode: response.statusCode,
+      message: response.message,
+    }
+  }
+)

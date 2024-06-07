@@ -18,7 +18,7 @@ export default function ChangeEmailModal({
       <ProfileModal isOpen={isOpen} onClose={onClose} heading={"Change email"}>
         <VStack gap="1.5rem" alignItems="start">
           <VStack alignItems="start" w="full" justifyContent="space-between">
-            <FormLabel fontSize="1.6rem" m="0" fontWeight="400">
+            <FormLabel fontSize="1.4rem" m="0" fontWeight="600">
               Enter password
             </FormLabel>
             <Input py=".8rem" />

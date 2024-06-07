@@ -1,6 +1,7 @@
 import User from "@/app/_types/User"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import {
+  changePassword,
   checkAuthStatus,
   updatePreferences,
   updateSettings,
@@ -131,14 +132,45 @@ export const authSlice = createSlice({
           if (payload.statusCode !== 200) {
             state.errorMessage =
               action.payload.message ||
-              "Oops, something went wrong! we were unable to update your preferences"
+              "Oops, something went wrong! we were unable to update your settings"
           } else
-            toast.success("Your preferences have been successfully updated!", {
+            toast.success("Your settings have been successfully updated!", {
               duration: 5000,
             })
         }
       )
       .addCase(updateSettings.rejected, (state) => {
+        state.user = null
+        state.token = null
+        state.loading = false
+        state.errorMessage = "Please signin to continue"
+      })
+      .addCase(
+        changePassword.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            user: User | null
+            statusCode: number
+            message: string
+          }>
+        ) => {
+          const payload = action.payload
+          state.user = payload.user as User
+          localforage.setItem(STORAGE_KEYS.RF_USER, payload.user)
+          state.loading = false
+          console.log(action.payload)
+          if (payload.statusCode !== 200) {
+            state.errorMessage =
+              action.payload.message ||
+              "Oops, something went wrong! we were unable to update your password"
+          } else
+            toast.success("Your password has been successfully updated!", {
+              duration: 5000,
+            })
+        }
+      )
+      .addCase(changePassword.rejected, (state) => {
         state.user = null
         state.token = null
         state.loading = false
