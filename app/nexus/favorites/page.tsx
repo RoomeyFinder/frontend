@@ -138,7 +138,7 @@ function FavoritesList({
       />
     )
   return (
-    <Box w="full" py="4rem" h="1000dvh" px={{ base: "1.8rem", md: "4rem" }}>
+    <Box w="full" py="4rem" h="100dvh" px={{ base: "1.8rem", md: "4rem" }}>
       <ListingsGridLayout
         list={favorites.map((favorite) => (
           <FavoriteComponent

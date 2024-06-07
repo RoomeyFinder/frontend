@@ -17,3 +17,20 @@ export const checkAuthStatus = createAsyncThunk(
     }
   }
 )
+
+export const updatePreferences = createAsyncThunk(
+  "auth/updatePreferences",
+  async (update: any) => {
+    const response = await axiosFetcher({
+      url: "/users/me/preferences",
+      method: "put",
+      body: update,
+    })
+    const storedUser = await localforage.getItem(STORAGE_KEYS.RF_USER)
+    return {
+      user: response.statusCode === 200 ? response.user : storedUser || null,
+      statusCode: response.statusCode,
+      message: response.message,
+    }
+  }
+)

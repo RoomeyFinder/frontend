@@ -16,15 +16,16 @@ export default function GlobalLayout({
   useListenForMessengerEvents()
   const pathname = usePathname()
 
-  if (pathname.includes("nexus")) return (
-    <NexusLayout>
-      <PreferencesReminder />
-      {children}
-    </NexusLayout>
-  )
+  if (pathname.includes("nexus"))
+    return (
+      <NexusLayout>
+        <PreferencesReminder />
+        {children}
+      </NexusLayout>
+    )
   return (
-    <Box maxW={{ "2xl": "144rem" }} mx="auto">
-      <AppHeader />
+    <Box maxW={{ "2xl": "144rem" }} mx="auto" h="full" overflow="auto">
+      <AppHeader  />
       <Flex
         justifyContent="center"
         alignItems="center"

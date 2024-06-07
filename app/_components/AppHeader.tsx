@@ -20,7 +20,7 @@ export default function AppHeader() {
       bg="white.main"
     >
       <Flex href="/" as={Link} aria-label="home-page">
-        <AppLogo showTextLogoAlways />
+        <AppLogo showTextLogoAlways={false} />
       </Flex>
       <Navigation />
     </Flex>

@@ -1,8 +1,9 @@
 import User from "@/app/_types/User"
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { checkAuthStatus } from "../thunks/auth.thunk"
+import { checkAuthStatus, updatePreferences } from "../thunks/auth.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
+import toast from "react-hot-toast"
 
 interface IAuthState {
   token: string | null
@@ -73,6 +74,35 @@ export const authSlice = createSlice({
         }
       )
       .addCase(checkAuthStatus.rejected, (state) => {
+        state.user = null
+        state.token = null
+        state.loading = false
+        state.errorMessage = "Please signin to continue"
+      })
+      .addCase(
+        updatePreferences.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            user: User | null
+            statusCode: number
+            message: string
+          }>
+        ) => {
+          const payload = action.payload
+          state.user = payload.user as User
+          localforage.setItem(STORAGE_KEYS.RF_USER, payload.user)
+          state.loading = false
+          if (payload.statusCode !== 200) {
+            state.errorMessage =
+              action.payload.message ||
+              "Oops, something went wrong! we were unable to update your preferences"
+          }else toast.success("Your preferences have been successfully updated!", {
+            duration: 5000,
+          })
+        }
+      )
+      .addCase(updatePreferences.rejected, (state) => {
         state.user = null
         state.token = null
         state.loading = false

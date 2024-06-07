@@ -25,14 +25,15 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
         overflow="hidden"
         bg="white"
       >
-        <Box w="full" pos="sticky">
+        <Box w="full" pos="sticky" top="0">
           <NexusHeading handleToggleMenu={() => setOpenMenu((prev) => !prev)} />
         </Box>
         <Show above="md">
           <SimpleGrid
             columns={12}
             h="calc(100dvh - 8.5rem)"
-            pos="relative"
+            pos="sticky"
+            top="9rem"
             alignItems="start"
           >
             <GridItem h="100%" colStart={1} colSpan={3} pos="sticky" top="0">
@@ -49,7 +50,7 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
           </SimpleGrid>
         </Show>
         <Show below="md">
-          <Box w="full" h="calc(100dvh - 8.5rem)" overflow="auto">
+          <Box w="full" h="calc(100dvh - 8.5rem)" pos="sticky" top="9rem" overflow="auto">
             <Drawer
               isOpen={openMenu}
               onClose={() => setOpenMenu(false)}

@@ -1,18 +1,16 @@
-import EditSVG from "@/app/_assets/SVG/Edit"
 import Settings from "@/app/_assets/SVG/Settings"
 import User from "@/app/_types/User"
 import {
-  Avatar,
-  AvatarGroup,
   Box,
-  Button,
   Heading,
   Link,
   Text,
   VStack,
 } from "@chakra-ui/react"
+import { useRouter } from "next/navigation"
 
 export default function ProfileSettings({ user }: { user: User | null }) {
+  const router = useRouter()
   return (
     <VStack overflow="hidden" w="full" gap="3rem" pos="relative" h="full">
       <VStack
@@ -33,12 +31,27 @@ export default function ProfileSettings({ user }: { user: User | null }) {
           Settings
         </Heading>
         <Text fontSize="1.4rem" color="gray.main" fontWeight="500">
-          Manage your account preferences
+          Manage your account
         </Text>
         <VStack alignItems="start" fontSize="1.4rem" w="full" color="gray.main">
-          <Link>Manage subscriptions</Link>
-          <Link>Profile settings</Link>
-          <Link>Deactivate account</Link>
+          <Link
+            href="/nexus/me/preferences"
+            onClick={(e) => {
+              e.preventDefault()
+              router.push("/nexus/me/preferences")
+            }}
+          >
+            Update your preferences
+          </Link>
+          <Link
+            href="/nexus/me/settings"
+            onClick={(e) => {
+              e.preventDefault()
+            }}
+          >
+            Profile settings
+          </Link>
+          <Text as="button">Deactivate account</Text>
         </VStack>
       </VStack>
       <Box

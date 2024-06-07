@@ -13,6 +13,7 @@ import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
 import ReduxProvider from "./_providers/ReduxProvider"
 import LayoutDispatchProvider from "./_providers/LayoutClientProvider"
+import { Box } from "@chakra-ui/react"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -22,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" style={{ height: "100%" }}>
+      <body style={{ height: "100%", overflow: "hidden" }}>
         <Suspense fallback={<CenteredSpinner />}>
           <ChakraUIProvider>
             <LocalForageProvider>

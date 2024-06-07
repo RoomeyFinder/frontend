@@ -33,19 +33,26 @@ export default interface User {
   premiumPurchaseExpiry?: string
   lastDateOfInterestReset: string
   hasSetPreferences: boolean
-  preferences: {
+  preferences?: {
     lifestyle: string[]
-    isAgeVisibleOnProfile: boolean
-    isOccupationVisibleOnProfile: boolean
-    isStateOfOriginVisibleOnProfile: boolean
     targetLocation: {
       type: string
       coordinates: number[]
     }
+    leaseDurations: ("annually" | "biannually" | "quarterly" | "monthly")[]
     targetCity: string
     targetState: string
     earliestMoveDate: string
     lookingFor: "room" | "roommate" | "both" | "none"
+    preferredRoomiesGender: "male" | "female" | "both"
+    minBudget: number
+    maxBudget: number
+    maxDistanceFromTargetLocationInMeters: number
+  }
+  settings: {
+    isAgeVisibleOnProfile: boolean
+    isOccupationVisibleOnProfile: boolean
+    isStateOfOriginVisibleOnProfile: boolean
   }
 }
 
