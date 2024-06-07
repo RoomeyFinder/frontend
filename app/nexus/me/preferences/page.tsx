@@ -13,8 +13,11 @@ import { ChangeEvent, useCallback, useState } from "react"
 import User from "@/app/_types/User"
 import { getAddressComponents } from "@/app/_utils/google"
 import { updatePreferences } from "@/app/_redux/thunks/auth.thunk"
+import { useRouter } from "next/navigation"
+import BackIcon from "@/app/_assets/SVG/BackIcon"
 
 export default function PreferencesPage() {
+  const router = useRouter()
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((store) => store.auth)
   const [leaseDurations, setLeaseDurations] = useState(
@@ -27,10 +30,6 @@ export default function PreferencesPage() {
       ? [...user.preferences.lifestyle]
       : []
   )
-  const [location, setLocation] = useState({
-    longitude: 0,
-    latitude: 0,
-  })
 
   const validateCityAndStateIfExists = useCallback(
     async (values: Partial<User["preferences"]>) => {
@@ -47,7 +46,7 @@ export default function PreferencesPage() {
 
   const handleSubmit = useCallback(
     async (values: any, { setSubmitting, setErrors }: FormikHelpers<any>) => {
-      let formData = { ...values, lifestyle, leaseDurations, ...location }
+      let formData = { ...values, lifestyle, leaseDurations }
       if (formData?.targetCity && formData.targetState) {
         const res = await getAddressComponents({
           street: "",
@@ -69,14 +68,17 @@ export default function PreferencesPage() {
         setSubmitting(false)
       })
     },
-    [location, lifestyle, leaseDurations, dispatch]
+    [lifestyle, leaseDurations, dispatch]
   )
   return (
-    <Box py="3rem" px={{ base: "2rem", md: "5rem" }} h="80dvh">
+    <Box pt="3rem" pb="3rem" px={{ base: "2rem", md: "5rem" }} h="80dvh">
+      <Text as="button" mb="2rem" color="gray.main" onClick={() => router.back()}>
+        <BackIcon />
+      </Text>
       <VStack
         alignItems="start"
-        pb="3rem"
-        borderBottom="1px solid #d2d2d2"
+        pb="2rem"
+        borderBottom="1px solid #d2d2d244"
         gap="1rem"
       >
         <Heading fontSize={{ base: "2.8rem", sm: "3.2rem" }} fontWeight="500">

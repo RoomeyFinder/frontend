@@ -1,15 +1,17 @@
 import Settings from "@/app/_assets/SVG/Settings"
 import User from "@/app/_types/User"
-import {
-  Box,
-  Heading,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/react"
+import { Box, Heading, Link, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 
-export default function ProfileSettings({ user }: { user: User | null }) {
+export default function ProfileSettings({
+  user,
+  handleProfileSettingsClick,
+  handleDeleteAccountClick,
+}: {
+  user: User | null
+  handleProfileSettingsClick: () => void
+  handleDeleteAccountClick: () => void
+}) {
   const router = useRouter()
   return (
     <VStack overflow="hidden" w="full" gap="3rem" pos="relative" h="full">
@@ -44,14 +46,23 @@ export default function ProfileSettings({ user }: { user: User | null }) {
             Update your preferences
           </Link>
           <Link
-            href="/nexus/me/settings"
+            as="button"
             onClick={(e) => {
               e.preventDefault()
+              handleProfileSettingsClick()
             }}
           >
             Profile settings
           </Link>
-          <Text as="button">Deactivate account</Text>
+          <Link
+            as="button"
+            onClick={(e) => {
+              e.preventDefault()
+              handleDeleteAccountClick()
+            }}
+          >
+            Delete account
+          </Link>
         </VStack>
       </VStack>
       <Box

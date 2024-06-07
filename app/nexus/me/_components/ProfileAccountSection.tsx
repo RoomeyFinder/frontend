@@ -1,11 +1,12 @@
 import Padlock from "@/app/_assets/SVG/Padlock"
-import User from "@/app/_types/User"
 import { Box, Heading, Link, Text, VStack } from "@chakra-ui/react"
 
 export default function ProfileAccountInfoSection({
-  user,
+  handleChangeEmailClick,
+  handleChangePasswordClick,
 }: {
-  user: User | null
+  handleChangePasswordClick: () => void
+  handleChangeEmailClick: () => void
 }) {
   return (
     <VStack overflow="hidden" gap="3rem" pos="relative" h="full">
@@ -30,9 +31,22 @@ export default function ProfileAccountInfoSection({
           Update your password and secure your account
         </Text>
         <VStack alignItems="start" fontSize="1.4rem" w="full" color="gray.main">
-          <Link>Change email address</Link>
-          <Link>Change password</Link>
-          <Link>Two Factor Authentication</Link>
+          <Link
+            as="button"
+            onClick={(e) => {
+              handleChangePasswordClick()
+            }}
+          >
+            Change password
+          </Link>
+          <Link
+            as="button"
+            onClick={(e) => {
+              handleChangeEmailClick()
+            }}
+          >
+            Change email address
+          </Link>
         </VStack>
       </VStack>
       <Box
