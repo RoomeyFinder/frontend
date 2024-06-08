@@ -54,7 +54,7 @@ function ListSectionContainer({
   return (
     <Box
       w={{ base: "95dvw", md: "full" }}
-      maxW={{ base: "94%", xl: "none" }}
+      maxW={{ base: "94%", xl: "125rem" }}
       mx="auto"
       display="flex"
       flexDir="column"

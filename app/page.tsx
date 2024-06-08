@@ -36,8 +36,10 @@ function Hero() {
         justifyContent="space-between"
         alignItems="center"
         flexDir={{ base: "column", md: "row" }}
-        px={{ base: "3rem", md: "8rem", lg: "8rem" }}
+        px={{ base: "3rem", md: "8rem", lg: "0" }}
         py={{ base: "5rem", md: "10rem" }}
+        maxW="125rem"
+        mx="auto"
       >
         <Box as="main">
           <Heading
@@ -73,7 +75,7 @@ function Hero() {
             Get Started
           </Button>
         </Box>
-        <Box maxW={{ base: "100vw", md: "50vw", lg: "50vw" }}>
+        <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>
           <Image
             src={heroImage}
             alt="Hero image for Roomeyfinder. Two ladies sitting on a blue couch having coffee"
@@ -151,11 +153,17 @@ function ListingsSection() {
   if (listings.length === 0 && !loading) return null
   return (
     <>
-      <Box>
+      <Box mx="auto" maxW="125rem">
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
           {loading ? (
-            <Flex justifyContent="center" opacity=".8" mx="auto" w="100%" maxW="40rem">
+            <Flex
+              justifyContent="center"
+              opacity=".8"
+              mx="auto"
+              w="100%"
+              maxW="40rem"
+            >
               <Loading />
             </Flex>
           ) : (
@@ -194,7 +202,7 @@ function ListSectionContainer({
       flexDir="column"
       gap="3rem"
       py={{ base: "3rem", md: "6rem" }}
-      px={{ base: "1.5rem", sm: "2rem", md: "6rem", lg: "7rem" }}
+      // px={{ base: "1.5rem", sm: "2rem", md: "6rem", lg: "7rem" }}
       ref={sectionRef}
     >
       {children}
