@@ -1,5 +1,9 @@
 import { PreviewablePhoto } from "@/app/_types"
+<<<<<<< HEAD
 import { DeletablePhoto } from "__archive/profile/_components/PhotosUploadSection"
+=======
+import { DeletablePhoto } from "@/app/__archive/profile/_components/PhotosUploadSection"
+>>>>>>> origin/refactor/redux
 import { Flex } from "@chakra-ui/react"
 import ListingPreviewPhoto from "./ListingPreviewPhoto"
 
