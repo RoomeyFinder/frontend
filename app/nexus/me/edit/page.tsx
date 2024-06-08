@@ -42,7 +42,7 @@ export default function ProfileEdit() {
       if (!values.firstName) errors.firstName = "Required"
       if (!values.lastName) errors.lastName = "Required"
       if (!values.dob) errors.dob = "Required"
-      if (isUnderage(values.dob || ""))
+      if (values.dob && isUnderage(values.dob || ""))
         errors.dob = "You must be 16 years or older"
       if (!values.about) errors.about = "Required"
       else if (values.about.length < 50) errors.about = "Too short"
@@ -118,18 +118,20 @@ export default function ProfileEdit() {
               pos="relative"
             >
               <Box mb="8.5rem" w="full">
-                <CoverAndProfileImage
-                  coverImage={coverImagePreview}
-                  profileImage={profileImagePreview}
-                  showCoverImageEditButton
-                  showProfileImageEditButton
-                  onProfileImageEditButtonClick={() =>
-                    profileImageInputRef.current?.click()
-                  }
-                  onCoverImageEditButtonClick={() =>
-                    coverImageInputRef.current?.click()
-                  }
-                />
+                <Box h={{ lg: "28rem" }}>
+                  <CoverAndProfileImage
+                    coverImage={coverImagePreview}
+                    profileImage={profileImagePreview}
+                    showCoverImageEditButton
+                    showProfileImageEditButton
+                    onProfileImageEditButtonClick={() =>
+                      profileImageInputRef.current?.click()
+                    }
+                    onCoverImageEditButtonClick={() =>
+                      coverImageInputRef.current?.click()
+                    }
+                  />
+                </Box>
               </Box>
               <VisuallyHidden>
                 <Input

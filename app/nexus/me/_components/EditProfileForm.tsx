@@ -85,6 +85,7 @@ export default function EditProfileForm({
           gap={{ base: "4rem", sm: "4%" }}
           flexGrow="1"
           flexDir={{ base: "column", sm: "row" }}
+          alignItems="start"
         >
           <Flex flexBasis="48%" flexDir="column" w="full">
             <InputLabel>Date of birth</InputLabel>

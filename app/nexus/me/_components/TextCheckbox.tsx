@@ -28,11 +28,11 @@ export default function TextCheckbox({
   onChange?: ChangeEventHandler<HTMLInputElement>
   name: string
   value: string
-  inputType: "radio" | "checkbox"
+  inputType?: "radio" | "checkbox"
 }) {
   return (
     <Flex
-      as="label"
+      as={inputType ? "label" : "p"}
       {...defaultInputStyles}
       justifyContent="center"
       alignItems="center"
@@ -45,17 +45,19 @@ export default function TextCheckbox({
       _hover={{ bg: "white.300" }}
     >
       {children}
-      <VisuallyHidden>
-        <input
-          name={name}
-          type={inputType}
-          checked={isSelected}
-          value={value}
-          onChange={(e) => {
-            onChange && onChange(e)
-          }}
-        />
-      </VisuallyHidden>
+      {inputType && (
+        <VisuallyHidden>
+          <input
+            name={name}
+            type={inputType}
+            checked={isSelected}
+            value={value}
+            onChange={(e) => {
+              onChange && onChange(e)
+            }}
+          />
+        </VisuallyHidden>
+      )}
     </Flex>
   )
 }

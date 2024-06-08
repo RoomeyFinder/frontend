@@ -1,5 +1,5 @@
 import { Button, Text, TextProps } from "@chakra-ui/react"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useContext, useState, useMemo, useCallback, ReactNode } from "react"
 import toast from "react-hot-toast"
 import EditIcon from "../_assets/SVG/EditIcon"
@@ -106,6 +106,8 @@ export default function InterestButton({
         fontWeight="400"
         display="flex"
         alignItems="end"
+        py={{base: "1rem"}}
+        px={{base: "1.2rem"}}
         variant={variant || "brand-secondary"}
         minW={{ md: "18.5rem" }}
         _loading={{

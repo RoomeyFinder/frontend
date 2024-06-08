@@ -58,7 +58,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
           fontSize="2.8rem"
         >
           My Profile
-          <Link href="/">
+          <Link as="button" onClick={() => router.push("/users/me")}>
             <ExternalLink />
           </Link>
         </Heading>

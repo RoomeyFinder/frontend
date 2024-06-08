@@ -1,5 +1,5 @@
 import CameraIcon from "@/app/_assets/SVG/CameraIcon"
-import { Avatar, Button, Flex } from "@chakra-ui/react"
+import { Avatar, Button, Flex, ResponsiveValue } from "@chakra-ui/react"
 
 export default function CoverAndProfileImage({
   coverImage,
@@ -8,32 +8,44 @@ export default function CoverAndProfileImage({
   showProfileImageEditButton,
   onProfileImageEditButtonClick,
   onCoverImageEditButtonClick,
+  isFullHeightCoverImage,
 }: {
   coverImage: string
   profileImage: string
   showCoverImageEditButton?: boolean
+  isFullHeightCoverImage?: boolean
   showProfileImageEditButton?: boolean
   onProfileImageEditButtonClick?: () => void
   onCoverImageEditButtonClick?: () => void
 }) {
   return (
-    <Flex w="full" pos="relative">
+    <Flex w="full" h="full" pos="relative">
       <Avatar
         w="100%"
-        h={{ base: "20rem", sm: "25rem" }}
+        h={{
+          base: "20rem",
+          sm: "25rem",
+          lg: isFullHeightCoverImage ? "full" : "25rem",
+        }}
         src={coverImage}
         bgColor="white.300"
         borderRadius="0"
         objectFit="cover"
+        borderBottomRadius="2rem"
+        overflow="hidden"
       />
       <Flex
         pos="absolute"
-        top={{ base: "16.5rem", sm: "18.5rem" }}
+        top={{
+          base: "16.5rem",
+          sm: "18.5rem",
+          lg: showProfileImageEditButton ? "60%" : "85%",
+        }}
         left={{ base: "2rem", sm: "8rem" }}
       >
         <Avatar
-          w={{ base: "6rem", sm: "12rem" }}
-          h={{ base: "6rem", sm: "12rem" }}
+          w={{ base: "6rem", sm: "12rem", lg: "16rem" }}
+          h={{ base: "6rem", sm: "12rem", lg: "16rem" }}
           src={profileImage}
           bgColor="white.500"
           border="2px solid white"
