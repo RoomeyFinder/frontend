@@ -7,6 +7,7 @@ import {
   fetchRoomRecommendations,
   fetchRoomiesRecommendations,
 } from "../_redux/thunks/recommendations.thunk"
+import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
 
 export default function LayoutDispatchProvider({
   children,
@@ -16,18 +17,21 @@ export default function LayoutDispatchProvider({
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((store) => store.auth)
   const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
+  const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
   const { hasFetchedRooms, hasFetchedRoomies } = useAppSelector(
     (store) => store.recommendations
   )
   useEffect(() => {
     if (user) {
       !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
+      !hasFetchedUserInterests && dispatch(fetchUsersInterests())
       !hasFetchedRooms && dispatch(fetchRoomRecommendations())
       !hasFetchedRoomies && dispatch(fetchRoomiesRecommendations())
     }
   }, [
     dispatch,
     hasFetchedUserFavorites,
+    hasFetchedUserInterests,
     hasFetchedRoomies,
     hasFetchedRooms,
     user,

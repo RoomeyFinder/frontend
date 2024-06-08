@@ -10,6 +10,7 @@ interface IAuthState {
   errorMessage: string
   isUsingFallback: boolean
   hasError: boolean
+  hasFetchedUserInterests: boolean
 }
 
 const initialState: IAuthState = {
@@ -17,7 +18,8 @@ const initialState: IAuthState = {
   loading: false,
   errorMessage: "",
   isUsingFallback: false,
-  hasError: false
+  hasError: false,
+  hasFetchedUserInterests: false
 }
 
 export const interestsSlice = createSlice({
@@ -43,6 +45,7 @@ export const interestsSlice = createSlice({
         store.loading = false
         store.errorMessage = ""
         store.isUsingFallback = action.payload.statusCode !== 200
+        store.hasFetchedUserInterests = true
       })
       .addCase(fetchUsersInterests.rejected, (store) => {
         store.errorMessage =

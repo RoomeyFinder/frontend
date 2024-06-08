@@ -1,11 +1,8 @@
 "use client"
-import { Box, Flex, Heading, Spinner } from "@chakra-ui/react"
-import { LegacyRef, ReactNode, Suspense, useEffect } from "react"
+import { Box, Heading } from "@chakra-ui/react"
+import { ReactNode, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
-import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
 import { Listing } from "@/app/_types/Listings"
-import { resetError } from "@/app/_redux/slices/listings.slice"
-import { useRouter } from "next/navigation"
 import Loading from "../_assets/SVG/Loading"
 import Empty from "../_components/Empty"
 import ListingsGridLayout from "../_components/ListingsGridLayout"
@@ -96,15 +93,6 @@ function RoomsList({
         list={rooms.map((room) => (
           <RoomListingCard
             key={room._id}
-            ownersName={room.owner?.firstName as string}
-            ownersOccupation={room.owner?.occupation as string}
-            city={room.city as string}
-            rentAmount={room.rentAmount as number}
-            rentDuration={room.rentDuration as any}
-            title={room.lookingFor as string}
-            images={room.photos as []}
-            showFavoriteButton={allowFavoriting}
-            listingId={room._id as string}
             listing={room}
             variant="outlined"
           />

@@ -12,8 +12,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
-  VStack,
 } from "@chakra-ui/react"
 import { Suspense, useEffect, useMemo } from "react"
 import EditableListingCard from "../../_components/EditableListingCard"
@@ -24,7 +22,6 @@ import { Listing } from "@/app/_types/Listings"
 import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/listings.slice"
-import NoResults from "@/app/_assets/SVG/NoResults"
 import { useRouter } from "next/navigation"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 
