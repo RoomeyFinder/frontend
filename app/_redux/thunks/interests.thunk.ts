@@ -7,7 +7,7 @@ export const fetchUsersInterests = createAsyncThunk(
   "interests/fetchUsersInterests",
   async () => {
     const response = await axiosFetcher({
-      url: "/interestss/me",
+      url: "/interests/me",
       method: "get",
     })
     const storedListings = await localforage.getItem(
