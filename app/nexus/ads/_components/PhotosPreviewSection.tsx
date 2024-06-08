@@ -1,5 +1,5 @@
 import { PreviewablePhoto } from "@/app/_types"
-import { DeletablePhoto } from "@/app/nexus/profile/_components/PhotosUploadSection"
+import { DeletablePhoto } from "@/app/__archive/profile/_components/PhotosUploadSection"
 import { Flex } from "@chakra-ui/react"
 import ListingPreviewPhoto from "./ListingPreviewPhoto"
 
