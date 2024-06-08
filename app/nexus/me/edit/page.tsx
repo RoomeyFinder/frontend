@@ -46,6 +46,7 @@ export default function ProfileEdit() {
         errors.dob = "You must be 16 years or older"
       if (!values.about) errors.about = "Required"
       else if (values.about.length < 50) errors.about = "Too short"
+      else if (values.about.length > 1500) errors.about = "Too long"
       if (!values.stateOfOrigin) errors.stateOfOrigin = "Required"
       if (
         (!occupation.isStudent && !occupation.occupation) ||

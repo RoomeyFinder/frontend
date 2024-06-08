@@ -82,7 +82,7 @@ export default function UserOverview({
                 {user.firstName} {user.lastName}
               </Heading>
               <Flex
-                gap="1rem"
+                gap=".8rem"
                 fontSize="1.5rem"
                 color="gray.main"
                 fontWeight="600"
@@ -96,11 +96,11 @@ export default function UserOverview({
                 )}
                 <Text textTransform="capitalize">{user.gender}</Text>
                 {user.settings?.isOccupationVisibleOnProfile && (
-                  <Text>{!user.isStudent ? user.school : user.occupation}</Text>
+                  <Text>{user.isStudent ? `Student @${user.school}` : user.occupation}</Text>
                 )}
-                {/* {!user.settings.isStateOfOriginVisibleOnProfile && (
-                  <Text>{user.stateOfOrigin}</Text>
-                )} */}
+                {user.settings.isStateOfOriginVisibleOnProfile && (
+                  <Text>From {user.stateOfOrigin}</Text>
+                )}
               </Flex>
             </VStack>
             <Box ml="auto">

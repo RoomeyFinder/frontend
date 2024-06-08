@@ -173,7 +173,7 @@ export default function EditProfileForm({
         <Flex w="100%" flexDir="column" gap="1rem">
           <InputLabel>Occupation</InputLabel>
           <OccupationOrUniversityInput
-            inputName={true ? "school" : "occupation"}
+            inputName={occupation.isStudent ? "school" : "occupation"}
             inputValue={
               occupation.isStudent
                 ? occupation.school
@@ -206,6 +206,7 @@ export default function EditProfileForm({
             fontSize={{ base: "1.6rem", md: "1.9rem" }}
             rounded="1.2rem"
             placeholder="About me"
+            maxLength={1500}
             {...(getErrorPropsV1(errors.about || "") as any)}
           />
           {errors.about && <ErrorText>{errors.about}</ErrorText>}
