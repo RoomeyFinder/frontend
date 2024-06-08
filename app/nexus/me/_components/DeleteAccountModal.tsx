@@ -64,13 +64,14 @@ export default function DeleteAcountModal({
               fontSize="1.6rem"
               fontWeight="600"
               lineHeight="2.4rem"
-              color="gray.main"
-              bg="#7070704D"
+              color="gray.100"
+              border="1px solid currentColor"
+              bg="white"
               px="2rem"
               py="1rem"
               rounded="1rem"
               h="unset"
-              _hover={{ bg: "gray.main", color: "white" }}
+              _hover={{ bg: "gray.100", color: "white" }}
             >
               No
             </Button>
