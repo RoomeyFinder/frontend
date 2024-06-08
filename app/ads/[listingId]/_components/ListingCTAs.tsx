@@ -2,11 +2,7 @@ import ShareIcon from "@/app/_assets/SVG/ShareIcon"
 import { FavouriteButton } from "@/app/_components/RoomListingCard"
 import { FavoriteType } from "@/app/_types/Favorites"
 import { Listing } from "@/app/_types/Listings"
-<<<<<<< HEAD
 import InterestButton from "@/app/_components/InterestButton"
-=======
-import { InterestButton } from "@/app/__archive/profile/_components/ProfileOverview"
->>>>>>> origin/refactor/redux
 import { Button, Flex } from "@chakra-ui/react"
 
 export default function ListingCTAs({

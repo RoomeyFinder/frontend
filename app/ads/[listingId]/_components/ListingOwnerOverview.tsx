@@ -6,10 +6,6 @@ import InterestButton from "@/app/_components/InterestButton"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
 import { Listing } from "@/app/_types/Listings"
 import { pluralizeText } from "@/app/_utils"
-<<<<<<< HEAD
-=======
-import { InterestButton } from "@/app/__archive/profile/_components/ProfileOverview"
->>>>>>> origin/refactor/redux
 import {
   HStack,
   VStack,
