@@ -1,10 +1,8 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
-import { checkAuthStatus } from "../_redux/thunks/auth.thunk"
 import useProtectRoutes from "../_hooks/useProtectRoutes"
 import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
-import { fetchListings } from "../_redux/thunks/search.thunk"
 import {
   fetchRoomRecommendations,
   fetchRoomiesRecommendations,
@@ -21,9 +19,6 @@ export default function LayoutDispatchProvider({
   const { hasFetchedRooms, hasFetchedRoomies } = useAppSelector(
     (store) => store.recommendations
   )
-  useEffect(() => {
-    dispatch(checkAuthStatus())
-  }, [dispatch])
   useEffect(() => {
     if (user) {
       !hasFetchedUserFavorites && dispatch(fetchUserFavorites())

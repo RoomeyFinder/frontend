@@ -33,8 +33,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.token = null
       state.user = null
-      localforage.removeItem(STORAGE_KEYS.RF_USER)
-      localforage.removeItem(STORAGE_KEYS.RF_TOKEN)
+      Object.values(STORAGE_KEYS).forEach((val) => localforage.removeItem(val))
     },
     authenticate: (
       state,
