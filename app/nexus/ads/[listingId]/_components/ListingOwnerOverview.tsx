@@ -2,10 +2,10 @@ import GenderIcon from "@/app/_assets/SVG/GenderIcon"
 import GradCap from "@/app/_assets/SVG/GradCap"
 import { PeopleGroupSmall } from "@/app/_assets/SVG/PeopleGroup"
 import DotSeparator from "@/app/_components/DotSeparator"
+import InterestButton from "@/app/_components/InterestButton"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
 import { Listing } from "@/app/_types/Listings"
 import { pluralizeText } from "@/app/_utils"
-import { InterestButton } from "__archive/profile/_components/ProfileOverview"
 import {
   HStack,
   VStack,
