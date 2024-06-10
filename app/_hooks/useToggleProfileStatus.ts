@@ -1,12 +1,13 @@
-import { useContext, useCallback } from "react"
-import { UserContext } from "../_providers/UserProvider"
+import { useCallback } from "react"
 import useAppToast from "./useAppToast"
 import useAxios from "./useAxios"
+import { useAppDispatch, useAppSelector } from "../_redux"
+import { updateUser } from "../_redux/slices/auth.slice"
 
 export default function useToggleProfileStatus() {
-  const { updateUser, user } = useContext(UserContext)
+  const { user } = useAppSelector((store) => store.auth)
   const toast = useAppToast()
-
+  const dispatch = useAppDispatch()
   const { isFetching, fetchData } = useAxios()
 
   const toggleProfileStatus = useCallback(
@@ -20,11 +21,11 @@ export default function useToggleProfileStatus() {
         },
       })
       if (res.statusCode === 200) {
-        updateUser(res.user)
+        dispatch(updateUser(res.user))
         toast({ status: "success", title: res.message })
       } else toast({ title: res.message, status: "error" })
     },
-    [updateUser, toast, fetchData]
+    [toast, fetchData]
   )
 
   return { toggleProfileStatus, user, isFetching }

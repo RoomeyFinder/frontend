@@ -10,11 +10,9 @@ import {
 const ONE_MEGABYTE_IN_BYTES = 1048576
 
 export default function useHandleFilesUploadWithDragAndDrop({
-  inputRef,
   maxFilesCount,
   maxFileSizeInMegaBytes = 5,
 }: {
-  inputRef: MutableRefObject<HTMLInputElement | null>
   maxFilesCount: number
   maxFileSizeInMegaBytes?: number
 }) {
@@ -79,13 +77,6 @@ export default function useHandleFilesUploadWithDragAndDrop({
     setFiles((prev) => prev.filter((it, idx) => index !== idx))
   }, [])
 
-  const openFileExplorer = useCallback(() => {
-    if (inputRef.current) {
-      inputRef.current.value = ""
-      inputRef.current.click()
-    }
-  }, [inputRef])
-
   return {
     dragActive,
     files,
@@ -95,7 +86,6 @@ export default function useHandleFilesUploadWithDragAndDrop({
     handleDragOver,
     handleDragEnter,
     removeFile,
-    openFileExplorer,
     hasReachedUploadLimit,
     setFiles: (files: File[]) => setFiles(files),
   }

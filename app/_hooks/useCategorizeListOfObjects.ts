@@ -19,5 +19,5 @@ export default function useCategorizeListOfObjects({ list, keyToCategorizeBy }: 
     }, {})
   }, [keyToCategorizeBy, list])
 
-  return categorizedList
+  return categorizedList as { [x: string]: any[]}
 }

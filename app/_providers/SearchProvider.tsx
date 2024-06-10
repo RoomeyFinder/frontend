@@ -43,12 +43,6 @@ export default function SearchProvider({
   const [focus, setFocus] = useState<"roomies" | "rooms" | "">(
     (searchParams.get("focus") as any) || ""
   )
-  const roomies = useManageFetchListings<User>({
-    url: "/users?isProfileComplete=false",
-    method: "get",
-    resultKey: "users",
-    limit: 12,
-  })
   const rooms = useManageFetchListings<Listing>({
     url: "/listings?isActivated=true&isDraft=false",
     method: "get",
@@ -64,13 +58,13 @@ export default function SearchProvider({
   return (
     <SearchContext.Provider
       value={{
-        roomies: roomies["users"] as User[],
+        roomies: [] as User[],
         rooms: rooms["listings"] as Listing[],
-        loadingRoomies: roomies.loading,
+        loadingRoomies: false,
         loadingRooms: rooms.loading,
-        loadMoreRoomies: roomies.goToNextPage,
+        loadMoreRoomies: () => {},
         loadMoreRooms: rooms.goToNextPage,
-        hasMoreRoomies: roomies.hasMore,
+        hasMoreRoomies: false,
         hasMoreRooms: rooms.hasMore,
         search,
         focus,

@@ -9,13 +9,21 @@ const baseStyle = definePartsStyle({
     // ...
   },
   thumb: {
-    bg: "#D9D9D9",
+    p: ".8rem",
+    bg: "#dddddd8f",
     _checked: {
       bg: "brand.main",
     },
   },
   track: {
+    p: ".5rem",
     bg: "brand.10",
+    _checked: {
+      bg: "brand.10",
+    },
+    _focusVisible: {
+      boxShadow:"none"
+    }
   },
 })
 

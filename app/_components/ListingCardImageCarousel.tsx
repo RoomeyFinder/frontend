@@ -37,20 +37,38 @@ export default function Carousel({
         spaceBetween={10}
       >
         {slides.map((slide, idx) => (
-          <SwiperSlide key={idx} style={{ height: "100%"}}>
+          <SwiperSlide key={idx} style={{ height: "100%" }}>
             {swiperSlideContent({ slide })}
           </SwiperSlide>
         ))}
       </Swiper>
       <Text
-        opacity={isHovering ? 1 : 0}
+        opacity={{ base: 1, lg: isHovering ? 1 : 0 }}
         as="button"
         pos="absolute"
         top="50%"
         transform="translateY(-50%)"
         zIndex="100"
         right="1.5rem"
-        onClick={() => swiperRef.current?.slideNext()}
+        onClick={(e) => {
+          e.stopPropagation()
+          swiperRef.current?.slideNext()
+        }}
+      >
+        <CarouselNavIcon />
+      </Text>
+      <Text
+        opacity={{ base: 1, lg: isHovering ? 1 : 0 }}
+        as="button"
+        pos="absolute"
+        top="50%"
+        transform="translateY(-50%) rotate(180deg)"
+        zIndex="100"
+        left="1.5rem"
+        onClick={(e) => {
+          e.stopPropagation()
+          swiperRef.current?.slidePrev()
+        }}
       >
         <CarouselNavIcon />
       </Text>

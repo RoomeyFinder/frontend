@@ -23,9 +23,9 @@ export default function ListingHeading({
       alignItems="center"
       px={{ base: "1rem", md: "0" }}
     >
-      <Heading as="h1" display="flex" flexDir="column" gap=".6rem">
+      <Heading as="h1" display="flex" flexDir="column" gap="1rem">
         <Text as="span">
-          <Text as="span" color="brand.main" fontSize="2.4rem" fontWeight="700">
+          <Text as="span" color="brand.main" fontSize="2.6rem" fontWeight="700">
             {listing.rentAmount?.toLocaleString("en-us", {
               style: "currency",
               currency: "ngn",
@@ -34,7 +34,7 @@ export default function ListingHeading({
             })}
           </Text>
           <Text as="span" fontSize="1.6rem" fontWeight="400">
-            /
+            &nbsp;/&nbsp;Roomey&nbsp;/&nbsp;
             {
               rentDurationMapping[
                 listing.rentDuration as keyof typeof rentDurationMapping
@@ -42,7 +42,7 @@ export default function ListingHeading({
             }
           </Text>
         </Text>
-        <Text as="span" display="block" fontSize="2.4rem" fontWeight="600">
+        <Text as="span" display="block" fontSize="2.6rem" fontWeight="600">
           {listing.isStudioApartment
             ? "Studio Apartment"
             : (Number(listing.numberOfBedrooms) > 1
@@ -73,14 +73,14 @@ export default function ListingHeading({
         </Text>
       </Heading>
       <Flex
-        gap=".2rem"
+        gap="1rem"
         display={{ base: isOwnListing ? "flex" : "none", sm: "flex" }}
       >
         <Button
           variant="brand-secondary"
           color="black"
           rounded="full"
-          p={{ base: "1.2rem", md: "1.8rem" }}
+          p={{ base: "1.2rem", md: "1.4rem" }}
           onClick={handleShare}
         >
           <ShareIcon />

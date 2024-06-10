@@ -5,45 +5,84 @@ import HeartShineIcon from "../_assets/SVG/HeartShineIcon"
 import InstagramIcon from "../_assets/SVG/InstagramIcon"
 import MessageIcon from "../_assets/SVG/MessageIcon"
 import NotificationIcon from "../_assets/SVG/NotificationIcon"
+import OverviewIcon from "../_assets/SVG/OverviewIcon"
+import UserIcon from "../_assets/SVG/UserIcon"
 import XIcon from "../_assets/SVG/XIcon"
 
 export const privateLinks = [
   {
     name: "My Ads",
-    href: "/ads",
+    href: "/nexus/ads",
     icon: EditIcon,
     hideAbove: "",
     showBelow: "md",
   },
   {
     name: "Favorites",
-    href: "/favorites",
+    href: "/nexus/favorites",
     icon: HeartIcon,
     hideAbove: "",
     showBelow: "md",
   },
   {
     name: "Interests",
-    href: "/interests",
+    href: "/nexus/interests",
     icon: HeartShineIcon,
     hideAbove: "",
     showBelow: "md",
   },
   {
     name: "Chats",
-    href: "/messenger",
+    href: "/nexus/messenger",
     icon: MessageIcon,
     hideAbove: "md",
     showBelow: "md",
-    isIcon: true
+    isIcon: true,
   },
   {
     name: "Notifications",
-    href: "/notifications",
+    href: "/nexus/notifications",
     icon: NotificationIcon,
     hideAbove: "md",
     showBelow: "md",
-    isIcon: true
+    isIcon: true,
+  },
+]
+export const sidebarLinks = [
+  {
+    name: "My Nexus",
+    href: "/nexus",
+    icon: OverviewIcon,
+    hideAbove: "",
+    showBelow: "md",
+  },
+  {
+    name: "My Profile",
+    href: "/nexus/me",
+    icon: UserIcon,
+    hideAbove: "",
+    showBelow: "md",
+  },
+  {
+    name: "My Ads",
+    href: "/nexus/ads",
+    icon: EditIcon,
+    hideAbove: "",
+    showBelow: "md",
+  },
+  {
+    name: "Favorites",
+    href: "/nexus/favorites",
+    icon: HeartIcon,
+    hideAbove: "",
+    showBelow: "md",
+  },
+  {
+    name: "Interests",
+    href: "/nexus/interests",
+    icon: HeartShineIcon,
+    hideAbove: "",
+    showBelow: "md",
   },
 ]
 

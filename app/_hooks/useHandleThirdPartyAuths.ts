@@ -1,16 +1,15 @@
 import { TokenResponse } from "@react-oauth/google"
 import { useCallback, useContext } from "react"
 import useAxios from "./useAxios"
-import { UserContext } from "../_providers/UserProvider"
-import { AuthContext } from "../_providers/AuthContext"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
+import { useAppDispatch } from "../_redux"
+import { authenticate, updateUser } from "../_redux/slices/auth.slice"
 
 export default function useHandleThirdPartyAuths() {
   const router = useRouter()
   const { fetchData } = useAxios()
-  const { updateUser } = useContext(UserContext)
-  const { updateToken } = useContext(AuthContext)
+  const dispatch = useAppDispatch()
 
   const handleGoogleAuthSuccess = useCallback(
     async (tokenResponse: TokenResponse) => {
@@ -31,17 +30,21 @@ export default function useHandleThirdPartyAuths() {
       })
       if (response.statusCode === 200 || response.statusCode === 201) {
         toast.success("You are signed in!")
-        updateToken(response.token)
-        updateUser(response.user)
+        dispatch(
+          authenticate({
+            user: response.user,
+            token: response.token,
+          })
+        )
       } else {
         toast.error(
           response.message ||
             "Something went wrong! Please try again or use another method."
         )
-        if(response.statusCode === 302) router.push("/signup")
+        if (response.statusCode === 302) router.push("/signup")
       }
     },
-    [fetchData, updateToken, updateUser, router]
+    [fetchData, dispatch, updateUser, router]
   )
   return {
     handleGoogleAuthSuccess,

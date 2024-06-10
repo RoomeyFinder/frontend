@@ -1,6 +1,15 @@
 import Carousel from "@/app/_components/ListingCardImageCarousel"
 import { Listing } from "@/app/_types/Listings"
-import { Show, Flex, Image, Box, ImageProps } from "@chakra-ui/react"
+import {
+  Show,
+  Flex,
+  Image,
+  Box,
+  ImageProps,
+  SimpleGrid,
+  GridItem,
+  Grid,
+} from "@chakra-ui/react"
 import { useCallback } from "react"
 
 export default function ListingPhotos({
@@ -12,7 +21,7 @@ export default function ListingPhotos({
     return (
       <Image
         w="100%"
-        maxH="24rem"
+        h="100%"
         borderRadius="xl"
         display="inline-block"
         objectFit="cover"
@@ -44,14 +53,14 @@ export default function ListingPhotos({
         <Show above="sm">
           <Flex
             justifyContent="center"
-            gap="1.5rem"
-            maxH="50rem"
+            gap=".8rem"
+            maxH="53.7rem"
             margin="0 auto"
           >
             <Flex
               flexGrow="1"
               flexShrink="0"
-              maxW={{ sm: "50rem", md: "70rem", lg: "55%" }}
+              maxW={{ sm: "50rem", md: "70rem", lg: "50%" }}
             >
               <Image
                 w="100%"
@@ -62,24 +71,26 @@ export default function ListingPhotos({
               />
             </Flex>
 
-            <Flex
+            <SimpleGrid
               flexGrow="1"
-              maxW={"45%"}
-              maxH="50rem"
+              maxW={"50%"}
+              maxH="100%"
               overflow="auto"
-              justifyContent="center"
+              justifyContent="start"
               flexDir={{ md: "row", lg: "column" }}
               flexWrap="wrap"
-              gap="1.5rem"
+              gap=".8rem"
+              alignItems="stretch"
+              columns={2}
             >
               {photos
                 ?.filter((_, idx) => idx >= 0)
                 .map((src) => (
-                  <Flex key={src.secure_url} flexGrow="1">
+                  <GridItem key={src.secure_url}>
                     <ImageItem src={src.secure_url} />
-                  </Flex>
+                  </GridItem>
                 ))}
-            </Flex>
+            </SimpleGrid>
           </Flex>
         </Show>
       </Box>

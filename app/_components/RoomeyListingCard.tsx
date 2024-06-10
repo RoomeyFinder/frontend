@@ -2,7 +2,7 @@ import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import DotSeparator from "./DotSeparator"
-import { Photo } from "../_types/User"
+import User, { Photo } from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import { useRouter } from "next/navigation"
@@ -10,27 +10,18 @@ import { useRouter } from "next/navigation"
 export default function RoomeyListingCard({
   variant,
   isLocked = false,
-  name,
-  ageInYears,
-  about,
-  profileImage,
-  userId,
+  user,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
-  name: string
-  ageInYears: number
-  about: string
-  profileImage?: Photo
-  userId: string
+  user: User
 }) {
   const router = useRouter()
 
   return (
     <Flex
       py="2rem"
-      w="95dvw"
-      maxW={{ base: "95dvw", sm: "28.3rem" }}
+      w="100%"
       alignItems="center"
       flexDir="column"
       gap="1.5rem"
@@ -39,21 +30,30 @@ export default function RoomeyListingCard({
       borderRadius="1.2rem"
       background="transparent"
       cursor="pointer"
+      h="full"
       _hover={{ background: "white", shadow: "md" }}
     >
       {!isLocked && (
-        <FavouriteButton listingId={userId} type={FavoriteType.USER} />
+        <FavouriteButton listingId={user._id} type={FavoriteType.USER} />
       )}
       <ProfileAvatar
-        imageSrc={profileImage?.secure_url}
+        imageSrc={user.profileImage?.secure_url}
         width={180}
         height={180}
         showVerifiedBadge
       />
-      <NameAndAge name={name} ageInYears={ageInYears} />
+      <NameAndAge
+        name={`${user.firstName} ${user.lastName}`}
+        ageInYears={
+          user
+            ? new Date(Date.now()).getFullYear() -
+              new Date(user?.dob || Date.now()).getFullYear()
+            : 0
+        }
+      />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <Box onClick={() => router.push(`/profile/${userId}`)}>
-        <AboutSection about={about} />
+      <Box onClick={() => router.push(`/profiles/${user._id}`)}>
+        {user.about && <AboutSection about={user.about} />}
       </Box>
     </Flex>
   )
@@ -73,6 +73,7 @@ function NameAndAge({
         fontSize="1.9rem"
         fontWeight="normal"
         lineHeight="1.9rem"
+        textTransform="capitalize"
       >
         {name}
       </Heading>
@@ -99,9 +100,12 @@ function AboutSection({ about }: { about: string }) {
         fontSize="1.2rem"
         lineHeight="1.7rem"
         color="gray.main"
+        w="85%"
         maxW="24rem"
         noOfLines={3}
         h="4.6rem"
+        whiteSpace="wrap"
+        mx="auto"
       >
         {about}
       </Text>

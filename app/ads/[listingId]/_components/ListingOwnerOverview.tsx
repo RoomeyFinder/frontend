@@ -2,10 +2,10 @@ import GenderIcon from "@/app/_assets/SVG/GenderIcon"
 import GradCap from "@/app/_assets/SVG/GradCap"
 import { PeopleGroupSmall } from "@/app/_assets/SVG/PeopleGroup"
 import DotSeparator from "@/app/_components/DotSeparator"
+import InterestButton from "@/app/_components/InterestButton"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
 import { Listing } from "@/app/_types/Listings"
 import { pluralizeText } from "@/app/_utils"
-import { InterestButton } from "@/app/profile/_components/ProfileOverview"
 import {
   HStack,
   VStack,
@@ -26,21 +26,31 @@ export default function ListingOwnerOverview({
   isOwnListing: boolean
 }) {
   return (
-    <HStack pos="sticky" alignItems="center" px={{ base: "1rem", md: 0 }} w="full">
-      <HStack gap="2rem" w="full">
+    <HStack
+      pos="sticky"
+      alignItems="center"
+      px={{ base: "1rem", md: 0 }}
+      w="full"
+    >
+      <HStack gap="2rem" w="full" alignItems="center">
         <ProfileAvatar
           size="small"
           imageSrc={listing.photos?.[0]?.secure_url}
-          width={{ base: "6rem", md: "9.4rem" }}
-          height={{ base: "6rem", md: "9.4rem" }}
+          width={{ base: "3rem", md: "6rem" }}
+          height={{ base: "3rem", md: "6rem" }}
           showVerifiedBadge={true}
         />
-        <VStack gap=".5rem" alignItems="start">
+        <VStack gap=".8rem" alignItems="start">
           <VStack lineHeight="normal" alignItems="start" gap=".5rem">
-            <Text as="span" fontWeight="700" fontSize="2.2rem">
+            <Text
+              as="span"
+              textTransform="capitalize"
+              fontWeight="700"
+              fontSize="1.6rem"
+            >
               {listing.owner?.firstName}
             </Text>
-            <Tooltip label={listing.lookingFor} fontSize="lg">
+            <Tooltip label={listing.lookingFor} fontSize="1.4rem">
               <Text as="span" fontSize="1.6rem" noOfLines={1}>
                 I am <b>looking for</b> {listing.lookingFor}
               </Text>
@@ -86,7 +96,7 @@ export default function ListingOwnerOverview({
 
 function OwnerFeature({ icon, text }: { icon: ReactNode; text: ReactNode }) {
   return (
-    <Flex as="span" alignItems="center" gap=".5rem">
+    <Flex as="span" alignItems="center" gap=".5rem" fontSize="1.2rem">
       <Hide above="sm">
         <DotSeparator />
       </Hide>

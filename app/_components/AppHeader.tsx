@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react"
+import { Box, Flex } from "@chakra-ui/react"
 import AppLogo from "./Logo"
 import Navigation from "./Navigation/Navigation"
 import Link from "next/link"
@@ -13,19 +13,22 @@ export default function AppHeader() {
       position="sticky"
       zIndex="150"
       top="0"
-      h="9dvh"
       minH="8rem"
-      justifyContent={{ base: "space-between", "2xl": "space-around" }}
-      px={{ base: "3.125%", md: "3.125%" }}
-      border="1px solid"
-      borderColor="white.100"
-      boxShadow="0px 1px 1px 0px rgba(0, 0, 0, 0.25)"
+      px={{ base: "5.5%", md: "5.5%" }}
+      boxShadow="0px 2px 0px 0px rgba(0,0,0,0.05);"
       bg="white.main"
     >
-      <Flex href="/" as={Link}>
-        <AppLogo showTextLogoAlways={pathname !== "/"} />
+      <Flex
+        justifyContent={{ base: "space-between" }}
+        w="full"
+        maxW="125rem"
+        mx="auto"
+      >
+        <Flex href="/" as={Link} aria-label="home-page">
+          <AppLogo showTextLogoAlways={false} />
+        </Flex>
+        <Navigation />
       </Flex>
-      <Navigation />
     </Flex>
   )
 }

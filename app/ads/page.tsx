@@ -1,106 +1,106 @@
 "use client"
-import { useRouter, useSearchParams } from "next/navigation"
-import { Box, Button, Flex, Spinner, VStack } from "@chakra-ui/react"
-import { Suspense, useContext, useMemo } from "react"
-import ListingForm from "./_components/ListingForm"
-import MyAdsHeader from "../_components/PageHeader"
-import EditableListingCard from "../_components/EditableListingCard"
-import { ListingsContext } from "../_providers/ListingsProvider"
-import CenteredSpinner from "../_components/CenteredSpinner"
-import FailureUIWithRetryButton from "../_components/FailureUIWithRetryButton"
+import { Box, Heading } from "@chakra-ui/react"
+import { ReactNode, useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { Listing } from "@/app/_types/Listings"
+import Loading from "../_assets/SVG/Loading"
 import Empty from "../_components/Empty"
+import ListingsGridLayout from "../_components/ListingsGridLayout"
+import RoomListingCard from "../_components/RoomListingCard"
+import { RoomListingCardSkeleton } from "../_components/Skeletons/ListingCardSkeleton"
+import { fetchListings } from "../_redux/thunks/search.thunk"
 
-export default function MyAds() {
+export default function Search() {
+  const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    !hasFetchedInitialListings && dispatch(fetchListings())
+  }, [dispatch, hasFetchedInitialListings])
+  return <ListingsSection />
+}
+
+function ListingsSection() {
+  const { user } = useAppSelector((store) => store.auth)
+  const { listings, loading } = useAppSelector((store) => store.search)
+  if (listings.length === 0 && !loading) return null
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness=".4rem" />
-        </Flex>
-      }
-    >
-      <Renderer />
-    </Suspense>
+    <>
+      <>
+        <ListSectionContainer>
+          <Heading variant="md">Latest Rooms</Heading>
+          {loading ? (
+            <Box opacity=".8" mx="auto" w="100%" maxW="40rem">
+              <Loading />
+            </Box>
+          ) : (
+            <RoomsList
+              rooms={listings}
+              allowFavoriting={user !== null}
+              loading={loading}
+              emptyTextValue={<>No rooms found</>}
+            />
+          )}
+        </ListSectionContainer>
+      </>
+    </>
   )
 }
 
-function Renderer() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const { listings, loading, failedToFetch, reloadListings, retriesCount } =
-    useContext(ListingsContext)
-  const currentDisplay = useMemo(
-    () =>
-      (searchParams.get("filter") || "active") as
-        | "active"
-        | "drafts"
-        | "deactivated",
-    [searchParams]
-  )
-
-  const listingsToDisplay = useMemo(() => {
-    if (!listings) return []
-    if (currentDisplay === "active")
-      return listings.filter((it) => it.isActivated === true)
-    else if (currentDisplay === "drafts")
-      return listings.filter((it) => it.isDraft === true)
-    else
-      return listings.filter(
-        (it) => it.isActivated === false && it.isDraft === false
-      )
-  }, [listings, currentDisplay])
-
-  if (searchParams.get("new") === "true") {
-    return (
-      <Box>
-        <ListingForm edit={false} />
-      </Box>
-    )
-  }
+function ListSectionContainer({
+  children,
+}: {
+  children: ReactNode | ReactNode[]
+}) {
   return (
-    <Box pos="relative" minH="80dvh">
-      <MyAdsHeader
-        pathname="/ads"
-        heading={`${currentDisplay} ${!currentDisplay.toLowerCase().includes("drafts") ? "ads" : ""}`}
-        filters={["active", "drafts", "deactivated"]}
-      >
-        <Button
-          onClick={() => router.push("/ads?new=true")}
-          variant="brand-secondary"
-          minW={{ md: "18.5rem" }}
-          ml="auto"
-        >
-          Create ad
-        </Button>
-      </MyAdsHeader>
-      {failedToFetch && !loading && retriesCount >= 10 && (
-        <FailureUIWithRetryButton
-          text="An error was encountered while trying to load your ads"
-          handleRetry={() => reloadListings()}
-        />
-      )}
-      {listingsToDisplay.length === 0 && !loading && (
-        <Empty
-          heading={`You do not have any ${currentDisplay} ${currentDisplay !== "drafts" ? "ads" : ""}`}
-          text={"Ads you create will appear here."}
-        />
-      )}
-      {listingsToDisplay.length > 0 && !loading && (
-        <VStack
-          py="5rem"
-          alignItems="start"
-          w="90dvw"
-          maxW={{ xl: "80%" }}
-          mx="auto"
-          justifyContent="center"
-          gap="1.8rem"
-        >
-          {listingsToDisplay.map((listing) => (
-            <EditableListingCard listing={listing} key={listing._id} />
-          ))}
-        </VStack>
-      )}
-      {loading && <CenteredSpinner />}
+    <Box
+      w={{ base: "95dvw", md: "full" }}
+      maxW={{ base: "94%", xl: "125rem" }}
+      mx="auto"
+      display="flex"
+      flexDir="column"
+      gap="3rem"
+      py={{ base: "3rem", md: "6rem" }}
+    >
+      {children}
     </Box>
+  )
+}
+
+function RoomsList({
+  rooms,
+  allowFavoriting,
+  loading,
+  emptyTextValue,
+}: {
+  rooms: Listing[]
+  allowFavoriting: boolean
+  loading: boolean
+  emptyTextValue: ReactNode
+}) {
+  if (loading)
+    return (
+      <ListingsGridLayout
+        list={new Array(12).fill(1).map((_, idx) => (
+          <RoomListingCardSkeleton key={idx} />
+        ))}
+      />
+    )
+  if (rooms.length === 0 && !loading)
+    return <Empty heading="Oops" text={emptyTextValue} />
+  return (
+    <>
+      <ListingsGridLayout
+        list={rooms.map((room) => (
+          <RoomListingCard
+            key={room._id}
+            listing={room}
+            variant="outlined"
+          />
+        ))}
+        justifyContent="start"
+        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        alignItems="stretch"
+      ></ListingsGridLayout>
+    </>
   )
 }

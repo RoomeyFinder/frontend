@@ -1,4 +1,4 @@
-import { GridItem, Input, Link, SimpleGrid, Text } from "@chakra-ui/react"
+import { GridItem, Input, SimpleGrid } from "@chakra-ui/react"
 import AddressInput from "../_components/AddressInput"
 import { getErrorProps } from "./utils"
 
@@ -63,20 +63,7 @@ export default function AddressForm({
           value={formData.firstName as string}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 1, sm: 2 }}>
-        <Text textAlign="right" lineHeight="normal">
-          By clicking complete, I agree to Roomeyfinder&apos;s
-          <Link fontWeight="600" color="#0433FF" href="/terms-of-service">
-            {" "}
-            Terms of Service
-          </Link>{" "}
-          and
-          <Link fontWeight="600" color="#0433FF" href="/privacy-policy">
-            {" "}
-            Privacy Policy
-          </Link>
-        </Text>
-      </GridItem>
+      
     </SimpleGrid>
   )
 }
