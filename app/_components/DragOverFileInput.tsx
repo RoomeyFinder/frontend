@@ -1,11 +1,6 @@
-import { Flex, FormLabel, Text } from "@chakra-ui/react"
+import { Box, Flex, FormLabel, Text } from "@chakra-ui/react"
 import FileUploadIcon from "../_assets/SVG/FileUploadIcon"
-import {
-  ChangeEventHandler,
-  DragEventHandler,
-  MutableRefObject,
-  ReactNode,
-} from "react"
+import { ChangeEventHandler, DragEventHandler, MutableRefObject } from "react"
 
 export default function DragOverFileInput({
   supportedFileTypes,
@@ -20,12 +15,11 @@ export default function DragOverFileInput({
   fileTypePrefix,
   multiple,
   isDisabled,
-  maxFileSize
 }: {
   supportedFileTypes: string[]
   inputRef: MutableRefObject<HTMLInputElement | null>
   openFileExplorer: () => void
-  handleChange: ChangeEventHandler
+  handleChange: ChangeEventHandler<HTMLInputElement>
   handleDragOver: DragEventHandler
   handleDrop: DragEventHandler
   handleDragLeave: DragEventHandler
@@ -34,7 +28,6 @@ export default function DragOverFileInput({
   fileTypePrefix: string
   multiple?: boolean
   isDisabled: boolean
-  maxFileSize?: number
 }) {
   return (
     <>
@@ -58,61 +51,52 @@ export default function DragOverFileInput({
         flexDir="column"
         textAlign="center"
         opacity={dragActive ? ".7" : "1"}
-        bg={dragActive ? "brand.10" : ""}
+        bg={dragActive ? "brand.10" : "#3a86ff0a"}
         m="0"
-        fontSize={{ base: "1.2rem", md: "1.4rem" }}
+        fontSize={{ base: "1.4rem", md: "1.4rem" }}
         gap=".967rem"
         px={{ base: "2rem", md: "2.5rem" }}
-        py={{ sm: "4rem", md: "3rem" }}
         justifyContent="center"
         alignItems="center"
-        w="100%"
-        maxW="33.7rem"
+        w="90%"
+        mx="auto"
+        maxW="45rem"
         minH={{ base: "12rem", lg: "28rem" }}
-        border={{ sm: ".1rem solid #D9D9D9", md: ".5rem dashed #D9D9D9" }}
+        border=".2rem dashed #D9D9D9"
+        py="12rem"
         borderRadius={{ base: "1.2rem", md: "3rem" }}
         lineHeight="normal"
       >
         <FileUploadIcon />
-        <Text display={{ base: "none", md: "block" }}>
-          Drag files to upload
-        </Text>
-        <Text display={{ base: "none", md: "block" }}>or</Text>
-        <Text
-          onClick={openFileExplorer}
-          as="button"
-          type="button"
-          px="3rem"
-          py=".639rem"
-          borderRadius="10rem"
-          border="1px solid black"
-        >
-          Browse Files
-        </Text>
+
         <Text>
-          Max file size:
-          <BoldTag> {(maxFileSize || 5)}MB </BoldTag>
-          Max File Upload:
-          <BoldTag> {4} </BoldTag>
+          <Text
+            onClick={openFileExplorer}
+            as="button"
+            fontWeight="600"
+            color="brand.main"
+          >
+            Click to upload
+          </Text>{" "}
+          or drag and drop
         </Text>
-        <Text>
-          Supported file types:&nbsp;
-          {supportedFileTypes.map((type, idx) => (
-            <BoldTag key={idx}>
-              {type}
-              {idx < supportedFileTypes.length - 1 && <>, </>}
-            </BoldTag>
-          ))}
-        </Text>
+
+        <Box>
+          <Text mb=".7rem" fontWeight="400" fontSize="1.2rem">
+            Max. File size: 25MB
+          </Text>
+          <Text fontWeight="400" fontSize="1.2rem">
+            Supported file types:&nbsp; (
+            {supportedFileTypes.map((type, idx) => (
+              <Text as="span" key={idx}>
+                {type}
+                {idx < supportedFileTypes.length - 1 && <>, </>}
+              </Text>
+            ))}
+            )
+          </Text>
+        </Box>
       </Flex>
     </>
-  )
-}
-
-function BoldTag({ children }: { children: ReactNode | ReactNode[] }) {
-  return (
-    <Text fontWeight="600" as="b" textTransform="uppercase">
-      {children}
-    </Text>
   )
 }

@@ -50,6 +50,30 @@ input:checked ~ .custom-toggle-dot {
 input::-webkit-calendar-picker-indicator {
   /* opacity: 0; */
 }
+::selection {
+  background: #3A86ff;
+  color: #fff;
+}
+
+.styled-scrollbar::-webkit-scrollbar {
+  height: 1px; /* Width of the scrollbar */
+  border-radius: 100px;
+  width: 3px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-track {
+  background: #3a85ff22; /* Track color */
+  border-radius: 100px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb {
+  background: #3A86ff; /* Thumb color */
+  border-radius: 100px;
+}
+
+.styled-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3A86ff; /* Thumb color on hover */
+}
 .fqFVxM {
   display: inline-block;
   vertical-align: top;

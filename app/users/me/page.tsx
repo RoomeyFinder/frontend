@@ -9,7 +9,7 @@ export default function UserViewPage() {
   const { listings } = useAppSelector((store) => store.listings)
   if (loading)
     return (
-      <Flex w="full">
+      <Flex w="full" justifyContent="center" alignItems="center">
         <Loading />
       </Flex>
     )

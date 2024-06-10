@@ -1,141 +1,182 @@
 "use client"
-import { Box, Divider, HStack, Heading, Hide, VStack } from "@chakra-ui/react"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useContext, useEffect, useMemo } from "react"
-import ListingHeading from "./_components/ListingHeading"
-import ListingPhotos from "./_components/ListingPhotos"
-import ListingOwnerOverview from "./_components/ListingOwnerOverview"
-import ListingFeatures from "./_components/ListingFeatures"
-import ListingAbout from "./_components/ListingAbout"
-import ListingMap from "./_components/ListingMap"
-import ListingCTAs from "./_components/ListingCTAs"
-import ListingForm from "../_components/ListingForm"
-import BackButton from "@/app/_components/BackButton"
-import { SearchContext } from "@/app/_providers/SearchProvider"
-import toast from "react-hot-toast"
-import { useAppSelector } from "@/app/_redux"
+import {
+  Box,
+  Flex,
+  GridItem,
+  Heading,
+  SimpleGrid,
+  Step,
+  StepDescription,
+  StepIcon,
+  StepIndicator,
+  StepNumber,
+  StepSeparator,
+  StepStatus,
+  StepTitle,
+  Stepper,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
+import { useEffect, useState } from "react"
+import useManageStageFlow from "@/app/_hooks/useManageStageFlow"
+import ListingForm from "./_components/Form"
+
+const steps = [
+  { title: "Step 1", description: "Add photos" },
+  { title: "Step 2", description: "Basic Info" },
+  { title: "Step 3", description: "Describe your ad and add features" },
+]
 
 export default function ListingPage() {
-  const router = useRouter()
-  const params = useParams()
-  const searchParams = useSearchParams()
-  const { listings } = useAppSelector((store) => store.listings)
-  const { rooms, loadingRooms } = useContext(SearchContext)
-  const listingId = useMemo(() => params.listingId, [params])
-  const isEditing = useMemo(
-    () => searchParams.get("edit") === "true",
-    [searchParams]
-  )
-
-  const listing = useMemo(
-    () =>
-      (isEditing ? listings : [...rooms, ...(listings || [])])?.find(
-        (it) => it._id === listingId
-      ),
-    [rooms, listingId, isEditing, listings]
-  )
-  const { user } = useAppSelector((store) => store.auth)
-  const isOwnListing = useMemo(
-    () => user?._id === listing?.owner?._id,
-    [user?._id, listing?.owner?._id]
-  )
-
-  useEffect(() => {
-    if (!listing && !loadingRooms) router.push("/ads")
-    // if (!isOwnListing && isEditing && !loadingRooms) router.push(`/ads/${listing?._id}`)
-  }, [listing, loadingRooms, router, isOwnListing, isEditing])
-
-  const handleShare = useCallback(async () => {
-    const shareData = {
-      url: window.location.href,
-      title: "RoomeyFinder",
-      text: `Stay with ${listing?.owner?.firstName}`,
-    }
-    if (navigator.share && navigator.canShare(shareData)) {
-      try {
-        await navigator.share(shareData)
-      } catch (err) {
-        toast.error("Unable to share, something went wrong")
-        console.log(err)
-      }
-    } else {
-      navigator.clipboard.writeText(shareData.url)
-      toast.success("Copied to clipboard!")
-    }
-  }, [listing])
-  if (isEditing && listing)
-    return (
-      <>
-        <Box alignItems="start" py="3rem" gap="3rem" w="86%" mx="auto">
-          <BackButton />
-          <ListingForm edit={true} listing={listing} />
-        </Box>
-      </>
-    )
-  if (!listing) return <></>
+  const { goToNextStage, currentStage, navigateToStage, goToPrevStage } =
+    useManageStageFlow({
+      maxStage: 3,
+      start: 0,
+      minStage: 0,
+    })
   return (
-    <>
-      <VStack
-        gap={{ base: "3rem", md: "5rem" }}
-        alignItems="start"
-        w="100dvw"
-        maxW={{ sm: "95%", xl: "160rem" }}
-        mx="auto"
-        pt={{ base: "4rem", md: "6rem" }}
-        pb={{ base: "8rem", md: "12rem" }}
+    <SimpleGrid
+      columns={12}
+      h={{ sm: "calc(100vh - 9rem)" }}
+      overflow="hidden"
+      w="full"
+      alignItems="center"
+      px={{ base: "1.2rem", md: "3rem" }}
+      gap="1.5rem"
+      autoFlow={{ base: "row", sm: "column" }}
+      pos="relative"
+    >
+      <GridItem
+        pb={{ base: "2rem", sm: "0" }}
+        pt={{ base: "4rem", sm: "0" }}
+        colSpan={{ base: 12, sm: 2 }}
+        h={{ sm: "full" }}
+        my="auto"
+        maxH={{ sm: "70rem" }}
+        pos="sticky"
+        top="0"
+        pl={{ md: "" }}
       >
-        <HStack w="full">
-          <VStack gap="1rem" alignItems="start" w="full">
-            <BackButton />
-            <ListingHeading
-              handleShare={handleShare}
-              isOwnListing={isOwnListing}
-              listing={listing}
-            />
-            <ListingPhotos photos={listing?.photos} />
-          </VStack>
-        </HStack>
-        <ListingOwnerOverview listing={listing} isOwnListing={isOwnListing} />
-        <Divider
-          border={{
-            base: ".15rem solid #3A86FF1A",
-            md: ".3rem solid #3A86FF1A",
-          }}
-        />
-        <ListingFeatures listing={listing} />
-        <ListingAbout listing={listing} />
-        <Hide above="sm">
-          <Box w="100%" h="30rem">
-            <Heading px="1rem" fontSize="2.2rem" fontWeight="600" mb="2rem">
-              Location
+        <FormStepper currentStage={currentStage} />
+      </GridItem>
+      <GridItem
+        // h="full"
+        alignSelf="center"
+        colSpan={{ base: 12, sm: 10 }}
+        display="flex"
+        flexDir="column"
+        overflow="hidden"
+        w="full"
+        justifyContent="center"
+      >
+        <VStack
+          w="full"
+          pos="relative"
+          h={{ base: "calc(100vh - 25rem)", sm: "calc(100vh - 9rem)" }}
+          maxH={{ base: "70rem", sm: "85rem" }}
+          overflow="auto"
+          className="styled-scrollbar"
+          pr={{ sm: "2rem", md: "8rem" }}
+        >
+          <Flex
+            flexDir="column"
+            mb={{ sm: "4rem" }}
+            zIndex="10"
+            bg="white"
+            pos="sticky"
+            pt={{ sm: "8%" }}
+            top="0"
+            w="full"
+          >
+            <Heading
+              fontSize="3.2rem"
+              fontWeight="500"
+              textAlign="center"
+              mb="1.2rem"
+            >
+              Create Ad
             </Heading>
-            <ListingMap
-              lng={listing.location?.coordinates[0]}
-              lat={listing.location?.coordinates[1]}
-              label={listing.streetAddress}
-            />
-          </Box>
-        </Hide>
-      </VStack>
-      {!isOwnListing && (
-        <Hide above="sm">
-          <ListingCTAs
-            handleShare={handleShare}
-            isOwner={isOwnListing}
-            listing={listing}
+            <Text
+              color="gray.main"
+              fontSize="1.6rem"
+              fontWeight="500"
+              textAlign="center"
+            >
+              {steps[currentStage]?.description}
+            </Text>
+          </Flex>
+          <ListingForm
+            currentStage={currentStage}
+            goToNextStage={goToNextStage}
+            goToPrevStage={goToPrevStage}
+            navigateToStage={navigateToStage}
+            uploadedPhotos={[]}
           />
-        </Hide>
-      )}
-    </>
+        </VStack>
+      </GridItem>
+    </SimpleGrid>
   )
 }
 
+function FormStepper({ currentStage }: { currentStage: number }) {
+  const [stepOrientation, setStepOrientation] = useState<string | undefined>()
 
-//  if (searchParams.get("new") === "true") {
-  //   return (
-  //     <Box alignItems="start" py="3rem" gap="3rem" w="86%" mx="auto">
-  //       <BackButton />
-  //       <ListingForm edit={false} />
-  //     </Box>
-  //   )
-  // }
+  useEffect(() => {
+    if (window.innerWidth > 640) setStepOrientation("vertical")
+    else setStepOrientation(undefined)
+  }, [])
+
+  const activeStepText = steps[currentStage].description
+  return (
+    <>
+      <Stepper
+        size="lg"
+        orientation={stepOrientation as any}
+        colorScheme="blue"
+        index={currentStage}
+        h="full"
+      >
+        {steps.map((step, index) => (
+          <Step key={index}>
+            <StepIndicator>
+              <StepStatus
+                complete={<StepIcon />}
+                incomplete={<StepNumber />}
+                active={<StepNumber />}
+              />
+            </StepIndicator>
+
+            <Box flexShrink="0" display={{ base: "none", sm: "block" }}>
+              <StepTitle>
+                <Text
+                  as="span"
+                  w={{ base: "min-content", sm: "max-content" }}
+                  fontSize={{ base: "1.4rem", sm: "1.6rem" }}
+                >
+                  {step.title}
+                </Text>
+              </StepTitle>
+              <StepDescription>
+                <Text
+                  as="span"
+                  fontSize={{ base: "1.4rem" }}
+                  w={{ sm: "10rem" }}
+                >
+                  {step.description}
+                </Text>
+              </StepDescription>
+            </Box>
+
+            <StepSeparator />
+          </Step>
+        ))}
+      </Stepper>
+      <Text mt="1.5rem" fontSize={{ base: "1.8rem" }} display={{ sm: "none" }}>
+        Step {currentStage + 1}:{" "}
+        <Text as="b" fontWeight="600">
+          {activeStepText}
+        </Text>
+      </Text>
+    </>
+  )
+}

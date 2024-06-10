@@ -36,6 +36,7 @@ export default function PrivateNavigation() {
         variant="brand-secondary"
         fontWeight="600"
         display={{ base: "none", sm: "block" }}
+        onClick={() => router.push("/nexus/ads/new")}
       >
         Create ad
       </Button>
