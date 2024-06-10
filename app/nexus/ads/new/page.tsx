@@ -80,7 +80,7 @@ export default function ListingPage() {
         >
           <Flex
             flexDir="column"
-            mb={{ sm: "4rem" }}
+            mb={{ sm: "1rem" }}
             zIndex="10"
             bg="white"
             pos="sticky"
