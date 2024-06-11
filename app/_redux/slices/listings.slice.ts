@@ -1,6 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { Listing } from "@/app/_types/Listings"
-import { deleteListing, fetchUserListings } from "../thunks/listings.thunk"
+import {
+  deleteListing,
+  fetchUserListings,
+  deactivateListing,
+  activateListing,
+} from "../thunks/listings.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 
@@ -59,6 +64,46 @@ export const listingsSlice = createSlice({
         store.hasFetchedUserListings = action.payload.statusCode === 200
       })
       .addCase(fetchUserListings.rejected, (store) => {
+        store.errorMessage =
+          "Oops, Something went wrong while getting your ads!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(deactivateListing.pending, (store) => {
+        store.loading = true
+      })
+      .addCase(deactivateListing.fulfilled, (store, action) => {
+        if (action.payload.isDeleted) {
+          store.listings = store.listings.map((it) =>
+            it._id === action.payload.listingId
+              ? { ...it, isActivated: false }
+              : it
+          )
+        }
+        store.loading = false
+        store.errorMessage = ""
+      })
+      .addCase(deactivateListing.rejected, (store) => {
+        store.errorMessage =
+          "Oops, Something went wrong while getting your ads!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(activateListing.pending, (store) => {
+        store.loading = true
+      })
+      .addCase(activateListing.fulfilled, (store, action) => {
+        if (action.payload.isDeleted) {
+          store.listings = store.listings.map((it) =>
+            it._id === action.payload.listingId
+              ? { ...it, isActivated: true }
+              : it
+          )
+        }
+        store.loading = false
+        store.errorMessage = ""
+      })
+      .addCase(activateListing.rejected, (store) => {
         store.errorMessage =
           "Oops, Something went wrong while getting your ads!"
         store.loading = false

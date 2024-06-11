@@ -31,7 +31,7 @@ export const deleteListing = createAsyncThunk(
     })
 
     return {
-      isDeleted: response.statusCode === 204,
+      isDeleted: response.statusCode === 200,
       listingId,
     }
   }
@@ -46,7 +46,8 @@ export const activateListing = createAsyncThunk(
     })
     toast[response.statusCode >= 400 ? "error" : "success"](response.message)
     return {
-      isDeleted: response.statusCode === 204,
+      listingId,
+      isDeleted: response.statusCode === 200,
     }
   }
 )
@@ -60,7 +61,8 @@ export const deactivateListing = createAsyncThunk(
     })
     toast[response.statusCode >= 400 ? "error" : "success"](response.message)
     return {
-      isDeleted: response.statusCode === 204,
+      listingId,
+      isDeleted: response.statusCode === 200,
     }
   }
 )
