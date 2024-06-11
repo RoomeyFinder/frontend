@@ -5,7 +5,6 @@ import { logout } from "@/app/_redux/slices/auth.slice"
 import { Avatar, Box, Button, Flex, Show, Text, VStack } from "@chakra-ui/react"
 import { usePathname, useRouter } from "next/navigation"
 import { ReactNode } from "react"
-import { InterestsAccessCount } from "../Navigation/PrivateNavigation"
 
 export default function NexusSidebar({
   closeSidebar,
@@ -35,9 +34,6 @@ export default function NexusSidebar({
             <SidebarLink href={link.href} text={link.name} icon={link.icon()} />
           </Box>
         ))}
-        <Box as="li" w="full">
-          <InterestsAccessCount />
-        </Box>
         <Show below="md">
           <Box as="li" w="full" mt="auto">
             <Text

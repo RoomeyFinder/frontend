@@ -52,7 +52,7 @@ export default function RoomeyListingCard({
         }
       />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <Box onClick={() => router.push(`/profiles/${user._id}`)}>
+      <Box onClick={() => router.push(`/users/${user._id}`)}>
         {user.about && <AboutSection about={user.about} />}
       </Box>
     </Flex>

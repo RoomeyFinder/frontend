@@ -96,7 +96,11 @@ export default function UserOverview({
                 )}
                 <Text textTransform="capitalize">{user.gender}</Text>
                 {user.settings?.isOccupationVisibleOnProfile && (
-                  <Text>{user.isStudent ? `Student @${user.school}` : user.occupation}</Text>
+                  <Text>
+                    {user.isStudent
+                      ? `Student @${user.school}`
+                      : user.occupation}
+                  </Text>
                 )}
                 {user.settings.isStateOfOriginVisibleOnProfile && (
                   <Text>From {user.stateOfOrigin}</Text>
@@ -260,15 +264,20 @@ export default function UserOverview({
                 </Heading>
               </Box>
             )}
-            <HStack flexWrap="wrap" gap="1.5rem">
+            <SimpleGrid
+              flexWrap="wrap"
+              gap="1.5rem"
+              columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+            >
               {usersListings.map((listing) => (
                 <RoomListingCard
                   key={listing._id}
                   listing={listing}
                   showFavoriteButton={isLoggedIn}
+                  variant="outlined"
                 />
               ))}
-            </HStack>
+            </SimpleGrid>
           </TabPanel>
         </TabPanels>
       </Tabs>
