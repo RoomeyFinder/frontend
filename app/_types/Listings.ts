@@ -20,7 +20,7 @@ export interface Listing {
   description?: string
   viewsCount?: string
   likesCount?: number
-  features?: Array<{ value: string; category: string, _id?: string }>
+  features?: Array<string>
   isActivated?: boolean
   isDraft?: boolean
   owner?: User

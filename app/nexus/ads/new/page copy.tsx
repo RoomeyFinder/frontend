@@ -129,13 +129,3 @@ export default function ListingPage() {
     </>
   )
 }
-
-
-//  if (searchParams.get("new") === "true") {
-  //   return (
-  //     <Box alignItems="start" py="3rem" gap="3rem" w="86%" mx="auto">
-  //       <BackButton />
-  //       <ListingForm edit={false} />
-  //     </Box>
-  //   )
-  // }

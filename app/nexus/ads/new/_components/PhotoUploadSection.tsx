@@ -1,13 +1,9 @@
-import { TimesIconSmall } from "@/app/_assets/SVG/TimesIcon"
 import DragOverFileInput from "@/app/_components/DragOverFileInput"
-import useHandleFilesUploadWithDragAndDrop from "@/app/_hooks/useHandleFilesUploadWithDragAndDrop"
-import PhotosUploadSection from "@/app/ads/_components/PhotosUploadSection"
 import {
   Box,
   Button,
   Flex,
   GridItem,
-  Heading,
   IconButton,
   Image,
   Popover,
@@ -18,11 +14,7 @@ import {
   SimpleGrid,
   Text,
 } from "@chakra-ui/react"
-import {
-  ChangeEventHandler,
-  DragEventHandler,
-  useRef,
-} from "react"
+import { ChangeEventHandler, DragEventHandler, useRef } from "react"
 import { IoCamera, IoTrash } from "react-icons/io5"
 
 export type PreviewFile = {
@@ -71,8 +63,8 @@ export default function PhotoUploadSection({
             variant="brand-secondary"
             onClick={() => {
               fileInputRef.current?.click()
-              console.log(fileInputRef)
             }}
+            type="button"
           >
             <IoCamera /> Add More
           </Button>
@@ -90,7 +82,6 @@ export default function PhotoUploadSection({
             supportedFileTypes={["png", "webp", "jpg", "jpeg"]}
             openFileExplorer={() => {
               fileInputRef.current?.click()
-              console.log(fileInputRef, "dfds")
             }}
             multiple
             {...handleChangeProps}
@@ -187,6 +178,7 @@ function PreviewImage({
         </PopoverContent>
       </Popover>
       <Image
+        alt=""
         src={preview.src}
         rounded="1.5rem"
         overflow="hidden"

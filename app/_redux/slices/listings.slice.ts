@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { Listing } from "@/app/_types/Listings"
 import { deleteListing, fetchUserListings } from "../thunks/listings.thunk"
 import localforage from "localforage"
@@ -29,6 +29,9 @@ export const listingsSlice = createSlice({
     resetError: (store) => {
       store.hasError = false
       store.errorMessage = ""
+    },
+    addOneListing: (store, action: PayloadAction<Listing>) => {
+      store.listings = [...store.listings, action.payload]
     },
   },
   extraReducers: (builder) => {
@@ -82,5 +85,5 @@ export const listingsSlice = createSlice({
   },
 })
 
-export const { resetError } = listingsSlice.actions
+export const { resetError, addOneListing } = listingsSlice.actions
 export default listingsSlice.reducer
