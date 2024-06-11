@@ -36,8 +36,8 @@ export default function ListingOwnerOverview({
         <ProfileAvatar
           size="small"
           imageSrc={listing.photos?.[0]?.secure_url}
-          width={{ base: "3rem", md: "6rem" }}
-          height={{ base: "3rem", md: "6rem" }}
+          width={{ base: "7rem", md: "8rem" }}
+          height={{ base: "7rem", md: "8rem" }}
           showVerifiedBadge={true}
         />
         <VStack gap=".8rem" alignItems="start">

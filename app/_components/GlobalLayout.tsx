@@ -3,7 +3,7 @@ import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
 import { Box, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
-import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
+// import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
 import PreferencesReminder from "./PreferencesReminder"
@@ -19,7 +19,7 @@ export default function GlobalLayout({
   children: ReactNode | ReactNode[]
 }) {
   const router = useRouter()
-  useListenForMessengerEvents()
+  // useListenForMessengerEvents()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
   useEffect(() => {

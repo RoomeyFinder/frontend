@@ -25,7 +25,7 @@ export default function ListingFeatures({ listing }: { listing: Listing }) {
           w="full"
         >
           {listing.features?.map((feature) => (
-            <ListingFeature key={feature.value} feature={feature} />
+            <ListingFeature key={feature} feature={feature} />
           ))}
         </Flex>
       </Box>
@@ -36,9 +36,9 @@ export default function ListingFeatures({ listing }: { listing: Listing }) {
 function ListingFeature({
   feature,
 }: {
-  feature: { value: string; category: string }
+  feature: string
 }) {
-  const { value } = feature
+
   return (
     <Box
       w="48%"
@@ -48,23 +48,24 @@ function ListingFeature({
       <Show above="sm">
         <VStack
           border="1px solid"
-          borderColor="gray.main"
+          borderColor="brand.50"
           rounded="1.5rem"
-          p=".5rem"
+          p=".2rem"
           h={{ sm: "6.6rem", md: "9.6rem" }}
           justifyContent="center"
           gap=".6rem"
           as={Text}
+          color="gray.main"
         >
-          {icons[value as keyof typeof icons]}
-          <Text as="span">{value}</Text>
+          {icons[feature as keyof typeof icons]}
+          <Text as="span">{feature}</Text>
         </VStack>
       </Show>
       <Show below="sm">
         <HStack alignItems="center" gap=".6rem" as={Text}>
-          <DotSeparator />
-          {icons[value as keyof typeof icons]}
-          <Text as="span">{value}</Text>
+          {/* <DotSeparator /> */}
+          {icons[feature as keyof typeof icons]}
+          <Text as="span">{feature}</Text>
         </HStack>
       </Show>
     </Box>

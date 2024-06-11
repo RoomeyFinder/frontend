@@ -1,5 +1,6 @@
 import { BoxProps, Flex } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
+import BackIcon from "../_assets/SVG/BackIcon"
 
 export default function BackButton(props: BoxProps & { showText?: boolean }) {
   const router = useRouter()
@@ -15,7 +16,7 @@ export default function BackButton(props: BoxProps & { showText?: boolean }) {
       onClick={() => router.back()}
       aria-label="back"
     >
-      <BackButton /> {props.showText && "Back"}
+      <BackIcon /> {props.showText && "Back"}
     </Flex>
   )
 }
