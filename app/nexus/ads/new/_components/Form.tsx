@@ -3,9 +3,18 @@ import { Flex, Button, Box } from "@chakra-ui/react"
 import BasicInfoSection from "./BasicInfoSection"
 import DescriptionAndFeaturesSection from "./DescriptionAndFeaturesSection"
 import PhotoUploadSection from "./PhotoUploadSection"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { Listing } from "@/app/_types/Listings"
 import useHandleFilesUploadWithDragAndDrop from "@/app/_hooks/useHandleFilesUploadWithDragAndDrop"
+import { getAddressComponents } from "@/app/_utils/google"
+import toast from "react-hot-toast"
 
 export default function ListingForm({
   currentStage,
@@ -13,13 +22,73 @@ export default function ListingForm({
   goToPrevStage,
   navigateToStage,
   uploadedPhotos = [],
+  listing,
 }: {
   currentStage: number
   goToNextStage: () => void
   goToPrevStage: () => void
   navigateToStage: (stage: number) => void
   uploadedPhotos: Listing["photos"]
+  listing?: Listing
 }) {
+  const [location, setLocation] = useState<{ [x: string]: any }>({})
+  const [isCheckingAddress, setIsCheckingAddress] = useState(false)
+  const [listingInfo, setListingInfo] = useState({
+    rentAmount: listing?.rentAmount || 0,
+    rentDuration: listing?.rentDuration || ("" as Listing["rentDuration"]),
+    isStudioApartment: listing?.isStudioApartment,
+    numberOfBedrooms: listing?.numberOfBedrooms,
+    apartmentType: listing
+      ? listing.isStudioApartment
+        ? "Studio"
+        : "Bedroom"
+      : "",
+    currentOccupancyCount: listing?.currentOccupancyCount,
+    streetAddress: listing?.streetAddress || "",
+    city: listing?.city || "",
+    state: listing?.state || "",
+  })
+
+  const validateAddress = useCallback(async () => {
+    setIsCheckingAddress(true)
+    const response = await getAddressComponents({
+      street: listingInfo.streetAddress,
+      city: listingInfo.city,
+      region: listingInfo.state,
+    })
+    setIsCheckingAddress(false)
+    if (response.status !== "OK")
+      return toast.error("Address could not be found.")
+    setLocation(response.results[0].geometry.location)
+    goToNextStage()
+  }, [listingInfo, goToNextStage])
+
+  const handleListingInfoChange: ChangeEventHandler<HTMLInputElement> =
+    useCallback((e) => {
+      setListingInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    }, [])
+
+  const listingInfoErrors = useMemo(() => {
+    const { isStudioApartment, apartmentType, numberOfBedrooms, ...rest } =
+      listingInfo
+    const errors: { [x: string]: any } = {}
+    let errorCount = 0
+    Object.keys(rest).forEach((key) => {
+      if (Boolean(rest[key as keyof typeof rest]) === false) {
+        errors[key] = "This field is required!"
+        errorCount += 1
+      }
+    })
+    if (!apartmentType) {
+      errorCount += 1
+      errors.apartmentType = "This field is required"
+    } else if (apartmentType === "bedroom" && !numberOfBedrooms) {
+      errorCount += 1
+      errors.numberOfBedrooms = "This field is required!"
+    }
+    return errorCount === 0 ? undefined : errors
+  }, [listingInfo])
+
   const [photosToKeep, setPhotosToKeep] = useState([...uploadedPhotos])
   const [photosToDelete, setPhotosToDelete] = useState<Listing["photos"]>([])
   const { files, removeFile, setFiles, ...rest } =
@@ -87,9 +156,9 @@ export default function ListingForm({
 
   const isNextDisabled = useMemo(() => {
     if (currentStage === 0) return photosPreview.length <= 4
-    // else if (currentStage === 1) return currentStage === 0
+    else if (currentStage === 1) return listingInfoErrors !== undefined
     else return currentStage !== 0
-  }, [currentStage, photosPreview])
+  }, [currentStage, photosPreview, listingInfoErrors])
 
   return (
     <>
@@ -102,7 +171,10 @@ export default function ListingForm({
           />
         </Stage>
         <Stage currentStage={currentStage} stage={1}>
-          <BasicInfoSection />
+          <BasicInfoSection
+            listingInfo={listingInfo}
+            handleChange={handleListingInfoChange}
+          />
         </Stage>
         <Stage currentStage={currentStage} stage={2}>
           <DescriptionAndFeaturesSection />
@@ -138,8 +210,10 @@ export default function ListingForm({
           w="full"
           maxW="12rem"
           boxShadow="lg"
+          isLoading={isCheckingAddress}
           onClick={() => {
-            currentStage < 2 && goToNextStage()
+            if (currentStage === 1) validateAddress()
+            else currentStage < 2 && goToNextStage()
           }}
         >
           {currentStage < 3 ? "Next" : "Done"}

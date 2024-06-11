@@ -1,3 +1,4 @@
+import { Listing } from "@/app/_types/Listings"
 import {
   FormLabel,
   HStack,
@@ -6,8 +7,17 @@ import {
   VStack,
   Text,
 } from "@chakra-ui/react"
+import citiesInNigeria from "@/app/_data/citiesInNigeria.json"
+import statesInNigeria from "@/app/_data/statesInNigeria.json"
+import { ChangeEventHandler } from "react"
 
-export default function BasicInfoSection() {
+export default function BasicInfoSection({
+  listingInfo,
+  handleChange
+}: {
+  listingInfo: Partial<Listing> & { apartmentType: string }
+  handleChange: ChangeEventHandler<HTMLInputElement>
+}) {
   return (
     <VStack
       w="full"
@@ -29,7 +39,9 @@ export default function BasicInfoSection() {
             name="rentAmount"
             placeholder="123,456"
             type="number"
+            onChange={handleChange}
             variant="filled"
+            value={listingInfo.rentAmount}
           />
         </FormLabel>
         <FormLabel w={{ base: "full", sm: "20%" }}>
@@ -37,13 +49,17 @@ export default function BasicInfoSection() {
             Rent duration
           </Text>
           <Input
-            name="rentAmount"
-            placeholder="Annually"
-            type="number"
+            name="rentDuration"
+            placeholder="-"
             variant="filled"
+            onChange={handleChange}
             as={Select}
+            value={listingInfo.rentDuration}
           >
-            <option></option>
+            <option value="annually">Annually</option>
+            <option value="biannually">Biannually</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="monthly">Monthly</option>
           </Input>
         </FormLabel>
       </HStack>
@@ -57,11 +73,16 @@ export default function BasicInfoSection() {
             Type of apartment
           </Text>
           <Input
-            name="rentAmount"
-            placeholder="123,456"
-            type="number"
+            name="apartmentType"
+            placeholder="-"
             variant="filled"
-          />
+            onChange={handleChange}
+            as={Select}
+            value={listingInfo.apartmentType}
+          >
+            <option value="studio">Studio Apartment</option>
+            <option value="bedroom">Bedroom</option>
+          </Input>
         </FormLabel>
       </HStack>
       <HStack w="full" gap={{ base: "1rem", sm: "2rem" }}>
@@ -70,27 +91,35 @@ export default function BasicInfoSection() {
             Number of rooms
           </Text>
           <Input
-            name="rentAmount"
-            placeholder="Annually"
-            type="number"
+            name="numberOfBedrooms"
+            placeholder="-"
+            isDisabled={listingInfo.apartmentType !== "bedroom"}
+            onChange={handleChange}
             variant="filled"
             as={Select}
           >
-            <option></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4+</option>
           </Input>
         </FormLabel>
         <FormLabel w={{ base: "full", sm: "49%" }}>
           <Text as="span" fontSize="1.4rem" fontWeight="500">
-            Number of occupants
+            Current number of occupants
           </Text>
           <Input
-            name="rentAmount"
-            placeholder="Annually"
+            name="currentOccupancyCount"
+            placeholder="-"
             type="number"
+            onChange={handleChange}
             variant="filled"
             as={Select}
           >
-            <option></option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4+</option>
           </Input>
         </FormLabel>
       </HStack>
@@ -104,38 +133,55 @@ export default function BasicInfoSection() {
             Street address
           </Text>
           <Input
-            name="rentAmount"
-            placeholder="123,456"
-            type="number"
+            name="streetAddress"
+            placeholder="Street address"
+            type="text"
+            onChange={handleChange}
             variant="filled"
+            value={listingInfo.streetAddress}
           />
-        </FormLabel>
-        <FormLabel w={{ base: "full", sm: "32.2%" }}>
-          <Text as="span" fontSize="1.4rem" fontWeight="500">
-            City
-          </Text>
-          <Input
-            name="rentAmount"
-            placeholder="Annually"
-            type="number"
-            variant="filled"
-            as={Select}
-          >
-            <option></option>
-          </Input>
         </FormLabel>
         <FormLabel w={{ base: "full", sm: "32.2%" }}>
           <Text as="span" fontSize="1.4rem" fontWeight="500">
             State
           </Text>
           <Input
-            name="rentAmount"
-            placeholder="Annually"
+            name="state"
+            placeholder="-"
+            variant="filled"
+            onChange={handleChange}
+            as={Select}
+            value={listingInfo.state}
+          >
+            {statesInNigeria.map((state) => (
+              <option key={state.code} value={state.name}>
+                {state.name}
+              </option>
+            ))}
+          </Input>
+        </FormLabel>
+        <FormLabel w={{ base: "full", sm: "32.2%" }}>
+          <Text as="span" fontSize="1.4rem" fontWeight="500">
+            City
+          </Text>
+          <Input
+            name="city"
+            placeholder="-"
             type="number"
             variant="filled"
+            onChange={handleChange}
             as={Select}
+            value={listingInfo.city}
           >
-            <option></option>
+            {(
+              citiesInNigeria[
+                listingInfo.state as keyof typeof citiesInNigeria
+              ] || []
+            ).map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
           </Input>
         </FormLabel>
       </HStack>

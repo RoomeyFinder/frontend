@@ -20,10 +20,8 @@ import {
 } from "@chakra-ui/react"
 import {
   ChangeEventHandler,
-  DragEvent,
   DragEventHandler,
   useRef,
-  useState,
 } from "react"
 import { IoCamera, IoTrash } from "react-icons/io5"
 
@@ -119,14 +117,13 @@ function PreviewImage({
   handleDeleteImage: (file: PreviewFile) => void
   preview: PreviewFile
 }) {
-  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
   return (
     <GridItem w="full" pos="relative">
       <Popover>
         <PopoverTrigger>
           <IconButton
             onClick={(e) => {
-              if (preview.type !== "file") {
+              if (preview.type === "file") {
                 e.stopPropagation()
                 handleDeleteImage(preview)
               }
