@@ -12,6 +12,7 @@ import {
   Heading,
   IconButton,
   Image,
+  Link,
   LinkProps,
   Popover,
   PopoverBody,
@@ -24,13 +25,7 @@ import {
 import EyeIcon from "../_assets/SVG/EyeIcon"
 import ThreeDotIcon from "../_assets/SVG/ThreeDotIcon"
 import { Listing } from "../_types/Listings"
-import {
-  ReactNode,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { ReactNode, useCallback, useMemo, useRef, useState } from "react"
 import { FetchOptions } from "../_hooks/useAxios"
 import { useRouter } from "next/navigation"
 import EditSVG from "../_assets/SVG/Edit"
@@ -72,7 +67,6 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
     () => !listing.isDraft && listing.isActivated,
     [listing.isDraft, listing.isActivated]
   )
-
   return (
     <Flex
       justifyContent="space-between"
@@ -87,12 +81,20 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       <Flex
         alignItems="center"
         gap="1rem"
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault()
+          console.log(
+            isActivated,
+            listing.isActivated,
+            listing.isDraft,
+            listing._id
+          )
           if (isActivated) {
             router.push(`/ads/${listing._id}`)
           }
         }}
-        as="button"
+        href={`/ads/${listing._id}`}
+        as={Link}
       >
         <Image
           alt=""
@@ -189,7 +191,14 @@ function ListingActions({
         : activateListing(listingId)
     )
     setIsLoading(false)
-  }, [listingId, dispatch, router, isLoading, isActiveListing, primaryActionText])
+  }, [
+    listingId,
+    dispatch,
+    router,
+    isLoading,
+    isActiveListing,
+    primaryActionText,
+  ])
 
   return (
     <>
@@ -243,12 +252,12 @@ export const getActionFetchOptions = (
   listingId: string
 ): FetchOptions => {
   switch (primaryActionText) {
-  case "Activate":
-    return { url: `/listings/${listingId}/activate`, method: "put" }
-  case "Deactivate":
-    return { url: `/listings/${listingId}/deactivate`, method: "put" }
-  default:
-    return { url: "/", method: "get" }
+    case "Activate":
+      return { url: `/listings/${listingId}/activate`, method: "put" }
+    case "Deactivate":
+      return { url: `/listings/${listingId}/deactivate`, method: "put" }
+    default:
+      return { url: "/", method: "get" }
   }
 }
 

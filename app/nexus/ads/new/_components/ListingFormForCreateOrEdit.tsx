@@ -108,7 +108,7 @@ export default function ListingFormForCreateOrEdit({
           isCreate ? "Ad created successfully" : "Ad updated successfully",
           { duration: 3000 }
         )
-        dispatch(addOneListing(response.listing))
+        dispatch(addOneListing({ listing: response.listing, isNew: isCreate }))
         setIsSuccess(true)
         setPathToAdView(`/ads/${response.listing._id}`)
       } else {
@@ -186,7 +186,7 @@ export default function ListingFormForCreateOrEdit({
               textAlign="center"
               mb="1.2rem"
             >
-              Create Ad
+              {isCreate ? "Create": "Edit"} Ad
             </Heading>
             <Text
               color="gray.main"
@@ -202,7 +202,7 @@ export default function ListingFormForCreateOrEdit({
             goToNextStage={goToNextStage}
             goToPrevStage={goToPrevStage}
             listing={listing}
-            uploadedPhotos={[]}
+            uploadedPhotos={listing?.photos || []}
             handleSubmit={handleSubmit}
             isSubmitting={isFetching}
             error={error}

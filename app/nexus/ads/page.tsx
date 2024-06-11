@@ -26,11 +26,6 @@ import { useRouter } from "next/navigation"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 
 export default function MyAds() {
-  const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    !hasFetchedUserListings && dispatch(fetchUserListings())
-  }, [dispatch, hasFetchedUserListings])
   return (
     <Suspense
       fallback={
@@ -51,7 +46,8 @@ function Renderer() {
     (store) => store.listings
   )
   const activeListings = useMemo(
-    () => listings.filter((it) => it.isActivated === true),
+    () =>
+      listings.filter((it) => it.isActivated === true && it.isDraft === false),
     [listings]
   )
   const draftListings = useMemo(

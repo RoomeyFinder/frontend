@@ -55,10 +55,10 @@ export default function ListingForm({
     numberOfBedrooms: listing?.numberOfBedrooms,
     apartmentType: listing
       ? listing.isStudioApartment
-        ? "Studio"
-        : "Bedroom"
+        ? "studio"
+        : "bedroom"
       : "",
-    currentOccupancyCount: listing?.currentOccupancyCount,
+    currentOccupancyCount: listing?.currentOccupancyCount || 1,
     streetAddress: listing?.streetAddress || "",
     city: listing?.city || "",
     state: listing?.state || "",
@@ -107,7 +107,7 @@ export default function ListingForm({
   const [photosToDelete, setPhotosToDelete] = useState<Listing["photos"]>([])
   const { files, removeFile, setFiles, isUploading, ...rest } =
     useHandleFilesUploadWithDragAndDrop({
-      maxFilesCount: 8,
+      maxFilesCount: 8 - photosToKeep.length,
     })
   const fileURLs = useRef(new Map())
   useEffect(() => {
@@ -210,7 +210,7 @@ export default function ListingForm({
             ? "Studio"
             : "Bedroom"
           : "",
-        currentOccupancyCount: listing?.currentOccupancyCount,
+        currentOccupancyCount: listing?.currentOccupancyCount || 0,
         streetAddress: listing?.streetAddress || "",
         city: listing?.city || "",
         state: listing?.state || "",

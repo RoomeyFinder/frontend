@@ -45,7 +45,6 @@ export default function ListingPage() {
     }
     setLoading(false)
   }, [listingId, fetchData])
-  console.log(listing, "dfa;djf")
 
   useEffect(() => {
     fetchListingById()
@@ -114,7 +113,7 @@ export default function ListingPage() {
       >
         <HStack w="full">
           <VStack gap="1.5rem" alignItems="start" w="full">
-            <BackButton />
+            <BackButton showText />
             {listing && (
               <>
                 <ListingHeading

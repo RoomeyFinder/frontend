@@ -30,8 +30,16 @@ export const listingsSlice = createSlice({
       store.hasError = false
       store.errorMessage = ""
     },
-    addOneListing: (store, action: PayloadAction<Listing>) => {
-      store.listings = [...store.listings, action.payload]
+    addOneListing: (
+      store,
+      action: PayloadAction<{ listing: Listing; isNew: boolean }>
+    ) => {
+      if (action.payload.isNew)
+        store.listings = [...store.listings, action.payload.listing]
+      else
+        store.listings = store.listings.map((it) =>
+          action.payload.listing._id === it._id ? action.payload.listing : it
+        )
     },
   },
   extraReducers: (builder) => {

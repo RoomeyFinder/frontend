@@ -8,6 +8,7 @@ import {
   fetchRoomiesRecommendations,
 } from "../_redux/thunks/recommendations.thunk"
 import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
+import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 
 export default function LayoutDispatchProvider({
   children,
@@ -21,6 +22,10 @@ export default function LayoutDispatchProvider({
   const { hasFetchedRooms, hasFetchedRoomies } = useAppSelector(
     (store) => store.recommendations
   )
+  const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
+  useEffect(() => {
+    !hasFetchedUserListings && dispatch(fetchUserListings())
+  }, [dispatch, hasFetchedUserListings])
   useEffect(() => {
     if (user) {
       !hasFetchedUserFavorites && dispatch(fetchUserFavorites())

@@ -58,14 +58,14 @@ function ListingFeature({
           color="gray.main"
         >
           {icons[feature as keyof typeof icons]}
-          <Text as="span">{feature}</Text>
+          <Text as="span" textAlign="center">{feature}</Text>
         </VStack>
       </Show>
       <Show below="sm">
         <HStack alignItems="center" gap=".6rem" as={Text}>
           {/* <DotSeparator /> */}
           {icons[feature as keyof typeof icons]}
-          <Text as="span">{feature}</Text>
+          <Text as="span" textAlign="center">{feature}</Text>
         </HStack>
       </Show>
     </Box>
