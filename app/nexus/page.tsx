@@ -1,8 +1,6 @@
 "use client"
 import {
-  Box,
   GridItem,
-  HStack,
   Heading,
   SimpleGrid,
   VStack,
@@ -34,25 +32,25 @@ export default function NexusPage() {
           (user.preferences?.lookingFor === "roommate" ||
             user.preferences?.lookingFor === "both" ||
             !user.preferences?.lookingFor) && (
-            <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Heading fontWeight="600" fontSize="3.2rem">
+          <VStack gap="3rem" alignItems="start" as="section" w="full">
+            <Heading fontWeight="600" fontSize="3.2rem">
                 Recommended Profiles
-              </Heading>
-              <RecomendationsDisplay type="Roomey" list={roomies} />
-            </VStack>
-          )}
+            </Heading>
+            <RecomendationsDisplay type="Roomey" list={roomies} />
+          </VStack>
+        )}
         {loadingRoomies && <Loading />}
         {rooms.length > 0 &&
           (user.preferences?.lookingFor === "room" ||
             user.preferences?.lookingFor === "both" ||
             !user.preferences?.lookingFor) && (
-            <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Heading fontWeight="600" fontSize="3.2rem">
+          <VStack gap="3rem" alignItems="start" as="section" w="full">
+            <Heading fontWeight="600" fontSize="3.2rem">
                 Recommended Rooms
-              </Heading>
-              <RecomendationsDisplay type="Room" list={rooms} />
-            </VStack>
-          )}
+            </Heading>
+            <RecomendationsDisplay type="Room" list={rooms} />
+          </VStack>
+        )}
         {loadingRoomies && <Loading />}
       </VStack>
     </>
@@ -66,7 +64,6 @@ function RecomendationsDisplay({
   type: "Roomey" | "Room"
   list: (User | Listing)[]
 }) {
-  const { user } = useAppSelector((store) => store.auth)
 
   const getChildComponent = useCallback(
     (data: User | Listing) =>

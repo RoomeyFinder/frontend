@@ -1,11 +1,11 @@
 import { Button, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
-import { useContext, useState, useMemo, useCallback, ReactNode } from "react"
+import { useState, useMemo, useCallback, ReactNode } from "react"
 import toast from "react-hot-toast"
 import EditIcon from "../_assets/SVG/EditIcon"
 import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
 import useAxios from "../_hooks/useAxios"
-import { InterestsContext } from "../_providers/InterestsProvider"
+// import { InterestsContext } from "../_providers/InterestsProvider"
 import { useAppSelector, useAppDispatch } from "../_redux"
 import { updateUser } from "../_redux/slices/auth.slice"
 
@@ -26,9 +26,9 @@ export default function InterestButton({
   const { fetchData } = useAxios()
   const { user } = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
-  const { addNewInterest, interests } = useContext(InterestsContext)
+  const { interests } = useAppSelector((store) => store.interests)
   const [sendingInterest, setSendingInterest] = useState(false)
-  const [showPremiumModal, setShowPremiumModal] = useState(false)
+  const [, setShowPremiumModal] = useState(false)
 
   const existingInterest = useMemo(
     () =>
@@ -58,7 +58,7 @@ export default function InterestButton({
     const res = await fetchData({ url: "/interests", method: "post", body })
     if (res.statusCode === 402) setShowPremiumModal(true)
     else if (res.statusCode === 201) {
-      addNewInterest(res.interest)
+      // addNewInterest(res.interest)
       user &&
         dispatch(
           updateUser({
@@ -72,7 +72,7 @@ export default function InterestButton({
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
     setSendingInterest(false)
-  }, [fetchData, doc, docType, addNewInterest, docOwner, user, dispatch])
+  }, [fetchData, doc, docType, docOwner, user, dispatch])
 
   const display = useMemo(() => {
     if (isOwner) return "Edit Profile"
@@ -106,8 +106,8 @@ export default function InterestButton({
         fontWeight="400"
         display="flex"
         alignItems="end"
-        py={{base: "1rem"}}
-        px={{base: "1.2rem"}}
+        py={{ base: "1rem" }}
+        px={{ base: "1.2rem" }}
         variant={variant || "brand-secondary"}
         minW={{ md: "18.5rem" }}
         _loading={{

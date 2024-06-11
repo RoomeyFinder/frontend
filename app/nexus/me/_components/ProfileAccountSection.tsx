@@ -33,7 +33,7 @@ export default function ProfileAccountInfoSection({
         <VStack alignItems="start" fontSize="1.4rem" w="full" color="gray.main">
           <Link
             as="button"
-            onClick={(e) => {
+            onClick={() => {
               handleChangePasswordClick()
             }}
           >
@@ -41,7 +41,7 @@ export default function ProfileAccountInfoSection({
           </Link>
           <Link
             as="button"
-            onClick={(e) => {
+            onClick={() => {
               handleChangeEmailClick()
             }}
           >

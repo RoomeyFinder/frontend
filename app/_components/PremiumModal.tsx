@@ -14,7 +14,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { ReactNode, useContext, useMemo } from "react"
+import { ReactNode, useMemo } from "react"
 import LikeIcon from "../_assets/SVG/LikeIcon"
 import { FilledIcon } from "../_assets/SVG/FilledPlusIcon"
 import ShareIcon from "../_assets/SVG/ShareIcon"

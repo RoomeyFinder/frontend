@@ -32,7 +32,7 @@ export default function UserViewPage() {
   }, [userId, fetchData])
   useEffect(() => {
     fetchUserById()
-  }, [])
+  }, [fetchUserById])
   if (loading)
     return (
       <Flex w="full" justifyContent="center" alignItems="center">

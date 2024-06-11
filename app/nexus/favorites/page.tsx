@@ -18,7 +18,7 @@ import RoomeyListingCard from "../../_components/RoomeyListingCard"
 import Favorite, { FavoriteType } from "../../_types/Favorites"
 import User from "../../_types/User"
 import { Listing } from "../../_types/Listings"
-import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
+import { WithPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/favorites.slice"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
@@ -59,7 +59,7 @@ function Renderer() {
   )
   return (
     <Box pos="relative" py="3rem">
-      {withPrependPortal(
+      {WithPrependPortal(
         <AppNotification
           onClose={() => {
             dispatch(resetError())

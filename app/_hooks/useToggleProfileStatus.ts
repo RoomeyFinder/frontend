@@ -25,7 +25,7 @@ export default function useToggleProfileStatus() {
         toast({ status: "success", title: res.message })
       } else toast({ title: res.message, status: "error" })
     },
-    [toast, fetchData]
+    [toast, fetchData, dispatch]
   )
 
   return { toggleProfileStatus, user, isFetching }

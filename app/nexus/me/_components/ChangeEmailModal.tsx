@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  FormLabel,
-  Heading,
-  Input,
-  VStack,
-} from "@chakra-ui/react"
+import { Button, FormLabel, Heading, Input, VStack } from "@chakra-ui/react"
 import { ProfileModal } from "./AccountSettingsModal"
 import useManageStageFlow from "@/app/_hooks/useManageStageFlow"
 import { useAppSelector } from "@/app/_redux"
@@ -77,7 +70,7 @@ function ValidatePasswordForm({ onSuccess }: { onSuccess: () => void }) {
     }
     if (res.statusCode !== 200) return setError(res.message)
     else onSuccess()
-  }, [onSuccess, password])
+  }, [onSuccess, password, dispatch, fetchData])
 
   return (
     <VStack
@@ -176,7 +169,7 @@ function NewEmailCheckForm({
     }
     if (res.statusCode !== 200) return setError(res.message)
     else onSuccess()
-  }, [onSuccess, email])
+  }, [onSuccess, email, dispatch, fetchData])
 
   return (
     <VStack
@@ -238,7 +231,7 @@ function VerificationForm({
     }
     if (res.statusCode !== 200) return setError(res.message)
     else onSuccess()
-  }, [onSuccess, email, verificationCode])
+  }, [onSuccess, email, verificationCode, fetchData, dispatch])
 
   return (
     <VStack

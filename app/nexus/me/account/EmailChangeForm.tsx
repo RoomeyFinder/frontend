@@ -79,7 +79,7 @@ export default function EmailChangeForm() {
       dispatch(updateUser(res.user))
     }
     setLoading(false)
-  }, [newEmail, sendRequest, emailVerificationCode, navigateToStage])
+  }, [newEmail, sendRequest, emailVerificationCode, navigateToStage, dispatch])
 
   const handleSubmitNewEmail = useCallback(async () => {
     if (newEmail.length === 0) return
@@ -117,7 +117,6 @@ export default function EmailChangeForm() {
       handleSubmitNewEmailAndConfirmationCode,
       handleSubmitNewEmail,
       goToNextStage,
-      dispatch
     ]
   )
 

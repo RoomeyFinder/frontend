@@ -5,7 +5,6 @@ import {
 } from "../thunks/recommendations.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
-import Favorite from "@/app/_types/Favorites"
 import User from "@/app/_types/User"
 import { Listing } from "@/app/_types/Listings"
 

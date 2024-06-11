@@ -1,6 +1,5 @@
 import {
   useState,
-  MutableRefObject,
   useCallback,
   DragEventHandler,
   ChangeEventHandler,

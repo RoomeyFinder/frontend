@@ -27,17 +27,14 @@ import { Listing } from "../_types/Listings"
 import {
   ReactNode,
   useCallback,
-  useContext,
   useMemo,
   useRef,
   useState,
 } from "react"
-import useAxios, { FetchOptions } from "../_hooks/useAxios"
-import { ListingsContext } from "../_providers/ListingsProvider"
+import { FetchOptions } from "../_hooks/useAxios"
 import { useRouter } from "next/navigation"
 import EditSVG from "../_assets/SVG/Edit"
 import TrashIcon from "../_assets/SVG/TrashIcon"
-import toast from "react-hot-toast"
 import { useAppDispatch } from "../_redux"
 import {
   activateListing,
@@ -192,7 +189,7 @@ function ListingActions({
         : activateListing(listingId)
     )
     setIsLoading(false)
-  }, [listingId, dispatch, router, isLoading])
+  }, [listingId, dispatch, router, isLoading, isActiveListing, primaryActionText])
 
   return (
     <>
@@ -241,17 +238,17 @@ function ListingActions({
   )
 }
 
-const getActionFetchOptions = (
+export const getActionFetchOptions = (
   primaryActionText: string,
   listingId: string
 ): FetchOptions => {
   switch (primaryActionText) {
-    case "Activate":
-      return { url: `/listings/${listingId}/activate`, method: "put" }
-    case "Deactivate":
-      return { url: `/listings/${listingId}/deactivate`, method: "put" }
-    default:
-      return { url: "/", method: "get" }
+  case "Activate":
+    return { url: `/listings/${listingId}/activate`, method: "put" }
+  case "Deactivate":
+    return { url: `/listings/${listingId}/deactivate`, method: "put" }
+  default:
+    return { url: "/", method: "get" }
   }
 }
 
@@ -274,7 +271,7 @@ function ConfirmDeleteDialog({
 }: {
   isOpen: boolean
   onClose: () => void
-  handleConfirmation: () => {}
+  handleConfirmation: () => void
   heading: ReactNode | ReactNode[]
 }) {
   const cancelRef = useRef(null)
@@ -291,7 +288,7 @@ function ConfirmDeleteDialog({
           </AlertDialogHeader>
 
           <AlertDialogBody fontSize="1.4rem">
-            Are you sure? You can't undo this action afterwards.
+            Are you sure? You can&apos;t undo this action afterwards.
           </AlertDialogBody>
 
           <AlertDialogFooter>

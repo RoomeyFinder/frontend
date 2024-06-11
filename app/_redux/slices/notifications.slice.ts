@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { fetchUserFavorites } from "../thunks/favorites.thunk"
+import { fetchUserFavorites } from "../thunks/notifications.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import Notification from "@/app/_types/Notification"
 
 interface IAuthState {
-  favorites: Notification[]
+  notifications: Notification[]
   loading: boolean
   errorMessage: string
   isUsingFallback: boolean
@@ -13,14 +13,14 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  favorites: [],
+  notifications: [],
   loading: false,
   errorMessage: "",
   isUsingFallback: false,
-  hasError: false
+  hasError: false,
 }
 
-export const favoritesSlice = createSlice({
+export const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {},
@@ -30,7 +30,7 @@ export const favoritesSlice = createSlice({
         store.loading = true
       })
       .addCase(fetchUserFavorites.fulfilled, (store, action) => {
-        store.favorites = action.payload.favorites
+        store.notifications = action.payload.favorites
         localforage.setItem(
           STORAGE_KEYS.RF_USER_FAVORITES,
           action.payload.favorites
@@ -48,5 +48,5 @@ export const favoritesSlice = createSlice({
   },
 })
 
-export const {} = favoritesSlice.actions
-export default favoritesSlice.reducer
+// export const {} = notificationsSlice.actions
+export default notificationsSlice.reducer

@@ -11,7 +11,7 @@ import {
 import { useMemo } from "react"
 import CenteredSpinner from "../../_components/CenteredSpinner"
 import { useAppDispatch, useAppSelector } from "../../_redux"
-import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
+import { WithPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/interests.slice"
 import InterestInterface from "../../_types/Interest"
@@ -38,7 +38,7 @@ export default function Page() {
 
   return (
     <Box pos="relative" py="3rem">
-      {withPrependPortal(
+      {WithPrependPortal(
         <AppNotification
           onClose={() => {
             dispatch(resetError())

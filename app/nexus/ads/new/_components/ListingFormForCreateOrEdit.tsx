@@ -42,7 +42,7 @@ export default function ListingFormForCreateOrEdit({
   const dispatch = useAppDispatch()
   const { fetchData, isFetching } = useAxios()
   const [isSuccess, setIsSuccess] = useState(false)
-  const [pathToAdView, setPathToAdView] = useState("")
+  const [, setPathToAdView] = useState("")
   const [error, setError] = useState({
     message: "",
     statusCode: 0,

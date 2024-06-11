@@ -34,7 +34,7 @@ import {
   MdWaterDrop,
 } from "react-icons/md"
 import { PiBathtub, PiOven, PiSecurityCameraFill } from "react-icons/pi"
-import { GiGasStove, GiGate, GiWaterDrop } from "react-icons/gi"
+import { GiGasStove, GiGate } from "react-icons/gi"
 import { RiSecurePaymentFill } from "react-icons/ri"
 import Dishwasher from "../_assets/AdFeaturesSVGs/Dishwasher"
 

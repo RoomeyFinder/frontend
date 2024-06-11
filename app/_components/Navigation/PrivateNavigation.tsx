@@ -1,6 +1,5 @@
 "use client"
 import {
-  Avatar,
   Box,
   Text,
   Button,

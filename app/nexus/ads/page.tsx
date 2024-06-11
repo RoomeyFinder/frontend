@@ -19,7 +19,7 @@ import CenteredSpinner from "../../_components/CenteredSpinner"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
 import { Listing } from "@/app/_types/Listings"
-import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
+import { WithPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/listings.slice"
 import { useRouter } from "next/navigation"
@@ -30,7 +30,7 @@ export default function MyAds() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     !hasFetchedUserListings && dispatch(fetchUserListings())
-  }, [dispatch])
+  }, [dispatch, hasFetchedUserListings])
   return (
     <Suspense
       fallback={
@@ -76,7 +76,7 @@ function Renderer() {
 
   return (
     <Box pos="relative" py="3rem">
-      {withPrependPortal(
+      {WithPrependPortal(
         <AppNotification
           onClose={() => {
             dispatch(resetError())
@@ -87,7 +87,7 @@ function Renderer() {
         document.body
       )}
       <Flex
-        mb={{ base: "1.3rem", }}
+        mb={{ base: "1.3rem" }}
         w="full"
         alignItems="center"
         justifyContent="space-between"
@@ -174,7 +174,7 @@ function ListingsDisplay({
           heading={
             <>
               {" "}
-              {`You do not have any `}
+              {"You do not have any "}
               <b>{currentDisplay}</b>
               {`${currentDisplay !== "drafts" ? "ads" : ""}`}
             </>

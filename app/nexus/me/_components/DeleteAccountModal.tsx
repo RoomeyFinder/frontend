@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react"
+import { Button, Flex, Text, VStack } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
 import { ProfileModal } from "./AccountSettingsModal"
 import useAxios from "@/app/_hooks/useAxios"

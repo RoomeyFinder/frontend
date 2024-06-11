@@ -212,7 +212,7 @@ function ListSectionContainer({
 
 function RoomsList({
   rooms,
-  allowFavoriting,
+  // allowFavoriting,
   loading,
   emptyTextValue,
 }: {

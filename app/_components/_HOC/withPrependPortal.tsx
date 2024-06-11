@@ -1,7 +1,7 @@
 import { ReactNode, ReactPortal, useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
-export const withPrependPortal = (
+export const WithPrependPortal = (
   component: ReactNode,
   container: Element
 ): ReactPortal => {

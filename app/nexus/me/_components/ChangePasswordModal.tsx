@@ -1,4 +1,4 @@
-import { Button, FormLabel, VStack, Input } from "@chakra-ui/react"
+import { Button, FormLabel, VStack } from "@chakra-ui/react"
 import { ProfileModal } from "./AccountSettingsModal"
 import { FormEvent, useCallback, useState } from "react"
 import { PasswordInput } from "@/app/_components/Auth/SignupInputs"
@@ -66,7 +66,7 @@ export default function ChangePasswordModal({
         onClose()
       }
     },
-    [passwords, dispatch]
+    [passwords, dispatch, user?.ssoProvider, user?.password, onClose]
   )
   return (
     <>

@@ -86,7 +86,14 @@ export default function ProfileEdit() {
         toast.error(res.message || "Something went wrong 😔 , Pleae try again.")
       setSubmitting(false)
     },
-    [occupation, selectedCoverImage, selectedProfileImage, fetchData, user]
+    [
+      occupation,
+      selectedCoverImage,
+      selectedProfileImage,
+      fetchData,
+      user,
+      dispatch,
+    ]
   )
 
   return (

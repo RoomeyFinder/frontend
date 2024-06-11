@@ -29,7 +29,10 @@ export default function PreferencesReminder() {
     }
     if (showReminder && pathname !== "/nexus")
       dispatch(hidePreferencesReminder(false))
-  }, [user, pathname, dispatch, hasClosedPreferenceReminder])
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [user, pathname, dispatch, hasClosedPreferenceReminder, showReminder])
 
   return (
     <Fade in={showReminder} unmountOnExit>

@@ -75,7 +75,7 @@ export const listingsSlice = createSlice({
         }
         store.loading = false
       })
-      .addCase(deleteListing.rejected, (store, action) => {
+      .addCase(deleteListing.rejected, (store) => {
         store.errorMessage =
           "We were unable to delete that ad. Please try again."
         console.log("We were unable to delete that ad. Please try again.")

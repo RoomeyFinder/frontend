@@ -9,13 +9,16 @@ import {
 } from "@chakra-ui/react"
 import NotificationItem from "./NotificationItem"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-import { NotificationsContext } from "@/app/_providers/NotificationsProvider"
-import { useContext, useMemo } from "react"
+// import { NotificationsContext } from "@/app/_providers/NotificationsProvider"
+import { useMemo } from "react"
 import { useRouter } from "next/navigation"
+import { useAppSelector } from "@/app/_redux"
 
 export default function NotificationsDropdown() {
   const router = useRouter()
-  const { notifications, loading } = useContext(NotificationsContext)
+  const { notifications, loading } = useAppSelector(
+    (store) => store.notifications
+  )
   const unseenNotifications = useMemo(
     () => notifications.filter((it) => it.seen === false).slice(0, 4),
     [notifications]

@@ -32,7 +32,7 @@ export default function GlobalLayout({
         dispatch(logout())
       }
     })
-  }, [dispatch, router])
+  }, [dispatch, router, pathname])
 
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
   useEffect(() => {

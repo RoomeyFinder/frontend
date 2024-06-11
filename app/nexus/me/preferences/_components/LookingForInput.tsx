@@ -12,7 +12,7 @@ export default function LookingForInput({
   return (
     <VStack alignItems="start" gap=".8rem">
       <FormLabel fontSize="2rem" m="0" fontWeight="600">
-        I'm looking for:
+        I&apos;m looking for:
       </FormLabel>
       <HStack gap="2rem" fontSize="1.6rem" fontWeight="500" flexWrap="wrap">
         <TextCheckbox

@@ -30,7 +30,7 @@ export default function ListingPage() {
 
   const listing = useMemo(
     () => listings?.find((it) => it._id === listingId),
-    [listings]
+    [listings, listingId]
   )
   const { user } = useAppSelector((store) => store.auth)
   const isOwnListing = useMemo(
@@ -63,7 +63,7 @@ export default function ListingPage() {
           body={
             <VStack>
               <Text fontSize="1.6rem">
-                We couldn't find that ad. It may have been deleted
+                We couldn&apos;t find that ad. It may have been deleted
               </Text>
               <Button variant="brand" mt="2.4rem">
                 Find other ads
