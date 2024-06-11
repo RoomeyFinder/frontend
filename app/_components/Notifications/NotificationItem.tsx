@@ -22,32 +22,32 @@ function getActionButtonsByVariant(
 ) {
   let actionButtons = null
   switch (variant) {
-  case NotificationVariant.LISTING_INTEREST ||
+    case NotificationVariant.LISTING_INTEREST ||
       NotificationVariant.PROFILE_INTEREST: {
-    const dataAsInterest = { ...data } as Interest
-    actionButtons =
+      const dataAsInterest = { ...data } as Interest
+      actionButtons =
         !data || dataAsInterest?.accepted || dataAsInterest?.declined ? (
           <></>
         ) : (
           <>
-            <AcceptInterestButton interest={dataAsInterest} />
-            <DeclineInterestButton interest={dataAsInterest} />
+            <AcceptInterestButton />
+            <DeclineInterestButton />
           </>
         )
-    break
-  }
-  case NotificationVariant.ACCEPTED_INTEREST:
-    actionButtons = <StartChatButton conversation={data as Conversation} />
-    break
-  case NotificationVariant.LISTING_VIEW:
-    actionButtons = <></>
-    break
-  case NotificationVariant.PROFILE_VIEW:
-    actionButtons = <></>
-    break
-  case NotificationVariant.MESSAGE:
-    actionButtons = <ViewMessageButton message={data as Message} />
-    break
+      break
+    }
+    case NotificationVariant.ACCEPTED_INTEREST:
+      actionButtons = <StartChatButton conversation={data as Conversation} />
+      break
+    case NotificationVariant.LISTING_VIEW:
+      actionButtons = <></>
+      break
+    case NotificationVariant.PROFILE_VIEW:
+      actionButtons = <></>
+      break
+    case NotificationVariant.MESSAGE:
+      actionButtons = <ViewMessageButton message={data as Message} />
+      break
   }
   return actionButtons
 }
@@ -156,8 +156,8 @@ export default function NotificationItem({
   )
 }
 
-function AcceptInterestButton({ interest }: { interest: Interest }) {
-  const { handleAccept, loading } = useActOnInterest(interest)
+function AcceptInterestButton() {
+  const { handleAccept, loading } = useActOnInterest()
   return (
     <Text
       onClick={(e) => {
@@ -214,8 +214,8 @@ function ViewMessageButton({ message }: { message: Message }) {
   )
 }
 
-function DeclineInterestButton({ interest }: { interest: Interest }) {
-  const { handleDecline, loading } = useActOnInterest(interest)
+function DeclineInterestButton() {
+  const { handleDecline, loading } = useActOnInterest()
   return (
     <Text
       onClick={(e) => {

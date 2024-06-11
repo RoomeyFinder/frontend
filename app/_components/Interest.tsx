@@ -52,7 +52,7 @@ export default function InterestComponent({
     []
   )
   const { handleAccept, handleDecline, handleUnsend, loading } =
-    useActOnInterest(interest)
+    useActOnInterest()
 
   return (
     <Flex

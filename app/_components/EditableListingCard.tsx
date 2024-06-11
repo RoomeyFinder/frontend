@@ -158,11 +158,13 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
           }}
           heading="Delete Ad"
         />
-        <ListingActions
-          isActiveListing={listing.isActivated === true}
-          listingId={listing._id as string}
-          primaryActionText={actionBasedOnStatus[status]}
-        />
+        {!listing.isDraft && (
+          <ListingActions
+            isActiveListing={listing.isActivated === true}
+            listingId={listing._id as string}
+            primaryActionText={actionBasedOnStatus[status]}
+          />
+        )}
       </Flex>
     </Flex>
   )

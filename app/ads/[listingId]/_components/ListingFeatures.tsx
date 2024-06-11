@@ -1,4 +1,3 @@
-import DotSeparator from "@/app/_components/DotSeparator"
 import { icons } from "@/app/_data/adFeatures"
 import { Listing } from "@/app/_types/Listings"
 import {
@@ -63,7 +62,6 @@ function ListingFeature({
       </Show>
       <Show below="sm">
         <HStack alignItems="center" gap=".6rem" as={Text}>
-          {/* <DotSeparator /> */}
           {icons[feature as keyof typeof icons]}
           <Text as="span" textAlign="center">{feature}</Text>
         </HStack>

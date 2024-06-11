@@ -1,8 +1,8 @@
 import { Flex, VStack } from "@chakra-ui/react"
 import Message from "./Message"
 import { Message as MessageInterface } from "@/app/_types/Conversation"
-import { useCallback, useContext, useEffect, useRef } from "react"
-import { MessengerContext } from "@/app/_providers/MessengerProvider"
+import { useCallback, useEffect, useRef } from "react"
+// import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import DownChevron from "@/app/_assets/SVG/DownChevron"
 import { useAppSelector } from "@/app/_redux"
 
@@ -14,7 +14,7 @@ export default function Conversation({
   canScrollToLatestMessage: boolean
 }) {
   const { user } = useAppSelector(store => store.auth)
-  const { socket } = useContext(MessengerContext)
+  // const { socket } = useContext(MessengerContext)
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   const scrollToLatestMsg = useCallback(() => {
@@ -43,7 +43,7 @@ export default function Conversation({
   }, [
     scrollToLatestMsg,
     canScrollToLatestMessage,
-    socket,
+    // socket,
   ])
 
   return (

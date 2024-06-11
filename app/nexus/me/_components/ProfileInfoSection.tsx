@@ -101,8 +101,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
               {user?.photos?.map((photo) => (
                 <Avatar
                   key={photo._id}
-                  alt=""
-                  src={photo?.secure_url}
+                  src={photo?.secure_url || ""}
                   name={user?.firstName}
                   size="xl"
                   w="6rem"

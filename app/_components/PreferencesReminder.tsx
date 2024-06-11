@@ -16,7 +16,7 @@ export default function PreferencesReminder() {
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   useEffect(() => {
-    let timeoutId
+    let timeoutId: NodeJS.Timeout
     if (
       user &&
       !user.hasSetPreferences &&

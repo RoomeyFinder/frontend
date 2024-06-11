@@ -15,7 +15,7 @@ export default function Search() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     !hasFetchedInitialListings && dispatch(fetchListings())
-  }, [dispatch])
+  }, [dispatch, hasFetchedInitialListings])
   return <ListingsSection />
 }
 
