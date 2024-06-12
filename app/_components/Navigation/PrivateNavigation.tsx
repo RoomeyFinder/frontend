@@ -125,7 +125,7 @@ function MainPrivateNav() {
 
   return (
     <>
-      <Flex flexDir="column" w="100%" data-testid="profile-nav">
+      <Flex flexDir="column" w="100%" data-testid="profile-nav" shadow="xl">
         <PrivateMenuItem onClick={() => router.push("/nexus")}>
           <PrivateMenuIcon width="2rem" as={UserIcon} />
           <Text as="span">Dashboard</Text>
@@ -144,7 +144,7 @@ function MainPrivateNav() {
           Premium
         </PrivateMenuItem> */}
       </Flex>
-      <InterestsAccessCount />
+      {/* <InterestsAccessCount /> */}
       {/*  <PremiumModalInfoOnly
         show={showPremiumModal}
         onClose={() => setShowPremiumModal(false)}
@@ -204,10 +204,10 @@ export function InterestsAccessCount() {
         rounded="1rem"
         w="full"
       >
-        <Text lineHeight="1" color="black">
+        {/* <Text lineHeight="1" color="black">
           {user?.countOfInterestsLeft}
         </Text>
-        <Text lineHeight="1">Interests Left</Text>
+        <Text lineHeight="1">Interests Left</Text> */}
       </Flex>
     </Box>
   )
