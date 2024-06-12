@@ -1,16 +1,15 @@
 "use client"
 import { useCallback, useState } from "react"
-// import Interest from "../_types/Interest"
+import Interest from "../_types/Interest"
+import { useAppDispatch } from "../_redux"
 
-export default function useActOnInterest(
-  // interest: Interest
-) {
+export default function useActOnInterest(interest: Interest) {
   const [loading, setLoading] = useState(false)
-  // const { unsendInterest, acceptInterest, declineInterest } =
-  //   useContext(InterestsContext)
+  const dispatch = useAppDispatch()
   const handleUnsend = useCallback(async () => {
     if (loading) return
     setLoading(true)
+    // dispatch()
     // await unsendInterest(interest?._id)
     setLoading(false)
   }, [loading])

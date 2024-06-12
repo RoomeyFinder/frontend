@@ -52,11 +52,11 @@ export default function InterestComponent({
     []
   )
   const { handleAccept, handleDecline, handleUnsend, loading } =
-    useActOnInterest()
+    useActOnInterest(interest)
 
   return (
     <Flex
-      bg="#d9d9d94f"
+      bg="#3a86ff0d"
       rounded="1.2rem"
       alignItems="center"
       gap={{ base: "1rem", md: "1.5rem" }}
@@ -71,12 +71,24 @@ export default function InterestComponent({
         src={profileToDisplay?.profileImage?.secure_url}
         name={`${profileToDisplay?.firstName} ${profileToDisplay?.lastName}`}
       />
-      <Flex flexDir="column" gap={{ base: ".5rem", md: "1rem" }}>
+      <Flex flexDir="column" gap={{ base: ".5rem" }}>
         <Heading
           fontSize={{ base: "1.4rem", md: "1.9rem" }}
-          lineHeight="1.2rem"
+          textTransform="capitalize"
+          as="h4"
+          fontWeight="600"
         >
-          {profileToDisplay?.firstName} {profileToDisplay?.lastName}
+          {profileToDisplay?.firstName} {profileToDisplay?.lastName} <br />
+          <Text
+            as="span"
+            fontWeight="normal"
+            fontSize="1.2rem"
+            textTransform="lowercase"
+            color="gray.main"
+          >
+            showed interest in your{" "}
+            {interest.type === "User" ? "Profile" : "Ad"}
+          </Text>
         </Heading>
         <Box>
           <Text
@@ -85,7 +97,7 @@ export default function InterestComponent({
             fontWeight="600"
             fontSize={{ base: "1.2rem", md: "1.6rem" }}
             textDecor="underline"
-            onClick={() => router.push(`/profile/${profileToDisplay?._id}`)}
+            onClick={() => router.push(`/users/${profileToDisplay?._id}`)}
           >
             View profile
           </Text>
@@ -134,6 +146,7 @@ export default function InterestComponent({
                   as="button"
                   color="brand.main"
                   aria-label="accept interest"
+                  title="accept interest"
                 >
                   <Show below="md">
                     <CheckIcon />
@@ -151,6 +164,7 @@ export default function InterestComponent({
                   as="button"
                   color="gray.main"
                   aria-label="decline interest"
+                  title="decline interest"
                 >
                   <Show below="md">
                     <TimesIconSmall />

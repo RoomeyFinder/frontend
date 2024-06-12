@@ -8,6 +8,8 @@ import useAxios from "../_hooks/useAxios"
 import { useAppSelector, useAppDispatch } from "../_redux"
 import { updateUser } from "../_redux/slices/auth.slice"
 import { addNewInterest } from "../_redux/slices/interests.slice"
+import { Listing } from "../_types/Listings"
+import { capitalizeFirstLetter } from "../_utils"
 
 export default function InterestButton({
   doc,
@@ -24,17 +26,19 @@ export default function InterestButton({
   const dispatch = useAppDispatch()
   const { interests } = useAppSelector((store) => store.interests)
   const [sendingInterest, setSendingInterest] = useState(false)
-  const [, setShowPremiumModal] = useState(false)
 
   const existingInterest = useMemo(
     () =>
       interests?.find(
-        (interest) => interest.doc._id === doc || interest.sender?._id === doc
+        (interest) =>
+          interest.sender?._id === doc ||
+          interest.doc?._id === doc ||
+          (interest.doc as Listing)?.owner?._id === doc
       ),
     [doc, interests]
   )
 
-  console.log(existingInterest, interests)
+  console.log(existingInterest, interests, doc)
   const isSender = useMemo(
     () =>
       existingInterest?.sender?._id &&
@@ -53,8 +57,12 @@ export default function InterestButton({
     }
     setSendingInterest(true)
     const res = await fetchData({ url: "/interests", method: "post", body })
-    if (res.statusCode === 402) setShowPremiumModal(true)
-    else if (res.statusCode === 201) {
+    if (res.statusCode === 201) {
+      res.alreadyReceivedInterest &&
+        toast.success(
+          `${capitalizeFirstLetter(res.interest?.sender.firstName || "")} already sent you an interest!`,
+          { duration: 5000 }
+        )
       dispatch(addNewInterest(res.interest))
       user &&
         dispatch(
@@ -75,13 +83,13 @@ export default function InterestButton({
     if (existingInterest) {
       if (isSender) return "Interest sent"
       if (existingInterest.accepted) return "Send message"
-      return "Accept"
+      return "Accept interest"
     }
     return "Show Interest"
   }, [existingInterest, isSender])
 
   const buttonProps = useMemo(() => {
-    if (existingInterest)
+    if (existingInterest && isSender)
       return {
         title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
         isDisabled: isSender,
@@ -89,7 +97,7 @@ export default function InterestButton({
     return {
       onClick: handleSendInterest,
     }
-  }, [existingInterest, handleSendInterest, router])
+  }, [existingInterest, handleSendInterest, router, isSender])
 
   return (
     <>
@@ -108,11 +116,14 @@ export default function InterestButton({
           justifyContent: "center !important",
           alignItems: "center !important",
         }}
-        _hover={{ filter: "brightness(100%)", color: "brand.main" }}
         _disabled={{
           bg: "brand.10",
           color: "brand.main",
-          _hover: { filter: "brightness(100%)", color: "brand.main" },
+          _hover: {
+            filter: "brightness(100%)",
+            bg: "brand.10",
+            color: "brand.main",
+          },
           cursor: "not-allowed",
         }}
         isLoading={sendingInterest}

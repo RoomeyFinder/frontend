@@ -2,6 +2,7 @@
 import {
   Box,
   Heading,
+  SimpleGrid,
   Tab,
   TabList,
   TabPanel,
@@ -75,7 +76,11 @@ export default function Page() {
             Sent ({sentInterests.length})
           </Tab>
         </TabList>
-        <TabPanels>
+        <TabPanels
+          px={{ base: "2rem", md: "5rem" }}
+          mx="auto"
+          py={{ base: "2rem", md: "3rem" }}
+        >
           <TabPanel px="0">
             {
               <InterestsList
@@ -118,7 +123,7 @@ function InterestsList({
       />
     )
   return (
-    <>
+    <SimpleGrid columns={{ base: 1 }}>
       {interests.map((interest) => (
         <InterestComponent
           key={interest._id}
@@ -126,6 +131,6 @@ function InterestsList({
           interest={interest}
         />
       ))}
-    </>
+    </SimpleGrid>
   )
 }

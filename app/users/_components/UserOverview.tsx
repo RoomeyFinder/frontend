@@ -91,7 +91,7 @@ export default function UserOverview({
                 justifyContent="start"
                 flexWrap="wrap"
               >
-                {user.settings.isAgeVisibleOnProfile && (
+                {user.settings?.isAgeVisibleOnProfile && (
                   <Text>
                     {user.dob && getAgeInYears(new Date(user.dob))}yrs
                   </Text>
@@ -104,7 +104,7 @@ export default function UserOverview({
                       : user.occupation}
                   </Text>
                 )}
-                {user.settings.isStateOfOriginVisibleOnProfile && (
+                {user.settings?.isStateOfOriginVisibleOnProfile && (
                   <Text>From {user.stateOfOrigin}</Text>
                 )}
               </Flex>
