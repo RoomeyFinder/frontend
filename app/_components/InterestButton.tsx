@@ -2,14 +2,14 @@ import { Button, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useState, useMemo, useCallback, ReactNode } from "react"
 import toast from "react-hot-toast"
-import EditIcon from "../_assets/SVG/EditIcon"
-import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
 import useAxios from "../_hooks/useAxios"
 import { useAppSelector, useAppDispatch } from "../_redux"
 import { updateUser } from "../_redux/slices/auth.slice"
 import { addNewInterest } from "../_redux/slices/interests.slice"
 import { Listing } from "../_types/Listings"
 import { capitalizeFirstLetter } from "../_utils"
+import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
+import useActOnInterest from "../_hooks/useActOnInterest"
 
 export default function InterestButton({
   doc,
@@ -37,8 +37,7 @@ export default function InterestButton({
       ),
     [doc, interests]
   )
-
-  console.log(existingInterest, interests, doc)
+  const { handleAccept, loading } = useActOnInterest(existingInterest)
   const isSender = useMemo(
     () =>
       existingInterest?.sender?._id &&
@@ -79,25 +78,31 @@ export default function InterestButton({
     setSendingInterest(false)
   }, [fetchData, doc, docType, docOwner, user, dispatch])
 
-  const display = useMemo(() => {
-    if (existingInterest) {
-      if (isSender) return "Interest sent"
-      if (existingInterest.accepted) return "Send message"
-      return "Accept interest"
-    }
-    return "Show Interest"
-  }, [existingInterest, isSender])
-
   const buttonProps = useMemo(() => {
-    if (existingInterest && isSender)
+    if (existingInterest) {
+      if (existingInterest.accepted)
+        return {
+          onClick: () => {
+            console.log("djdjaccepted")
+          },
+          children: "Send message",
+        }
+      if (isSender)
+        return {
+          title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
+          isDisabled: isSender,
+          children: "Interest sent",
+        }
       return {
-        title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
-        isDisabled: isSender,
+        children: "Accept interest",
+        onClick: () => handleAccept(),
       }
+    }
     return {
       onClick: handleSendInterest,
+      children: "Show Interest",
     }
-  }, [existingInterest, handleSendInterest, router, isSender])
+  }, [existingInterest, handleSendInterest, router, isSender, handleAccept])
 
   return (
     <>
@@ -126,11 +131,10 @@ export default function InterestButton({
           },
           cursor: "not-allowed",
         }}
-        isLoading={sendingInterest}
-        isDisabled={isSender}
+        isLoading={sendingInterest || loading}
         {...buttonProps}
       >
-        {display} <PersonIconTwo />
+        {buttonProps.children} <PersonIconTwo />
       </Button>
     </>
   )
