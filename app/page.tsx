@@ -36,9 +36,9 @@ function Hero() {
         justifyContent="space-between"
         alignItems="center"
         flexDir={{ base: "column", md: "row" }}
-        px={{ base: "3rem", md: "8rem", lg: "0" }}
         py={{ base: "5rem", md: "10rem" }}
         maxW="125rem"
+        w="90%"
         mx="auto"
       >
         <Box as="main">
@@ -153,7 +153,7 @@ function ListingsSection() {
   if (listings.length === 0 && !loading) return null
   return (
     <>
-      <Box mx="auto" maxW="125rem">
+      <Box mx="auto" maxW="125rem" w="90%">
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
           {loading ? (
