@@ -4,6 +4,7 @@ import { PeopleGroupSmall } from "@/app/_assets/SVG/PeopleGroup"
 import DotSeparator from "@/app/_components/DotSeparator"
 import InterestButton from "@/app/_components/InterestButton"
 import ProfileAvatar from "@/app/_components/ProfileAvatar"
+import { useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
 import { pluralizeText } from "@/app/_utils"
 import {
@@ -25,6 +26,7 @@ export default function ListingOwnerOverview({
   listing: Listing
   isOwnListing: boolean
 }) {
+  const { user } = useAppSelector((store) => store.auth)
   return (
     <HStack
       pos="sticky"
@@ -83,8 +85,6 @@ export default function ListingOwnerOverview({
         >
           <InterestButton
             docOwner={listing.owner?._id || ""}
-            isOwner={false}
-            variant=""
             doc={listing._id}
             docType={"Listing"}
           />

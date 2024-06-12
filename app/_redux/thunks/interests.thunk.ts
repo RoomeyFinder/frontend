@@ -15,9 +15,7 @@ export const fetchUsersInterests = createAsyncThunk(
     )
     return {
       interests:
-        response.statusCode === 200
-          ? response.interests
-          : storedListings || [],
+        response.statusCode === 200 ? response.interests : storedListings || [],
       statusCode: response.statusCode,
     }
   }

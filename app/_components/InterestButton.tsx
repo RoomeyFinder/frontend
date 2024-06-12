@@ -5,19 +5,15 @@ import toast from "react-hot-toast"
 import EditIcon from "../_assets/SVG/EditIcon"
 import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
 import useAxios from "../_hooks/useAxios"
-// import { InterestsContext } from "../_providers/InterestsProvider"
 import { useAppSelector, useAppDispatch } from "../_redux"
 import { updateUser } from "../_redux/slices/auth.slice"
+import { addNewInterest } from "../_redux/slices/interests.slice"
 
 export default function InterestButton({
-  isOwner,
-  variant,
   doc,
   docType,
   docOwner,
 }: {
-  isOwner: boolean
-  variant?: string
   doc: string
   docType: "User" | "Listing"
   docOwner: string
@@ -38,6 +34,7 @@ export default function InterestButton({
     [doc, interests]
   )
 
+  console.log(existingInterest, interests)
   const isSender = useMemo(
     () =>
       existingInterest?.sender?._id &&
@@ -58,7 +55,7 @@ export default function InterestButton({
     const res = await fetchData({ url: "/interests", method: "post", body })
     if (res.statusCode === 402) setShowPremiumModal(true)
     else if (res.statusCode === 201) {
-      // addNewInterest(res.interest)
+      dispatch(addNewInterest(res.interest))
       user &&
         dispatch(
           updateUser({
@@ -75,30 +72,24 @@ export default function InterestButton({
   }, [fetchData, doc, docType, docOwner, user, dispatch])
 
   const display = useMemo(() => {
-    if (isOwner) return "Edit Profile"
-    else {
-      if (existingInterest)
-        return isSender ? "Interest sent" : "Interest received"
-      return "Show Interest"
+    if (existingInterest) {
+      if (isSender) return "Interest sent"
+      if (existingInterest.accepted) return "Send message"
+      return "Accept"
     }
-  }, [isOwner, existingInterest, isSender])
+    return "Show Interest"
+  }, [existingInterest, isSender])
 
   const buttonProps = useMemo(() => {
-    if (isOwner)
+    if (existingInterest)
       return {
-        onClick: () => router.push("/profile?edit=true"),
+        title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
+        isDisabled: isSender,
       }
-    else {
-      if (existingInterest)
-        return {
-          title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
-          isDisabled: true,
-        }
-      return {
-        onClick: handleSendInterest,
-      }
+    return {
+      onClick: handleSendInterest,
     }
-  }, [isOwner, existingInterest, handleSendInterest, router])
+  }, [existingInterest, handleSendInterest, router])
 
   return (
     <>
@@ -108,7 +99,7 @@ export default function InterestButton({
         alignItems="end"
         py={{ base: "1rem" }}
         px={{ base: "1.2rem" }}
-        variant={variant || "brand-secondary"}
+        variant={"brand"}
         minW={{ md: "18.5rem" }}
         _loading={{
           bg: "brand.main !important",
@@ -117,17 +108,18 @@ export default function InterestButton({
           justifyContent: "center !important",
           alignItems: "center !important",
         }}
+        _hover={{ filter: "brightness(100%)", color: "brand.main" }}
         _disabled={{
-          bg: "transparent",
-          color: "",
-          _hover: { bg: "transparent", color: "brand.main" },
-          p: "0",
-          justifyContent: "start",
+          bg: "brand.10",
+          color: "brand.main",
+          _hover: { filter: "brightness(100%)", color: "brand.main" },
+          cursor: "not-allowed",
         }}
         isLoading={sendingInterest}
+        isDisabled={isSender}
         {...buttonProps}
       >
-        {display} {isOwner ? <EditIcon /> : <PersonIconTwo />}
+        {display} <PersonIconTwo />
       </Button>
     </>
   )

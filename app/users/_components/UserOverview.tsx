@@ -47,10 +47,12 @@ export default function UserOverview({
   user,
   usersListings = [],
   isLoggedIn,
+  isOwnProfile,
 }: {
   user: User
   usersListings?: Listing[]
   isLoggedIn: boolean
+  isOwnProfile: boolean
 }) {
   const [showMore, setShowMore] = useState(false)
   const aboutPreview = useMemo(() => user.about?.slice(0, 600), [user.about])
@@ -107,15 +109,11 @@ export default function UserOverview({
                 )}
               </Flex>
             </VStack>
-            <Box ml="auto">
-              <InterestButton
-                isOwner={false}
-                doc={""}
-                docType={"User"}
-                docOwner={""}
-                variant="brand"
-              />
-            </Box>
+            {!isOwnProfile && (
+              <Box ml="auto">
+                <InterestButton doc={user._id} docType={"User"} docOwner={user._id} />
+              </Box>
+            )}
           </HStack>
         </Box>
       </Box>

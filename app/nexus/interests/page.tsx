@@ -36,6 +36,7 @@ export default function Page() {
     )
   }, [interests, user])
 
+  // console.log(interests, sentInterests, receivedInterests)
   return (
     <Box pos="relative" py="3rem">
       {WithPrependPortal(

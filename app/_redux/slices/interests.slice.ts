@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { fetchUsersInterests } from "../thunks/interests.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
@@ -19,7 +19,7 @@ const initialState: IAuthState = {
   errorMessage: "",
   isUsingFallback: false,
   hasError: false,
-  hasFetchedUserInterests: false
+  hasFetchedUserInterests: false,
 }
 
 export const interestsSlice = createSlice({
@@ -29,7 +29,10 @@ export const interestsSlice = createSlice({
     resetError: (state) => {
       state.errorMessage = ""
       state.hasError = false
-    }
+    },
+    addNewInterest: (state, action: PayloadAction<Interest>) => {
+      state.interests = [...state.interests, action.payload]
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -56,5 +59,5 @@ export const interestsSlice = createSlice({
   },
 })
 
-export const { resetError } = interestsSlice.actions
+export const { resetError, addNewInterest } = interestsSlice.actions
 export default interestsSlice.reducer

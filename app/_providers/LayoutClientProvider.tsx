@@ -29,7 +29,6 @@ export default function LayoutDispatchProvider({
   useEffect(() => {
     if (user) {
       !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
-      !hasFetchedUserInterests && dispatch(fetchUsersInterests())
       !hasFetchedRooms && dispatch(fetchRoomRecommendations())
       !hasFetchedRoomies && dispatch(fetchRoomiesRecommendations())
     }

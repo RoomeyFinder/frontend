@@ -12,6 +12,10 @@ import { useRouter } from "next/navigation"
 import { fetchListings } from "../_redux/thunks/search.thunk"
 import { checkAuthStatus } from "../_redux/thunks/auth.thunk"
 import { logout } from "../_redux/slices/auth.slice"
+import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
+import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
+import { fetchUserListings } from "../_redux/thunks/listings.thunk"
+import { fetchRoomiesRecommendations } from "../_redux/thunks/recommendations.thunk"
 
 export default function GlobalLayout({
   children,
@@ -38,6 +42,28 @@ export default function GlobalLayout({
   useEffect(() => {
     !hasFetchedInitialListings && dispatch(fetchListings())
   }, [dispatch, hasFetchedInitialListings])
+  
+  const { user } = useAppSelector((store) => store.auth)
+  const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
+  const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
+  const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
+
+  useEffect(() => {
+    if (user) {
+      !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
+      !hasFetchedUserInterests && dispatch(fetchUsersInterests())
+      !hasFetchedUserListings && dispatch(fetchUserListings())
+      !hasFetchedUserListings && dispatch(fetchUserListings())
+    }
+  }, [
+    dispatch,
+    hasFetchedUserFavorites,
+    hasFetchedUserInterests,
+    hasFetchedUserListings,
+    hasFetchedUserListings,
+    hasFetchedUserInterests,
+    user,
+  ])
 
   if (pathname.includes("nexus"))
     return (
