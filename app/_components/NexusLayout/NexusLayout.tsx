@@ -26,7 +26,7 @@ export default function NexusLayout({ children }: { children: ReactNode }) {
         overflow="hidden"
         bg="white"
       >
-        <Box w="full" pos="sticky" top="0">
+        <Box w="full" pos="sticky" zIndex="200" top="0">
           <NexusHeading handleToggleMenu={() => setOpenMenu((prev) => !prev)} />
         </Box>
         <Show above="md">

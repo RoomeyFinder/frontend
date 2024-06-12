@@ -1,4 +1,14 @@
-import { Box, Flex, IconButton, Show, Text } from "@chakra-ui/react"
+import {
+  Badge,
+  Box,
+  Flex,
+  IconButton,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Show,
+  Text,
+} from "@chakra-ui/react"
 import AppLogo from "../Logo"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import { useRouter } from "next/navigation"
@@ -7,6 +17,8 @@ import LogoutIcon from "@/app/_assets/SVG/Logout"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
 import { useAppDispatch } from "@/app/_redux"
 import { logout } from "@/app/_redux/slices/auth.slice"
+import NotificationsDropdown from "../Notifications/NotificationsDropdown"
+import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
 
 export default function NexusHeading({
   handleToggleMenu,
@@ -15,7 +27,7 @@ export default function NexusHeading({
 }) {
   const router = useRouter()
   const dispatch = useAppDispatch()
-
+  const unseenNotificationsCount = useGetUnseenNotificationsCount()
   return (
     <>
       <Flex
@@ -30,19 +42,46 @@ export default function NexusHeading({
             <AppLogo showTextLogoAlways />
           </Box>
           <Flex alignItems="center" gap={{ base: "1rem", md: "4rem" }}>
-            <IconButton
-              aria-label="Notifications"
-              icon={<NotificationIcon />}
-              w={{ base: "3.8rem", md: "5rem" }}
-              h={{ base: "3.8rem", md: "5rem" }}
-              bg={{ base: "transparent", md: "white" }}
-              color="brand.main"
-              _hover={{
-                bg: "brand.10",
-                color: "brand.main",
-              }}
-              rounded="full"
-            />
+            <Popover>
+              <PopoverTrigger>
+                <Text as="div" pos="relative">
+                  <IconButton
+                    aria-label="Notifications"
+                    icon={<NotificationIcon />}
+                    w={{ base: "3.8rem", md: "5rem" }}
+                    h={{ base: "3.8rem", md: "5rem" }}
+                    bg={{ base: "transparent", md: "white" }}
+                    color="brand.main"
+                    _hover={{
+                      bg: "brand.10",
+                      color: "brand.main",
+                    }}
+                    rounded="full"
+                  />
+                  <Badge
+                    top="0"
+                    bg="red.main"
+                    color="white"
+                    pos="absolute"
+                    right=".5rem"
+                    w="1.7rem"
+                    h="1.7rem"
+                    rounded="full"
+                    fontSize="1rem"
+                    fontWeight="900"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    {unseenNotificationsCount}
+                  </Badge>
+                </Text>
+              </PopoverTrigger>
+              <PopoverContent boxShadow="none" border="0" w="max-content">
+                <NotificationsDropdown />
+              </PopoverContent>
+            </Popover>
+
             <IconButton
               aria-label="Notifications"
               icon={<MessageIcon />}

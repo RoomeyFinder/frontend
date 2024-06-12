@@ -1,41 +1,43 @@
 "use client"
 import { Box, HStack, Heading, VStack } from "@chakra-ui/react"
 import CustomRadioGroup from "@/app/_components/CustomRadio"
-// import NotificationItem from "../../_components/Notifications/NotificationItem"
+import NotificationItem from "../../_components/Notifications/NotificationItem"
 import {
-  //  useContext, useMemo,
+  //  useContext,
+  useMemo,
   useState,
 } from "react"
-// import { NotificationsContext } from "../../_providers/NotificationsProvider"
-// import { NotificationVariant } from "../../_types/Notification"
+import { useAppSelector } from "@/app/_redux"
+import { NotificationVariant } from "../../_types/Notification"
 
 export default function Page() {
-  // const { notifications } = useContext(NotificationsContext)
+  const { notifications } = useAppSelector((store) => store.notifications)
   const [currentFilter, setCurrentFilter] = useState<
     "interest" | "listing" | "message" | "all"
   >("all")
-  // const filteredNotifications = useMemo(() => {
-  //   switch (currentFilter) {
-  //   case "interest":
-  //     return notifications.filter(
-  //       (notif) =>
-  //         notif.title === NotificationVariant.LISTING_INTEREST ||
-  //           notif.title === NotificationVariant.PROFILE_INTEREST ||
-  //           notif.title === NotificationVariant.ACCEPTED_INTEREST
-  //     )
-  //   case "message":
-  //     return notifications.filter(
-  //       (notif) => notif.title === NotificationVariant.MESSAGE
-  //     )
-  //   case "listing":
-  //     return notifications.filter(
-  //       (notif) =>
-  //         notif.title === NotificationVariant.LISTING_INTEREST ||
-  //           notif.title === NotificationVariant.LISTING_VIEW
-  //     )
-  //   default: return notifications
-  //   }
-  // }, [currentFilter, notifications])
+  const filteredNotifications = useMemo(() => {
+    switch (currentFilter) {
+      case "interest":
+        return notifications.filter(
+          (notif) =>
+            notif.title === NotificationVariant.LISTING_INTEREST ||
+            notif.title === NotificationVariant.PROFILE_INTEREST ||
+            notif.title === NotificationVariant.ACCEPTED_INTEREST
+        )
+      case "message":
+        return notifications.filter(
+          (notif) => notif.title === NotificationVariant.MESSAGE
+        )
+      case "listing":
+        return notifications.filter(
+          (notif) =>
+            notif.title === NotificationVariant.LISTING_INTEREST ||
+            notif.title === NotificationVariant.LISTING_VIEW
+        )
+      default:
+        return notifications
+    }
+  }, [currentFilter, notifications])
   return (
     <>
       <Box
@@ -65,14 +67,14 @@ export default function Page() {
             />
           </HStack>
           <VStack alignItems="stretch" gap="1.5rem">
-            {/* {filteredNotifications.map((notification) => (
+            {filteredNotifications.map((notification) => (
               <NotificationItem
                 key={notification._id}
                 variant={notification.title}
                 size={"large"}
                 notification={notification}
               />
-            ))} */}
+            ))}
           </VStack>
         </VStack>
       </Box>

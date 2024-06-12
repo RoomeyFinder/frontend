@@ -14,6 +14,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Badge,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
@@ -26,9 +27,11 @@ import LogoutIcon from "@/app/_assets/SVG/Logout"
 import UserIcon from "@/app/_assets/SVG/UserIcon"
 import { logout } from "@/app/_redux/slices/auth.slice"
 import DownChevron from "@/app/_assets/SVG/DownChevron"
+import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
 
 export default function PrivateNavigation() {
   const router = useRouter()
+  const unseenNotificationsCount = useGetUnseenNotificationsCount()
   return (
     <Flex alignItems="center" gap="4rem">
       <Button
@@ -41,16 +44,28 @@ export default function PrivateNavigation() {
       </Button>
       <Show above="md">
         <Flex gap="4rem">
-          <Text as="button" onClick={() => router.push("/messenger")}>
-            <StandAloneIcon>
-              <MessageIcon />
-            </StandAloneIcon>
-          </Text>
           <Popover>
             <PopoverTrigger>
               <Text as="button">
-                <StandAloneIcon>
+                <StandAloneIcon pos="relative">
                   <NotificationIcon />
+                  <Badge
+                    top="-.6rem"
+                    bg="red.main"
+                    color="white"
+                    pos="absolute"
+                    right="-.2rem"
+                    w="1.7rem"
+                    h="1.7rem"
+                    rounded="full"
+                    fontSize=".9rem"
+                    fontWeight="700"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    {unseenNotificationsCount}
+                  </Badge>
                 </StandAloneIcon>
               </Text>
             </PopoverTrigger>
@@ -58,6 +73,11 @@ export default function PrivateNavigation() {
               <NotificationsDropdown />
             </PopoverContent>
           </Popover>
+          <Text as="button" onClick={() => router.push("/messenger")}>
+            <StandAloneIcon>
+              <MessageIcon />
+            </StandAloneIcon>
+          </Text>
         </Flex>
       </Show>
       <MobileNavigation />

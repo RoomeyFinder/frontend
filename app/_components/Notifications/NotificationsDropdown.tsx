@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react"
 import NotificationItem from "./NotificationItem"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-// import { NotificationsContext } from "@/app/_providers/NotificationsProvider"
 import { useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { useAppSelector } from "@/app/_redux"
@@ -23,14 +22,13 @@ export default function NotificationsDropdown() {
     () => notifications.filter((it) => it.seen === false).slice(0, 4),
     [notifications]
   )
-  console.log(notifications, "jdsfakdf")
   return (
     <>
       <VStack
         boxShadow="0px 0px 10px 0px #ABABAB40"
         border="1px solid #EEEEEE"
         w="90dvw"
-        maxW="22.4rem"
+        maxW="30rem"
         borderRadius="1.2rem"
         bg="#F9F9F9"
         alignItems="stretch"
@@ -75,7 +73,7 @@ export default function NotificationsDropdown() {
                   fontWeight="700"
                   color="gray.main"
                   as="button"
-                  onClick={() => router.push("/notifications")}
+                  onClick={() => router.push("/nexus/notifications")}
                 >
                   View All
                 </Text>

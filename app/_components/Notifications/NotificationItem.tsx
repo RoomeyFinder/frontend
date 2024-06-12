@@ -83,7 +83,7 @@ export default function NotificationItem({
         block: "nearest",
       })
       const resetFocusTimeout = setTimeout(() => {
-        router.push("/notifications")
+        router.push("/nexus/notifications")
       }, 2000)
       return () => {
         clearTimeout(resetFocusTimeout)
@@ -94,22 +94,22 @@ export default function NotificationItem({
     <Flex
       ref={containerRef}
       animation={isInFocus ? `${spin} 2s linear` : ""}
-      px={isSmall ? ".8rem" : "2rem"}
-      py={isSmall ? "" : "1.5rem"}
+      px={isSmall ? "1rem" : "2rem"}
+      py={isSmall ? ".5rem" : "1.5rem"}
       gap={isSmall ? ".4rem" : "1.5rem"}
-      alignItems="start"
+      alignItems="center"
       bg={"#F9F9F9"}
       borderRadius={isSmall ? "" : "1.2rem"}
       id={notification._id}
       onClick={() =>
         shouldRedirectToNotificationsPage &&
-        router.push(`/notifications?id=${notification._id}`)
+        router.push(`/nexus/notifications?id=${notification._id}`)
       }
     >
       <Box border="1px solid" borderColor="brand.main" rounded="full">
         <Avatar
           src=""
-          name="Exploit enomah"
+          name={`${notification.from?.firstName} ${notification.from?.lastName}`}
           bg="brand.50"
           w={{ base: isSmall ? "3rem" : "4rem", md: isSmall ? "3rem" : "6rem" }}
           h={{ base: isSmall ? "3rem" : "4rem", md: isSmall ? "3rem" : "6rem" }}
@@ -129,7 +129,7 @@ export default function NotificationItem({
           fontSize="1rem"
           fontWeight="400"
           lineHeight="normal"
-          color="gray.100"
+          color="gray.main"
         >
           {notification.body}
         </Text>
@@ -150,7 +150,7 @@ export default function NotificationItem({
         ml="auto"
         alignSelf="center"
       >
-        {timeAgo(new Date("2024-04-11"))}
+        {timeAgo(new Date(notification.createdAt))}
       </Text>
     </Flex>
   )
