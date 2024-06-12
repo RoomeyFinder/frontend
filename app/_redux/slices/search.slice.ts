@@ -45,7 +45,8 @@ export const searchSlice = createSlice({
         store.loading = false
         store.errorMessage = ""
         store.isUsingFallback = action.payload.statusCode !== 200
-        store.hasFetchedInitialListings = action.payload.statusCode === 200
+        store.hasFetchedInitialListings = true 
+        // action.payload.statusCode === 200
       })
       .addCase(fetchListings.rejected, (store) => {
         store.errorMessage =

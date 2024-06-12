@@ -61,7 +61,7 @@ export const listingsSlice = createSlice({
         store.loading = false
         store.errorMessage = ""
         store.isUsingFallback = action.payload.statusCode !== 200
-        store.hasFetchedUserListings = action.payload.statusCode === 200
+        store.hasFetchedUserListings = true
       })
       .addCase(fetchUserListings.rejected, (store) => {
         store.errorMessage =

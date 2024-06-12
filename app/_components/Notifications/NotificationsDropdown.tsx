@@ -23,6 +23,7 @@ export default function NotificationsDropdown() {
     () => notifications.filter((it) => it.seen === false).slice(0, 4),
     [notifications]
   )
+  console.log(notifications, "jdsfakdf")
   return (
     <>
       <VStack

@@ -70,6 +70,7 @@ export const recommendationsSlice = createSlice({
       })
       .addCase(fetchRoomiesRecommendations.fulfilled, (store, action) => {
         store.roomies = action.payload.recommendations
+        store.hasFetchedRoomies = true
         localforage.setItem(
           STORAGE_KEYS.RF_USER_ROOMIES_RECOMMENDATIONS,
           action.payload.recommendations
