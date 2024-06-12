@@ -177,10 +177,13 @@ export default function InterestComponent({
         )}
         {!isPending && (
           <Text
+            as="button"
+            onClick={() => interest.accepted && {}}
             color={interest.accepted ? "brand.main" : "gray.main"}
+            fontWeight="500"
             aria-label="decline interest"
           >
-            {interest.accepted ? "Accepted" : "Declined"}
+            {interest.accepted ? "Send message" : "Declined"}
           </Text>
         )}
         <Show above="md">
