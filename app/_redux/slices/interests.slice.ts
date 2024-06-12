@@ -1,5 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { fetchUsersInterests } from "../thunks/interests.thunk"
+import {
+  acceptInterest,
+  declineInterest,
+  fetchUsersInterests,
+  unsendInterest,
+} from "../thunks/interests.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import Interest from "@/app/_types/Interest"
@@ -53,6 +58,40 @@ export const interestsSlice = createSlice({
       .addCase(fetchUsersInterests.rejected, (store) => {
         store.errorMessage =
           "Oops, Something went wrong while getting your ads!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(acceptInterest.fulfilled, (store, action) => {
+        store.interests = store.interests.map((interest) =>
+          interest._id === action.payload.interest?._id
+            ? action.payload.interest
+            : interest
+        )
+      })
+      .addCase(acceptInterest.rejected, (store) => {
+        store.errorMessage = "Oops, That interest couldn't be accepted!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(declineInterest.fulfilled, (store, action) => {
+        store.interests = store.interests.map((interest) =>
+          interest._id === action.payload.interest?._id
+            ? action.payload.interest
+            : interest
+        )
+      })
+      .addCase(declineInterest.rejected, (store) => {
+        store.errorMessage = "Oops, That interest couldn't be declined!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(unsendInterest.fulfilled, (store, action) => {
+        store.interests = store.interests.filter(
+          (interest) => interest._id !== action.payload.interest?._id
+        )
+      })
+      .addCase(unsendInterest.rejected, (store) => {
+        store.errorMessage = "Oops, That interest couldn't be unsent!"
         store.loading = false
         store.hasError = true
       })
