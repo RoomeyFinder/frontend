@@ -19,7 +19,7 @@ export const markAllNotificationsAsSeen = createAsyncThunk(
   async () => {
     const response = await axiosFetcher({
       url: "/notifications/seen",
-      method: "get",
+      method: "post",
     })
     return {
       notifications: response.statusCode === 200 ? response.notifications : [],

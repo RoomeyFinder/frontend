@@ -38,8 +38,8 @@ export default function RoomeyListingCard({
       )}
       <ProfileAvatar
         imageSrc={user.profileImage?.secure_url}
-        width={120}
-        height={120}
+        width={100}
+        height={100}
       />
       <NameAndAge
         name={`${user.firstName} ${user.lastName}`}
