@@ -44,37 +44,32 @@ export default function PrivateNavigation() {
       </Button>
       <Show above="md">
         <Flex gap="4rem">
-          <Popover>
-            <PopoverTrigger>
-              <Text as="button">
-                <StandAloneIcon pos="relative">
-                  <NotificationIcon />
-                  {unseenNotificationsCount ? (
-                    <Badge
-                      top="-.6rem"
-                      bg="red.main"
-                      color="white"
-                      pos="absolute"
-                      right="-.2rem"
-                      w="1.7rem"
-                      h="1.7rem"
-                      rounded="full"
-                      fontSize=".9rem"
-                      fontWeight="700"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      {unseenNotificationsCount}
-                    </Badge>
-                  ) : null}
-                </StandAloneIcon>
-              </Text>
-            </PopoverTrigger>
-            <PopoverContent boxShadow="none" border="0" w="max-content">
-              <NotificationsDropdown />
-            </PopoverContent>
-          </Popover>
+          <StandAloneIcon
+            pos="relative"
+            cursor="pointer"
+            onClick={() => router.push("/nexus/notifications")}
+          >
+            <NotificationIcon />
+            {unseenNotificationsCount ? (
+              <Badge
+                top="-.6rem"
+                bg="red.main"
+                color="white"
+                pos="absolute"
+                right="-.2rem"
+                w="1.7rem"
+                h="1.7rem"
+                rounded="full"
+                fontSize=".9rem"
+                fontWeight="700"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {unseenNotificationsCount}
+              </Badge>
+            ) : null}
+          </StandAloneIcon>
           <Text as="button" onClick={() => router.push("/messenger")}>
             <StandAloneIcon>
               <MessageIcon />

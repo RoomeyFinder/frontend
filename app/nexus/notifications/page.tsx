@@ -2,11 +2,7 @@
 import { Box, HStack, Heading, VStack } from "@chakra-ui/react"
 import CustomRadioGroup from "@/app/_components/CustomRadio"
 import NotificationItem from "../../_components/Notifications/NotificationItem"
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { NotificationVariant } from "../../_types/Notification"
 import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
@@ -59,7 +55,7 @@ export default function Page() {
           Notifications
         </Heading>
         <VStack alignItems="stretch" gap="3.2rem">
-          <HStack gap="2rem">
+          <HStack gap="2rem" flexWrap="wrap">
             <Heading as="h6" fontSize="1.6rem" fontWeight="700">
               Filters
             </Heading>
@@ -70,7 +66,7 @@ export default function Page() {
               selectedValue={currentFilter}
               radioSize="small"
               containerProps={{
-                gap: "2rem",
+                gap: "1.5rem",
                 flexWrap: "wrap",
                 textTransform: "capitalize",
               }}

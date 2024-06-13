@@ -12,10 +12,9 @@ import {
 } from "@chakra-ui/react"
 import AppLogo from "../Logo"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
-import NotificationsDropdown from "../Notifications/NotificationsDropdown"
 import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
 
 export default function NexusHeading({
@@ -23,6 +22,7 @@ export default function NexusHeading({
 }: {
   handleToggleMenu: () => void
 }) {
+  const pathname = usePathname()
   const router = useRouter()
   const unseenNotificationsCount = useGetUnseenNotificationsCount()
   return (
@@ -53,48 +53,48 @@ export default function NexusHeading({
                 Create ad
               </Button>
             </Show>
-            <Popover>
-              <PopoverTrigger>
-                <Text as="div" pos="relative">
-                  <IconButton
-                    aria-label="Notifications"
-                    icon={<NotificationIcon />}
-                    w={{ base: "3.8rem", md: "5rem" }}
-                    h={{ base: "3.8rem", md: "5rem" }}
-                    bg={{ base: "transparent", md: "white" }}
-                    color="brand.main"
-                    _hover={{
-                      bg: "brand.10",
-                      color: "brand.main",
-                    }}
-                    rounded="full"
-                  />
-                  {unseenNotificationsCount ? (
-                    <Badge
-                      top="0"
-                      bg="red.main"
-                      color="white"
-                      pos="absolute"
-                      right=".5rem"
-                      w="1.7rem"
-                      h="1.7rem"
-                      rounded="full"
-                      fontSize="1rem"
-                      fontWeight="900"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      {unseenNotificationsCount}
-                    </Badge>
-                  ) : null}
-                </Text>
-              </PopoverTrigger>
-              <PopoverContent boxShadow="none" border="0" w="max-content">
-                <NotificationsDropdown />
-              </PopoverContent>
-            </Popover>
-
+            <Text as="div" pos="relative">
+              <IconButton
+                aria-label="Notifications"
+                icon={<NotificationIcon />}
+                w={{ base: "3.8rem", md: "5rem" }}
+                h={{ base: "3.8rem", md: "5rem" }}
+                bg={{
+                  base:
+                    pathname === "/nexus/notifications"
+                      ? "brand.10"
+                      : "transparent",
+                  md:
+                    pathname === "/nexus/notifications" ? "brand.10" : "white",
+                }}
+                color="brand.main"
+                _hover={{
+                  bg: "brand.10",
+                  color: "brand.main",
+                }}
+                rounded="full"
+                onClick={() => router.push("/nexus/notifications")}
+              />
+              {unseenNotificationsCount ? (
+                <Badge
+                  top="0"
+                  bg="red.main"
+                  color="white"
+                  pos="absolute"
+                  right=".5rem"
+                  w="1.7rem"
+                  h="1.7rem"
+                  rounded="full"
+                  fontSize="1rem"
+                  fontWeight="900"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {unseenNotificationsCount}
+                </Badge>
+              ) : null}
+            </Text>
             <IconButton
               aria-label="Notifications"
               icon={<MessageIcon />}

@@ -44,7 +44,7 @@ export default function RoomeyListingCard({
       <NameAndAge
         name={`${user.firstName} ${user.lastName}`}
         ageInYears={
-          user && user.settings.isAgeVisibleOnProfile
+          user && user.settings?.isAgeVisibleOnProfile
             ? new Date(Date.now()).getFullYear() -
               new Date(user?.dob || Date.now()).getFullYear()
             : 0
