@@ -7,5 +7,5 @@ export default function useGetUnseenNotificationsCount() {
     () => notifications.filter((notif) => notif.seen === false).length,
     [notifications]
   )
-  return unseenNotificationsCount < 100 ? unseenNotificationsCount : `${99}`
+  return unseenNotificationsCount < 100 ? unseenNotificationsCount : 99
 }

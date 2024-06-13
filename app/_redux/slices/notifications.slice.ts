@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { fetchUserNotifications } from "../thunks/notifications.thunk"
+import {
+  fetchUserNotifications,
+  markAllNotificationsAsSeen,
+} from "../thunks/notifications.thunk"
 import Notification from "@/app/_types/Notification"
 
 interface IAuthState {
@@ -17,7 +20,7 @@ const initialState: IAuthState = {
   errorMessage: "",
   isUsingFallback: false,
   hasError: false,
-  hasFetchedNotifications: false
+  hasFetchedNotifications: false,
 }
 
 export const notificationsSlice = createSlice({
@@ -41,6 +44,12 @@ export const notificationsSlice = createSlice({
           "Oops, Something went wrong while getting your notifications"
         store.loading = false
         store.hasError = true
+      })
+      .addCase(markAllNotificationsAsSeen.fulfilled, (store) => {
+        store.notifications = store.notifications.map((it) => ({
+          ...it,
+          seen: true,
+        }))
       })
   },
 })

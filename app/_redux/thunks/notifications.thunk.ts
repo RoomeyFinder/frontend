@@ -14,3 +14,16 @@ export const fetchUserNotifications = createAsyncThunk(
     }
   }
 )
+export const markAllNotificationsAsSeen = createAsyncThunk(
+  "notifications/markAllNotificationsAsSeen",
+  async () => {
+    const response = await axiosFetcher({
+      url: "/notifications/seen",
+      method: "get",
+    })
+    return {
+      notifications: response.statusCode === 200 ? response.notifications : [],
+      statusCode: response.statusCode,
+    }
+  }
+)

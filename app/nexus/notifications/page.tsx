@@ -3,14 +3,24 @@ import { Box, HStack, Heading, VStack } from "@chakra-ui/react"
 import CustomRadioGroup from "@/app/_components/CustomRadio"
 import NotificationItem from "../../_components/Notifications/NotificationItem"
 import {
-  //  useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react"
-import { useAppSelector } from "@/app/_redux"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { NotificationVariant } from "../../_types/Notification"
+import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
+import { markAllNotificationsAsSeen } from "@/app/_redux/thunks/notifications.thunk"
 
 export default function Page() {
+  const dispatch = useAppDispatch()
+  const unseenNotificationsCount = useGetUnseenNotificationsCount()
+
+  useEffect(() => {
+    if (unseenNotificationsCount > 0) {
+      dispatch(markAllNotificationsAsSeen())
+    }
+  }, [unseenNotificationsCount, dispatch])
   const { notifications } = useAppSelector((store) => store.notifications)
   const [currentFilter, setCurrentFilter] = useState<
     "interest" | "listing" | "message" | "all"

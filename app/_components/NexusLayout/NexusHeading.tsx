@@ -58,23 +58,25 @@ export default function NexusHeading({
                     }}
                     rounded="full"
                   />
-                  <Badge
-                    top="0"
-                    bg="red.main"
-                    color="white"
-                    pos="absolute"
-                    right=".5rem"
-                    w="1.7rem"
-                    h="1.7rem"
-                    rounded="full"
-                    fontSize="1rem"
-                    fontWeight="900"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    {unseenNotificationsCount}
-                  </Badge>
+                  {unseenNotificationsCount ? (
+                    <Badge
+                      top="0"
+                      bg="red.main"
+                      color="white"
+                      pos="absolute"
+                      right=".5rem"
+                      w="1.7rem"
+                      h="1.7rem"
+                      rounded="full"
+                      fontSize="1rem"
+                      fontWeight="900"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {unseenNotificationsCount}
+                    </Badge>
+                  ): null}
                 </Text>
               </PopoverTrigger>
               <PopoverContent boxShadow="none" border="0" w="max-content">
