@@ -86,8 +86,10 @@ export default function InterestComponent({
             textTransform="lowercase"
             color="gray.main"
           >
-            showed interest in your{" "}
-            {interest.type === "User" ? "Profile" : "Ad"}
+            {isSent
+              ? `You showed interest in their
+            ${interest.type === "User" ? "Profile" : "Ad"}`
+              : `Showed interest in your ${interest.type === "User" ? "Profile" : "Ad"}`}
           </Text>
         </Heading>
         <Box>
