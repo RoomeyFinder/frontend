@@ -73,8 +73,6 @@ export default function ListingOwnerOverview({
         >
           <InterestButton
             docOwner={listing.owner?._id || ""}
-            isOwner={false}
-            variant=""
             doc={listing._id}
             docType={"Listing"}
           />

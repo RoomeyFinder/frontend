@@ -1,6 +1,5 @@
 "use client"
 import {
-  Avatar,
   Box,
   Text,
   Button,
@@ -15,6 +14,7 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Badge,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
@@ -27,9 +27,11 @@ import LogoutIcon from "@/app/_assets/SVG/Logout"
 import UserIcon from "@/app/_assets/SVG/UserIcon"
 import { logout } from "@/app/_redux/slices/auth.slice"
 import DownChevron from "@/app/_assets/SVG/DownChevron"
+import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
 
 export default function PrivateNavigation() {
   const router = useRouter()
+  const unseenNotificationsCount = useGetUnseenNotificationsCount()
   return (
     <Flex alignItems="center" gap="4rem">
       <Button
@@ -42,23 +44,37 @@ export default function PrivateNavigation() {
       </Button>
       <Show above="md">
         <Flex gap="4rem">
+          <StandAloneIcon
+            pos="relative"
+            cursor="pointer"
+            onClick={() => router.push("/nexus/notifications")}
+          >
+            <NotificationIcon />
+            {unseenNotificationsCount ? (
+              <Badge
+                top="-.6rem"
+                bg="red.main"
+                color="white"
+                pos="absolute"
+                right="-.2rem"
+                w="1.7rem"
+                h="1.7rem"
+                rounded="full"
+                fontSize=".9rem"
+                fontWeight="700"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {unseenNotificationsCount}
+              </Badge>
+            ) : null}
+          </StandAloneIcon>
           <Text as="button" onClick={() => router.push("/messenger")}>
             <StandAloneIcon>
               <MessageIcon />
             </StandAloneIcon>
           </Text>
-          <Popover>
-            <PopoverTrigger>
-              <Text as="button">
-                <StandAloneIcon>
-                  <NotificationIcon />
-                </StandAloneIcon>
-              </Text>
-            </PopoverTrigger>
-            <PopoverContent boxShadow="none" border="0" w="max-content">
-              <NotificationsDropdown />
-            </PopoverContent>
-          </Popover>
         </Flex>
       </Show>
       <MobileNavigation />
@@ -126,7 +142,7 @@ function MainPrivateNav() {
 
   return (
     <>
-      <Flex flexDir="column" w="100%" data-testid="profile-nav">
+      <Flex flexDir="column" w="100%" data-testid="profile-nav" shadow="xl">
         <PrivateMenuItem onClick={() => router.push("/nexus")}>
           <PrivateMenuIcon width="2rem" as={UserIcon} />
           <Text as="span">Dashboard</Text>
@@ -145,7 +161,7 @@ function MainPrivateNav() {
           Premium
         </PrivateMenuItem> */}
       </Flex>
-      <InterestsAccessCount />
+      {/* <InterestsAccessCount /> */}
       {/*  <PremiumModalInfoOnly
         show={showPremiumModal}
         onClose={() => setShowPremiumModal(false)}
@@ -205,10 +221,10 @@ export function InterestsAccessCount() {
         rounded="1rem"
         w="full"
       >
-        <Text lineHeight="1" color="black">
+        {/* <Text lineHeight="1" color="black">
           {user?.countOfInterestsLeft}
         </Text>
-        <Text lineHeight="1">Interests Left</Text>
+        <Text lineHeight="1">Interests Left</Text> */}
       </Flex>
     </Box>
   )

@@ -6,7 +6,7 @@ import useAxios, { RequestBody } from "../_hooks/useAxios"
 import { useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "../_redux"
-import { authenticate, updateUser } from "../_redux/slices/auth.slice"
+import { authenticate } from "../_redux/slices/auth.slice"
 
 export default function Login() {
   const router = useRouter()
@@ -74,7 +74,7 @@ export default function Login() {
         description: res.message || "Something went wrong",
       })
     setLoading(false)
-  }, [fetchData, loginData, toast, dispatch, updateUser, router])
+  }, [fetchData, loginData, toast, dispatch, router])
 
   return (
     <>

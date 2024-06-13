@@ -1,5 +1,5 @@
 import CameraIcon from "@/app/_assets/SVG/CameraIcon"
-import { Avatar, Button, Flex, ResponsiveValue } from "@chakra-ui/react"
+import { Avatar, Button, Flex } from "@chakra-ui/react"
 
 export default function CoverAndProfileImage({
   coverImage,

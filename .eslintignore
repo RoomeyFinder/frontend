@@ -1,3 +1,9 @@
 
 .eslintrc.js
 mocks
+node_modules/
+.next/
+out/
+archive
+__archive
+coverage

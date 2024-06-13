@@ -51,13 +51,13 @@ export default function ListingCTAs({
             color="brand.main"
           />
         </Flex>
-        <InterestButton
-          variant="brand-secondary"
-          isOwner={isOwner}
-          doc={listing?._id}
-          docType={"Listing"}
-          docOwner={listing.owner?._id as string} // hasSentInterest={false}
-        />
+        {!isOwner && (
+          <InterestButton
+            doc={listing?._id}
+            docType={"Listing"}
+            docOwner={listing.owner?._id as string}
+          />
+        )}
       </Flex>
     </>
   )

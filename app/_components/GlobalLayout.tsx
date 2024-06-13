@@ -3,7 +3,7 @@ import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
 import { Box, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
-import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
+// import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
 import PreferencesReminder from "./PreferencesReminder"
@@ -12,6 +12,10 @@ import { useRouter } from "next/navigation"
 import { fetchListings } from "../_redux/thunks/search.thunk"
 import { checkAuthStatus } from "../_redux/thunks/auth.thunk"
 import { logout } from "../_redux/slices/auth.slice"
+import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
+import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
+import { fetchUserListings } from "../_redux/thunks/listings.thunk"
+import { fetchUserNotifications } from "../_redux/thunks/notifications.thunk"
 
 export default function GlobalLayout({
   children,
@@ -19,7 +23,7 @@ export default function GlobalLayout({
   children: ReactNode | ReactNode[]
 }) {
   const router = useRouter()
-  useListenForMessengerEvents()
+  // useListenForMessengerEvents()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -32,12 +36,35 @@ export default function GlobalLayout({
         dispatch(logout())
       }
     })
-  }, [dispatch, router])
+  }, [dispatch, router, pathname])
 
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
   useEffect(() => {
     !hasFetchedInitialListings && dispatch(fetchListings())
   }, [dispatch, hasFetchedInitialListings])
+  
+  const { user } = useAppSelector((store) => store.auth)
+  const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
+  const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
+  const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
+  const { hasFetchedNotifications } = useAppSelector((store) => store.notifications)
+
+  useEffect(() => {
+    if (user) {
+      !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
+      !hasFetchedUserInterests && dispatch(fetchUsersInterests())
+      !hasFetchedUserListings && dispatch(fetchUserListings())
+      !hasFetchedNotifications && dispatch(fetchUserNotifications())
+    }
+  }, [
+    dispatch,
+    hasFetchedUserFavorites,
+    hasFetchedUserInterests,
+    hasFetchedUserListings,
+    hasFetchedUserListings,
+    hasFetchedUserInterests,
+    user,
+  ])
 
   if (pathname.includes("nexus"))
     return (

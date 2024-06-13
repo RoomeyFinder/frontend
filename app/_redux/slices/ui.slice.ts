@@ -22,7 +22,7 @@ export const uiSlice = createSlice({
       state.hasClosedPreferenceReminder = action.payload
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: () => {},
 })
 
 export const { showPreferencesReminder, hidePreferencesReminder } =

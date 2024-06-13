@@ -1,11 +1,9 @@
-import { Box, Flex } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 import AppLogo from "./Logo"
 import Navigation from "./Navigation/Navigation"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 
 export default function AppHeader() {
-  const pathname = usePathname()
   return (
     <Flex
       data-testid="header"

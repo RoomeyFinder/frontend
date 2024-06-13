@@ -1,7 +1,5 @@
 "use client"
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios"
-import localforage from "localforage"
-import STORAGE_KEYS from "../STORAGE_KEYS"
 import { getTokenFromStorage } from "."
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL

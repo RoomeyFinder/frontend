@@ -82,10 +82,10 @@ export function isStrongPassword(password: string): boolean {
 }
 
 export async function getTokenFromStorage() {
-  let token = await localforage.getItem(STORAGE_KEYS.RF_TOKEN)
+  const token = await localforage.getItem(STORAGE_KEYS.RF_TOKEN)
   return token
 }
 
 export function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
+  return string?.charAt(0).toUpperCase() + string?.slice(1)
 }

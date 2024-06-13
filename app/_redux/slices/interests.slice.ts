@@ -1,5 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { fetchUsersInterests } from "../thunks/interests.thunk"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
+import {
+  acceptInterest,
+  declineInterest,
+  fetchUsersInterests,
+  unsendInterest,
+} from "../thunks/interests.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import Interest from "@/app/_types/Interest"
@@ -19,7 +24,7 @@ const initialState: IAuthState = {
   errorMessage: "",
   isUsingFallback: false,
   hasError: false,
-  hasFetchedUserInterests: false
+  hasFetchedUserInterests: false,
 }
 
 export const interestsSlice = createSlice({
@@ -29,7 +34,10 @@ export const interestsSlice = createSlice({
     resetError: (state) => {
       state.errorMessage = ""
       state.hasError = false
-    }
+    },
+    addNewInterest: (state, action: PayloadAction<Interest>) => {
+      state.interests = [...state.interests, action.payload]
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -53,8 +61,42 @@ export const interestsSlice = createSlice({
         store.loading = false
         store.hasError = true
       })
+      .addCase(acceptInterest.fulfilled, (store, action) => {
+        store.interests = store.interests.map((interest) =>
+          interest._id === action.payload.interest?._id
+            ? action.payload.interest
+            : interest
+        )
+      })
+      .addCase(acceptInterest.rejected, (store) => {
+        store.errorMessage = "Oops, That interest couldn't be accepted!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(declineInterest.fulfilled, (store, action) => {
+        store.interests = store.interests.map((interest) =>
+          interest._id === action.payload.interest?._id
+            ? action.payload.interest
+            : interest
+        )
+      })
+      .addCase(declineInterest.rejected, (store) => {
+        store.errorMessage = "Oops, That interest couldn't be declined!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(unsendInterest.fulfilled, (store, action) => {
+        store.interests = store.interests.filter(
+          (interest) => interest._id !== action.payload.interest?._id
+        )
+      })
+      .addCase(unsendInterest.rejected, (store) => {
+        store.errorMessage = "Oops, That interest couldn't be unsent!"
+        store.loading = false
+        store.hasError = true
+      })
   },
 })
 
-export const { resetError } = interestsSlice.actions
+export const { resetError, addNewInterest } = interestsSlice.actions
 export default interestsSlice.reducer

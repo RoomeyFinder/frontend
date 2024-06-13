@@ -4,7 +4,7 @@ import { Box, Heading, Link, Text, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 
 export default function ProfileSettings({
-  user,
+  // user,
   handleProfileSettingsClick,
   handleDeleteAccountClick,
 }: {

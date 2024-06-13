@@ -1,23 +1,21 @@
 import { Button, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
-import { useContext, useState, useMemo, useCallback, ReactNode } from "react"
+import { useState, useMemo, useCallback, ReactNode } from "react"
 import toast from "react-hot-toast"
-import EditIcon from "../_assets/SVG/EditIcon"
-import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
 import useAxios from "../_hooks/useAxios"
-import { InterestsContext } from "../_providers/InterestsProvider"
 import { useAppSelector, useAppDispatch } from "../_redux"
 import { updateUser } from "../_redux/slices/auth.slice"
+import { addNewInterest } from "../_redux/slices/interests.slice"
+import { Listing } from "../_types/Listings"
+import { capitalizeFirstLetter } from "../_utils"
+import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
+import useActOnInterest from "../_hooks/useActOnInterest"
 
 export default function InterestButton({
-  isOwner,
-  variant,
   doc,
   docType,
   docOwner,
 }: {
-  isOwner: boolean
-  variant?: string
   doc: string
   docType: "User" | "Listing"
   docOwner: string
@@ -26,18 +24,20 @@ export default function InterestButton({
   const { fetchData } = useAxios()
   const { user } = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
-  const { addNewInterest, interests } = useContext(InterestsContext)
+  const { interests } = useAppSelector((store) => store.interests)
   const [sendingInterest, setSendingInterest] = useState(false)
-  const [showPremiumModal, setShowPremiumModal] = useState(false)
 
   const existingInterest = useMemo(
     () =>
       interests?.find(
-        (interest) => interest.doc._id === doc || interest.sender?._id === doc
+        (interest) =>
+          interest.sender?._id === doc ||
+          interest.doc?._id === doc ||
+          (interest.doc as Listing)?.owner?._id === doc
       ),
     [doc, interests]
   )
-
+  const { handleAccept, loading } = useActOnInterest(existingInterest)
   const isSender = useMemo(
     () =>
       existingInterest?.sender?._id &&
@@ -56,9 +56,13 @@ export default function InterestButton({
     }
     setSendingInterest(true)
     const res = await fetchData({ url: "/interests", method: "post", body })
-    if (res.statusCode === 402) setShowPremiumModal(true)
-    else if (res.statusCode === 201) {
-      addNewInterest(res.interest)
+    if (res.statusCode === 201) {
+      res.alreadyReceivedInterest &&
+        toast.success(
+          `${capitalizeFirstLetter(res.interest?.sender.firstName || "")} already sent you an interest!`,
+          { duration: 5000 }
+        )
+      dispatch(addNewInterest(res.interest))
       user &&
         dispatch(
           updateUser({
@@ -72,33 +76,33 @@ export default function InterestButton({
           "Sorry, we are unable to send that interest at the moment. Please try again."
       )
     setSendingInterest(false)
-  }, [fetchData, doc, docType, addNewInterest, docOwner, user, dispatch])
-
-  const display = useMemo(() => {
-    if (isOwner) return "Edit Profile"
-    else {
-      if (existingInterest)
-        return isSender ? "Interest sent" : "Interest received"
-      return "Show Interest"
-    }
-  }, [isOwner, existingInterest, isSender])
+  }, [fetchData, doc, docType, docOwner, user, dispatch])
 
   const buttonProps = useMemo(() => {
-    if (isOwner)
-      return {
-        onClick: () => router.push("/profile?edit=true"),
-      }
-    else {
-      if (existingInterest)
+    if (existingInterest) {
+      if (existingInterest.accepted)
+        return {
+          onClick: () => {
+            console.log("djdjaccepted")
+          },
+          children: "Send message",
+        }
+      if (isSender)
         return {
           title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
-          isDisabled: true,
+          isDisabled: isSender,
+          children: "Interest sent",
         }
       return {
-        onClick: handleSendInterest,
+        children: "Accept interest",
+        onClick: () => handleAccept(),
       }
     }
-  }, [isOwner, existingInterest, handleSendInterest, router])
+    return {
+      onClick: handleSendInterest,
+      children: "Show Interest",
+    }
+  }, [existingInterest, handleSendInterest, router, isSender, handleAccept])
 
   return (
     <>
@@ -106,9 +110,9 @@ export default function InterestButton({
         fontWeight="400"
         display="flex"
         alignItems="end"
-        py={{base: "1rem"}}
-        px={{base: "1.2rem"}}
-        variant={variant || "brand-secondary"}
+        py={{ base: "1rem" }}
+        px={{ base: "1.2rem" }}
+        variant={"brand"}
         minW={{ md: "18.5rem" }}
         _loading={{
           bg: "brand.main !important",
@@ -118,16 +122,19 @@ export default function InterestButton({
           alignItems: "center !important",
         }}
         _disabled={{
-          bg: "transparent",
-          color: "",
-          _hover: { bg: "transparent", color: "brand.main" },
-          p: "0",
-          justifyContent: "start",
+          bg: "brand.10",
+          color: "brand.main",
+          _hover: {
+            filter: "brightness(100%)",
+            bg: "brand.10",
+            color: "brand.main",
+          },
+          cursor: "not-allowed",
         }}
-        isLoading={sendingInterest}
+        isLoading={sendingInterest || loading}
         {...buttonProps}
       >
-        {display} {isOwner ? <EditIcon /> : <PersonIconTwo />}
+        {buttonProps.children} <PersonIconTwo />
       </Button>
     </>
   )

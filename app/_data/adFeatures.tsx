@@ -34,30 +34,54 @@ import {
   MdWaterDrop,
 } from "react-icons/md"
 import { PiBathtub, PiOven, PiSecurityCameraFill } from "react-icons/pi"
-import { GiGasStove, GiGate, GiWaterDrop } from "react-icons/gi"
+import { GiGasStove, GiGate } from "react-icons/gi"
 import { RiSecurePaymentFill } from "react-icons/ri"
 import Dishwasher from "../_assets/AdFeaturesSVGs/Dishwasher"
 
 export const icons = {
-  "Air conditioner": <AC />,
+  "Air Conditioning": <AC />,
+  Furnished: <Furniture />,
+  "Utilities Included": <HouseUtilities />,
+  "Pets Allowed": <PetsAllowedIcon />,
   "Heated tiles": <HeatedTiles />,
   "Bath tub": <Bathtub />,
   Shower: <Shower />,
   "Bedroom vanity": <BedroomVanity />,
   Closet: <Closet />,
   "Comfortable bed": <Bed />,
-  Washer: <Washer />,
-  "Water heater": <WaterHeater />,
+  "Laundry In-Unit": <Washer />,
+  Heating: <WaterHeater />,
   "Federal light": <FederalLight />,
   Wifi: <Wifi />,
   Television: <TV />,
   "Cooking gas": <CookingGas />,
-  "Parking space": <ParkingSpace />,
+  Parking: <ParkingSpace />,
   "Tarred road": <TarredRoad />,
   Security: <Security />,
   Balcony: <Balcony />,
   "Storage space": <StorageSpace />,
   "Kitchen island": <KitchenIsland />,
+  "Smoking Allowed": <SmokingAllowedIcon />,
+  "Wi-Fi": <Wifi />,
+  Gym: <Gym />,
+  "Swimming Pool": <SwimmingPoolIcon />,
+  "Constant water": <MdWaterDrop />,
+  Dishwasher: <Dishwasher />,
+  Microwave: <TbMicrowave />,
+  Refrigerator: <TbFridge />,
+  Oven: <PiOven />,
+  Stove: <GiGasStove />,
+  "Garbage Disposal": <IoTrash />,
+  "Private Bathroom": <MdOutlineBathroom />,
+  "Shared Bathroom": <MdBathroom />,
+  "Security System": <MdOutlineSecurity />,
+  "Gated Community": <GiGate />,
+  "Surveillance Cameras": <PiSecurityCameraFill />,
+  "Secure Entry": <RiSecurePaymentFill />,
+  "Near Public Transit": <MdOutlineEmojiTransportation />,
+  "Close to Shops": <MdOutlineShoppingCart />,
+  "Near Restaurants": <IoRestaurant />,
+  "Quiet Neighborhood": "QuietNeighborhoodIcon",
 }
 
 export const adFeatures = [
@@ -125,11 +149,13 @@ export const adFeatures = [
   {
     value: "Federal light",
     category: "Amenities",
+    description: "The apartment has a reliable federal electricity supply.",
     icon: FederalLight,
   },
   {
     value: "Constant water",
     category: "Amenities",
+    description: "The apartment has a constant water supply.",
     icon: MdWaterDrop,
   },
   {
@@ -246,103 +272,10 @@ export const adFeatures = [
     description: "The apartment is located in a quiet neighborhood.",
     icon: "QuietNeighborhoodIcon",
   },
-  { value: "Tarred road", category: "Location", icon: TarredRoad },
+  {
+    value: "Tarred road",
+    category: "Location",
+    description: "The apartment is located on a tarred road.",
+    icon: TarredRoad,
+  },
 ]
-
-// [
-//   {
-//     value: "Air conditioner",
-//     category: "Heating and cooling",
-//     icon: AC,
-//   },
-//   {
-//     value: "Heated tiles",
-//     category: "Heating and cooling",
-//     icon: HeatedTiles,
-//   },
-//   {
-//     value: "Bath tub",
-//     category: "Bathroom",
-//     icon: Bathtub,
-//   },
-//   {
-//     value: "Water heater",
-//     category: "Bathroom",
-//     icon: WaterHeater,
-//   },
-//   {
-//     value: "Shower",
-//     category: "Bathroom",
-//     icon: Shower,
-//   },
-//   {
-//     value: "Bedroom vanity",
-//     category: "Bedroom and laundry",
-//     icon: BedroomVanity,
-//   },
-//   {
-//     value: "Closet",
-//     category: "Bedroom and laundry",
-//     icon: Closet,
-//   },
-//   {
-//     value: "Comfortable bed",
-//     category: "Bedroom and laundry",
-//     icon: Bed,
-//   },
-//   {
-//     value: "Washer",
-//     category: "Bedroom and laundry",
-//     icon: Washer,
-//   },
-// {
-//   value: "Federal light",
-//   category: "Utilities",
-//   icon: FederalLight,
-// },
-//   {
-//     value: "Wifi",
-//     category: "Utilities",
-//     icon: Wifi,
-//   },
-//   {
-//     value: "Television",
-//     category: "Utilities",
-//     icon: TV,
-//   },
-//   {
-//     value: "Cooking gas",
-//     category: "Utilities",
-//     icon: CookingGas,
-//   },
-//   {
-//     value: "Parking space",
-//     category: "Other",
-//     icon: ParkingSpace,
-//   },
-//   {
-//     value: "Tarred road",
-//     category: "Other",
-//     icon: TarredRoad,
-//   },
-//   {
-//     value: "Security",
-//     category: "Other",
-//     icon: Security,
-//   },
-//   {
-//     value: "Balcony",
-//     category: "Other",
-//     icon: Balcony,
-//   },
-//   {
-//     value: "Storage space",
-//     category: "Other",
-//     icon: StorageSpace,
-//   },
-//   {
-//     value: "Kitchen island",
-//     category: "Other",
-//     icon: KitchenIsland,
-//   },
-// ]

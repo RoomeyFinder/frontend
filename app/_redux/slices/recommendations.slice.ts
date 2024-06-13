@@ -5,7 +5,6 @@ import {
 } from "../thunks/recommendations.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
-import Favorite from "@/app/_types/Favorites"
 import User from "@/app/_types/User"
 import { Listing } from "@/app/_types/Listings"
 
@@ -71,6 +70,7 @@ export const recommendationsSlice = createSlice({
       })
       .addCase(fetchRoomiesRecommendations.fulfilled, (store, action) => {
         store.roomies = action.payload.recommendations
+        store.hasFetchedRoomies = true
         localforage.setItem(
           STORAGE_KEYS.RF_USER_ROOMIES_RECOMMENDATIONS,
           action.payload.recommendations

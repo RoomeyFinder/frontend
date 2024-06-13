@@ -2,6 +2,7 @@
 import {
   Box,
   Heading,
+  SimpleGrid,
   Tab,
   TabList,
   TabPanel,
@@ -11,7 +12,7 @@ import {
 import { useMemo } from "react"
 import CenteredSpinner from "../../_components/CenteredSpinner"
 import { useAppDispatch, useAppSelector } from "../../_redux"
-import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
+import { WithPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/interests.slice"
 import InterestInterface from "../../_types/Interest"
@@ -36,9 +37,10 @@ export default function Page() {
     )
   }, [interests, user])
 
+  // console.log(interests, sentInterests, receivedInterests)
   return (
     <Box pos="relative" py="3rem">
-      {withPrependPortal(
+      {WithPrependPortal(
         <AppNotification
           onClose={() => {
             dispatch(resetError())
@@ -74,7 +76,11 @@ export default function Page() {
             Sent ({sentInterests.length})
           </Tab>
         </TabList>
-        <TabPanels>
+        <TabPanels
+          px={{ base: "2rem", md: "5rem" }}
+          mx="auto"
+          py={{ base: "2rem", md: "3rem" }}
+        >
           <TabPanel px="0">
             {
               <InterestsList
@@ -117,7 +123,7 @@ function InterestsList({
       />
     )
   return (
-    <>
+    <SimpleGrid columns={{ base: 1 }}>
       {interests.map((interest) => (
         <InterestComponent
           key={interest._id}
@@ -125,6 +131,6 @@ function InterestsList({
           interest={interest}
         />
       ))}
-    </>
+    </SimpleGrid>
   )
 }

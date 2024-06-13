@@ -23,4 +23,5 @@ export default interface Notification {
   priority: ["high", "normal", "medium"]
   ttl: number
   target: string
+  createdAt: string
 }

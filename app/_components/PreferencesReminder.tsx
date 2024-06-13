@@ -16,20 +16,23 @@ export default function PreferencesReminder() {
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   useEffect(() => {
-    let timeoutId
+    let timeoutId: NodeJS.Timeout
     if (
       user &&
-      !user.hasSetPreferences &&
-      pathname === "/nexus" &&
+      user.hasSetPreferences &&
+      (pathname === "/nexus" || pathname === "/nexus/me") &&
       !hasClosedPreferenceReminder
     ) {
       timeoutId = setTimeout(() => {
         dispatch(showPreferencesReminder())
       }, 5000)
     }
-    if (showReminder && pathname !== "/nexus")
+    if (showReminder && pathname !== "/nexus" && pathname !== "/nexus/me")
       dispatch(hidePreferencesReminder(false))
-  }, [user, pathname, dispatch, hasClosedPreferenceReminder])
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [user, pathname, dispatch, hasClosedPreferenceReminder, showReminder])
 
   return (
     <Fade in={showReminder} unmountOnExit>

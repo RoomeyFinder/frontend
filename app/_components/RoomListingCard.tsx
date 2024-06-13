@@ -22,7 +22,6 @@ import {
   useState,
 } from "react"
 import { FavoriteType } from "../_types/Favorites"
-import useAppToast from "../_hooks/useAppToast"
 import { Listing } from "../_types/Listings"
 import { useRouter } from "next/navigation"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
@@ -116,7 +115,6 @@ export function FavouriteButton({
   buttonProps?: ButtonProps
   useConfirmation?: boolean
 }) {
-  const toast = useAppToast()
   const { favorites } = useAppSelector((store) => store.favorites)
   const dispatch = useAppDispatch()
   const favorite = useMemo(
@@ -148,7 +146,7 @@ export function FavouriteButton({
       }
       setLoading(false)
     },
-    [dispatch, favorite]
+    [dispatch, favorite, listingId, type, useConfirmation]
   )
   return (
     <Box

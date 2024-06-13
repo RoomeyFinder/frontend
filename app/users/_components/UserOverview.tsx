@@ -47,10 +47,12 @@ export default function UserOverview({
   user,
   usersListings = [],
   isLoggedIn,
+  isOwnProfile,
 }: {
   user: User
   usersListings?: Listing[]
   isLoggedIn: boolean
+  isOwnProfile: boolean
 }) {
   const [showMore, setShowMore] = useState(false)
   const aboutPreview = useMemo(() => user.about?.slice(0, 600), [user.about])
@@ -89,29 +91,29 @@ export default function UserOverview({
                 justifyContent="start"
                 flexWrap="wrap"
               >
-                {user.settings.isAgeVisibleOnProfile && (
+                {user.settings?.isAgeVisibleOnProfile && (
                   <Text>
                     {user.dob && getAgeInYears(new Date(user.dob))}yrs
                   </Text>
                 )}
                 <Text textTransform="capitalize">{user.gender}</Text>
                 {user.settings?.isOccupationVisibleOnProfile && (
-                  <Text>{user.isStudent ? `Student @${user.school}` : user.occupation}</Text>
+                  <Text>
+                    {user.isStudent
+                      ? `Student @${user.school}`
+                      : user.occupation}
+                  </Text>
                 )}
-                {user.settings.isStateOfOriginVisibleOnProfile && (
+                {user.settings?.isStateOfOriginVisibleOnProfile && (
                   <Text>From {user.stateOfOrigin}</Text>
                 )}
               </Flex>
             </VStack>
-            <Box ml="auto">
-              <InterestButton
-                isOwner={false}
-                doc={""}
-                docType={"User"}
-                docOwner={""}
-                variant="brand"
-              />
-            </Box>
+            {!isOwnProfile && (
+              <Box ml="auto">
+                <InterestButton doc={user._id} docType={"User"} docOwner={user._id} />
+              </Box>
+            )}
           </HStack>
         </Box>
       </Box>
@@ -260,15 +262,20 @@ export default function UserOverview({
                 </Heading>
               </Box>
             )}
-            <HStack flexWrap="wrap" gap="1.5rem">
+            <SimpleGrid
+              flexWrap="wrap"
+              gap="1.5rem"
+              columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+            >
               {usersListings.map((listing) => (
                 <RoomListingCard
                   key={listing._id}
                   listing={listing}
                   showFavoriteButton={isLoggedIn}
+                  variant="outlined"
                 />
               ))}
-            </HStack>
+            </SimpleGrid>
           </TabPanel>
         </TabPanels>
       </Tabs>

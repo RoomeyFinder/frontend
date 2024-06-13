@@ -2,7 +2,7 @@ import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import DotSeparator from "./DotSeparator"
-import User, { Photo } from "../_types/User"
+import User from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import { useRouter } from "next/navigation"
@@ -38,21 +38,20 @@ export default function RoomeyListingCard({
       )}
       <ProfileAvatar
         imageSrc={user.profileImage?.secure_url}
-        width={180}
-        height={180}
-        showVerifiedBadge
+        width={100}
+        height={100}
       />
       <NameAndAge
         name={`${user.firstName} ${user.lastName}`}
         ageInYears={
-          user
+          user && user.settings?.isAgeVisibleOnProfile
             ? new Date(Date.now()).getFullYear() -
               new Date(user?.dob || Date.now()).getFullYear()
             : 0
         }
       />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <Box onClick={() => router.push(`/profiles/${user._id}`)}>
+      <Box onClick={() => router.push(`/users/${user._id}`)}>
         {user.about && <AboutSection about={user.about} />}
       </Box>
     </Flex>
@@ -84,7 +83,7 @@ function NameAndAge({
         lineHeight="2.4rem"
         color="gray.100"
       >
-        {ageInYears}yrs
+        {ageInYears || "**"}yrs
       </Text>
     </Flex>
   )

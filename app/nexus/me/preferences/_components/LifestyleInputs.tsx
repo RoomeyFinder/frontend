@@ -19,7 +19,7 @@ export default function LifestyleInputs({
       acc[category].push(value)
       return acc
     }, {})
-  }, [lifestyleJson])
+  }, [])
   const [
     maxNumOfLifestyleCategoriesToShow,
     setMaxNumOfLifestyleCategoriesToShow,

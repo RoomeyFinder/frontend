@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import { useParams } from "next/navigation"
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import ListingHeading from "./_components/ListingHeading"
 import ListingPhotos from "./_components/ListingPhotos"
 import ListingOwnerOverview from "./_components/ListingOwnerOverview"
@@ -22,16 +22,34 @@ import toast from "react-hot-toast"
 import { useAppSelector } from "@/app/_redux"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 import ListingFeatures from "./_components/ListingFeatures"
+import useAxios from "@/app/_hooks/useAxios"
+import { Listing } from "@/app/_types/Listings"
+import Loading from "@/app/_assets/SVG/Loading"
 
 export default function ListingPage() {
   const params = useParams()
-  const { listings, loading } = useAppSelector((store) => store.search)
+  const [listing, setListing] = useState<Listing | null>(null)
+  const [loading, setLoading] = useState(true)
   const listingId = useMemo(() => params.listingId, [params])
+  const { fetchData } = useAxios()
+  const [error, setError] = useState("")
+  const fetchListingById = useCallback(async () => {
+    const res = await fetchData({
+      url: `/listings/${listingId}`,
+      method: "get",
+    })
+    if (res.statusCode === 200) {
+      setListing(res.listing)
+    } else {
+      setError(res.message || "Listing not found")
+    }
+    setLoading(false)
+  }, [listingId, fetchData])
 
-  const listing = useMemo(
-    () => listings?.find((it) => it._id === listingId),
-    [listings]
-  )
+  useEffect(() => {
+    fetchListingById()
+  }, [fetchListingById])
+
   const { user } = useAppSelector((store) => store.auth)
   const isOwnListing = useMemo(
     () => user?._id === listing?.owner?._id,
@@ -55,6 +73,14 @@ export default function ListingPage() {
       toast.success("Copied to clipboard!")
     }
   }, [listing])
+
+  if (loading)
+    return (
+      <VStack w="full" minH="80dvh" alignItems="center" justifyContent="center">
+        <Loading />
+      </VStack>
+    )
+
   if (!listing && !loading)
     return (
       <>
@@ -63,7 +89,8 @@ export default function ListingPage() {
           body={
             <VStack>
               <Text fontSize="1.6rem">
-                We couldn't find that ad. It may have been deleted
+                {error ||
+                  "We couldn&apos;t find that ad. It may have been deleted"}
               </Text>
               <Button variant="brand" mt="2.4rem">
                 Find other ads
@@ -76,7 +103,7 @@ export default function ListingPage() {
   return (
     <>
       <VStack
-        gap={{ base: "3rem"}}
+        gap={{ base: "3rem" }}
         alignItems="start"
         w="95%"
         maxW={{ sm: "95%", xl: "120rem" }}
@@ -86,7 +113,7 @@ export default function ListingPage() {
       >
         <HStack w="full">
           <VStack gap="1.5rem" alignItems="start" w="full">
-            <BackButton />
+            <BackButton showText />
             {listing && (
               <>
                 <ListingHeading

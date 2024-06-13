@@ -8,8 +8,10 @@ import useAxios from "@/app/_hooks/useAxios"
 import User from "@/app/_types/User"
 import { Listing } from "@/app/_types/Listings"
 import NoResults from "@/app/_assets/SVG/NoResults"
+import { useAppSelector } from "@/app/_redux"
 
 export default function UserViewPage() {
+  const { user: userInState } = useAppSelector((store) => store.auth)
   const params = useParams()
   const userId = useMemo(() => params.userId, [params])
   const { fetchData } = useAxios()
@@ -32,7 +34,7 @@ export default function UserViewPage() {
   }, [userId, fetchData])
   useEffect(() => {
     fetchUserById()
-  }, [])
+  }, [fetchUserById])
   if (loading)
     return (
       <Flex w="full" justifyContent="center" alignItems="center">
@@ -66,7 +68,12 @@ export default function UserViewPage() {
   return (
     <>
       {user && (
-        <UserOverview isLoggedIn usersListings={user?.listings} user={user} />
+        <UserOverview
+          isOwnProfile={userInState?._id === user._id}
+          isLoggedIn
+          usersListings={user?.listings}
+          user={user}
+        />
       )}
     </>
   )

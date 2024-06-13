@@ -15,7 +15,14 @@ export default function UserViewPage() {
     )
   return (
     <>
-      {user && <UserOverview isLoggedIn usersListings={listings} user={user} />}
+      {user && (
+        <UserOverview
+          isOwnProfile
+          isLoggedIn
+          usersListings={listings.filter((it) => it.isActivated && !it.isDraft)}
+          user={user}
+        />
+      )}
     </>
   )
 }

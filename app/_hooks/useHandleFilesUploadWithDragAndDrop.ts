@@ -1,6 +1,5 @@
 import {
   useState,
-  MutableRefObject,
   useCallback,
   DragEventHandler,
   ChangeEventHandler,
@@ -17,6 +16,7 @@ export default function useHandleFilesUploadWithDragAndDrop({
   maxFileSizeInMegaBytes?: number
 }) {
   const [dragActive, setDragActive] = useState<boolean>(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const hasReachedUploadLimit = useMemo(
     () => files.length >= maxFilesCount,
@@ -25,6 +25,7 @@ export default function useHandleFilesUploadWithDragAndDrop({
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       e.preventDefault()
+      setIsUploading(true)
       const eventFiles = e.target.files
       if (eventFiles && eventFiles[0]) {
         const currentFiles = [...files]
@@ -40,6 +41,7 @@ export default function useHandleFilesUploadWithDragAndDrop({
         }
         setFiles(currentFiles)
       }
+      setIsUploading(false)
     },
     [maxFilesCount, files, maxFileSizeInMegaBytes]
   )
@@ -88,5 +90,6 @@ export default function useHandleFilesUploadWithDragAndDrop({
     removeFile,
     hasReachedUploadLimit,
     setFiles: (files: File[]) => setFiles(files),
+    isUploading,
   }
 }

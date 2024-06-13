@@ -22,6 +22,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
   return (
     <VStack overflow="hidden" gap="3rem" pos="relative" h="full" pb="3rem">
       <Image
+        alt=""
         w={{ base: "100%" }}
         h={{ base: "25rem" }}
         borderRadius="0"
@@ -99,7 +100,8 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
             <AvatarGroup>
               {user?.photos?.map((photo) => (
                 <Avatar
-                  src={photo?.secure_url}
+                  key={photo._id}
+                  src={photo?.secure_url || ""}
                   name={user?.firstName}
                   size="xl"
                   w="6rem"

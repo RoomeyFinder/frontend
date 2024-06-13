@@ -8,7 +8,6 @@ import {
   ImageProps,
   SimpleGrid,
   GridItem,
-  Grid,
 } from "@chakra-ui/react"
 import { useCallback } from "react"
 

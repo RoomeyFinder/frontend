@@ -5,6 +5,7 @@ import {
   Flex,
   GridItem,
   Heading,
+  Show,
   SimpleGrid,
   Spinner,
   Tab,
@@ -17,20 +18,15 @@ import { Suspense, useEffect, useMemo } from "react"
 import EditableListingCard from "../../_components/EditableListingCard"
 import CenteredSpinner from "../../_components/CenteredSpinner"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
-import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
+// import { fetchUserListings } from "@/app/_redux/thunks/listings.thunk"
 import { Listing } from "@/app/_types/Listings"
-import { withPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
+import { WithPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
 import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/listings.slice"
 import { useRouter } from "next/navigation"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 
 export default function MyAds() {
-  const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    !hasFetchedUserListings && dispatch(fetchUserListings())
-  }, [dispatch])
   return (
     <Suspense
       fallback={
@@ -51,7 +47,8 @@ function Renderer() {
     (store) => store.listings
   )
   const activeListings = useMemo(
-    () => listings.filter((it) => it.isActivated === true),
+    () =>
+      listings.filter((it) => it.isActivated === true && it.isDraft === false),
     [listings]
   )
   const draftListings = useMemo(
@@ -75,8 +72,8 @@ function Renderer() {
   }, [dispatch, hasError])
 
   return (
-    <Box pos="relative" py="3rem">
-      {withPrependPortal(
+    <Box pos="relative" py={{ base: "3.2rem", md: "4rem" }}>
+      {WithPrependPortal(
         <AppNotification
           onClose={() => {
             dispatch(resetError())
@@ -87,7 +84,7 @@ function Renderer() {
         document.body
       )}
       <Flex
-        mb={{ base: "1.3rem", }}
+        mb={{ base: "1.3rem" }}
         w="full"
         alignItems="center"
         justifyContent="space-between"
@@ -96,14 +93,16 @@ function Renderer() {
         <Heading fontSize={{ base: "2.6rem", sm: "3.2rem" }} fontWeight="500">
           My Ads
         </Heading>
-        <Button
-          variant="brand"
-          fontWeight="600"
-          py="1.2rem"
-          onClick={() => router.push("/nexus/ads/new")}
-        >
-          Create ad
-        </Button>
+        <Show below="md">
+          <Button
+            variant="brand"
+            fontWeight="600"
+            py="1.2rem"
+            onClick={() => router.push("/nexus/ads/new")}
+          >
+            Create ad
+          </Button>
+        </Show>
       </Flex>
       <Tabs isFitted variant="line" colorScheme="blackAlpha" size="lg">
         <TabList fontSize="1.4rem">
@@ -174,7 +173,7 @@ function ListingsDisplay({
           heading={
             <>
               {" "}
-              {`You do not have any `}
+              {"You do not have any "}
               <b>{currentDisplay}</b>
               {`${currentDisplay !== "drafts" ? "ads" : ""}`}
             </>

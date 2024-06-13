@@ -68,7 +68,7 @@ function ListSectionContainer({
 
 function RoomsList({
   rooms,
-  allowFavoriting,
+  // allowFavoriting,
   loading,
   emptyTextValue,
 }: {
@@ -91,11 +91,7 @@ function RoomsList({
     <>
       <ListingsGridLayout
         list={rooms.map((room) => (
-          <RoomListingCard
-            key={room._id}
-            listing={room}
-            variant="outlined"
-          />
+          <RoomListingCard key={room._id} listing={room} variant="outlined" />
         ))}
         justifyContent="start"
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}

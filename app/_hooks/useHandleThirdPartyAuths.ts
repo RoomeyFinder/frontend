@@ -1,10 +1,10 @@
 import { TokenResponse } from "@react-oauth/google"
-import { useCallback, useContext } from "react"
+import { useCallback } from "react"
 import useAxios from "./useAxios"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "../_redux"
-import { authenticate, updateUser } from "../_redux/slices/auth.slice"
+import { authenticate } from "../_redux/slices/auth.slice"
 
 export default function useHandleThirdPartyAuths() {
   const router = useRouter()
@@ -44,7 +44,7 @@ export default function useHandleThirdPartyAuths() {
         if (response.statusCode === 302) router.push("/signup")
       }
     },
-    [fetchData, dispatch, updateUser, router]
+    [fetchData, dispatch, router]
   )
   return {
     handleGoogleAuthSuccess,

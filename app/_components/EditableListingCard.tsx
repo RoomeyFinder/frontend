@@ -12,6 +12,7 @@ import {
   Heading,
   IconButton,
   Image,
+  Link,
   LinkProps,
   Popover,
   PopoverBody,
@@ -24,20 +25,11 @@ import {
 import EyeIcon from "../_assets/SVG/EyeIcon"
 import ThreeDotIcon from "../_assets/SVG/ThreeDotIcon"
 import { Listing } from "../_types/Listings"
-import {
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
-import useAxios, { FetchOptions } from "../_hooks/useAxios"
-import { ListingsContext } from "../_providers/ListingsProvider"
+import { ReactNode, useCallback, useMemo, useRef, useState } from "react"
+import { FetchOptions } from "../_hooks/useAxios"
 import { useRouter } from "next/navigation"
 import EditSVG from "../_assets/SVG/Edit"
 import TrashIcon from "../_assets/SVG/TrashIcon"
-import toast from "react-hot-toast"
 import { useAppDispatch } from "../_redux"
 import {
   activateListing,
@@ -75,7 +67,6 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
     () => !listing.isDraft && listing.isActivated,
     [listing.isDraft, listing.isActivated]
   )
-
   return (
     <Flex
       justifyContent="space-between"
@@ -90,12 +81,20 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       <Flex
         alignItems="center"
         gap="1rem"
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault()
+          console.log(
+            isActivated,
+            listing.isActivated,
+            listing.isDraft,
+            listing._id
+          )
           if (isActivated) {
             router.push(`/ads/${listing._id}`)
           }
         }}
-        as="button"
+        href={`/ads/${listing._id}`}
+        as={Link}
       >
         <Image
           alt=""
@@ -159,11 +158,13 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
           }}
           heading="Delete Ad"
         />
-        <ListingActions
-          isActiveListing={listing.isActivated === true}
-          listingId={listing._id as string}
-          primaryActionText={actionBasedOnStatus[status]}
-        />
+        {!listing.isDraft && (
+          <ListingActions
+            isActiveListing={listing.isActivated === true}
+            listingId={listing._id as string}
+            primaryActionText={actionBasedOnStatus[status]}
+          />
+        )}
       </Flex>
     </Flex>
   )
@@ -192,7 +193,14 @@ function ListingActions({
         : activateListing(listingId)
     )
     setIsLoading(false)
-  }, [listingId, dispatch, router, isLoading])
+  }, [
+    listingId,
+    dispatch,
+    router,
+    isLoading,
+    isActiveListing,
+    primaryActionText,
+  ])
 
   return (
     <>
@@ -241,7 +249,7 @@ function ListingActions({
   )
 }
 
-const getActionFetchOptions = (
+export const getActionFetchOptions = (
   primaryActionText: string,
   listingId: string
 ): FetchOptions => {
@@ -274,7 +282,7 @@ function ConfirmDeleteDialog({
 }: {
   isOpen: boolean
   onClose: () => void
-  handleConfirmation: () => {}
+  handleConfirmation: () => void
   heading: ReactNode | ReactNode[]
 }) {
   const cancelRef = useRef(null)
@@ -291,7 +299,7 @@ function ConfirmDeleteDialog({
           </AlertDialogHeader>
 
           <AlertDialogBody fontSize="1.4rem">
-            Are you sure? You can't undo this action afterwards.
+            Are you sure? You can&apos;t undo this action afterwards.
           </AlertDialogBody>
 
           <AlertDialogFooter>

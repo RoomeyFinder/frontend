@@ -1,52 +1,58 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { fetchUserFavorites } from "../thunks/favorites.thunk"
-import localforage from "localforage"
-import STORAGE_KEYS from "@/app/STORAGE_KEYS"
+import {
+  fetchUserNotifications,
+  markAllNotificationsAsSeen,
+} from "../thunks/notifications.thunk"
 import Notification from "@/app/_types/Notification"
 
 interface IAuthState {
-  favorites: Notification[]
+  notifications: Notification[]
   loading: boolean
   errorMessage: string
   isUsingFallback: boolean
   hasError: boolean
+  hasFetchedNotifications: boolean
 }
 
 const initialState: IAuthState = {
-  favorites: [],
+  notifications: [],
   loading: false,
   errorMessage: "",
   isUsingFallback: false,
-  hasError: false
+  hasError: false,
+  hasFetchedNotifications: false,
 }
 
-export const favoritesSlice = createSlice({
+export const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserFavorites.pending, (store) => {
+      .addCase(fetchUserNotifications.pending, (store) => {
         store.loading = true
       })
-      .addCase(fetchUserFavorites.fulfilled, (store, action) => {
-        store.favorites = action.payload.favorites
-        localforage.setItem(
-          STORAGE_KEYS.RF_USER_FAVORITES,
-          action.payload.favorites
-        )
+      .addCase(fetchUserNotifications.fulfilled, (store, action) => {
+        store.notifications = action.payload.notifications
         store.loading = false
         store.errorMessage = ""
+        store.hasFetchedNotifications = true
         store.isUsingFallback = action.payload.statusCode !== 200
       })
-      .addCase(fetchUserFavorites.rejected, (store) => {
+      .addCase(fetchUserNotifications.rejected, (store) => {
         store.errorMessage =
-          "Oops, Something went wrong while getting your ads!"
+          "Oops, Something went wrong while getting your notifications"
         store.loading = false
         store.hasError = true
+      })
+      .addCase(markAllNotificationsAsSeen.fulfilled, (store) => {
+        store.notifications = store.notifications.map((it) => ({
+          ...it,
+          seen: true,
+        }))
       })
   },
 })
 
-export const {} = favoritesSlice.actions
-export default favoritesSlice.reducer
+// export const {} = notificationsSlice.actions
+export default notificationsSlice.reducer

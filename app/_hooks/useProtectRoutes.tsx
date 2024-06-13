@@ -1,14 +1,14 @@
 "use client"
-import { usePathname, useRouter } from "next/navigation"
-import { useCallback, useEffect } from "react"
-import { useAppSelector } from "../_redux"
-import STORAGE_KEYS from "../STORAGE_KEYS"
-import localforage from "localforage"
+// import { usePathname, useRouter } from "next/navigation"
+// import { useCallback, useEffect } from "react"
+// import { useAppSelector } from "../_redux"
+// import STORAGE_KEYS from "../STORAGE_KEYS"
+// import localforage from "localforage"
 
 export default function useProtectRoutes() {
-  const router = useRouter()
-  const pathname = usePathname()
-  const { loading, user } = useAppSelector((store) => store.auth)
+  // const router = useRouter()
+  // const pathname = usePathname()
+  // const { loading, user } = useAppSelector((store) => store.auth)
 
   // const redirectWhenNotAuthorized = useCallback(() => {
   //   const currentUrl = window.location.pathname

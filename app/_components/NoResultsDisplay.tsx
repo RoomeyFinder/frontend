@@ -1,4 +1,4 @@
-import { Flex, Text, VStack } from "@chakra-ui/react"
+import { Box, Flex, Text, VStack } from "@chakra-ui/react"
 import NoResults from "../_assets/SVG/NoResults"
 import { ReactNode } from "react"
 
@@ -34,12 +34,12 @@ export default function NoResultsDisplay({
           >
             {heading}
           </Text>
-          <Text
+          <Box
             fontSize={{ base: "1.4rem", md: "1.8rem" }}
             _firstLetter={{ textTransform: "uppercase" }}
           >
             {body}
-          </Text>
+          </Box>
         </Flex>
       </VStack>
     </>

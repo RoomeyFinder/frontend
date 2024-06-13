@@ -7,7 +7,7 @@ import LookingForInput from "./_components/LookingForInput"
 import PreferredGenderInput from "./_components/PreferredGenderInput"
 import PreferredLocationInput from "./_components/PreferredLocationInput"
 import PreferredRentDurationInput from "./_components/PreferredRentDurationInput"
-import { Formik, FormikConfig, FormikHelpers } from "formik"
+import { Formik, FormikHelpers } from "formik"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { ChangeEvent, useCallback, useState } from "react"
 import User from "@/app/_types/User"
@@ -102,8 +102,8 @@ export default function PreferencesPage() {
           targetState: user?.preferences?.targetState || "",
           earliestMoveDate: user?.preferences?.earliestMoveDate
             ? new Date(user?.preferences?.earliestMoveDate)
-                .toISOString()
-                .split("T")[0]
+              .toISOString()
+              .split("T")[0]
             : "",
           lookingFor: user?.preferences?.lookingFor || "",
         }}
