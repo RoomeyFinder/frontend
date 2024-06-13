@@ -5,6 +5,7 @@ import {
   Flex,
   GridItem,
   Heading,
+  Show,
   SimpleGrid,
   Spinner,
   Tab,
@@ -71,7 +72,7 @@ function Renderer() {
   }, [dispatch, hasError])
 
   return (
-    <Box pos="relative" py="3rem">
+    <Box pos="relative" py={{ base: "3.2rem", md: "4rem" }}>
       {WithPrependPortal(
         <AppNotification
           onClose={() => {
@@ -92,14 +93,16 @@ function Renderer() {
         <Heading fontSize={{ base: "2.6rem", sm: "3.2rem" }} fontWeight="500">
           My Ads
         </Heading>
-        <Button
-          variant="brand"
-          fontWeight="600"
-          py="1.2rem"
-          onClick={() => router.push("/nexus/ads/new")}
-        >
-          Create ad
-        </Button>
+        <Show below="md">
+          <Button
+            variant="brand"
+            fontWeight="600"
+            py="1.2rem"
+            onClick={() => router.push("/nexus/ads/new")}
+          >
+            Create ad
+          </Button>
+        </Show>
       </Flex>
       <Tabs isFitted variant="line" colorScheme="blackAlpha" size="lg">
         <TabList fontSize="1.4rem">

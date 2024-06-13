@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  Button,
   Flex,
   IconButton,
   Popover,
@@ -13,10 +14,7 @@ import AppLogo from "../Logo"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import { useRouter } from "next/navigation"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
-import LogoutIcon from "@/app/_assets/SVG/Logout"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
-import { useAppDispatch } from "@/app/_redux"
-import { logout } from "@/app/_redux/slices/auth.slice"
 import NotificationsDropdown from "../Notifications/NotificationsDropdown"
 import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
 
@@ -26,7 +24,6 @@ export default function NexusHeading({
   handleToggleMenu: () => void
 }) {
   const router = useRouter()
-  const dispatch = useAppDispatch()
   const unseenNotificationsCount = useGetUnseenNotificationsCount()
   return (
     <>
@@ -41,7 +38,21 @@ export default function NexusHeading({
           <Box as="button" onClick={() => router.push("/")}>
             <AppLogo showTextLogoAlways />
           </Box>
-          <Flex alignItems="center" gap={{ base: "1rem", md: "4rem" }}>
+          <Flex
+            alignItems="center"
+            gap={{ base: "1rem", md: "4rem" }}
+            pr={{ lg: "6rem" }}
+          >
+            <Show above="md">
+              <Button
+                variant="brand"
+                fontWeight="600"
+                py="1.2rem"
+                onClick={() => router.push("/nexus/ads/new")}
+              >
+                Create ad
+              </Button>
+            </Show>
             <Popover>
               <PopoverTrigger>
                 <Text as="div" pos="relative">
@@ -76,7 +87,7 @@ export default function NexusHeading({
                     >
                       {unseenNotificationsCount}
                     </Badge>
-                  ): null}
+                  ) : null}
                 </Text>
               </PopoverTrigger>
               <PopoverContent boxShadow="none" border="0" w="max-content">
@@ -113,29 +124,6 @@ export default function NexusHeading({
                 }}
                 rounded="full"
               />
-            </Show>
-            <Show above="md">
-              <Text
-                as="button"
-                display="flex"
-                alignItems="center"
-                fontSize="1.5rem"
-                fontWeight="600"
-                gap="1.2rem"
-                bg="brand.10"
-                rounded="1.2rem"
-                color="brand.main"
-                h="5rem"
-                px="1.5rem"
-                transition="all 250ms ease"
-                _hover={{
-                  color: "white",
-                  bg: "brand.main",
-                }}
-                onClick={() => dispatch(logout())}
-              >
-                <LogoutIcon /> Logout
-              </Text>
             </Show>
           </Flex>
         </Flex>

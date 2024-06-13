@@ -50,7 +50,7 @@ export const privateLinks = [
 ]
 export const sidebarLinks = [
   {
-    name: "My Nexus",
+    name: "Match Hub",
     href: "/nexus",
     icon: OverviewIcon,
     hideAbove: "",

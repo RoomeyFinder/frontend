@@ -38,14 +38,13 @@ export default function RoomeyListingCard({
       )}
       <ProfileAvatar
         imageSrc={user.profileImage?.secure_url}
-        width={180}
-        height={180}
-        showVerifiedBadge
+        width={120}
+        height={120}
       />
       <NameAndAge
         name={`${user.firstName} ${user.lastName}`}
         ageInYears={
-          user
+          user && user.settings.isAgeVisibleOnProfile
             ? new Date(Date.now()).getFullYear() -
               new Date(user?.dob || Date.now()).getFullYear()
             : 0
@@ -84,7 +83,7 @@ function NameAndAge({
         lineHeight="2.4rem"
         color="gray.100"
       >
-        {ageInYears}yrs
+        {ageInYears || "**"}yrs
       </Text>
     </Flex>
   )
