@@ -31,6 +31,7 @@ import NoResults from "@/app/_assets/SVG/NoResults"
 import TextCheckbox from "@/app/nexus/me/_components/TextCheckbox"
 import { Listing } from "@/app/_types/Listings"
 import RoomListingCard from "@/app/_components/RoomListingCard"
+import BackButton from "@/app/_components/BackButton"
 
 const lookingForMappings = {
   both: "a Roommate and an Apartment",
@@ -59,10 +60,28 @@ export default function UserOverview({
   return (
     <Box minH="calc(100vh - 9rem)" w="full">
       <Box
+        pos="fixed"
+        bg="white"
+        top="10rem"
+        zIndex="300"
+        shadow="lg"
+        rounded="lg"
+        left={{base:"3%", xl: "15%"}}
+        px="2rem"
+        py="1rem"
+        dropShadow="-1px 3px 39px #00000059"
+        opacity=".7"
+        _hover={{
+          opacity: 1,
+        }}
+      >
+        <BackButton showText />
+      </Box>
+      <Box
         w="full"
         bg="linear-gradient(to top, #FFFFFF, rgb(255 255 221 / 24%), rgb(255 255 221 / 27%), rgb(131 166 212 / 30%), rgb(59 134 255 / 25%))"
       >
-        <Box maxW="125rem" mx="auto" pos="relative" h={{ lg: "45rem" }}>
+        <Box maxW="125rem" mx="auto" pos="relative" h={{ lg: "25rem" }}>
           <CoverAndProfileImage
             coverImage={user?.coverImage?.secure_url || defaultCoverImg.src}
             profileImage={user?.profileImage?.secure_url || ""}
@@ -111,7 +130,11 @@ export default function UserOverview({
             </VStack>
             {!isOwnProfile && (
               <Box ml="auto">
-                <InterestButton doc={user._id} docType={"User"} docOwner={user._id} />
+                <InterestButton
+                  doc={user._id}
+                  docType={"User"}
+                  docOwner={user._id}
+                />
               </Box>
             )}
           </HStack>

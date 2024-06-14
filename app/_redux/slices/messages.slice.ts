@@ -1,11 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { fetchUserMessages } from "../thunks/messages.thunk"
+import { Message } from "@/app/_types/Conversation"
+import socketIO from "socket.io-client"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
-import { Message } from "@/app/_types/Conversation"
+
+export const socket = (async () =>
+  socketIO(`${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations` as string, {
+    auth: {
+      token: await localforage.getItem(STORAGE_KEYS.RF_TOKEN),
+    },
+  }))()
 
 interface IAuthState {
-  messages: Message[]
+  messages: { [x: string]: Message[] }
   loading: boolean
   errorMessage: string
   isUsingFallback: boolean
@@ -13,40 +21,54 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  messages: [],
+  messages: {},
   loading: false,
   errorMessage: "",
   isUsingFallback: false,
-  hasError: false
+  hasError: false,
 }
 
 export const messagesSlice = createSlice({
   name: "messages",
   initialState,
-  reducers: {},
+  reducers: {
+    addNewMessage: (
+      state,
+      action: PayloadAction<{ statusCode: number; message: Message }>
+    ) => {
+      console.log(action.payload)
+      if (action.payload.statusCode === 201)
+        state.messages = {
+          ...state.messages,
+          [action.payload.message.conversationId]: [
+            ...(state.messages[action.payload.message.conversationId] || []),
+            action.payload.message,
+          ],
+        }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserMessages.pending, (store) => {
         store.loading = true
       })
       .addCase(fetchUserMessages.fulfilled, (store, action) => {
-        store.messages = action.payload.messages
-        localforage.setItem(
-          STORAGE_KEYS.RF_USER_FAVORITES,
-          action.payload.messages
-        )
+        if (action.payload.statusCode === 200)
+          store.messages = {
+            ...store.messages,
+            [action.payload.conversationId]: action.payload.messages,
+          }
+        else store.errorMessage = "Unable to get your messages"
         store.loading = false
-        store.errorMessage = ""
-        store.isUsingFallback = action.payload.statusCode !== 200
       })
       .addCase(fetchUserMessages.rejected, (store) => {
         store.errorMessage =
-          "Oops, Something went wrong while getting your ads!"
+          "Oops, Something went wrong while getting your messages!"
         store.loading = false
         store.hasError = true
       })
   },
 })
 
-// export const {} = messagesSlice.actions
+export const { addNewMessage } = messagesSlice.actions
 export default messagesSlice.reducer

@@ -18,13 +18,16 @@ export default function ConversationInput({
     <>
       <InputGroup
         bg="white"
-        p="1.2rem"
         shadow="0px 0px 3px 3px #00000008"
         rounded="1.2rem"
+        w="full"
       >
         <Input
           border="0"
           p="0"
+          py="1.5rem"
+          pl="1.5rem"
+          color="#555"
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
@@ -38,10 +41,12 @@ export default function ConversationInput({
           border="0"
           color="brand.main"
           bg="brand.10"
-          w={{ base: "4rem", md: "6rem" }}
-          h={{ base: "4rem", md: "6rem" }}
+          w={{ base: "4rem" }}
+          h={{ base: "4rem" }}
           _hover={{ bg: "brand.50" }}
           display="flex"
+          my="auto"
+          mr=".8rem"
           justifyContent="center"
           alignItems="center"
           borderRadius="1.2rem"

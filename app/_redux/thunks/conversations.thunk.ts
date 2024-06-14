@@ -10,14 +10,15 @@ export const fetchUserConversations = createAsyncThunk(
       url: "/conversations/me",
       method: "get",
     })
-    const storedListings = await localforage.getItem(
-      STORAGE_KEYS.RF_USER_LISTINGS
+    const storedConversations = await localforage.getItem(
+      STORAGE_KEYS.RF_USER_CONVERSATIONS
     )
+    console.log(response, "dfadfljdfa;")
     return {
       conversations:
         response.statusCode === 200
           ? response.conversations
-          : storedListings || [],
+          : storedConversations || [],
       statusCode: response.statusCode,
     }
   }

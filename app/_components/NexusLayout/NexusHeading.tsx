@@ -96,7 +96,7 @@ export default function NexusHeading({
               ) : null}
             </Text>
             <IconButton
-              aria-label="Notifications"
+              aria-label="Messenger"
               icon={<MessageIcon />}
               w={{ base: "3.8rem", md: "5rem" }}
               h={{ base: "3.8rem", md: "5rem" }}
@@ -106,6 +106,7 @@ export default function NexusHeading({
                 bg: "brand.10",
                 color: "brand.main",
               }}
+              onClick={() => router.push("/nexus/notifications")}
               rounded="full"
             />
             <Show below="md">

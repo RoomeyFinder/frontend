@@ -39,7 +39,7 @@ export default function CoverAndProfileImage({
         top={{
           base: "16.5rem",
           sm: "18.5rem",
-          lg: showProfileImageEditButton ? "60%" : "85%",
+          lg: showProfileImageEditButton ? "60%" : "75%",
         }}
         left={{ base: "2rem", sm: "8rem" }}
       >
