@@ -64,17 +64,17 @@ export default function ActiveConversation() {
       <Box
         w="full"
         position="relative"
-        h={{ base: "calc(100dvh - 8rem)", sm: "calc(100dvh - 8.7rem)" }}
+        h="100%"
         overflow="hidden"
-        bg="#f9f9f9"
+        bg="#3a86ff0a"
       >
         {/* <ConversationHeader
           closeConversation={() => {}}
           otherUser={{} as any}
         /> */}
         <Box
-          h={{ base: "calc(100dvh - 28.8rem)", md: "calc(100dvh - 30rem)" }}
           overflow="auto"
+          h="full"
           ref={conversationsContainerRef}
         >
           <Conversation
@@ -84,10 +84,11 @@ export default function ActiveConversation() {
         </Box>
         <Box
           pos="sticky"
-          bottom="0"
+          bottom="5%"
           insetX="0"
-          px={{ base: "5dvw", md: "3rem" }}
-          py="3rem"
+          w="95%"
+          maxW=""
+          mx="auto"
           bg="linear-gradient(45deg, transparent, white)"
         >
           <ConversationInput onSubmit={() => {}} />

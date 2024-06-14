@@ -23,6 +23,7 @@ import { FavoriteType } from "../_types/Favorites"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
 import TimeSince from "./TimeSince"
+import { useAppSelector } from "../_redux"
 
 export default function InterestComponent({
   isSent,
@@ -53,6 +54,8 @@ export default function InterestComponent({
   )
   const { handleAccept, handleDecline, handleUnsend, loading } =
     useActOnInterest(interest)
+
+  const { user } = useAppSelector((store) => store.auth)
 
   return (
     <Flex
@@ -180,7 +183,12 @@ export default function InterestComponent({
         {!isPending && (
           <Text
             as="button"
-            onClick={() => interest.accepted && {}}
+            onClick={() =>
+              interest.accepted &&
+              router.push(
+                `/messenger?otherUser=${interest.sender._id === user?._id ? interest.docOwner : interest.sender._id}`
+              )
+            }
             color={interest.accepted ? "brand.main" : "gray.main"}
             fontWeight="500"
             aria-label="decline interest"

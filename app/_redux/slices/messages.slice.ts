@@ -5,7 +5,7 @@ import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import { Message } from "@/app/_types/Conversation"
 
 interface IAuthState {
-  messages: Message[]
+  messages: { [x: string]: Message[] }
   loading: boolean
   errorMessage: string
   isUsingFallback: boolean
@@ -13,11 +13,11 @@ interface IAuthState {
 }
 
 const initialState: IAuthState = {
-  messages: [],
+  messages: {},
   loading: false,
   errorMessage: "",
   isUsingFallback: false,
-  hasError: false
+  hasError: false,
 }
 
 export const messagesSlice = createSlice({
@@ -30,18 +30,17 @@ export const messagesSlice = createSlice({
         store.loading = true
       })
       .addCase(fetchUserMessages.fulfilled, (store, action) => {
-        store.messages = action.payload.messages
-        localforage.setItem(
-          STORAGE_KEYS.RF_USER_FAVORITES,
-          action.payload.messages
-        )
+        if (action.payload.statusCode === 200)
+          store.messages = {
+            ...store.messages,
+            [action.payload.conversationId]: action.payload.messages,
+          }
+        else store.errorMessage = "Unable to get your messages"
         store.loading = false
-        store.errorMessage = ""
-        store.isUsingFallback = action.payload.statusCode !== 200
       })
       .addCase(fetchUserMessages.rejected, (store) => {
         store.errorMessage =
-          "Oops, Something went wrong while getting your ads!"
+          "Oops, Something went wrong while getting your messages!"
         store.loading = false
         store.hasError = true
       })
