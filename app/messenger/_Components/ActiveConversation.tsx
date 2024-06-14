@@ -1,50 +1,79 @@
-import { Box } from "@chakra-ui/react"
+import {
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+} from "@chakra-ui/react"
 import Conversation from "./Conversation"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 // import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import ConversationInput from "./ConversationInput"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { fetchUserMessages } from "@/app/_redux/thunks/messages.thunk"
+import { CONVERSATION_EVENTS } from "@/app/_socket/events"
+import { socket } from "@/app/_redux/slices/messages.slice"
+import { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
+import User from "@/app/_types/User"
 // import { MessagesContext } from "@/app/_providers/MessagesProvider"
 // import { useAppSelector } from "@/app/_redux"
 
 export default function ActiveConversation() {
+  const dispatch = useAppDispatch()
   const [isUserIntentionallyScrolling, setIsUserIntentionallyScrolling] =
     useState(false)
   const conversationsContainerRef = useRef<HTMLDivElement | null>(null)
-  // const { activeConversation, closeActiveConversation, socket } =
-  // useContext(MessengerContext)
-  // const { messages } = useContext(MessagesContext)
-  // const { user } = useAppSelector(store => store.auth)
+  const { activeConversation } = useAppSelector((store) => store.conversations)
+  const { messages } = useAppSelector((store) => store.messages)
+  const messagesInActiveConversation = useMemo(
+    () => (activeConversation ? messages[activeConversation?._id] : []),
+    [messages, activeConversation]
+  )
 
-  // const recipient = useMemo(() => {
-  //   if (activeConversation?.creator?._id === user?._id)
-  //     return activeConversation?.otherUser
-  //   return activeConversation?.creator
-  // }, [user, activeConversation])
+  useEffect(() => {
+    if (activeConversation && !messagesInActiveConversation) {
+      dispatch(fetchUserMessages(activeConversation._id)).then(console.log)
+    }
+    console.log("djflsdf;a")
+  }, [messagesInActiveConversation, activeConversation, dispatch])
+  const { user } = useAppSelector((store) => store.auth)
 
-  // const messagesInActiveConversation = useMemo(() => {
-  //   return messages.filter(
-  //     (msg) => msg.conversationId === activeConversation?._id
-  //   )
-  // }, [messages, activeConversation])
-  // const sortedMessages = useMemo(
-  //   () =>
-  //     messagesInActiveConversation.toSorted(
-  //       (a, b) =>
-  //         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  //     ),
-  //   [messagesInActiveConversation]
-  // )
+  const recipient = useMemo(() => {
+    if (activeConversation?.creator?._id === user?._id)
+      return activeConversation?.otherUser
+    return activeConversation?.creator
+  }, [user, activeConversation])
 
-  // const handleSendMessage = useCallback(
-  //   (msg: string) => {
-  //     socket?.emit(CONVERSATION_EVENTS.MESSAGE, {
-  //       recipient: recipient?._id,
-  //       text: msg,
-  //       conversationId: activeConversation?._id,
-  //     })
-  //   },
-  //   [socket, activeConversation, recipient]
-  // )
+  const sortedMessages = useMemo(
+    () =>
+      messagesInActiveConversation?.toSorted(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      ),
+    [messagesInActiveConversation]
+  )
+
+  const handleSendMessage = useCallback(
+    (msg: string) => {
+      console.log(socket, msg)
+      socket.then((socket) =>
+        socket.emit("MESSAGE", {
+          recipient: recipient?._id,
+          text: msg,
+          conversationId: activeConversation?._id,
+        })
+      )
+      // socket?.emit(CONVERSATION_EVENTS.MESSAGE, {
+      //   recipient: recipient?._id,
+      //   text: msg,
+      //   conversationId: activeConversation?._id,
+      // })
+    },
+    [activeConversation?._id, recipient]
+  )
 
   useEffect(() => {
     const currentConversationRef = conversationsContainerRef.current
@@ -66,19 +95,14 @@ export default function ActiveConversation() {
         position="relative"
         h="100%"
         overflow="hidden"
-        bg="#3a86ff0a"
       >
-        {/* <ConversationHeader
+        <ConversationHeader
           closeConversation={() => {}}
-          otherUser={{} as any}
-        /> */}
-        <Box
-          overflow="auto"
-          h="full"
-          ref={conversationsContainerRef}
-        >
+          otherUser={recipient as any}
+        />
+        <Box overflow="auto" h="80%" ref={conversationsContainerRef}>
           <Conversation
-            messages={[]}
+            messages={sortedMessages || []}
             canScrollToLatestMessage={isUserIntentionallyScrolling === false}
           />
         </Box>
@@ -91,53 +115,39 @@ export default function ActiveConversation() {
           mx="auto"
           bg="linear-gradient(45deg, transparent, white)"
         >
-          <ConversationInput onSubmit={() => {}} />
+          <ConversationInput onSubmit={handleSendMessage} />
         </Box>
       </Box>
     </>
   )
 }
 
-// function ConversationHeader({
-//   closeConversation,
-//   otherUser,
-// }: {
-//   closeConversation: () => void
-//   otherUser?: User
-// }) {
-//   return (
-//     <Box position="sticky" top="0" w="full" bg="white">
-//       <Flex
-//         justifyContent="space-between"
-//         bg="brand.10"
-//         px={{ base: "2rem", sm: "5rem" }}
-//         alignItems="center"
-//         h={{ base: "7rem", sm: "9rem" }}
-//       >
-//         <Flex gap="1rem" alignItems="center">
-//           <Avatar />
-//           <Heading fontSize={{ base: "1.8rem", sm: "2rem" }}>
-//             {otherUser?.firstName} {otherUser?.lastName}
-//           </Heading>
-//         </Flex>
-//         <Popover placement="left">
-//           <PopoverTrigger>
-//             <Text as="button">
-//               <SmallThreeDotIcon />
-//             </Text>
-//           </PopoverTrigger>
-//           <PopoverContent bg="white" fontSize="1.4rem" p="1rem" w="max-content">
-//             <Text
-//               onClick={closeConversation}
-//               as="button"
-//               w="full"
-//               textAlign="left"
-//             >
-//               Close chat
-//             </Text>
-//           </PopoverContent>
-//         </Popover>
-//       </Flex>
-//     </Box>
-//   )
-// }
+function ConversationHeader({
+  closeConversation,
+  otherUser,
+}: {
+  closeConversation: () => void
+  otherUser?: User
+}) {
+  return (
+    <Box position="sticky" top="0" w="full" bg="white">
+      <Flex
+        justifyContent="space-between"
+        bg="brand.10"
+        px={{ base: "2rem", sm: "5rem" }}
+        alignItems="center"
+        h={{ base: "7rem", sm: "9rem" }}
+      >
+        <Flex gap="1rem" alignItems="center">
+          <Avatar />
+          <Heading
+            textTransform="capitalize"
+            fontSize={{ base: "1.8rem", sm: "2rem" }}
+          >
+            {otherUser?.firstName} {otherUser?.lastName}
+          </Heading>
+        </Flex>
+      </Flex>
+    </Box>
+  )
+}

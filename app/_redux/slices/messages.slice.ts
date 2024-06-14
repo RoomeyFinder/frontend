@@ -1,8 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { fetchUserMessages } from "../thunks/messages.thunk"
+import { Message } from "@/app/_types/Conversation"
+import socketIO from "socket.io-client"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
-import { Message } from "@/app/_types/Conversation"
+
+export const socket = (async () =>
+  socketIO(`${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations` as string, {
+    auth: {
+      token: await localforage.getItem(STORAGE_KEYS.RF_TOKEN),
+    },
+  }))()
 
 interface IAuthState {
   messages: { [x: string]: Message[] }
@@ -23,7 +31,22 @@ const initialState: IAuthState = {
 export const messagesSlice = createSlice({
   name: "messages",
   initialState,
-  reducers: {},
+  reducers: {
+    addNewMessage: (
+      state,
+      action: PayloadAction<{ statusCode: number; message: Message }>
+    ) => {
+      console.log(action.payload)
+      if (action.payload.statusCode === 201)
+        state.messages = {
+          ...state.messages,
+          [action.payload.message.conversationId]: [
+            ...(state.messages[action.payload.message.conversationId] || []),
+            action.payload.message,
+          ],
+        }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserMessages.pending, (store) => {
@@ -47,5 +70,5 @@ export const messagesSlice = createSlice({
   },
 })
 
-// export const {} = messagesSlice.actions
+export const { addNewMessage } = messagesSlice.actions
 export default messagesSlice.reducer

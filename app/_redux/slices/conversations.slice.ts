@@ -6,7 +6,7 @@ import Conversation from "@/app/_types/Conversation"
 
 interface IAuthState {
   conversations: Conversation[]
-  activeConversation: string | null
+  activeConversation: Conversation | null
   loading: boolean
   errorMessage: string
   isUsingFallback: boolean
@@ -28,7 +28,7 @@ export const conversationsSlice = createSlice({
   name: "conversations",
   initialState,
   reducers: {
-    setActiveConversation: (state, action: PayloadAction<string>) => {
+    setActiveConversation: (state, action: PayloadAction<Conversation>) => {
       state.activeConversation = action.payload
     },
     removeActiveConversation: (state) => {

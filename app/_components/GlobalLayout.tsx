@@ -29,7 +29,7 @@ export default function GlobalLayout({
   useEffect(() => {
     dispatch(checkAuthStatus()).then((res) => {
       if (
-        (res.payload as any).statusCode !== 200 &&
+        (res.payload as any)?.statusCode !== 200 &&
         pathname.startsWith("/nexus")
       ) {
         router.push("/")

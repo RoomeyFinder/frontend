@@ -59,6 +59,7 @@ function Page() {
         height={{ base: "100dvh", sm: "100%" }}
         overflow="hidden"
         pos="relative"
+        bg="#3a86ff0a"
       >
         <Flex
           display={{ base: showChat ? "block" : "none", sm: "block" }}

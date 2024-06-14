@@ -16,18 +16,13 @@ import Banner from "./Banner"
 import User from "@/app/_types/User"
 import NoConversation from "./NoConversations"
 import { setActiveConversation } from "@/app/_redux/slices/conversations.slice"
-// import { useCallback, useContext, useMemo, useState } from "react"
-// import Banner from "./Banner"
-// // import { MessagesContext } from "@/app/_providers/MessagesProvider"
-// import NoConversation from "./NoConversations"
-// import { useAppSelector } from "@/app/_redux"
 
 export default function Conversations() {
   const dispatch = useAppDispatch()
   const { conversations, activeConversation } = useAppSelector(
     (store) => store.conversations
   )
-  // const { messages } = useContext(MessagesContext)
+  const { messages } = useAppSelector((store) => store.messages)
   const { user } = useAppSelector((store) => store.auth)
   const getOtherUser = useCallback(
     (conversation: Conversation) => {
@@ -37,14 +32,6 @@ export default function Conversations() {
     },
     [user]
   )
-  // const checkForUnreadMessagesCount = useCallback((convo: Conversation) => {
-  //   return messages.filter(
-  //     (msg) =>
-  //       msg.conversationId === convo._id &&
-  //       msg.seen === false &&
-  //       getOtherUser(convo)._id === msg.recipient
-  //   ).length
-  // }, [])
   const [searchValue, setSearchValue] = useState("")
   const [selectedFilter, setSelectedFilter] = useState("All")
 
@@ -80,7 +67,6 @@ export default function Conversations() {
   }, [
     conversationsThatMatchSearch,
     selectedFilter,
-    // checkForUnreadMessagesCount,
   ])
 
   return (
@@ -102,11 +88,11 @@ export default function Conversations() {
         {conversationsThatMatchFilter.map((convo) => (
           <ConversationItem
             key={convo._id}
-            onClick={() => dispatch(setActiveConversation(convo._id))}
-            isActive={activeConversation === convo._id}
+            onClick={() => dispatch(setActiveConversation(convo))}
+            isActive={activeConversation?._id === convo._id}
             otherUser={getOtherUser(convo)}
             latestMessage={convo.latestMessage}
-            countOfUnreadMsgs={0}
+            countOfUnreadMsgs={9}
           />
         ))}
         {conversationsThatMatchFilter.length === 0 && (
@@ -162,7 +148,10 @@ function ConversationItem({
           />
         </Flex>
         <Box>
-          <Heading fontSize={{ base: "1.2rem", md: "1.6rem" }}>
+          <Heading
+            fontSize={{ base: "1.2rem", md: "1.6rem" }}
+            textTransform="capitalize"
+          >
             {otherUser?.firstName} {otherUser?.lastName}
             <Text
               as="span"

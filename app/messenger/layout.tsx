@@ -15,8 +15,10 @@ import Conversations from "./_Components/Conversations"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import { fetchUserConversations } from "../_redux/thunks/conversations.thunk"
 import { removeActiveConversation } from "../_redux/slices/conversations.slice"
+import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 
 export default function Layout({ children }: { children: ReactNode }) {
+  useListenForMessengerEvents()
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((store) => store.auth)
   const { hasFetchedUserConversations, activeConversation } = useAppSelector(

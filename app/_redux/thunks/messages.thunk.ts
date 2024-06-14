@@ -8,6 +8,7 @@ export const fetchUserMessages = createAsyncThunk(
       url: `/messages/${conversationId}`,
       method: "get",
     })
+    console.log(response)
     return {
       messages: response.statusCode === 200 ? response.messages : [],
       statusCode: response.statusCode,
