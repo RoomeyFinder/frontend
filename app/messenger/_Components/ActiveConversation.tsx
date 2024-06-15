@@ -3,11 +3,17 @@ import Conversation from "./Conversation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import ConversationInput from "./ConversationInput"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
-import { fetchUserMessages } from "@/app/_redux/thunks/messages.thunk"
+import {
+  fetchUserMessages,
+  markMessagesAsRead,
+} from "@/app/_redux/thunks/messages.thunk"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
 import { socket } from "@/app/_redux/slices/messages.slice"
 import User from "@/app/_types/User"
-import { removeActiveConversation } from "@/app/_redux/slices/conversations.slice"
+import {
+  removeActiveConversation,
+  updateConversation,
+} from "@/app/_redux/slices/conversations.slice"
 
 export default function ActiveConversation() {
   const dispatch = useAppDispatch()
@@ -21,6 +27,20 @@ export default function ActiveConversation() {
     [messages, activeConversation]
   )
 
+  useEffect(() => {
+    if (activeConversation && activeConversation?.unreadMsgsCount > 0) {
+      dispatch(markMessagesAsRead(activeConversation._id)).then((res) => {
+        dispatch(
+          updateConversation({
+            id: activeConversation._id,
+            update: {
+              unreadMsgsCount: 0,
+            },
+          })
+        )
+      })
+    }
+  }, [dispatch, activeConversation])
   useEffect(() => {
     if (activeConversation && !messagesInActiveConversation) {
       dispatch(fetchUserMessages(activeConversation._id))

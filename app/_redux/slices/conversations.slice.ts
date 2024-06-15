@@ -34,6 +34,16 @@ export const conversationsSlice = createSlice({
     removeActiveConversation: (state) => {
       state.activeConversation = null
     },
+    updateConversation: (
+      state,
+      action: PayloadAction<{ id: string; update: Partial<Conversation> }>
+    ) => {
+      state.conversations = state.conversations.map((convo) =>
+        convo._id === action.payload.id
+          ? { ...convo, ...action.payload.update }
+          : convo
+      )
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,6 +70,9 @@ export const conversationsSlice = createSlice({
   },
 })
 
-export const { setActiveConversation, removeActiveConversation } =
-  conversationsSlice.actions
+export const {
+  setActiveConversation,
+  removeActiveConversation,
+  updateConversation,
+} = conversationsSlice.actions
 export default conversationsSlice.reducer

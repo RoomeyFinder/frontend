@@ -16,3 +16,18 @@ export const fetchUserMessages = createAsyncThunk(
     }
   }
 )
+
+export const markMessagesAsRead = createAsyncThunk(
+  "messages/markMessagesAsRead",
+  async (conversationId: string) => {
+    const response = await axiosFetcher({
+      url: `/messages/read/${conversationId}`,
+      method: "put",
+    })
+    return {
+      isDone: response.statusCode === 200 ? response.messages : [],
+      statusCode: response.statusCode,
+      conversationId,
+    }
+  }
+)

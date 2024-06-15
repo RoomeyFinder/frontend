@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
-import { fetchUserMessages } from "../thunks/messages.thunk"
+import { fetchUserMessages, markMessagesAsRead } from "../thunks/messages.thunk"
 import { Message } from "@/app/_types/Conversation"
 import socketIO from "socket.io-client"
 import localforage from "localforage"
@@ -36,7 +36,6 @@ export const messagesSlice = createSlice({
       state,
       action: PayloadAction<{ statusCode: number; message: Message }>
     ) => {
-      console.log(action.payload)
       if (action.payload.statusCode === 201)
         state.messages = {
           ...state.messages,
@@ -62,6 +61,26 @@ export const messagesSlice = createSlice({
         store.loading = false
       })
       .addCase(fetchUserMessages.rejected, (store) => {
+        store.errorMessage =
+          "Oops, Something went wrong while getting your messages!"
+        store.loading = false
+        store.hasError = true
+      })
+      .addCase(markMessagesAsRead.pending, (store) => {
+        store.loading = true
+      })
+      .addCase(markMessagesAsRead.fulfilled, (store, action) => {
+        if (action.payload.isDone)
+          store.messages = {
+            ...store.messages,
+            [action.payload.conversationId]: store.messages[
+              action.payload.conversationId
+            ]?.map((msg) => ({ ...msg, seen: true })),
+          }
+        else store.errorMessage = "Unable to get your messages"
+        store.loading = false
+      })
+      .addCase(markMessagesAsRead.rejected, (store) => {
         store.errorMessage =
           "Oops, Something went wrong while getting your messages!"
         store.loading = false
