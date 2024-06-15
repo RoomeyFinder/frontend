@@ -19,7 +19,7 @@ import { ChangeEventHandler } from "react"
 export default function Banner({
   onChange,
   onSelectFilter,
-  selectedFilter
+  selectedFilter,
 }: {
   onChange?: ChangeEventHandler<HTMLInputElement>
   onSelectFilter?: (val: string) => void
@@ -32,8 +32,13 @@ export default function Banner({
       px={{ base: "1.5rem", md: "4rem" }}
       pt="3rem"
     >
-      <Flex as={Heading} justifyContent="space-between">
-        Messages
+      <Flex
+        as={Heading}
+        fontSize="2.6rem"
+        fontWeight="500"
+        justifyContent="space-between"
+      >
+        Chats
         <FilterButton
           value={selectedFilter}
           handleChange={onSelectFilter}
