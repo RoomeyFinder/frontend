@@ -29,7 +29,7 @@ function useGetVariantActionPathname(
       break
     }
     case NotificationVariant.ACCEPTED_INTEREST:
-      pathname = `/messenger/${data?._id}`
+      pathname = `/messenger?convoId=${(data as Conversation)?._id}`
       break
     case NotificationVariant.LISTING_VIEW:
       pathname = ""
@@ -38,7 +38,7 @@ function useGetVariantActionPathname(
       pathname = ""
       break
     case NotificationVariant.MESSAGE:
-      pathname = `/messenger/${(data as Message)?.conversationId}`
+      pathname = `/messenger?convoId=${(data as Message)?.conversationId}`
       break
   }
   return pathname

@@ -6,6 +6,7 @@ import { GridItem, Flex, Spinner } from "@chakra-ui/react"
 // import { MessengerContext } from "../../_providers/MessengerProvider"
 import {
   Suspense,
+  useEffect,
   useMemo,
   // useContext, useEffect, useMemo
 } from "react"
@@ -13,6 +14,8 @@ import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
 import Loading from "../_assets/SVG/Loading"
+import { useRouter, useSearchParams } from "next/navigation"
+import { setActiveConversation } from "../_redux/slices/conversations.slice"
 // import InactiveConversationView from "./_Components/InactiveConversationView"
 // import NoConversation from "./_Components/NoConversations"
 // import { useRouter, useSearchParams } from "next/navigation"
@@ -31,8 +34,6 @@ export default function Messenger() {
   )
 }
 function Page() {
-  // const router = useRouter()
-  // const searchParams = useSearchParams()
   const { activeConversation, conversations, loading } = useAppSelector(
     (store) => store.conversations
   )
@@ -42,16 +43,18 @@ function Page() {
     [activeConversation]
   )
 
-  // useEffect(() => {
-  //   const conversationId = searchParams.get("convoId")
-  //   if (conversationId) {
-  //     const conversation = conversations.find((it) => it._id === conversationId)
-  //     if (conversation) {
-  //       router.push("/messenger")
-  //       updateActiveConversation(conversation)
-  //     }
-  //   }
-  // }, [searchParams, updateActiveConversation, router, conversations])
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  useEffect(() => {
+    const conversationId = searchParams.get("convoId")
+    if (conversationId) {
+      const conversation = conversations.find((it) => it._id === conversationId)
+      if (conversation) {
+        router.push("/messenger")
+        dispatch(setActiveConversation(conversation))
+      }
+    }
+  }, [searchParams, router, conversations])
 
   return (
     <>

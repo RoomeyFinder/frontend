@@ -27,7 +27,6 @@ export default function Conversation({
 
   useEffect(() => {
     canScrollToLatestMessage && scrollToLatestMsg()
-    console.log("iytsuede", canScrollToLatestMessage)
     // socket.onAny(() => {
     //   console.log("dfjkadslf", canScrollToLatestMessage)
     //   if (canScrollToLatestMessage)
