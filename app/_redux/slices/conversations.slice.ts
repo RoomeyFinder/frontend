@@ -52,7 +52,6 @@ export const conversationsSlice = createSlice({
         isSender: boolean
       }>
     ) => {
-      console.log("hdere", action.payload)
       if (
         action.payload.statusCode === 201 &&
         !action.payload.isSender &&

@@ -4,9 +4,6 @@ import {
   Button,
   Flex,
   IconButton,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Show,
   Text,
 } from "@chakra-ui/react"
@@ -16,6 +13,7 @@ import { usePathname, useRouter } from "next/navigation"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import HamburgerIcon from "@/app/_assets/SVG/HamburgerIcon"
 import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
+import useGetUnreadMessagesCount from "@/app/_hooks/useGetUnreadMessagesCount"
 
 export default function NexusHeading({
   handleToggleMenu,
@@ -25,6 +23,7 @@ export default function NexusHeading({
   const pathname = usePathname()
   const router = useRouter()
   const unseenNotificationsCount = useGetUnseenNotificationsCount()
+  const unreadMsgsCount = useGetUnreadMessagesCount()
   return (
     <>
       <Flex
@@ -95,20 +94,45 @@ export default function NexusHeading({
                 </Badge>
               ) : null}
             </Text>
-            <IconButton
-              aria-label="Messenger"
-              icon={<MessageIcon />}
-              w={{ base: "3.8rem", md: "5rem" }}
-              h={{ base: "3.8rem", md: "5rem" }}
-              bg={{ base: "transparent", md: "white" }}
-              color="brand.main"
-              _hover={{
-                bg: "brand.10",
-                color: "brand.main",
-              }}
-              onClick={() => router.push("/nexus/notifications")}
-              rounded="full"
-            />
+            <Text as="div" pos="relative">
+              <IconButton
+                aria-label="Notifications"
+                icon={<MessageIcon />}
+                w={{ base: "3.8rem", md: "5rem" }}
+                h={{ base: "3.8rem", md: "5rem" }}
+                bg={{
+                  base: pathname === "/messenger" ? "brand.10" : "transparent",
+                  md: pathname === "/messenger" ? "brand.10" : "white",
+                }}
+                color="brand.main"
+                _hover={{
+                  bg: "brand.10",
+                  color: "brand.main",
+                }}
+                rounded="full"
+                onClick={() => router.push("/messenger")}
+              />
+              {unreadMsgsCount ? (
+                <Badge
+                  top="0"
+                  bg="red.main"
+                  color="white"
+                  pos="absolute"
+                  right=".5rem"
+                  w="1.7rem"
+                  h="1.7rem"
+                  rounded="full"
+                  fontSize="1rem"
+                  fontWeight="900"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  {unreadMsgsCount}
+                </Badge>
+              ) : null}
+            </Text>
+
             <Show below="md">
               {" "}
               <IconButton
