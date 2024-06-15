@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { fetchUserConversations } from "../thunks/conversations.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
-import Conversation from "@/app/_types/Conversation"
+import Conversation, { Message } from "@/app/_types/Conversation"
 
 interface IAuthState {
   conversations: Conversation[]
@@ -44,6 +44,26 @@ export const conversationsSlice = createSlice({
           : convo
       )
     },
+    updateUnreadMsgsCount: (
+      state,
+      action: PayloadAction<{
+        message: Message
+        statusCode: number
+        isSender: boolean
+      }>
+    ) => {
+      console.log("hdere", action.payload)
+      if (
+        action.payload.statusCode === 201 &&
+        !action.payload.isSender &&
+        state.activeConversation?._id !== action.payload.message.conversationId
+      )
+        state.conversations = state.conversations.map((convo) =>
+          convo._id === action.payload.message.conversationId
+            ? { ...convo, unreadMsgsCount: convo.unreadMsgsCount + 1 }
+            : convo
+        )
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,5 +94,6 @@ export const {
   setActiveConversation,
   removeActiveConversation,
   updateConversation,
+  updateUnreadMsgsCount,
 } = conversationsSlice.actions
 export default conversationsSlice.reducer
