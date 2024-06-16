@@ -49,7 +49,7 @@ export default function ListingFormForCreateOrEdit({
   })
   const { goToNextStage, currentStage, goToPrevStage } = useManageStageFlow({
     maxStage: 3,
-    start: 2,
+    start: 0,
     minStage: 0,
   })
   const handleSubmit = useCallback(

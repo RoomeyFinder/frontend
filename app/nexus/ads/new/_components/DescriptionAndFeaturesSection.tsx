@@ -41,11 +41,20 @@ export default function DescriptionAndFeaturesSection({
         flexWrap={{ base: "wrap", sm: "nowrap" }}
       >
         <FormLabel w="full">
-          <HStack w="full" justifyContent="space-between" alignItems="center">
-            <Text as="span" mb="1rem" fontSize="1.4rem" fontWeight="500">
+          <VStack
+            gap=".5rem"
+            w="full"
+            justifyContent="space-between"
+            alignItems="start"
+            mb="1rem"
+          >
+            <Text as="span" fontSize="1.4rem" fontWeight="500">
               Decription
             </Text>
-          </HStack>
+            {descriptionError && (
+              <ErrorText m="0">{descriptionError}</ErrorText>
+            )}
+          </VStack>
           <Input
             value={description}
             name="description"
@@ -71,7 +80,6 @@ export default function DescriptionAndFeaturesSection({
             }}
             {...getErrorPropsV1(descriptionError)}
           />
-          {descriptionError && <ErrorText>{descriptionError}</ErrorText>}
         </FormLabel>
       </HStack>
       <VStack alignItems="start" gap="1rem">
