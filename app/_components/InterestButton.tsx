@@ -83,7 +83,9 @@ export default function InterestButton({
       if (existingInterest.accepted)
         return {
           onClick: () => {
-            console.log("djdjaccepted")
+            router.push(
+              `/messenger?otherUser=${existingInterest?.docOwner === user?._id ? existingInterest?.sender?._id : existingInterest?.docOwner}`
+            )
           },
           children: "Send message",
         }
@@ -103,7 +105,7 @@ export default function InterestButton({
       children: "Show Interest",
     }
   }, [existingInterest, handleSendInterest, router, isSender, handleAccept])
-
+  console.log(existingInterest)
   return (
     <>
       <Button
