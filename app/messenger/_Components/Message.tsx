@@ -5,28 +5,31 @@ import { MutableRefObject } from "react"
 export default function Message({
   message,
   messageRef,
+  isSameSender,
   ...props
 }: FlexProps & {
+  isSameSender: boolean
   message: MessageInterface
   messageRef?: MutableRefObject<HTMLDivElement | null>
 }) {
   return (
     <>
       <Flex
-        background="#D9D9D92A"
-        w="fit-content"
+        w="max-content"
         maxW={{ base: "28rem", sm: "30rem", md: "50rem" }}
-        px="1.5rem"
-        py="1rem"
+        px=".9rem"
+        py=".6rem"
         rounded="1.2rem"
-        flexDir="column"
+        gap=".5rem"
+        color="gray.main"
+        mb={isSameSender ? ".2rem" : "1.2rem"}
         ref={messageRef}
         {...props}
       >
-        <Text fontSize={{ base: "1.2rem", md: "1.6rem" }} lineHeight="150%">
+        <Text fontSize={{ base: "1.4rem" }} lineHeight="150%">
           {message.text}
         </Text>
-        <Text alignSelf="end" color="gray.main">
+        <Text alignSelf="end" color="gray.100">
           {new Date(message.createdAt).toLocaleTimeString("en-us", {
             minute: "numeric",
             hour: "numeric",

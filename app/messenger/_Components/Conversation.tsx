@@ -13,7 +13,7 @@ export default function Conversation({
   messages: MessageInterface[]
   canScrollToLatestMessage: boolean
 }) {
-  const { user } = useAppSelector(store => store.auth)
+  const { user } = useAppSelector((store) => store.auth)
   // const { socket } = useContext(MessengerContext)
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
@@ -47,18 +47,17 @@ export default function Conversation({
 
   return (
     <>
-      <VStack
-        gap="3rem"
-        alignItems="start"
-        px={{ base: "3rem", md: "5rem" }}
-        py="3rem"
-      >uuu
+      <VStack alignItems="start" px={{ base: "3rem", md: "5rem" }} py="3rem">
         {messages.map((msg, idx, list) => (
           <Message
             key={msg._id}
-            shadow="md"
+            isSameSender={list[idx + 1]?.sender === msg.sender}
+            shadow="sm"
             ml={user?._id === msg.sender ? "auto" : ""}
-            bg={user?._id === msg.sender ? "" : "brand.10"}
+            bg={user?._id === msg.sender ? "brand.10" : "white"}
+            borderRadius={
+              user?._id === msg.sender ? "8px 0 8px 8px" : "0 8px 8px 8px"
+            }
             message={msg}
             messageRef={idx === list.length - 1 ? lastMessageRef : undefined}
           />
