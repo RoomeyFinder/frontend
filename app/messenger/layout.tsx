@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     }
   }, [dispatch, hasFetchedUserConversations, user])
   return (
-    <>
+    <Box bg="#3a86ff0a">
       <VStack
         w="full"
         alignItems="stretch"
@@ -38,6 +38,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         gap=".5rem"
         overflow="hidden"
         bg="white"
+        maxW="125rem"
+        mx="auto"
       >
         <Box w="full" pos="sticky" zIndex="200" top="0"></Box>
         <Show above="md">
@@ -99,6 +101,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Box>
         </Show>
       </VStack>
-    </>
+    </Box>
   )
 }
