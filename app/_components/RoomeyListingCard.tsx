@@ -1,11 +1,11 @@
-import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
+import { Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
-import DotSeparator from "./DotSeparator"
 import User from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import { useRouter } from "next/navigation"
+import DotSeparator from "./DotSeparator"
 
 export default function RoomeyListingCard({
   variant,
@@ -31,7 +31,8 @@ export default function RoomeyListingCard({
       background="transparent"
       cursor="pointer"
       h="full"
-      _hover={{ background: "white", shadow: "md" }}
+      onClick={() => router.push(`/users/${user._id}`)}
+      _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
     >
       {!isLocked && (
         <FavouriteButton listingId={user._id} type={FavoriteType.USER} />
@@ -41,7 +42,7 @@ export default function RoomeyListingCard({
         width={100}
         height={100}
       />
-      <NameAndAge
+      <NameAgeAndGender
         name={`${user.firstName} ${user.lastName}`}
         ageInYears={
           user && user.settings?.isAgeVisibleOnProfile
@@ -49,24 +50,25 @@ export default function RoomeyListingCard({
               new Date(user?.dob || Date.now()).getFullYear()
             : 0
         }
+        gender={user.gender}
       />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <Box onClick={() => router.push(`/users/${user._id}`)}>
-        {user.about && <AboutSection about={user.about} />}
-      </Box>
+      <VStack>{user.about && <AboutSection about={user.about} />}</VStack>
     </Flex>
   )
 }
 
-function NameAndAge({
+function NameAgeAndGender({
   name,
   ageInYears,
+  gender,
 }: {
   name: string
-  ageInYears: number
+  ageInYears?: number
+  gender: string
 }) {
   return (
-    <Flex gap="1rem" alignItems="center">
+    <VStack gap="1rem" alignItems="center">
       <Heading
         as="h6"
         fontSize="1.9rem"
@@ -76,16 +78,30 @@ function NameAndAge({
       >
         {name}
       </Heading>
-      <DotSeparator />
-      <Text
-        fontSize="1.4rem"
-        fontWeight="normal"
-        lineHeight="2.4rem"
-        color="gray.100"
-      >
-        {ageInYears || "**"}yrs
-      </Text>
-    </Flex>
+      <Flex alignItems="center" gap="1rem">
+        <Text
+          textTransform="capitalize"
+          color="gray.main"
+          fontSize="1.4rem"
+          fontWeight="500"
+        >
+          {gender}
+        </Text>
+        {ageInYears ? (
+          <>
+            <DotSeparator />
+            <Text
+              fontSize="1.4rem"
+              fontWeight="normal"
+              lineHeight="2.4rem"
+              color="gray.100"
+            >
+              {ageInYears ? `${ageInYears}yrs` : ""}
+            </Text>
+          </>
+        ) : null}
+      </Flex>
+    </VStack>
   )
 }
 
