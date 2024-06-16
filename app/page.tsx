@@ -13,8 +13,8 @@ import { RoomListingCardSkeleton } from "./_components/Skeletons/ListingCardSkel
 import Image from "next/image"
 import heroImage from "./_assets/images/hero-image.jpg"
 import ForRent from "./_assets/SVG/ForRent"
-import Loading from "./_assets/SVG/Loading"
 import { useRouter } from "next/navigation"
+import SkeletalLoading from "./_components/Skeletons/SkeletalLoader"
 
 export default function Home() {
   return (
@@ -157,15 +157,7 @@ function ListingsSection() {
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
           {loading ? (
-            <Flex
-              justifyContent="center"
-              opacity=".8"
-              mx="auto"
-              w="100%"
-              maxW="40rem"
-            >
-              <Loading />
-            </Flex>
+            <SkeletalLoading variant="rooms" />
           ) : (
             <RoomsList
               rooms={listings}

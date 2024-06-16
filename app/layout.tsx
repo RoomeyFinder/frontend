@@ -12,6 +12,7 @@ import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
 import ReduxProvider from "./_providers/ReduxProvider"
+import LayoutClientProvider from "./_providers/LayoutClientProvider"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -33,7 +34,7 @@ export default function RootLayout({
                   <>
                     <AuthModalProvider>
                       <GlobalLayout>
-                        {children}
+                        <LayoutClientProvider>{children}</LayoutClientProvider>
                         <AuthModal />
                       </GlobalLayout>
                     </AuthModalProvider>

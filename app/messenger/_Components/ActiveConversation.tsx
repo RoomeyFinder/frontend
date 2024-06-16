@@ -1,25 +1,19 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  Heading,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Text,
-} from "@chakra-ui/react"
+import { Avatar, Box, CloseButton, Flex, Heading } from "@chakra-ui/react"
 import Conversation from "./Conversation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-// import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import ConversationInput from "./ConversationInput"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
-import { fetchUserMessages } from "@/app/_redux/thunks/messages.thunk"
+import {
+  fetchUserMessages,
+  markMessagesAsRead,
+} from "@/app/_redux/thunks/messages.thunk"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
 import { socket } from "@/app/_redux/slices/messages.slice"
-import { SmallThreeDotIcon } from "@/app/_assets/SVG/ThreeDotIcon"
 import User from "@/app/_types/User"
-// import { MessagesContext } from "@/app/_providers/MessagesProvider"
-// import { useAppSelector } from "@/app/_redux"
+import {
+  removeActiveConversation,
+  updateConversation,
+} from "@/app/_redux/slices/conversations.slice"
 
 export default function ActiveConversation() {
   const dispatch = useAppDispatch()
@@ -34,10 +28,23 @@ export default function ActiveConversation() {
   )
 
   useEffect(() => {
-    if (activeConversation && !messagesInActiveConversation) {
-      dispatch(fetchUserMessages(activeConversation._id)).then(console.log)
+    if (activeConversation && activeConversation?.unreadMsgsCount > 0) {
+      dispatch(markMessagesAsRead(activeConversation._id)).then(() => {
+        dispatch(
+          updateConversation({
+            id: activeConversation._id,
+            update: {
+              unreadMsgsCount: 0,
+            },
+          })
+        )
+      })
     }
-    console.log("djflsdf;a")
+  }, [dispatch, activeConversation])
+  useEffect(() => {
+    if (activeConversation && !messagesInActiveConversation) {
+      dispatch(fetchUserMessages(activeConversation._id))
+    }
   }, [messagesInActiveConversation, activeConversation, dispatch])
   const { user } = useAppSelector((store) => store.auth)
 
@@ -58,19 +65,13 @@ export default function ActiveConversation() {
 
   const handleSendMessage = useCallback(
     (msg: string) => {
-      console.log(socket, msg)
       socket.then((socket) =>
-        socket.emit("MESSAGE", {
+        socket.emit(CONVERSATION_EVENTS.MESSAGE, {
           recipient: recipient?._id,
           text: msg,
           conversationId: activeConversation?._id,
         })
       )
-      // socket?.emit(CONVERSATION_EVENTS.MESSAGE, {
-      //   recipient: recipient?._id,
-      //   text: msg,
-      //   conversationId: activeConversation?._id,
-      // })
     },
     [activeConversation?._id, recipient]
   )
@@ -78,7 +79,6 @@ export default function ActiveConversation() {
   useEffect(() => {
     const currentConversationRef = conversationsContainerRef.current
     currentConversationRef?.addEventListener("scroll", (e) => {
-      console.log((e.target as any).scrollHeight - (e.target as any).scrollTop)
       setIsUserIntentionallyScrolling(
         e.target != null &&
           (e.target as any).scrollHeight - (e.target as any).scrollTop > 900
@@ -90,14 +90,9 @@ export default function ActiveConversation() {
   }, [])
   return (
     <>
-      <Box
-        w="full"
-        position="relative"
-        h="100%"
-        overflow="hidden"
-      >
+      <Box w="full" position="relative" h="100%" overflow="hidden">
         <ConversationHeader
-          closeConversation={() => {}}
+          closeConversation={() => dispatch(removeActiveConversation())}
           otherUser={recipient as any}
         />
         <Box overflow="auto" h="80%" ref={conversationsContainerRef}>
@@ -142,11 +137,23 @@ function ConversationHeader({
           <Avatar />
           <Heading
             textTransform="capitalize"
-            fontSize={{ base: "1.8rem", sm: "2rem" }}
+            fontWeight="600"
+            fontSize={{ base: "1.8rem" }}
           >
             {otherUser?.firstName} {otherUser?.lastName}
           </Heading>
         </Flex>
+        <CloseButton
+          ml="auto"
+          rounded="full"
+          size="xl"
+          border="1px solid"
+          borderColor="brand.main"
+          w="3rem"
+          h="3rem"
+          display={{ base: "none", md: "block" }}
+          onClick={() => closeConversation()}
+        />
       </Flex>
     </Box>
   )

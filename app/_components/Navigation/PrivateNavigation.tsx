@@ -11,9 +11,6 @@ import {
   MenuList,
   Show,
   chakra,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   Badge,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
@@ -21,17 +18,18 @@ import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
 import { baseNavItemStyles } from "./SupportNavList"
 import { useRouter } from "next/navigation"
 import StandAloneIcon from "../StandaloneIcon"
-import NotificationsDropdown from "../Notifications/NotificationsDropdown"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import UserIcon from "@/app/_assets/SVG/UserIcon"
 import { logout } from "@/app/_redux/slices/auth.slice"
 import DownChevron from "@/app/_assets/SVG/DownChevron"
 import useGetUnseenNotificationsCount from "@/app/_hooks/useGetUnseenNotificationsCount"
+import useGetUnreadMessagesCount from "@/app/_hooks/useGetUnreadMessagesCount"
 
 export default function PrivateNavigation() {
   const router = useRouter()
   const unseenNotificationsCount = useGetUnseenNotificationsCount()
+  const unreadMsgsCount = useGetUnreadMessagesCount()
   return (
     <Flex alignItems="center" gap="4rem">
       <Button
@@ -70,11 +68,32 @@ export default function PrivateNavigation() {
               </Badge>
             ) : null}
           </StandAloneIcon>
-          <Text as="button" onClick={() => router.push("/messenger")}>
-            <StandAloneIcon>
-              <MessageIcon />
-            </StandAloneIcon>
-          </Text>
+          <StandAloneIcon
+            pos="relative"
+            cursor="pointer"
+            onClick={() => router.push("/messenger")}
+          >
+            <MessageIcon />
+            {unreadMsgsCount ? (
+              <Badge
+                top="-.6rem"
+                bg="red.main"
+                color="white"
+                pos="absolute"
+                right="-.2rem"
+                w="1.7rem"
+                h="1.7rem"
+                rounded="full"
+                fontSize=".9rem"
+                fontWeight="700"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                {unreadMsgsCount}
+              </Badge>
+            ) : null}
+          </StandAloneIcon>
         </Flex>
       </Show>
       <MobileNavigation />
@@ -205,7 +224,6 @@ function MainPrivateNav() {
 // }
 
 export function InterestsAccessCount() {
-  const { user } = useAppSelector((store) => store.auth)
   return (
     <Box p=".8rem" w="full">
       <Flex

@@ -42,12 +42,14 @@ export default function GlobalLayout({
   useEffect(() => {
     !hasFetchedInitialListings && dispatch(fetchListings())
   }, [dispatch, hasFetchedInitialListings])
-  
+
   const { user } = useAppSelector((store) => store.auth)
   const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
   const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
   const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
-  const { hasFetchedNotifications } = useAppSelector((store) => store.notifications)
+  const { hasFetchedNotifications } = useAppSelector(
+    (store) => store.notifications
+  )
 
   useEffect(() => {
     if (user) {
@@ -61,8 +63,7 @@ export default function GlobalLayout({
     hasFetchedUserFavorites,
     hasFetchedUserInterests,
     hasFetchedUserListings,
-    hasFetchedUserListings,
-    hasFetchedUserInterests,
+    hasFetchedNotifications,
     user,
   ])
 

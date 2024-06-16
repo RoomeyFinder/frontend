@@ -10,7 +10,7 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect } from "react"
 import Conversations from "./_Components/Conversations"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import { fetchUserConversations } from "../_redux/thunks/conversations.thunk"
@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     }
   }, [dispatch, hasFetchedUserConversations, user])
   return (
-    <>
+    <Box bg="#3a86ff0a">
       <VStack
         w="full"
         alignItems="stretch"
@@ -38,6 +38,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         gap=".5rem"
         overflow="hidden"
         bg="white"
+        maxW="125rem"
+        mx="auto"
       >
         <Box w="full" pos="sticky" zIndex="200" top="0"></Box>
         <Show above="md">
@@ -99,6 +101,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Box>
         </Show>
       </VStack>
-    </>
+    </Box>
   )
 }

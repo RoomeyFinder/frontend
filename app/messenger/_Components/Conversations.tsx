@@ -1,7 +1,6 @@
 "use client"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import Conversation, { Message } from "@/app/_types/Conversation"
-// import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import {
   Avatar,
   Badge,
@@ -16,13 +15,13 @@ import Banner from "./Banner"
 import User from "@/app/_types/User"
 import NoConversation from "./NoConversations"
 import { setActiveConversation } from "@/app/_redux/slices/conversations.slice"
+import { capitalizeFirstLetter } from "@/app/_utils"
 
 export default function Conversations() {
   const dispatch = useAppDispatch()
   const { conversations, activeConversation } = useAppSelector(
     (store) => store.conversations
   )
-  const { messages } = useAppSelector((store) => store.messages)
   const { user } = useAppSelector((store) => store.auth)
   const getOtherUser = useCallback(
     (conversation: Conversation) => {
@@ -52,22 +51,17 @@ export default function Conversations() {
       case "All":
         return conversationsThatMatchSearch
       case "Unread":
-        return conversationsThatMatchSearch
-      // conversationsThatMatchSearch.filter(
-      //   (convo) => checkForUnreadMessagesCount(convo) > 0
-      // )
+        return conversationsThatMatchSearch.filter(
+          (convo) => convo.unreadMsgsCount > 0
+        )
       case "Read":
-        return conversationsThatMatchSearch
-      //  conversationsThatMatchSearch.filter(
-      //   (convo) => checkForUnreadMessagesCount(convo) === 0
-      // )
+        return conversationsThatMatchSearch.filter(
+          (convo) => convo.unreadMsgsCount === 0
+        )
       default:
         return conversationsThatMatchSearch
     }
-  }, [
-    conversationsThatMatchSearch,
-    selectedFilter,
-  ])
+  }, [conversationsThatMatchSearch, selectedFilter])
 
   return (
     <>
@@ -92,7 +86,7 @@ export default function Conversations() {
             isActive={activeConversation?._id === convo._id}
             otherUser={getOtherUser(convo)}
             latestMessage={convo.latestMessage}
-            countOfUnreadMsgs={9}
+            countOfUnreadMsgs={convo.unreadMsgsCount}
           />
         ))}
         {conversationsThatMatchFilter.length === 0 && (
@@ -140,33 +134,40 @@ function ConversationItem({
           borderColor="brand.main"
         >
           <Avatar
-            w={{ base: "3rem", md: "5rem" }}
-            h={{ base: "3rem", md: "5rem" }}
+            w={{ base: "4rem" }}
+            h={{ base: "4rem" }}
             src={otherUser?.profileImage?.secure_url}
             name={`${otherUser?.firstName} ${otherUser?.lastName}`}
-            bg="brand.50"
+            bg="#4267b2"
+            color="white"
           />
         </Flex>
-        <Box>
+        <Box flexBasis="45%">
           <Heading
-            fontSize={{ base: "1.2rem", md: "1.6rem" }}
+            fontSize={{ base: "1.6rem" }}
             textTransform="capitalize"
+            fontWeight="500"
+            noOfLines={1}
           >
             {otherUser?.firstName} {otherUser?.lastName}
-            <Text
-              as="span"
-              fontWeight="normal"
-              display="block"
-              fontSize={{ base: "1.4rem", sm: "1.6rem" }}
-              mt=".5rem"
-            >
-              {latestMessage?.text}
-            </Text>
           </Heading>
+          <Text
+            as="span"
+            fontWeight="normal"
+            display="block"
+            fontSize={{ base: "1.3rem" }}
+            mt=".5rem"
+            color="gray.main"
+            noOfLines={1}
+          >
+            {latestMessage?.sender === otherUser._id
+              ? `${capitalizeFirstLetter(otherUser.firstName || "")}: `
+              : "You: "}
+            {latestMessage?.text}
+          </Text>
         </Box>
         {countOfUnreadMsgs ? (
           <Badge
-            ml="auto"
             bg="brand.main"
             color="white"
             rounded="full"
@@ -176,7 +177,8 @@ function ConversationItem({
             justifyContent="center"
             alignItems="center"
             display="flex"
-            mr={{ base: "1.5rem", md: "4rem" }}
+            mr={{ base: ".5rem", md: "1rem" }}
+            ml="auto"
             fontWeight="700"
             fontSize="1rem"
           >

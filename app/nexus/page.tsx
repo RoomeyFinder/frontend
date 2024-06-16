@@ -1,17 +1,12 @@
 "use client"
-import {
-  GridItem,
-  Heading,
-  SimpleGrid,
-  VStack,
-} from "@chakra-ui/react"
+import { GridItem, Heading, SimpleGrid, VStack } from "@chakra-ui/react"
 import { useAppSelector } from "../_redux"
 import RoomeyListingCard from "../_components/RoomeyListingCard"
 import { useCallback } from "react"
 import RoomListingCard from "../_components/RoomListingCard"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
-import Loading from "../_assets/SVG/Loading"
+import SkeletalLoading from "../_components/Skeletons/SkeletalLoader"
 
 export default function NexusPage() {
   const { user } = useAppSelector((store) => store.auth)
@@ -28,30 +23,30 @@ export default function NexusPage() {
         alignItems={loadingRoomies || loadingRooms ? "center" : "start"}
         gap="10rem"
       >
-        {roomies.length > 0 &&
+        {(loadingRoomies || roomies.length > 0) &&
           (user.preferences?.lookingFor === "roommate" ||
             user.preferences?.lookingFor === "both" ||
             !user.preferences?.lookingFor) && (
-          <VStack gap="3rem" alignItems="start" as="section" w="full">
-            <Heading fontWeight="600" fontSize="3.2rem">
+            <VStack gap="3rem" alignItems="start" as="section" w="full">
+              <Heading fontWeight="600" fontSize="3.2rem">
                 Recommended Profiles
-            </Heading>
-            <RecomendationsDisplay type="Roomey" list={roomies} />
-          </VStack>
-        )}
-        {loadingRoomies && <Loading />}
-        {rooms.length > 0 &&
+              </Heading>
+              <RecomendationsDisplay type="Roomey" list={roomies} />
+              {loadingRoomies && <SkeletalLoading  variant="roomies" />}
+            </VStack>
+          )}
+        {(loadingRooms || rooms.length > 0) &&
           (user.preferences?.lookingFor === "room" ||
             user.preferences?.lookingFor === "both" ||
             !user.preferences?.lookingFor) && (
-          <VStack gap="3rem" alignItems="start" as="section" w="full">
-            <Heading fontWeight="600" fontSize="3.2rem">
+            <VStack gap="3rem" alignItems="start" as="section" w="full">
+              <Heading fontWeight="600" fontSize="3.2rem">
                 Recommended Rooms
-            </Heading>
-            <RecomendationsDisplay type="Room" list={rooms} />
-          </VStack>
-        )}
-        {loadingRoomies && <Loading />}
+              </Heading>
+              <RecomendationsDisplay type="Room" list={rooms} />
+              {loadingRoomies && <SkeletalLoading variant="rooms" />}
+            </VStack>
+          )}
       </VStack>
     </>
   )
@@ -64,7 +59,6 @@ function RecomendationsDisplay({
   type: "Roomey" | "Room"
   list: (User | Listing)[]
 }) {
-
   const getChildComponent = useCallback(
     (data: User | Listing) =>
       type === "Roomey" ? (
@@ -91,3 +85,4 @@ function RecomendationsDisplay({
     </>
   )
 }
+

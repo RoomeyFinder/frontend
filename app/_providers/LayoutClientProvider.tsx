@@ -7,7 +7,6 @@ import {
   fetchRoomRecommendations,
   fetchRoomiesRecommendations,
 } from "../_redux/thunks/recommendations.thunk"
-import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserConversations } from "../_redux/thunks/conversations.thunk"
 import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
@@ -22,7 +21,9 @@ export default function LayoutDispatchProvider({
   const { user } = useAppSelector((store) => store.auth)
   const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
   const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
-  const { hasFetchedUserConversations } = useAppSelector((store) => store.conversations)
+  const { hasFetchedUserConversations } = useAppSelector(
+    (store) => store.conversations
+  )
   const { hasFetchedRooms, hasFetchedRoomies } = useAppSelector(
     (store) => store.recommendations
   )
@@ -35,17 +36,20 @@ export default function LayoutDispatchProvider({
       !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
       !hasFetchedRooms && dispatch(fetchRoomRecommendations())
       !hasFetchedRoomies && dispatch(fetchRoomiesRecommendations())
-      !hasFetchedUserConversations && dispatch(fetchUserConversations())
     }
   }, [
     dispatch,
-    hasFetchedUserConversations,
     hasFetchedUserFavorites,
     hasFetchedUserInterests,
     hasFetchedRoomies,
     hasFetchedRooms,
     user,
   ])
+  useEffect(() => {
+    if (user) {
+      !hasFetchedUserConversations && dispatch(fetchUserConversations())
+    }
+  }, [dispatch, hasFetchedUserConversations, user])
   useProtectRoutes()
 
   return <>{children}</>
