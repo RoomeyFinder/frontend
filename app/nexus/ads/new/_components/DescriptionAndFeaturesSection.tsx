@@ -9,6 +9,9 @@ import {
 import { adFeatures } from "@/app/_data/adFeatures"
 import useCategorizeListOfObjects from "@/app/_hooks/useCategorizeListOfObjects"
 import TextCheckbox from "@/app/nexus/me/_components/TextCheckbox"
+import { useState } from "react"
+import { getErrorPropsV1 } from "@/app/signup/utils"
+import ErrorText from "@/app/_components/Auth/ErrorText"
 
 export default function DescriptionAndFeaturesSection({
   description,
@@ -27,6 +30,9 @@ export default function DescriptionAndFeaturesSection({
     list: adFeatures as { icon: any; value: any; category: any }[],
     keyToCategorizeBy: "category",
   })
+
+  const [descriptionError, setDescriptionError] = useState("")
+
   return (
     <VStack w="full" alignItems="start" pb="3rem" pt="1rem" gap="2.8rem">
       <HStack
@@ -39,17 +45,6 @@ export default function DescriptionAndFeaturesSection({
             <Text as="span" mb="1rem" fontSize="1.4rem" fontWeight="500">
               Decription
             </Text>
-            <Text as="p" fontSize="1.2rem" fontWeight="500" color="gray.main">
-              {description.trim().length === 0 && (
-                <>A minimum of 50 characters and a maximum of 1500</>
-              )}
-              {description.trim().length < 50 && (
-                <>{description.trim().length} Characters</>
-              )}
-              {description.trim().length >= 1200 && (
-                <>{1500 - description.trim().length} Characters left</>
-              )}
-            </Text>
           </HStack>
           <Input
             value={description}
@@ -61,22 +56,38 @@ export default function DescriptionAndFeaturesSection({
             h="22rem"
             resize="none"
             isDisabled={isSubmitting}
-            onChange={(e) =>
-              e.target.value.length <= 1500 &&
-              handleDescriptionChange(e.target.value)
-            }
+            onChange={(e) => {
+              if (e.target.value.length <= 1500) {
+                handleDescriptionChange(e.target.value)
+                setDescriptionError("")
+              } else setDescriptionError("A maximum of 1500 characters")
+            }}
+            onBlur={() => {
+              if (description.length < 50)
+                setDescriptionError("A minimum of 50 characters")
+              else if (description.length >= 1500)
+                setDescriptionError("A maximum of 1500 characters")
+              // else setDescriptionError("")
+            }}
+            {...getErrorPropsV1(descriptionError)}
           />
+          {descriptionError && <ErrorText>{descriptionError}</ErrorText>}
         </FormLabel>
       </HStack>
       <VStack alignItems="start" gap="1rem">
-        <HStack w="full" justifyContent="space-between" alignItems="center">
+        <VStack
+          gap=".5rem"
+          w="full"
+          justifyContent="space-between"
+          alignItems="start"
+        >
           <Heading fontSize="1.4rem" fontWeight="600">
             Features
           </Heading>
-          <Text as="p" fontSize="1.2rem" fontWeight="500" color="gray.main">
+          <ErrorText m="0">
             {selectedFeatures.length < 10 && <>A minimum of 10 features</>}
-          </Text>
-        </HStack>
+          </ErrorText>
+        </VStack>
         {Object.keys(categorizedList).map((key) => (
           <VStack key={key} w="full" alignItems="start">
             <Text fontSize="1.3rem" fontWeight="400">
