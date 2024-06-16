@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
 import Loading from "../_assets/SVG/Loading"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { setActiveConversation } from "../_redux/slices/conversations.slice"
 // import InactiveConversationView from "./_Components/InactiveConversationView"
 // import NoConversation from "./_Components/NoConversations"
@@ -47,8 +47,18 @@ function Page() {
   const router = useRouter()
   useEffect(() => {
     const conversationId = searchParams.get("convoId")
+    const otherUser = searchParams.get("otherUser")
     if (conversationId) {
       const conversation = conversations.find((it) => it._id === conversationId)
+      if (conversation) {
+        router.push("/messenger")
+        dispatch(setActiveConversation(conversation))
+      }
+    }
+    if (otherUser) {
+      const conversation = conversations.find(
+        (it) => it.otherUser?._id === otherUser || it.creator?._id === otherUser
+      )
       if (conversation) {
         router.push("/messenger")
         dispatch(setActiveConversation(conversation))
