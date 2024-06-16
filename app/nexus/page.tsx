@@ -1,15 +1,11 @@
 "use client"
-import { GridItem, HStack, Heading, SimpleGrid, VStack } from "@chakra-ui/react"
+import { GridItem, Heading, SimpleGrid, VStack } from "@chakra-ui/react"
 import { useAppSelector } from "../_redux"
 import RoomeyListingCard from "../_components/RoomeyListingCard"
 import { useCallback } from "react"
 import RoomListingCard from "../_components/RoomListingCard"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
-import {
-  RoomListingCardSkeleton,
-  RoomeyListingCardSkeleton,
-} from "../_components/Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "../_components/Skeletons/SkeletalLoader"
 
 export default function NexusPage() {

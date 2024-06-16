@@ -13,7 +13,7 @@ export default function SkeletalLoading({
   arrayLength?: number
 }) {
   const list = useMemo(() => {
-    const array = new Array()
+    const array = []
     array.length = arrayLength && arrayLength < 100 ? arrayLength : 4
     array.fill(0)
     return array

@@ -104,8 +104,14 @@ export default function InterestButton({
       onClick: handleSendInterest,
       children: "Show Interest",
     }
-  }, [existingInterest, handleSendInterest, router, isSender, handleAccept])
-  console.log(existingInterest)
+  }, [
+    existingInterest,
+    handleSendInterest,
+    router,
+    isSender,
+    handleAccept,
+    user?._id,
+  ])
   return (
     <>
       <Button

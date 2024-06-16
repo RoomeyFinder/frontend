@@ -1,4 +1,3 @@
-import useActOnInterest from "@/app/_hooks/useActOnInterest"
 import Conversation, { Message } from "@/app/_types/Conversation"
 import Interest from "@/app/_types/Interest"
 import Notification, { NotificationVariant } from "@/app/_types/Notification"
@@ -8,7 +7,6 @@ import {
   Box,
   Flex,
   Heading,
-  Spinner,
   Text,
   VStack,
   keyframes,
@@ -192,79 +190,79 @@ export default function NotificationItem({
   )
 }
 
-function AcceptInterestButton() {
-  const { handleAccept, loading } = useActOnInterest()
-  return (
-    <Text
-      onClick={(e) => {
-        e.stopPropagation()
-        handleAccept()
-      }}
-      as="button"
-      color="brand.main"
-      fontSize="1.4rem"
-      fontWeight="500"
-      gap=".5rem"
-    >
-      {loading ? <Spinner color="brand.main" size="sm" /> : <>Accept</>}
-    </Text>
-  )
-}
+// function AcceptInterestButton() {
+//   const { handleAccept, loading } = useActOnInterest()
+//   return (
+//     <Text
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         handleAccept()
+//       }}
+//       as="button"
+//       color="brand.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//     >
+//       {loading ? <Spinner color="brand.main" size="sm" /> : <>Accept</>}
+//     </Text>
+//   )
+// }
 
-function StartChatButton({ conversation }: { conversation: Conversation }) {
-  const router = useRouter()
-  return (
-    <Text
-      as="button"
-      color="brand.main"
-      fontSize="1.4rem"
-      fontWeight="500"
-      gap=".5rem"
-      onClick={(e) => {
-        e.stopPropagation()
-        // console.log(conversation)
-        return
-        router.push(`/messenger?convoId=${conversation?._id}`)
-      }}
-    >
-      Send a message
-    </Text>
-  )
-}
-function ViewMessageButton({ message }: { message: Message }) {
-  const router = useRouter()
-  return (
-    <Text
-      as="button"
-      color="brand.main"
-      fontSize="1.4rem"
-      fontWeight="500"
-      gap=".5rem"
-      onClick={(e) => {
-        e.stopPropagation()
-        router.push(`/messenger?convoId=${message?.conversationId}`)
-      }}
-    >
-      View
-    </Text>
-  )
-}
+// function StartChatButton({ conversation }: { conversation: Conversation }) {
+//   const router = useRouter()
+//   return (
+//     <Text
+//       as="button"
+//       color="brand.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         // console.log(conversation)
+//         return
+//         router.push(`/messenger?convoId=${conversation?._id}`)
+//       }}
+//     >
+//       Send a message
+//     </Text>
+//   )
+// }
+// function ViewMessageButton({ message }: { message: Message }) {
+//   const router = useRouter()
+//   return (
+//     <Text
+//       as="button"
+//       color="brand.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         router.push(`/messenger?convoId=${message?.conversationId}`)
+//       }}
+//     >
+//       View
+//     </Text>
+//   )
+// }
 
-function DeclineInterestButton() {
-  const { handleDecline, loading } = useActOnInterest()
-  return (
-    <Text
-      onClick={(e) => {
-        e.stopPropagation()
-        handleDecline()
-      }}
-      as="button"
-      color="gray.main"
-      fontSize="1.4rem"
-      fontWeight="500"
-      gap=".5rem"
-    >
-      {loading ? <Spinner color="brand.main" size="sm" /> : <>Decline</>}
-    </Text>
-  )
-}
+// function DeclineInterestButton() {
+//   const { handleDecline, loading } = useActOnInterest()
+//   return (
+//     <Text
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         handleDecline()
+//       }}
+//       as="button"
+//       color="gray.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//     >
+//       {loading ? <Spinner color="brand.main" size="sm" /> : <>Decline</>}
+//     </Text>
+//   )
+// }

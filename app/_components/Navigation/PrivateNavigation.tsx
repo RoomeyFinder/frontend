@@ -224,7 +224,6 @@ function MainPrivateNav() {
 // }
 
 export function InterestsAccessCount() {
-  const { user } = useAppSelector((store) => store.auth)
   return (
     <Box p=".8rem" w="full">
       <Flex

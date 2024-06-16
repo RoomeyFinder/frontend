@@ -7,7 +7,6 @@ import {
   fetchRoomRecommendations,
   fetchRoomiesRecommendations,
 } from "../_redux/thunks/recommendations.thunk"
-import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserConversations } from "../_redux/thunks/conversations.thunk"
 import useListenForMessengerEvents from "../_socket/eventListeners/messenger"

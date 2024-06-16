@@ -10,7 +10,7 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect } from "react"
 import Conversations from "./_Components/Conversations"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import { fetchUserConversations } from "../_redux/thunks/conversations.thunk"

@@ -29,7 +29,7 @@ export default function ActiveConversation() {
 
   useEffect(() => {
     if (activeConversation && activeConversation?.unreadMsgsCount > 0) {
-      dispatch(markMessagesAsRead(activeConversation._id)).then((res) => {
+      dispatch(markMessagesAsRead(activeConversation._id)).then(() => {
         dispatch(
           updateConversation({
             id: activeConversation._id,

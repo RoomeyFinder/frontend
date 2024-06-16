@@ -22,7 +22,6 @@ export default function Conversations() {
   const { conversations, activeConversation } = useAppSelector(
     (store) => store.conversations
   )
-  const { messages } = useAppSelector((store) => store.messages)
   const { user } = useAppSelector((store) => store.auth)
   const getOtherUser = useCallback(
     (conversation: Conversation) => {
@@ -116,7 +115,6 @@ function ConversationItem({
   latestMessage: Message | null
   countOfUnreadMsgs: number
 }) {
-  const { user } = useAppSelector((store) => store.auth)
   return (
     <>
       <Flex

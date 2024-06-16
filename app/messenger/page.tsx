@@ -1,5 +1,5 @@
 "use client"
-import { GridItem, Flex, Spinner } from "@chakra-ui/react"
+import { Flex, Spinner } from "@chakra-ui/react"
 // import ActiveConversation from "./_Components/ActiveConversation"
 // import Conversations from "./_Components/Conversations"
 // import Banner from "./_Components/Banner"
@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
 import Loading from "../_assets/SVG/Loading"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import {  useRouter, useSearchParams } from "next/navigation"
 import { setActiveConversation } from "../_redux/slices/conversations.slice"
 // import InactiveConversationView from "./_Components/InactiveConversationView"
 // import NoConversation from "./_Components/NoConversations"
@@ -64,7 +64,7 @@ function Page() {
         dispatch(setActiveConversation(conversation))
       }
     }
-  }, [searchParams, router, conversations])
+  }, [searchParams, router, conversations, dispatch])
 
   return (
     <>
