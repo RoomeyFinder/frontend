@@ -1,16 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { fetchUserMessages, markMessagesAsRead } from "../thunks/messages.thunk"
 import { Message } from "@/app/_types/Conversation"
-import socketIO from "socket.io-client"
-import localforage from "localforage"
-import STORAGE_KEYS from "@/app/STORAGE_KEYS"
+import { mergeArrays } from "@/app/_utils"
 
-export const socket = (async () =>
-  socketIO(`${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations` as string, {
-    auth: {
-      token: await localforage.getItem(STORAGE_KEYS.RF_TOKEN),
-    },
-  }))()
 
 interface IAuthState {
   messages: { [x: string]: Message[] }
@@ -39,10 +31,11 @@ export const messagesSlice = createSlice({
       if (action.payload.statusCode === 201)
         state.messages = {
           ...state.messages,
-          [action.payload.message.conversationId]: [
-            ...(state.messages[action.payload.message.conversationId] || []),
-            action.payload.message,
-          ],
+          [action.payload.message.conversationId]: mergeArrays(
+            [...(state.messages[action.payload.message.conversationId] || [])],
+            [action.payload.message],
+            "_id"
+          ),
         }
     },
   },

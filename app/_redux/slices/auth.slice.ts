@@ -41,6 +41,7 @@ export const authSlice = createSlice({
     ) => {
       state.user = action.payload.user
       state.token = action.payload.token
+      localStorage.setItem(STORAGE_KEYS.RF_TOKEN, action.payload.token)
       localforage.setItem(STORAGE_KEYS.RF_TOKEN, action.payload.token)
       localforage.setItem(STORAGE_KEYS.RF_USER, action.payload.user)
     },

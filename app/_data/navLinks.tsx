@@ -122,14 +122,6 @@ export const footerLinks = [
     name: "Legal",
     href: "/legal",
   },
-  {
-    name: "Help Center",
-    href: "/help",
-  },
-  {
-    name: "Testimonials",
-    href: "/testimonials",
-  },
 ]
 
 export const footerSubLinks = [
