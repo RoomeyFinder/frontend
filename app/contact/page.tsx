@@ -39,17 +39,6 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* <Hero bgImagePath="/images/contact-hero.png">
-        <Heading as="h1" variant="large" mb="2rem">
-          Contact us:
-        </Heading>
-        <VStack spacing="3rem" alignItems="start">
-          
-          <SocialLinks />
-          <Divider borderColor="gray.100" />
-        </VStack>
-        <HeroInput handleSubmit={goToForm} />
-      </Hero> */}
       <Flex flexDir="column" alignItems="center" pos="relative" py="4rem">
         <Heading as="h2" variant="md" mb="1rem" fontWeight="500">
           Contact Us
