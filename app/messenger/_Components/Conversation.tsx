@@ -41,7 +41,7 @@ export default function Conversation({
 
   return (
     <>
-      <VStack alignItems="start" px={{ base: "3rem", md: "5rem" }} py="3rem" h="full"> 
+      <VStack alignItems="start" px={{ base: "3rem", md: "5rem" }} py="3rem"> 
         {messages.map((msg, idx, list) => (
           <Message
             key={msg._id}
