@@ -12,9 +12,11 @@ import CarouselNavIcon from "../_assets/SVG/CarouselNavIcon"
 export default function Carousel({
   slides = [],
   swiperSlideContent,
+  height,
 }: {
   slides?: any[]
   swiperSlideContent: (props: any) => ReactNode
+  height?: string
 }) {
   const [isHovering, setIsHovering] = useState(false)
   const swiperRef = useRef<SwiperType>()
@@ -35,6 +37,9 @@ export default function Carousel({
         }}
         loop
         spaceBetween={10}
+        style={{
+          height: height || "277px",
+        }}
       >
         {slides.map((slide, idx) => (
           <SwiperSlide key={idx} style={{ height: "100%" }}>
