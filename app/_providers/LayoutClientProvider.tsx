@@ -1,7 +1,6 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
-import useProtectRoutes from "../_hooks/useProtectRoutes"
 import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
 import {
   fetchRoomRecommendations,
@@ -50,7 +49,6 @@ export default function LayoutDispatchProvider({
       !hasFetchedUserConversations && dispatch(fetchUserConversations())
     }
   }, [dispatch, hasFetchedUserConversations, user])
-  useProtectRoutes()
 
   return <>{children}</>
 }

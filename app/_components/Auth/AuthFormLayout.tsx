@@ -63,7 +63,6 @@ export default function AuthFormLayout({
   const nextRoute = useMemo(() => searchParams.get("next"), [searchParams])
 
   useEffect(() => {
-    toast.success(nextRoute)
     if (user && !loadingAuthState) window.location.replace(nextRoute || "/")
   }, [user, nextRoute, loadingAuthState])
 
