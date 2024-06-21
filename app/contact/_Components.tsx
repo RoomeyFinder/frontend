@@ -1,4 +1,12 @@
-import { Flex, Heading, Input, Textarea, Button, Box, Text } from "@chakra-ui/react"
+import {
+  Flex,
+  Heading,
+  Input,
+  Textarea,
+  Button,
+  Box,
+  Text,
+} from "@chakra-ui/react"
 import {
   ChangeEventHandler,
   RefObject,
@@ -18,7 +26,7 @@ export function ContactForm({
   handleChange,
   formRef,
   isLoading,
-  handleSubmit
+  handleSubmit,
 }: {
   formData: {
     name: string
@@ -34,17 +42,15 @@ export function ContactForm({
     <>
       <Flex
         minH="40dvh"
-        bg="white"
         textAlign="center"
         justifyContent="center"
         w="100%"
-        py={{ base: "8rem", md: "5rem" }}
+        zIndex="100"
+        pos="relative"
+        bg="transparent"
         ref={formRef}
       >
         <Box w="95dvw">
-          <Heading as="h2" variant="md" mb="3rem">
-            Leave a message
-          </Heading>
           <Flex
             flexWrap="wrap"
             gap="3rem"
@@ -65,6 +71,7 @@ export function ContactForm({
               value={formData.name}
               onChange={handleChange}
               borderColor="#7070704D"
+              variant="filled"
             />
             <Input
               placeholder="Your email"
@@ -73,6 +80,7 @@ export function ContactForm({
               value={formData.email}
               onChange={handleChange}
               borderColor="#7070704D"
+              variant="filled"
             />
             <Input
               onChange={handleChange}
@@ -84,11 +92,13 @@ export function ContactForm({
               h="25rem"
               rounded="1.2rem"
               borderColor="#7070704D"
+              minLength={10}
+              variant="filled"
             />
             <Button
               isLoading={isLoading}
               loadingText="Sending Message..."
-              _loading={{ backgroundColor: "brand.secondary"}}
+              _loading={{ backgroundColor: "brand.secondary" }}
               variant="brand-secondary"
               w="full"
               type="submit"
@@ -146,13 +156,25 @@ export function SocialLinks() {
   return (
     <Flex gap="1.7rem" alignItems="center">
       {links.map(({ Icon, href, name }) => (
-        <Text key={href} as="a" href={href} aria-description={name} target="_blank">
+        <Text
+          key={href}
+          as="a"
+          href={href}
+          aria-description={name}
+          target="_blank"
+        >
           <StandAloneIcon aria-label={name}>
             <Icon size="sm" variant="bird" />
           </StandAloneIcon>
         </Text>
       ))}
-      <Text lineHeight="normal" as="a" href="mailto:exploitenomah@gmail.com" target="_blank" aria-description={"Email"}>
+      <Text
+        lineHeight="normal"
+        as="a"
+        href="mailto:exploitenomah@gmail.com"
+        target="_blank"
+        aria-description={"Email"}
+      >
         <StandAloneIcon aria-label={"Email"}>
           <EmailIcon />
         </StandAloneIcon>
