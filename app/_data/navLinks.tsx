@@ -119,8 +119,12 @@ export const footerLinks = [
     href: "/contact",
   },
   {
-    name: "Legal",
-    href: "/legal",
+    name: "Terms & conditions",
+    href: "/terms-and-conditions",
+  },
+  {
+    name: "Privacy",
+    href: "/privacy",
   },
 ]
 
