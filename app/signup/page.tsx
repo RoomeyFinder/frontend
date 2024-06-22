@@ -7,9 +7,20 @@ import SignupProvider from "./_ContextProvider"
 import ContactForm from "./_Contact"
 import EmailVerficationForm from "./_EmailVerification"
 import SignupProgress from "./_SignupProgress"
-import { Box, Collapse, GridItem, Link, Text } from "@chakra-ui/react"
+import {
+  Box,
+  Collapse,
+  GridItem,
+  HStack,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import SignupContext from "./_Context"
 import Welcome from "./_Welcome"
+import { DividerWithCenteredText } from "../_components/PremiumModal"
+import GoogleSSOButton from "../_components/Auth/GoogleSSOButton"
+import FacebookSSOButton from "../_components/Auth/FacebookSSOButton"
 
 export default function Signup() {
   return (
@@ -126,6 +137,17 @@ function SignupConsumer() {
             </>
           </AuthFormLayout>
         </Box>
+        <VStack maxW="90rem" gap="2rem" mx="auto" alignItems="start" mt="-3rem">
+          <DividerWithCenteredText
+            maxW="50rem"
+            mx="auto"
+            text="Continue with"
+          />
+          <HStack w="full" gap="2rem" alignItems="center">
+            <GoogleSSOButton />
+            <FacebookSSOButton />
+          </HStack>
+        </VStack>
       </Collapse>
     </>
   )

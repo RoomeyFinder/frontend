@@ -20,7 +20,6 @@ export default function useHandleFacebookLogin(onSuccess?: () => void) {
           userData,
         },
       })
-      console.log(response, "ssfac")
       if (response.statusCode === 200 || response.statusCode === 201) {
         onSuccess && onSuccess()
         dispatch(
@@ -29,6 +28,7 @@ export default function useHandleFacebookLogin(onSuccess?: () => void) {
             token: response.token,
           })
         )
+        toast.success("Signed in successfully")
       } else {
         toast.error(
           response.message ||

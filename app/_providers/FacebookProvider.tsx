@@ -35,7 +35,6 @@ export function useSigninWithFacebook(
   handleResponse: (response: FBUser) => void
 ) {
   const getDetails = useCallback(() => {
-    console.log("response", "response", window.FB.api?.length)
     window.FB.api(
       "/me",
       "GET",
