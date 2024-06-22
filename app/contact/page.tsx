@@ -37,8 +37,14 @@ export default function ContactPage() {
 
   return (
     <>
-      <Flex flexDir="column" alignItems="center" pos="relative" py="4rem">
-        <Heading as="h2" variant="md" mb="1rem" fontWeight="500">
+      <Flex flexDir="column" alignItems="center" pos="relative" py="5rem">
+        <Heading
+          as="h2"
+          variant="md"
+          mb="1rem"
+          fontSize="3.6rem"
+          fontWeight="500"
+        >
           Contact Us
         </Heading>
         <PageText
