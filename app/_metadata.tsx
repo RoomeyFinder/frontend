@@ -2,7 +2,6 @@ import { Metadata } from "next"
 
 export default function appendSharedMetaData(metadataBase: Metadata): Metadata {
   return ({
-    ...metadataBase,
     title: "RoomeyFinder | Find a roommate",
     description: "Helping Nigerian students find roommates who are schoolmates with ease.",
     openGraph: {
@@ -15,6 +14,7 @@ export default function appendSharedMetaData(metadataBase: Metadata): Metadata {
         url: "https://roomeyfinder.com/og.png"
       }],
     },
-    metadataBase: new URL("https://roomeyfinder.com")
+    metadataBase: new URL("https://roomeyfinder.com"),
+    ...metadataBase,
   })
 } 
