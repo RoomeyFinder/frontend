@@ -3,10 +3,13 @@ import LoginForm from "./_Form"
 import AuthFormLayout from "../_components/Auth/AuthFormLayout"
 import { ChangeEventHandler, useCallback, useState } from "react"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
-import { useToast } from "@chakra-ui/react"
+import { HStack, VStack, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "../_redux"
 import { authenticate } from "../_redux/slices/auth.slice"
+import FacebookSSOButton from "../_components/Auth/FacebookSSOButton"
+import GoogleSSOButton from "../_components/Auth/GoogleSSOButton"
+import { DividerWithCenteredText } from "../_components/PremiumModal"
 
 export default function Login() {
   const router = useRouter()
@@ -92,6 +95,13 @@ export default function Login() {
           loginData={loginData}
         />
       </AuthFormLayout>
+      <VStack maxW="90rem" gap="2rem" mx="auto" alignItems="start" mt="3rem">
+        <DividerWithCenteredText maxW="50rem" my="1rem" mx="auto" text="Continue with" />
+        <HStack w="full" gap="2rem" alignItems="center">
+          <GoogleSSOButton />
+          <FacebookSSOButton />
+        </HStack>
+      </VStack>
     </>
   )
 }
