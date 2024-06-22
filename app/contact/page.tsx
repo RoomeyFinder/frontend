@@ -1,12 +1,9 @@
 "use client"
-import { Divider, VStack, Heading, Box, Flex } from "@chakra-ui/react"
-import Hero from "../_components/PublicPages/Hero"
+import { Heading, Flex } from "@chakra-ui/react"
 import { useState, useRef, useCallback, ChangeEventHandler } from "react"
-import { HeroInput, ContactForm, SocialLinks } from "./_Components"
+import { ContactForm } from "./_Components"
 import PageText from "../_components/PublicPages/Text"
 import useAxios from "../_hooks/useAxios"
-import useAppToast from "../_hooks/useAppToast"
-import ContactUsSVG from "../_assets/SVG/ContactUs"
 import toast from "react-hot-toast"
 
 const initialState = {
@@ -35,7 +32,7 @@ export default function ContactPage() {
     if (!isError) {
       setFormData(initialState)
     }
-  }, [toast, formData, fetchData])
+  }, [formData, fetchData])
 
   return (
     <>

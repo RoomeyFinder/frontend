@@ -14,7 +14,7 @@ const PrivacyPolicy = () => (
     </Heading>
     <Text mb={4}>
       ROOMEYFINDER LIMITED (Roomeyfinder.com) is committed to protecting your
-      privacy. Roommates International's privacy policy is outlined below. This
+      privacy. Roommates International&apos;s privacy policy is outlined below. This
       privacy policy is regularly reviewed and Roomeyfinder.com may amend it
       from time to time. While Roommates International will endeavour to notify
       you of any major changes to this Privacy Policy from time to time, you
@@ -29,7 +29,7 @@ const PrivacyPolicy = () => (
     </Text>
     <Text mb={4}>
       In this Policy, defined terms have the meaning given to them in
-      Roomeyfinder.com's Terms and Conditions of Use:{" "}
+      Roomeyfinder.com&apos;s Terms and Conditions of Use:{" "}
       <Link href="https://www.roomeyfinder.com/terms-and-conditions" isExternal>
         https://www.roomeyfinder.com/terms-and-conditions
       </Link>
@@ -49,7 +49,7 @@ const PrivacyPolicy = () => (
     </Text>
     <Text mb={4}>
       You may delete your account at any time, for any reason, by visiting your
-      account settings and locating "Delete Account" at the bottom of the page.
+      account settings and locating &apos;Delete Account&apos; at the bottom of the page.
       Once an account is deleted, your personal information and active listings
       will be removed from the website.
     </Text>
@@ -72,7 +72,7 @@ const PrivacyPolicy = () => (
       In addition to the primary purpose for which Roomeyfinder.com collects and
       uses your personal information, Roomeyfinder.com and its nominated agents
       may also use the personal information Roomeyfinder.com collects, and you
-      consent to Roomeyfinder.com's use of that personal information:
+      consent to Roomeyfinder.com&apos;s use of that personal information:
     </Text>
     <UnorderedList mb={4}>
       <ListItem>
@@ -96,7 +96,7 @@ const PrivacyPolicy = () => (
     <Text mb={4}>
       Roomeyfinder.com may disclose your personal information, and you consent
       to Roomeyfinder.com disclosing your personal information, to
-      Roomeyfinder.com's related bodies corporate and associated entities (as
+      Roomeyfinder.com&apos;s related bodies corporate and associated entities (as
       those terms are defined in the Companies and Allied Matters Act (CAMA) 2020.) (Other
       Entities) whereby your personal information will be collected, used,
       disclosed, managed and stored in accordance with this policy.
@@ -112,7 +112,7 @@ const PrivacyPolicy = () => (
         services on its behalf;
       </ListItem>
       <ListItem>
-        that are Roomeyfinder.com's agents, business partners or joint venture
+        that are Roomeyfinder.com&apos;s agents, business partners or joint venture
         entities;
       </ListItem>
       <ListItem>
@@ -128,7 +128,7 @@ const PrivacyPolicy = () => (
       </ListItem>
       <ListItem>
         as part of a sale (or proposed sale) of all or part of
-        Roomeyfinder.com's business or the preparation for a listing of
+        Roomeyfinder.com&apos;s business or the preparation for a listing of
         Roomeyfinder.com; and/or
       </ListItem>
       <ListItem>as required or permitted by any law.</ListItem>
@@ -160,7 +160,7 @@ const PrivacyPolicy = () => (
       this website cannot be guaranteed. Roomeyfinder.com does not accept
       responsibility for misuse of, or loss of, or unauthorised access to, your
       personal information where the security of that information is not within
-      Roomeyfinder.com's control.
+      Roomeyfinder.com&apos;s control.
     </Text>
 
     <Heading as="h2" variant="sm" mb={4}>
@@ -238,8 +238,8 @@ const PrivacyPolicy = () => (
       Roomeyfinder.com collects data about your browsing activity on the
       Website, such as the search terms you have used and other details of the
       way you use the Website, in order to provide suggested search results to
-      you and, once aggregated with other users' data, other users based on your
-      and other users' searches on the Website. This data does not include your
+      you and, once aggregated with other users&apos; data, other users based on your
+      and other users&apos; searches on the Website. This data does not include your
       personal information. However, this data may be associated with your
       personal information if you have an Account or if you sign-up for an
       Account in the future. The collection, use and disclosure, storage of, and

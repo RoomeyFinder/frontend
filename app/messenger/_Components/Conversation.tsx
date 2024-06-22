@@ -27,21 +27,20 @@ export default function Conversation({
 
   useEffect(() => {
     scrollToLatestMsg()
-    socket.on("MESSAGE", (d) => {
-      if (canScrollToLatestMessage)
-        lastMessageRef.current?.scrollIntoView(false)
+    const lastMessage = lastMessageRef.current
+    socket.on("MESSAGE", () => {
+      if (canScrollToLatestMessage) lastMessage?.scrollIntoView(false)
     })
     return () => {
       socket.off("MESSAGE", () => {
-        if (canScrollToLatestMessage)
-          lastMessageRef.current?.scrollIntoView(false)
+        if (canScrollToLatestMessage) lastMessage?.scrollIntoView(false)
       })
     }
   }, [scrollToLatestMsg, canScrollToLatestMessage])
 
   return (
     <>
-      <VStack alignItems="start" px={{ base: "3rem", md: "5rem" }} py="3rem"> 
+      <VStack alignItems="start" px={{ base: "3rem", md: "5rem" }} py="3rem">
         {messages.map((msg, idx, list) => (
           <Message
             key={msg._id}

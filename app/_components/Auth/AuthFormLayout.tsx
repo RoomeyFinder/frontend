@@ -13,7 +13,6 @@ import { useSearchParams } from "next/navigation"
 import AuthProviderMethods from "./AuthProviderMethods"
 import RightArrow from "@/app/_assets/SVG/RightArrow"
 import { useAppSelector } from "@/app/_redux"
-import toast from "react-hot-toast"
 
 const modeTexts = {
   signin: {

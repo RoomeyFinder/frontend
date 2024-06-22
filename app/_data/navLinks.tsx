@@ -95,14 +95,6 @@ export const supportLinks = [
     name: "Contact",
     href: "/contact",
   },
-  {
-    name: "Legal",
-    href: "/legal",
-  },
-  {
-    name: "FAQ",
-    href: "/faq",
-  },
 ]
 
 export const footerLinks = [

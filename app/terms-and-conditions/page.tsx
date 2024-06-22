@@ -17,9 +17,7 @@ const Page = () => (
       <Text as="strong" display="block">
         Terms
       </Text>
-      <Text as="span">
-        For Roomeyfinder.com (including all subsidiaries).
-      </Text>
+      <Text as="span">For Roomeyfinder.com (including all subsidiaries).</Text>
       <Text as="span">
         This website (Website), including all subsidiaries, is owned, operated,
         and maintained by ROOMEYFINDER LIMITED. It provides an online community
@@ -128,8 +126,8 @@ const Page = () => (
     </List>
 
     <Text fontSize="1.6rem">
-      Discretion is granted to Roomeyfinder.com to delete, deactivate, or
-      edit any Content or Listings that are duplicated, breach our Terms and
+      Discretion is granted to Roomeyfinder.com to delete, deactivate, or edit
+      any Content or Listings that are duplicated, breach our Terms and
       Conditions, or are found to be inappropriate. Roomeyfinder.com does not
       make any representation or provide any warranty in respect of any user of
       the Website including, without limitation, any representation or warranty
@@ -184,15 +182,14 @@ const Page = () => (
       </ListItem>
       <ListItem>
         You represent and warrant that the information you provide to
-        Roomeyfinder.com to open an Account is true and correct. If, at any
-        time during the term of your Account, any of that information ceases to
-        be true and correct, you undertake to notify Roomeyfinder.com of the
-        change to that information as soon as is reasonably practicable.
+        Roomeyfinder.com to open an Account is true and correct. If, at any time
+        during the term of your Account, any of that information ceases to be
+        true and correct, you undertake to notify Roomeyfinder.com of the change
+        to that information as soon as is reasonably practicable.
       </ListItem>
       <ListItem>
-        Any personal information you provide to Roomeyfinder.com will be
-        treated in accordance with Roomeyfinder.com&apos;s Privacy Policy
-        available{" "}
+        Any personal information you provide to Roomeyfinder.com will be treated
+        in accordance with Roomeyfinder.com&apos;s Privacy Policy available{" "}
         <a href="https://www.roomeyfinder.com/privacy" target="_blank">
           here
         </a>
@@ -218,9 +215,9 @@ const Page = () => (
       <strong>2.2 Request Account Deletion</strong>
       <br />
       You may delete your account at any time, for any reason, by visiting your
-      account settings and locating "Delete Account" at the bottom of the page.
-      Once an account is deleted, your personal information and active listings
-      will be removed from the website.
+      account settings and locating &quot;Delete Account&quot; at the bottom of
+      the page. Once an account is deleted, your personal information and active
+      listings will be removed from the website.
     </Text>
 
     <Text fontSize="1.6rem">
@@ -289,7 +286,8 @@ const Page = () => (
       </ListItem>
       <ListItem>
         cause Roomeyfinder.com to lose (in whole or in part) the services of
-        Roomeyfinder.com's internet service providers (ISPs) or other suppliers;
+        Roomeyfinder.com&apos;s internet service providers (ISPs) or other
+        suppliers;
       </ListItem>
       <ListItem>
         introduce any computer viruses, macro viruses, trojan horses, worms or
@@ -629,7 +627,7 @@ const Page = () => (
       <ListItem>
         are unlawful, deceptive, misleading, fraudulent, threatening, abusive,
         harassing, defamatory, obscene, pornographic, have sexist, political or
-        racial character, and violate other people's rights, including any
+        racial character, and violate other people&apos;s rights, including any
         intellectual property rights, rights of privacy and rights of publicity,
       </ListItem>
       <ListItem>Violate these Terms and Conditions of Use</ListItem>
@@ -733,8 +731,8 @@ const Page = () => (
       supplied under or in connection with these Terms and Conditions of Use,
       which, or the effect of which, cannot be excluded or modified, and if we
       breach such term, condition, warranty or guarantee, then
-      Roomeyfinder.com's liability (if permitted by the relevant Act) is
-      limited, at Roomeyfinder.com's election, to the re-supplying of the
+      Roomeyfinder.com&apos;s liability (if permitted by the relevant Act) is
+      limited, at Roomeyfinder.com&apos;s election, to the re-supplying of the
       relevant services, a refund of the cost of having those services supplied,
       or payment of the cost of having the services re-supplied.
     </Text>

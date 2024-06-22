@@ -1,6 +1,5 @@
 import {
   Flex,
-  Heading,
   Input,
   Textarea,
   Button,
