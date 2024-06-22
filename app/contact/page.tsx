@@ -5,6 +5,7 @@ import { ContactForm } from "./_Components"
 import PageText from "../_components/PublicPages/Text"
 import useAxios from "../_hooks/useAxios"
 import toast from "react-hot-toast"
+import FAQS from "../_components/FAQs"
 
 const initialState = {
   name: "",
@@ -61,6 +62,7 @@ export default function ContactPage() {
           handleSubmit={handleSubmitContactForm}
         />
       </Flex>
+      <FAQS />
     </>
   )
 }

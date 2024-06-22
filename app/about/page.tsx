@@ -1,32 +1,58 @@
-import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
-import Hero from "../_components/PublicPages/Hero"
+import { Box, Flex, Heading, Text } from "@chakra-ui/react"
 import ChatIcon from "../_assets/SVG/ChatIcon"
 import Handlens from "../_assets/SVG/Handlens"
 import PeopleGroup from "../_assets/SVG/PeopleGroup"
 import FeatureCard from "../_components/FeatureCard"
+import AboutPageSvg from "../_assets/SVG/AboutPage"
 
 export default function Home() {
   return (
     <>
-      <Hero bgImagePath="/images/about-hero.png">
-        <Heading as="h1" variant="large" mb="2rem">
-          About us:
-        </Heading>
-        <Divider borderColor="gray.100" />
-        <Text
-          fontSize={{ base: "1.3rem", md: "1.6rem" }}
-          color="black"
-          my="3rem"
-          lineHeight="2.2rem"
-        >
-          Welcome to Roomeyfinder, we redefine the experience of finding the
-          perfect living space and compatible roommates. Our platform is
-          designed with precision, simplicity, and professionalism in mind,
-          offering a seamless solution for individuals seeking rooms and
-          roommates.
-        </Text>
-        <Divider borderColor="gray.100" />
-      </Hero>
+      <Flex
+        minH="40dvh"
+        bg="white"
+        justifyContent="space-between"
+        alignItems="center"
+        flexDir={{ base: "column", sm: "row" }}
+        pt={{ base: "5rem", md: "10rem" }}
+        pb={{ md: "5rem" }}
+        maxW="125rem"
+        w="90%"
+        mx="auto"
+      >
+        <>
+          <Box as="main">
+            <Heading
+              as="h1"
+              variant="xl"
+              fontWeight="500"
+              mb="2.5rem"
+              fontSize={{ base: "3.6rem", md: "5rem" }}
+            >
+              About Roomeyfinder
+            </Heading>
+
+            <Text
+              fontSize={{ base: "1.6rem", md: "2rem" }}
+              color="gray.main"
+              mb="4.9rem"
+              lineHeight="150%"
+              maxW="70rem"
+            >
+              Whether you&apos;re a student searching for a cozy apartment, a
+              professional seeking a shared living space, or a homeowner looking
+              for a compatible roommate, we&apos;ve got you covered.
+              Roomeyfinder is your go-to platform for finding the perfect living
+              arrangements. Our mission is to simplify the process of finding
+              rooms and roommates, creating harmonious living environments for
+              everyone.
+            </Text>
+          </Box>
+        </>
+        <Box w="90dvw" maxW={{ base: "35rem", lg: "45rem" }}>
+          <AboutPageSvg />
+        </Box>
+      </Flex>
       <FeaturesSection />
     </>
   )
@@ -44,17 +70,16 @@ function FeaturesSection() {
         py={{ base: "8rem", md: "5rem" }}
       >
         <Box as="section" w="95dvw">
-          <Heading as="h1" variant="md" mb="3rem">
+          <Heading as="h1" variant="md" mb="1.8rem">
             What Roomeyfinder offers
           </Heading>
           <Text
-            fontSize={{ base: "1.3rem", md: "1.6rem" }}
+            fontSize={{ base: "1.6rem", md: "2rem" }}
             color="gray.main"
             mb="5rem"
             lineHeight="2.2rem"
           >
-            Here at Roomeyfinder, we help you find your ideal living situation
-            or find a match for your space.
+            Finding your perfect roommate effortlessly.
           </Text>
           <Flex
             as="ul"

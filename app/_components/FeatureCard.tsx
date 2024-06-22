@@ -33,6 +33,7 @@ export default function FeatureCard({
           textAlign='left'
           fontSize='1.6rem'
           lineHeight='2.4rem'
+          color="gray.main"
         >
           {body}
         </Text>

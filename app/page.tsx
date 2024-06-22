@@ -46,8 +46,8 @@ function Hero() {
             as="h1"
             variant="xl"
             fontWeight="500"
-            mb="2.5rem"
-            fontSize={{ base: "4rem", md: "7rem" }}
+            mb="1rem"
+            fontSize={{ base: "3.6rem", md: "6rem" }}
           >
             Find Roomies & Rooms.
           </Heading>
@@ -55,7 +55,7 @@ function Hero() {
           <Text
             fontSize={{ base: "1.6rem", md: "2rem" }}
             color="gray.main"
-            mb="4.9rem"
+            mb="4rem"
             lineHeight="150%"
           >
             Whether you&apos;re a student searching for a cozy apartment, a
@@ -68,7 +68,7 @@ function Hero() {
             as={Link}
             href={user ? "/nexus/me" : "/signup"}
             variant={"brand"}
-            fontSize="2rem"
+            fontSize="1.6rem"
             width="fit-content"
             fontWeight="700"
           >
@@ -102,15 +102,15 @@ function FeaturesSection() {
           <Heading
             as="h1"
             variant="md"
-            mb="3rem"
-            fontSize={{ base: "3rem", md: "5rem" }}
-            fontWeight="600"
+            mb="1rem"
+            fontSize={{ base: "3rem", md: "4rem" }}
+            fontWeight="500"
           >
             What Roomeyfinder offers
           </Heading>
           <Text
-            fontSize={{ base: "1.7rem", md: "2.6rem" }}
-            mb="5rem"
+            fontSize={{ base: "1.6rem", md: "2rem" }}
+            mb="4rem"
             maxW="80rem"
             mx="auto"
             lineHeight="3rem"

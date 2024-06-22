@@ -26,13 +26,14 @@ export default function AppFooter() {
     <Box
       as="footer"
       py="2.4rem"
+      px="2.4rem"
       bg="#f4f4f480"
       display={pathname.toLowerCase().includes("messenger") ? "none" : "block"}
     >
       <Flex
         flexDir="column"
         gap="2.95rem"
-        maxW={{ base: "95%", md: "125rem" }}
+        maxW={{ base: "90%", lg: "125rem" }}
         mx="auto"
       >
         <FooterLinks />
