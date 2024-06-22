@@ -1,1075 +1,222 @@
 [
   {
-    "value": "Beauty",
-    "category": "Shopping and fashion"
+    "value": "Very Clean",
+    "category": "Cleanliness"
   },
   {
-    "value": "Cosmetics",
-    "category": "Shopping and fashion"
+    "value": "Moderately Clean",
+    "category": "Cleanliness"
   },
   {
-    "value": "Fragrances",
-    "category": "Shopping and fashion"
+    "value": "Casual",
+    "category": "Cleanliness"
   },
   {
-    "value": "Hair products",
-    "category": "Shopping and fashion"
+    "value": "Messy",
+    "category": "Cleanliness"
   },
   {
-    "value": "Spas",
-    "category": "Shopping and fashion"
+    "value": "Very Social",
+    "category": "Social Habits"
   },
   {
-    "value": "Tattoos",
-    "category": "Shopping and fashion"
+    "value": "Occasionally Social",
+    "category": "Social Habits"
   },
   {
-    "value": "Clothing",
-    "category": "Shopping and fashion"
+    "value": "Prefers Quiet",
+    "category": "Social Habits"
   },
   {
-    "value": "Children's clothing","category": "Shopping and fashion"
+    "value": "Reclusive",
+    "category": "Social Habits"
   },
   {
-    "value": "Men's clothing", "category": "Shopping and fashion"
+    "value": "Day Shift",
+    "category": "Work Schedule"
   },
   {
-    "value": "Shoes",
-    "category": "Shopping and fashion"
+    "value": "Night Shift",
+    "category": "Work Schedule"
   },
   {
-    "value": "Women's clothing","category": "Shopping and fashion"
+    "value": "Freelance/Remote",
+    "category": "Work Schedule"
   },
   {
-    "value": "Fashion accessories",
-    "category": "Shopping and fashion"
+    "value": "Student",
+    "category": "Work Schedule"
   },
   {
-    "value": "Dresses",
-    "category": "Shopping and fashion"
+    "value": "Early Riser",
+    "category": "Sleep Habits"
   },
   {
-    "value": "Handbags",
-    "category": "Shopping and fashion"
+    "value": "Night Owl",
+    "category": "Sleep Habits"
   },
   {
-    "value": "Sunglasses",
-    "category": "Shopping and fashion"
+    "value": "Flexible",
+    "category": "Sleep Habits"
   },
   {
-    "value": "Shopping",
-    "category": "Shopping and fashion"
+    "value": "Light Sleeper",
+    "category": "Sleep Habits"
   },
   {
-    "value": "Boutiques",
-    "category": "Shopping and fashion"
+    "value": "Heavy Sleeper",
+    "category": "Sleep Habits"
   },
   {
-    "value": "Luxury goods",
-    "category": "Shopping and fashion"
+    "value": "Vegan",
+    "category": "Dietary Preferences"
   },
   {
-    "value": "Online shopping",
-    "category": "Shopping and fashion"
+    "value": "Vegetarian",
+    "category": "Dietary Preferences"
   },
   {
-    "value": "Shopping malls",
-    "category": "Shopping and fashion"
+    "value": "Pescatarian",
+    "category": "Dietary Preferences"
   },
   {
-    "value": "Advertising",
-    "category": "Business and Industry"
+    "value": "Omnivore",
+    "category": "Dietary Preferences"
   },
   {
-    "value": "Agriculture",
-    "category": "Business and Industry"
+    "value": "Paleo",
+    "category": "Dietary Preferences"
   },
   {
-    "value": "Architecture",
-    "category": "Business and Industry"
+    "value": "Keto",
+    "category": "Dietary Preferences"
   },
   {
-    "value": "Aviation",
-    "category": "Business and Industry"
+    "value": "Fitness Enthusiast",
+    "category": "Hobbies and Interests"
   },
   {
-    "value": "Banking",
-    "category": "Business and Industry"
+    "value": "Gamer",
+    "category": "Hobbies and Interests"
   },
   {
-    "value": "Investment banking",
-    "category": "Business and Industry"
+    "value": "Musician",
+    "category": "Hobbies and Interests"
   },
   {
-    "value": "Online banking",
-    "category": "Business and Industry"
+    "value": "Artist",
+    "category": "Hobbies and Interests"
   },
   {
-    "value": "Retail banking",
-    "category": "Business and Industry"
+    "value": "Book Lover",
+    "category": "Hobbies and Interests"
   },
   {
-    "value": "Business",
-    "category": "Business and Industry"
+    "value": "Movie Buff",
+    "category": "Hobbies and Interests"
   },
   {
-    "value": "Construction",
-    "category": "Business and Industry"
+    "value": "Frequent Guests",
+    "category": "Guest Policies"
   },
   {
-    "value": "Design",
-    "category": "Business and Industry"
+    "value": "Occasional Guests",
+    "category": "Guest Policies"
   },
   {
-    "value": "Fashion design",
-    "category": "Business and Industry"
+    "value": "Rarely Any Guests",
+    "category": "Guest Policies"
   },
   {
-    "value": "Graphic design",
-    "category": "Business and Industry"
+    "value": "No Guests",
+    "category": "Guest Policies"
   },
   {
-    "value": "Interior design",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Economics",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Engineering",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Entrepreneurship",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Health care",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Higher education",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Management",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Marketing",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Nursing",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Online/Digital marketing",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Display advertising",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Email marketing",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Online advertising",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Search engine optimization",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Social media",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Social media marketing",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Web design",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Web development",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Personal finance",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Insurance",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Investment",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Mortgage loans",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Real estate",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Retail",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Sales",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Science",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Small business",
-    "category": "Business and Industry"
-  },
-  {
-    "value": "Action games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Board games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Browser games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Card games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Casino games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "First-person shooter games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Gambling",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Online games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Online poker",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Puzzle video games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Racing games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Role-playing games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Shooter games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Simulation games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Sports games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Strategy games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Video games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Word games",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Live events",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Ballet",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Bars",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Concerts",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Dancehalls",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Music festivals",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Nightclubs",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Parties",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Plays",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Theatre",
-    "category": "Entertainment and Games"
-  },
-  {
-    "value": "Action movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Animated movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Anime movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Bollywood movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Comedy movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Documentary movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Drama movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Fantasy movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Horror movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Musical theatre",
-    "category": "Movies"
-  },
-  {
-    "value": "Science fiction movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Thriller movies",
-    "category": "Movies"
-  },
-  {
-    "value": "Blues music",
-    "category": "Music"
-  },
-  {
-    "value": "Classical music",
-    "category": "Music"
-  },
-  {
-    "value": "Country music",
-    "category": "Music"
-  },
-  {
-    "value": "Dance music",
-    "category": "Music"
-  },
-  {
-    "value": "Electronic music",
-    "category": "Music"
-  },
-  {
-    "value": "Gospel music",
-    "category": "Music"
-  },
-  {
-    "value": "Heavy metal music",
-    "category": "Music"
-  },
-  {
-    "value": "Hip hop music",
-    "category": "Music"
-  },
-  {
-    "value": "Jazz music",
-    "category": "Music"
-  },
-  {
-    "value": "Music videos",
-    "category": "Music"
-  },
-  {
-    "value": "Pop music",
-    "category": "Music"
-  },
-  {
-    "value": "Rhythm and blues music",
-    "category": "Music"
-  },
-  {
-    "value": "Rock music",
-    "category": "Music"
-  },
-  {
-    "value": "Soul music",
-    "category": "Music"
-  },
-  {
-    "value": "Comics",
-    "category": "Books"
-  },
-  {
-    "value": "E-books",
-    "category": "Books"
-  },
-  {
-    "value": "Fiction books",
-    "category": "Books"
-  },
-  {
-    "value": "Literature",
-    "category": "Books"
-  },
-  {
-    "value": "Magazines",
-    "category": "Books"
-  },
-  {
-    "value": "Manga",
-    "category": "Books"
-  },
-  {
-    "value": "Mystery fiction",
-    "category": "Books"
-  },
-  {
-    "value": "Newspapers",
-    "category": "Books"
-  },
-  {
-    "value": "Non-fiction books",
-    "category": "Books"
-  },
-  {
-    "value": "Romance novels",
-    "category": "Books"
-  },
-  {
-    "value": "TV comedies",
-    "category": "TV"
-  },
-  {
-    "value": "TV game shows",
-    "category": "TV"
-  },
-  {
-    "value": "TV reality shows",
-    "category": "TV"
-  },
-  {
-    "value": "TV talkshows",
-    "category": "TV"
-  },
-  {
-    "value": "Bodybuilding",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Meditation",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Physical exercise",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Physical fitness",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Running",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Weight training",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Yoga",
-    "category": "Fitness and wellness"
-  },
-  {
-    "value": "Non-Alcoholic drinks",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Alcoholic drinks",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Coffee",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Energy drinks",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Juice",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Soft drinks",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Tea",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Cooking",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Baking",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Recipes",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Barbecue",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Chocolate",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Desserts",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Fast food",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Organic food",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Pizza",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Seafood",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Veganism",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Vegetarianism",
-    "category": "Food and drink"
-  },
-  {
-    "value": "Chinese cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "French cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "German cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Greek cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Indian cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Italian cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Japanese cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Korean cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Latin American cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Mexican cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Middle Eastern cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Spanish cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Thai cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Vietnamese cuisine",
-    "category": "Cuisine"
-  },
-  {
-    "value": "Arts and music",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Acting",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Crafts",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Dance",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Drawing",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Drums",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Fine art",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Guitar",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Painting",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Performing arts",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Photography",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Sculpture",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Singing",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Writing",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Do it yourself (DIY)",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Furniture",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Gardening",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Home improvement",
-    "category": "Hobbies and activities"
-  },
-  {
-    "value": "Birds",
+    "value": "Loves Pets",
     "category": "Pets"
   },
   {
-    "value": "Cats",
+    "value": "Has Pets",
     "category": "Pets"
   },
   {
-    "value": "Dogs",
+    "value": "Allergic to Pets",
     "category": "Pets"
   },
   {
-    "value": "Fish",
+    "value": "No Pets Preference",
     "category": "Pets"
   },
   {
-    "value": "Horses",
-    "category": "Pets"
+    "value": "Smoker",
+    "category": "Smoking Habits"
   },
   {
-    "value": "Rabbits",
-    "category": "Pets"
+    "value": "Non-Smoker",
+    "category": "Smoking Habits"
   },
   {
-    "value": "Reptiles",
-    "category": "Pets"
+    "value": "Open to Smokers",
+    "category": "Smoking Habits"
   },
   {
-    "value": "Charity and causes",
-    "category": "Politics and social issues"
+    "value": "Frequently Drinks",
+    "category": "Alcohol Consumption"
   },
   {
-    "value": "Community issues",
-    "category": "Politics and social issues"
+    "value": "Social Drinker",
+    "category": "Alcohol Consumption"
   },
   {
-    "value": "Environmentalism",
-    "category": "Politics and social issues"
+    "value": "Rarely Drinks",
+    "category": "Alcohol Consumption"
   },
   {
-    "value": "Law",
-    "category": "Politics and social issues"
+    "value": "Non-Drinker",
+    "category": "Alcohol Consumption"
   },
   {
-    "value": "Military",
-    "category": "Politics and social issues"
+    "value": "Enjoys Quiet",
+    "category": "Noise Level Preference"
   },
   {
-    "value": "Politics",
-    "category": "Politics and social issues"
+    "value": "Tolerates Moderate Noise",
+    "category": "Noise Level Preference"
   },
   {
-    "value": "Religion",
-    "category": "Politics and social issues"
+    "value": "Likes a Loud Environment",
+    "category": "Noise Level Preference"
   },
   {
-    "value": "Sustainability",
-    "category": "Politics and social issues"
+    "value": "Studious",
+    "category": "Study Habits"
   },
   {
-    "value": "Veterans",
-    "category": "Politics and social issues"
+    "value": "Moderate Study Habits",
+    "category": "Study Habits"
   },
   {
-    "value": "Volunteering",
-    "category": "Politics and social issues"
+    "value": "Minimal Study Habits",
+    "category": "Study Habits"
   },
   {
-    "value": "Adventure travel",
-    "category": "Travel"
+    "value": "Loves Cooking",
+    "category": "Cooking Habits"
   },
   {
-    "value": "Air travel",
-    "category": "Travel"
+    "value": "Cooks Occasionally",
+    "category": "Cooking Habits"
   },
   {
-    "value": "Beaches",
-    "category": "Travel"
+    "value": "Prefers Takeout",
+    "category": "Cooking Habits"
   },
   {
-    "value": "Cruises",
-    "category": "Travel"
+    "value": "Homebody",
+    "category": "Homebody vs. Outgoing"
   },
   {
-    "value": "Ecotourism",
-    "category": "Travel"
-  },
-  {
-    "value": "Lakes",
-    "category": "Travel"
-  },
-  {
-    "value": "Mountains",
-    "category": "Travel"
-  },
-  {
-    "value": "Nature",
-    "category": "Travel"
-  },
-  {
-    "value": "Theme parks",
-    "category": "Travel"
-  },
-  {
-    "value": "Tourism",
-    "category": "Travel"
-  },
-  {
-    "value": "Vacations",
-    "category": "Travel"
-  },
-  {
-    "value": "Automobiles",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Boats",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Electric vehicle",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Hybrids",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Minivans",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Motorcycles",
-    "category": "Vehicles"
-  },
-  {
-    "value": "RVs",
-    "category": "Vehicles"
-  },
-  {
-    "value": "SUVs",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Scooters",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Trucks",
-    "category": "Vehicles"
-  },
-  {
-    "value": "Toys",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Outdoor recreation",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Boating",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Camping",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Fishing",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Horseback riding",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Hunting",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Mountain biking",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "Surfing",
-    "category": "Sports and outdoors"
-  },
-  {
-    "value": "American football",
-    "category": "Sports"
-  },
-  {
-    "value": "Association football (Soccer)",
-    "category": "Sports"
-  },
-  {
-    "value": "Auto racing",
-    "category": "Sports"
-  },
-  {
-    "value": "Baseball",
-    "category": "Sports"
-  },
-  {
-    "value": "Basketball",
-    "category": "Sports"
-  },
-  {
-    "value": "College football",
-    "category": "Sports"
-  },
-  {
-    "value": "Golf",
-    "category": "Sports"
-  },
-  {
-    "value": "Marathons",
-    "category": "Sports"
-  },
-  {
-    "value": "Skiing",
-    "category": "Sports"
-  },
-  {
-    "value": "Snowboarding",
-    "category": "Sports"
-  },
-  {
-    "value": "Swimming",
-    "category": "Sports"
-  },
-  {
-    "value": "Tennis",
-    "category": "Sports"
-  },
-  {
-    "value": "Thriathlons",
-    "category": "Sports"
-  },
-  {
-    "value": "Volleyball",
-    "category": "Sports"
-  },
-  {
-    "value": "Computers",
-    "category": "Technology"
-  },
-  {
-    "value": "Computer memory",
-    "category": "Technology"
-  },
-  {
-    "value": "Computer monitors",
-    "category": "Technology"
-  },
-  {
-    "value": "Computer processors",
-    "category": "Technology"
-  },
-  {
-    "value": "Computer servers",
-    "category": "Technology"
-  },
-  {
-    "value": "Desktop computers",
-    "category": "Technology"
-  },
-  {
-    "value": "Free software",
-    "category": "Technology"
-  },
-  {
-    "value": "Hard drives",
-    "category": "Technology"
-  },
-  {
-    "value": "Network storage",
-    "category": "Technology"
-  },
-  {
-    "value": "Software",
-    "category": "Technology"
-  },
-  {
-    "value": "Tablet computers",
-    "category": "Technology"
-  },
-  {
-    "value": "Consumer electronics",
-    "category": "Technology"
-  },
-  {
-    "value": "Audio equipment",
-    "category": "Technology"
-  },
-  {
-    "value": "Camcorders",
-    "category": "Technology"
-  },
-  {
-    "value": "Cameras",
-    "category": "Technology"
-  },
-  {
-    "value": "GPS devices",
-    "category": "Technology"
-  },
-  {
-    "value": "Game consoles",
-    "category": "Technology"
-  },
-  {
-    "value": "Mobile phones",
-    "category": "Technology"
-  },
-  {
-    "value": "Portable media players",
-    "category": "Technology"
-  },
-  {
-    "value": "Projectors",
-    "category": "Technology"
-  },
-  {
-    "value": "Smartphones",
-    "category": "Technology"
-  },
-  {
-    "value": "Televisions",
-    "category": "Technology"
+    "value": "Enjoys Going Out",
+    "category": "Homebody vs. Outgoing"
   }
 ]

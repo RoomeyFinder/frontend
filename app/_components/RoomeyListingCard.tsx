@@ -1,36 +1,27 @@
-import { Box, Divider, Flex, Heading, Text } from "@chakra-ui/react"
+import { Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import PadlockDivider from "../_assets/SVG/PadlockDivider"
-import DotSeparator from "./DotSeparator"
-import { Photo } from "../_types/User"
+import User from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import { useRouter } from "next/navigation"
+import DotSeparator from "./DotSeparator"
 
 export default function RoomeyListingCard({
   variant,
   isLocked = false,
-  name,
-  ageInYears,
-  about,
-  profileImage,
-  userId,
+  user,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
-  name: string
-  ageInYears: number
-  about: string
-  profileImage?: Photo
-  userId: string
+  user: User
 }) {
   const router = useRouter()
 
   return (
     <Flex
       py="2rem"
-      w="95dvw"
-      maxW={{ base: "95dvw", sm: "28.3rem" }}
+      w="100%"
       alignItems="center"
       flexDir="column"
       gap="1.5rem"
@@ -39,53 +30,78 @@ export default function RoomeyListingCard({
       borderRadius="1.2rem"
       background="transparent"
       cursor="pointer"
-      _hover={{ background: "white", shadow: "md" }}
+      h="full"
+      onClick={() => router.push(`/users/${user._id}`)}
+      _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
     >
       {!isLocked && (
-        <FavouriteButton listingId={userId} type={FavoriteType.USER} />
+        <FavouriteButton listingId={user._id} type={FavoriteType.USER} />
       )}
       <ProfileAvatar
-        imageSrc={profileImage?.secure_url}
-        width={180}
-        height={180}
-        showVerifiedBadge
+        imageSrc={user.profileImage?.secure_url}
+        width={100}
+        height={100}
       />
-      <NameAndAge name={name} ageInYears={ageInYears} />
+      <NameAgeAndGender
+        name={`${user.firstName} ${user.lastName}`}
+        ageInYears={
+          user && user.settings?.isAgeVisibleOnProfile
+            ? new Date(Date.now()).getFullYear() -
+              new Date(user?.dob || Date.now()).getFullYear()
+            : 0
+        }
+        gender={user.gender}
+      />
       {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <Box onClick={() => router.push(`/profile/${userId}`)}>
-        <AboutSection about={about} />
-      </Box>
+      <VStack>{user.about && <AboutSection about={user.about} />}</VStack>
     </Flex>
   )
 }
 
-function NameAndAge({
+function NameAgeAndGender({
   name,
   ageInYears,
+  gender,
 }: {
   name: string
-  ageInYears: number
+  ageInYears?: number
+  gender: string
 }) {
   return (
-    <Flex gap="1rem" alignItems="center">
+    <VStack gap="1rem" alignItems="center">
       <Heading
         as="h6"
         fontSize="1.9rem"
         fontWeight="normal"
         lineHeight="1.9rem"
+        textTransform="capitalize"
       >
         {name}
       </Heading>
-      <DotSeparator />
-      <Text
-        fontSize="1.4rem"
-        fontWeight="normal"
-        lineHeight="2.4rem"
-        color="gray.100"
-      >
-        {ageInYears}yrs
-      </Text>
-    </Flex>
+      <Flex alignItems="center" gap="1rem">
+        <Text
+          textTransform="capitalize"
+          color="gray.main"
+          fontSize="1.4rem"
+          fontWeight="500"
+        >
+          {gender}
+        </Text>
+        {ageInYears ? (
+          <>
+            <DotSeparator />
+            <Text
+              fontSize="1.4rem"
+              fontWeight="normal"
+              lineHeight="2.4rem"
+              color="gray.100"
+            >
+              {ageInYears ? `${ageInYears}yrs` : ""}
+            </Text>
+          </>
+        ) : null}
+      </Flex>
+    </VStack>
   )
 }
 
@@ -99,9 +115,12 @@ function AboutSection({ about }: { about: string }) {
         fontSize="1.2rem"
         lineHeight="1.7rem"
         color="gray.main"
+        w="85%"
         maxW="24rem"
         noOfLines={3}
         h="4.6rem"
+        whiteSpace="wrap"
+        mx="auto"
       >
         {about}
       </Text>

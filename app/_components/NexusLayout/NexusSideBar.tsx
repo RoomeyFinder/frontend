@@ -1,15 +1,33 @@
 import LogoutIcon from "@/app/_assets/SVG/Logout"
-import OverviewIcon from "@/app/_assets/SVG/OverviewIcon"
+import ThreeDotsVertical from "@/app/_assets/SVG/ThreeDots"
 import { sidebarLinks } from "@/app/_data/navLinks"
-import { UserContext } from "@/app/_providers/UserProvider"
-import { Avatar, Box, Button, Flex, Show, Text, VStack } from "@chakra-ui/react"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { logout } from "@/app/_redux/slices/auth.slice"
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Show,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import { usePathname, useRouter } from "next/navigation"
-import { ReactNode, useContext } from "react"
+import { ReactNode } from "react"
 
-export default function NexusSidebar() {
-  const { logout } = useContext(UserContext)
+export default function NexusSidebar({
+  closeSidebar,
+}: {
+  closeSidebar?: () => void
+}) {
+  const dispatch = useAppDispatch()
   return (
-    <Box w="full" bg={{ md: "rgba(58, 134, 255, 0.05)" }} h="100%">
+    <Box w="full" bg={{ md: "#3a86ff0d" }} h="100%">
       <UserInfoHeading />
       <VStack
         as="ul"
@@ -20,11 +38,13 @@ export default function NexusSidebar() {
         h="80%"
         alignItems="start"
       >
-        <Box as="li" w="full">
-          <SidebarLink href="/nexus" text="Overview" icon={<OverviewIcon />} />
-        </Box>
         {sidebarLinks.map((link) => (
-          <Box key={link.href} as="li" w="full">
+          <Box
+            key={link.href}
+            as="li"
+            w="full"
+            onClick={() => closeSidebar && closeSidebar()}
+          >
             <SidebarLink href={link.href} text={link.name} icon={link.icon()} />
           </Box>
         ))}
@@ -43,7 +63,7 @@ export default function NexusSidebar() {
               h="5rem"
               px="2rem"
               margin="0 auto"
-              onClick={() => logout()}
+              onClick={() => dispatch(logout())}
             >
               <LogoutIcon /> Logout
             </Text>
@@ -102,7 +122,8 @@ function SidebarLink({
 }
 
 function UserInfoHeading() {
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector((store) => store.auth)
+  const dispatch = useAppDispatch()
 
   return (
     <Flex
@@ -112,7 +133,8 @@ function UserInfoHeading() {
       w="full"
       borderBottom="1px solid"
       borderBottomColor="brand.main"
-      px={{ base: "2rem", sm: "4rem", md: "5rem" }}
+      pl={{ base: "2rem", sm: "4rem", md: "5rem" }}
+      pr={{ base: "2rem", sm: "3rem" }}
     >
       <Avatar
         src={user?.profileImage?.secure_url}
@@ -123,7 +145,7 @@ function UserInfoHeading() {
       />
       <Box>
         <Text fontSize="2rem" textTransform="capitalize" noOfLines={1}>
-          {user?.firstName || "Exploit"} {user?.lastName || "Enomah"}
+          {user?.firstName} {user?.lastName}
         </Text>
         <Text color="gray.100" fontSize="1.4rem">
           Last seen:{" "}
@@ -134,6 +156,52 @@ function UserInfoHeading() {
           })}
         </Text>
       </Box>
+      <Show above="md">
+        <Popover placement="bottom-end">
+          <PopoverTrigger>
+            <IconButton
+              ml="auto"
+              aria-label={"more"}
+              bg="transparent"
+              _hover={{ bg: "transparent" }}
+            >
+              <ThreeDotsVertical />
+            </IconButton>
+          </PopoverTrigger>
+          <PopoverContent
+            rounded="md"
+            border="none"
+            bg="white"
+            fontSize="1.6rem"
+            shadow="xl"
+          >
+            <PopoverBody w="full" bg="#3a86ff05">
+              <Text
+                as="button"
+                display="flex"
+                alignItems="center"
+                fontSize="1.5rem"
+                fontWeight="600"
+                gap="1.2rem"
+                w="full"
+                bg="brand.10"
+                rounded="1.2rem"
+                color="brand.main"
+                h="5rem"
+                px="1.5rem"
+                transition="all 250ms ease"
+                _hover={{
+                  color: "white",
+                  bg: "brand.main",
+                }}
+                onClick={() => dispatch(logout())}
+              >
+                <LogoutIcon /> Logout
+              </Text>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      </Show>
     </Flex>
   )
 }

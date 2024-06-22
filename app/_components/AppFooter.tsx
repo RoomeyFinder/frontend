@@ -32,7 +32,7 @@ export default function AppFooter() {
       <Flex
         flexDir="column"
         gap="2.95rem"
-        maxW={{ base: "95%", md: "63.54%" }}
+        maxW={{ base: "95%", md: "125rem" }}
         mx="auto"
       >
         <FooterLinks />

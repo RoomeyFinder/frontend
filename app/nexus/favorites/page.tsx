@@ -1,22 +1,28 @@
 "use client"
-import { useSearchParams } from "next/navigation"
 import {
   Box,
   Flex,
+  Heading,
   Spinner,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react"
-import { Suspense, useContext, useMemo } from "react"
-import Empty from "../../_components/Empty"
-import FavoritesHeader from "../../_components/PageHeader"
-import { FavoritesContext } from "../../_providers/FavoritesProvider"
+import { Suspense, useMemo } from "react"
 import ListingsGridLayout from "../../_components/ListingsGridLayout"
 import CenteredSpinner from "../../_components/CenteredSpinner"
 import RoomListingCard from "../../_components/RoomListingCard"
 import RoomeyListingCard from "../../_components/RoomeyListingCard"
-import { FavoriteType } from "../../_types/Favorites"
+import Favorite, { FavoriteType } from "../../_types/Favorites"
 import User from "../../_types/User"
 import { Listing } from "../../_types/Listings"
-import FailureUIWithRetryButton from "../../_components/FailureUIWithRetryButton"
+import { WithPrependPortal } from "@/app/_components/_HOC/withPrependPortal"
+import AppNotification from "@/app/_components/AppNotification"
+import { resetError } from "@/app/_redux/slices/favorites.slice"
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 
 export default function Favorites() {
   return (
@@ -33,69 +39,118 @@ export default function Favorites() {
 }
 
 function Renderer() {
-  const searchParams = useSearchParams()
-  const filter = useMemo(() => {
-    return searchParams.get("filter")
-  }, [searchParams])
-  const { favorites, loading, retriesCount, hasInitialized, retryInitialize } =
-    useContext(FavoritesContext)
-  const favoritesToDisplay = useMemo(
+  const dispatch = useAppDispatch()
+  const { favorites, loading, hasError, errorMessage } = useAppSelector(
+    (store) => store.favorites
+  )
+  const favoriteRooms = useMemo(
     () =>
-      (favorites || []).filter((it) => {
-        if (filter === "roomies") return it.type === FavoriteType.USER
+      favorites.filter((it) => {
         return it.type === FavoriteType.LISTING
       }),
-    [favorites, filter]
+    [favorites]
+  )
+  const favoriteRoomies = useMemo(
+    () =>
+      favorites.filter((it) => {
+        return it.type === FavoriteType.USER
+      }),
+    [favorites]
   )
   return (
-    <Box pos="relative" minH="80dvh">
-      <FavoritesHeader
-        pathname="/favorites"
-        filters={["rooms", "roomies"]}
-        heading="Favorites"
-        isDisplayDynamic={false}
-      />
-      {!loading &&
-        hasInitialized &&
-        (!favoritesToDisplay || favoritesToDisplay.length === 0) && (
-        <Empty
-          text={`${!filter || filter === "rooms" ? "Rooms" : "Roomies"}  you favorite will appear here.`}
-        />
+    <Box pos="relative" py="3rem">
+      {WithPrependPortal(
+        <AppNotification
+          onClose={() => {
+            dispatch(resetError())
+          }}
+        >
+          {hasError && errorMessage}
+        </AppNotification>,
+        document.body
       )}
-      {retriesCount === 10 && !hasInitialized && (
-        <FailureUIWithRetryButton
-          handleRetry={() => retryInitialize()}
-          text="An error was encountered while trying to load your favorites"
-        />
-      )}
-
-      {loading && <CenteredSpinner />}
-      <Box
-        px={{ base: "2.5%", sm: "3%", md: "4%", lg: "10.5%" }}
-        py={{ base: "3rem", md: "5rem" }}
+      <Heading
+        mb={{ base: "2.2rem" }}
         w="full"
+        px={{ base: "2rem", md: "5rem" }}
+        fontSize={{ base: "2.6rem", sm: "3.2rem" }}
+        fontWeight="500"
       >
-        {hasInitialized &&
-          favoritesToDisplay &&
-          favoritesToDisplay.length > 0 && (
-          <ListingsGridLayout
-            list={favoritesToDisplay.map((favorite) => (
-              <FavoriteComponent
-                document={favorite.doc}
-                key={favorite._id}
-                filter={filter}
+        Favorites
+      </Heading>
+      <Tabs isFitted variant="line" colorScheme="blackAlpha" size="lg">
+        <TabList fontSize="1.4rem">
+          <Tab
+            px="0"
+            fontSize={{ base: "1.4rem", md: "1.6rem" }}
+            fontWeight="600"
+          >
+            Rooms ({favoriteRooms.length})
+          </Tab>
+          <Tab
+            px="0"
+            fontSize={{ base: "1.4rem", md: "1.6rem" }}
+            fontWeight="600"
+          >
+            Roomies ({favoriteRoomies.length})
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel px="0">
+            {
+              <FavoritesList
+                currentDisplay="Listings"
+                favorites={favoriteRooms}
+                loading={loading}
               />
-            ))}
-            justifyContent="start"
-            templateColumns={{
-              base: "repeat(1, 1fr)",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-              xl: "repeat(4, 1fr)",
-            }}
+            }
+          </TabPanel>
+          <TabPanel px="0">
+            {
+              <FavoritesList
+                currentDisplay="Users"
+                favorites={favoriteRoomies}
+                loading={loading}
+              />
+            }
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+      {loading && <CenteredSpinner />}
+    </Box>
+  )
+}
+
+function FavoritesList({
+  favorites,
+  currentDisplay,
+  loading,
+}: {
+  favorites: Favorite[]
+  currentDisplay: string
+  loading: boolean
+}) {
+  if (favorites.length === 0 && !loading)
+    return (
+      <NoResultsDisplay
+        heading={<>Oops! Nothing here.</>}
+        body={<>{currentDisplay} you mark as favorite will appear here.</>}
+      />
+    )
+  return (
+    <Box w="full" py="4rem" h="100dvh" px={{ base: "1.8rem", md: "4rem" }}>
+      <ListingsGridLayout
+        list={favorites.map((favorite) => (
+          <FavoriteComponent
+            document={favorite.doc}
+            key={favorite._id}
+            filter={FavoriteType.LISTING}
           />
-        )}
-      </Box>
+        ))}
+        justifyContent="start"
+        columns={{ base: 1, sm: 2, lg: 3 }}
+        alignItems="stretch"
+      />
     </Box>
   )
 }
@@ -109,31 +164,10 @@ function FavoriteComponent({
 }) {
   if (filter === "roomies") {
     const roomey = document as User
-    return (
-      <RoomeyListingCard
-        name={roomey?.firstName}
-        ageInYears={
-          new Date().getFullYear() - new Date(roomey?.dob).getFullYear()
-        }
-        about={roomey?.about}
-        userId={roomey?._id}
-        variant="outlined"
-      />
-    )
+    return <RoomeyListingCard user={roomey} variant="outlined" />
   }
   const listing = document as Listing
   return (
-    <RoomListingCard
-      ownersName={listing.owner?.firstName as string}
-      ownersOccupation={listing.owner?.occupation as string}
-      city={listing.city as string}
-      rentAmount={(listing.rentAmount || 0) as number}
-      rentDuration={listing.rentDuration as any}
-      title={listing.lookingFor as string}
-      images={listing.photos || []}
-      listingId={listing._id}
-      variant="outlined"
-      showFavoriteButton
-    />
+    <RoomListingCard variant="outlined" showFavoriteButton listing={listing} />
   )
 }

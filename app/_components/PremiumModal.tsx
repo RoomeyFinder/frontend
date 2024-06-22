@@ -14,16 +14,16 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react"
-import { ReactNode, useContext, useMemo } from "react"
+import { ReactNode, useMemo } from "react"
 import LikeIcon from "../_assets/SVG/LikeIcon"
 import { FilledIcon } from "../_assets/SVG/FilledPlusIcon"
 import ShareIcon from "../_assets/SVG/ShareIcon"
 import { EyeIconLarge } from "../_assets/SVG/EyeIcon"
 import { HouseIconLarge } from "../_assets/SVG/HouseIcon"
 import { usePaystackPayment } from "react-paystack"
-import { UserContext } from "../_providers/UserProvider"
 import useGetPaymentStatusLoggers from "../_hooks/useGetPaymentStatusLoggers"
 import toast from "react-hot-toast"
+import { useAppSelector } from "../_redux"
 
 const TWO_THOUSAND_NAIRA_IN_KOBO = 200000
 
@@ -34,7 +34,7 @@ export default function PremiumModal({
   show: boolean
   onClose: () => void
 }) {
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
   const hasPremium = useMemo(() => {
     if (!user) return false
     if (!user.premiumPurchaseExpiry) return false
@@ -182,7 +182,7 @@ export function PremiumModalInfoOnly({
   onClose: () => void
   heading?: ReactNode
 }) {
-  const { user } = useContext(UserContext)
+  const { user } = useAppSelector(store => store.auth)
   const hasPremium = useMemo(() => {
     if (!user) return false
     if (!user.premiumPurchaseExpiry) return false

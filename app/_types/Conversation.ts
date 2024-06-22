@@ -7,6 +7,7 @@ export default interface Conversation {
   createdAt: string
   updatedAt: string
   latestMessage: Message
+  unreadMsgsCount: number
 }
 
 export interface Message {
@@ -19,4 +20,5 @@ export interface Message {
   text: string,
   seen: boolean
   delivered: boolean
+
 }

@@ -1,14 +1,14 @@
 import useAxios from "@/app/_hooks/useAxios"
 import { Box, Text, VStack } from "@chakra-ui/react"
-import { FormEvent, useCallback, useContext, useState } from "react"
+import { FormEvent, useCallback, useState } from "react"
 import User from "@/app/_types/User"
 import { ResendCodeButton } from "@/app/signup/_EmailVerification"
 import PinInputElement from "../PinInputElement"
 import ErrorText from "./ErrorText"
 import toast from "react-hot-toast"
 import { FormSubmitButton } from "./SignupInputs"
-import { AuthContext } from "@/app/_providers/AuthContext"
-import { UserContext } from "@/app/_providers/UserProvider"
+import { authenticate } from "@/app/_redux/slices/auth.slice"
+import { useAppDispatch } from "@/app/_redux"
 
 export default function ConfirmEmailForm({
   email,
@@ -19,14 +19,13 @@ export default function ConfirmEmailForm({
   handleSubmission: (res: { user?: User; statusCode: number }) => void
   handleSuccess: () => void
 }) {
+  const dispatch = useAppDispatch()
   const [prevCode, setPrevCode] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
   const [error, setError] = useState({
     verificationCode: "",
     api: "",
   })
-  const { updateToken } = useContext(AuthContext)
-  const { updateUser } = useContext(UserContext)
   const [isSubmiting, setIsSubmitting] = useState(false)
   const { fetchData } = useAxios()
   const verifyEmail = useCallback(async () => {
@@ -44,8 +43,12 @@ export default function ConfirmEmailForm({
       method: "post",
     })
     if (res.statusCode === 200) {
-      updateToken(res.token)
-      updateUser(res.user)
+      dispatch(
+        authenticate({
+          user: res.user,
+          token: res.token,
+        })
+      )
       handleSuccess()
       setVerificationCode("")
       setError({
@@ -65,8 +68,7 @@ export default function ConfirmEmailForm({
     isSubmiting,
     prevCode,
     handleSuccess,
-    updateToken,
-    updateUser,
+    dispatch,
   ])
 
   const resendVerificationEmail = useCallback(async () => {

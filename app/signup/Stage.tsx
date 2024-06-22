@@ -20,6 +20,7 @@ export default function Stage({
       }}
       in={currentStage === stage}
       unmountOnExit={unmountOnExit}
+      style={{ width: "100%" }}
     >
       {children}
     </Collapse>

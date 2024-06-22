@@ -1,4 +1,4 @@
-import { BoxProps, InputProps } from "@chakra-ui/react"
+import { BoxProps, InputProps, TextareaProps } from "@chakra-ui/react"
 
 export const getErrorProps = (
   name: string,
@@ -14,7 +14,7 @@ export const getErrorProps = (
 }
 export const getErrorPropsV1 = (
   errorMsg: string,
-): BoxProps & InputProps => {
+): BoxProps & InputProps & TextareaProps => {
   if (errorMsg)
     return {
       borderColor: "red",

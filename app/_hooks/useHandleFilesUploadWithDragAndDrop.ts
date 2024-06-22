@@ -1,6 +1,5 @@
 import {
   useState,
-  MutableRefObject,
   useCallback,
   DragEventHandler,
   ChangeEventHandler,
@@ -10,15 +9,14 @@ import {
 const ONE_MEGABYTE_IN_BYTES = 1048576
 
 export default function useHandleFilesUploadWithDragAndDrop({
-  inputRef,
   maxFilesCount,
   maxFileSizeInMegaBytes = 5,
 }: {
-  inputRef: MutableRefObject<HTMLInputElement | null>
   maxFilesCount: number
   maxFileSizeInMegaBytes?: number
 }) {
   const [dragActive, setDragActive] = useState<boolean>(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [files, setFiles] = useState<File[]>([])
   const hasReachedUploadLimit = useMemo(
     () => files.length >= maxFilesCount,
@@ -27,6 +25,7 @@ export default function useHandleFilesUploadWithDragAndDrop({
   const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       e.preventDefault()
+      setIsUploading(true)
       const eventFiles = e.target.files
       if (eventFiles && eventFiles[0]) {
         const currentFiles = [...files]
@@ -42,6 +41,7 @@ export default function useHandleFilesUploadWithDragAndDrop({
         }
         setFiles(currentFiles)
       }
+      setIsUploading(false)
     },
     [maxFilesCount, files, maxFileSizeInMegaBytes]
   )
@@ -79,13 +79,6 @@ export default function useHandleFilesUploadWithDragAndDrop({
     setFiles((prev) => prev.filter((it, idx) => index !== idx))
   }, [])
 
-  const openFileExplorer = useCallback(() => {
-    if (inputRef.current) {
-      inputRef.current.value = ""
-      inputRef.current.click()
-    }
-  }, [inputRef])
-
   return {
     dragActive,
     files,
@@ -95,8 +88,8 @@ export default function useHandleFilesUploadWithDragAndDrop({
     handleDragOver,
     handleDragEnter,
     removeFile,
-    openFileExplorer,
     hasReachedUploadLimit,
     setFiles: (files: File[]) => setFiles(files),
+    isUploading,
   }
 }

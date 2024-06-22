@@ -1,39 +1,22 @@
 "use client"
-import {
-  Box,
-  Button,
-  // Divider,
-  Flex,
-  Heading,
-  Link,
-  Text,
-} from "@chakra-ui/react"
-// import PublishAdClicker from "./_components/PublishAdClicker"
+import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react"
 import FeatureCard from "./_components/FeatureCard"
 import ChatIcon from "./_assets/SVG/ChatIcon"
 import Handlens from "./_assets/SVG/Handlens"
-// import PeopleGroup from "./_assets/SVG/PeopleGroup"
-import {
-  LegacyRef,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react"
-import { SearchContext } from "./_providers/SearchProvider"
+import { LegacyRef, ReactNode } from "react"
 import ListingsGridLayout from "./_components/ListingsGridLayout"
 import RoomListingCard from "./_components/RoomListingCard"
 import { Listing } from "./_types/Listings"
-import { AuthContext } from "./_providers/AuthContext"
 import Empty from "./_components/Empty"
+import { useAppSelector } from "./_redux"
 import { RoomListingCardSkeleton } from "./_components/Skeletons/ListingCardSkeleton"
 import Image from "next/image"
 import heroImage from "./_assets/images/hero-image.jpg"
 import ForRent from "./_assets/SVG/ForRent"
+import { useRouter } from "next/navigation"
+import SkeletalLoading from "./_components/Skeletons/SkeletalLoader"
 
 export default function Home() {
-  // const { roomies, rooms } = useContext(SearchContext)
   return (
     <>
       <Hero />
@@ -44,6 +27,7 @@ export default function Home() {
 }
 
 function Hero() {
+  const { user } = useAppSelector((store) => store.auth)
   return (
     <>
       <Flex
@@ -52,13 +36,16 @@ function Hero() {
         justifyContent="space-between"
         alignItems="center"
         flexDir={{ base: "column", md: "row" }}
-        px={{ base: "3rem", md: "8rem", lg: "8rem" }}
         py={{ base: "5rem", md: "10rem" }}
+        maxW="125rem"
+        w="90%"
+        mx="auto"
       >
         <Box as="main">
           <Heading
             as="h1"
             variant="xl"
+            fontWeight="500"
             mb="2.5rem"
             fontSize={{ base: "4rem", md: "7rem" }}
           >
@@ -69,7 +56,7 @@ function Hero() {
             fontSize={{ base: "1.6rem", md: "2rem" }}
             color="gray.main"
             mb="4.9rem"
-            lineHeight="2.2rem"
+            lineHeight="150%"
           >
             Whether you&apos;re a student searching for a cozy apartment, a
             professional seeking a shared living space, or a homeowner looking
@@ -79,7 +66,7 @@ function Hero() {
             px="3rem"
             py="1.5rem"
             as={Link}
-            href="/signup"
+            href={user ? "/nexus/me" : "/signup"}
             variant={"brand"}
             fontSize="2rem"
             width="fit-content"
@@ -88,7 +75,7 @@ function Hero() {
             Get Started
           </Button>
         </Box>
-        <Box maxW={{ base: "100vw", md: "50vw", lg: "50vw" }}>
+        <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>
           <Image
             src={heroImage}
             alt="Hero image for Roomeyfinder. Two ladies sitting on a blue couch having coffee"
@@ -117,6 +104,7 @@ function FeaturesSection() {
             variant="md"
             mb="3rem"
             fontSize={{ base: "3rem", md: "5rem" }}
+            fontWeight="600"
           >
             What Roomeyfinder offers
           </Heading>
@@ -159,57 +147,30 @@ function FeaturesSection() {
 }
 
 function ListingsSection() {
-  const { isAuthorized } = useContext(AuthContext)
-  const { rooms, hasMoreRooms, loadMoreRooms, loadingRooms, search, focus } =
-    useContext(SearchContext)
-
-  const roomsSectionRef = useRef<HTMLDivElement | null>(null)
-  const allListingsRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    if (focus === "rooms")
-      roomsSectionRef.current?.firstElementChild?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      })
-  }, [focus])
-
-  const filteredRoomsBySearch = useMemo(() => {
-    if (!search) return rooms
-    else {
-      const isMatch = (obj: { [x: string]: any }) =>
-        JSON.stringify(Object.values(obj))
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      const roomsFiltered = rooms.filter((room) => isMatch(room))
-      return roomsFiltered
-    }
-  }, [rooms, search])
-
+  const { user } = useAppSelector((store) => store.auth)
+  const { listings, loading } = useAppSelector((store) => store.search)
+  const router = useRouter()
+  if (listings.length === 0 && !loading) return null
   return (
     <>
-      <Box ref={allListingsRef}>
-        <ListSectionContainer sectionRef={roomsSectionRef}>
-          <Heading pl="1.2rem" variant="md">
-            Latest Rooms
-          </Heading>
-          <RoomsList
-            rooms={filteredRoomsBySearch}
-            allowFavoriting={isAuthorized}
-            loading={loadingRooms}
-            emptyTextValue={
-              <>
-                No rooms found
-                {search && <Text as="b"> {search}</Text>}
-              </>
-            }
-          />
-          {rooms.length > 0 && (
+      <Box mx="auto" maxW="125rem" w="90%">
+        <ListSectionContainer>
+          <Heading variant="md">Latest Rooms</Heading>
+          {loading ? (
+            <SkeletalLoading variant="rooms" />
+          ) : (
+            <RoomsList
+              rooms={listings}
+              allowFavoriting={user !== null}
+              loading={loading}
+              emptyTextValue={<>No rooms found</>}
+            />
+          )}
+          {listings.length > 0 && (
             <ContinueExploring
               text="rooms"
-              onClick={() => loadMoreRooms()}
-              show={hasMoreRooms}
+              onClick={() => router.push("/ads")}
+              show={true}
             />
           )}
         </ListSectionContainer>
@@ -228,12 +189,12 @@ function ListSectionContainer({
   return (
     <Box
       w={{ base: "95dvw", md: "full" }}
-      maxW={{ md: "84%" }}
       mx="auto"
       display="flex"
       flexDir="column"
       gap="3rem"
       py={{ base: "3rem", md: "6rem" }}
+      // px={{ base: "1.5rem", sm: "2rem", md: "6rem", lg: "7rem" }}
       ref={sectionRef}
     >
       {children}
@@ -243,7 +204,7 @@ function ListSectionContainer({
 
 function RoomsList({
   rooms,
-  allowFavoriting,
+  // allowFavoriting,
   loading,
   emptyTextValue,
 }: {
@@ -266,19 +227,11 @@ function RoomsList({
     <>
       <ListingsGridLayout
         list={rooms.map((room) => (
-          <RoomListingCard
-            key={room._id}
-            ownersName={room.owner?.firstName as string}
-            ownersOccupation={room.owner?.occupation as string}
-            city={room.city as string}
-            rentAmount={room.rentAmount as number}
-            rentDuration={room.rentDuration as any}
-            title={room.lookingFor as string}
-            images={room.photos as []}
-            showFavoriteButton={allowFavoriting}
-            listingId={room._id as string}
-          />
+          <RoomListingCard key={room._id} listing={room} variant="outlined" />
         ))}
+        justifyContent="start"
+        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        alignItems="stretch"
       ></ListingsGridLayout>
     </>
   )
@@ -296,37 +249,26 @@ function ContinueExploring({
   if (!show) return null
   return (
     <Text
-      color={{ base: "black", md: "brand.main" }}
-      fontWeight={{ base: "600", md: "400" }}
+      onClick={onClick}
+      as="button"
+      color="brand.main"
       fontSize={{ base: "1.6rem", md: "1.9rem" }}
       display="flex"
-      flexDir={{ base: "column", md: "row" }}
       justifyContent={{ base: "center", md: "start" }}
       alignItems={{ base: "center", md: "baseline" }}
       gap="1.6rem"
       p="0"
       h="unset"
+      _hover={{
+        md: {
+          bg: "transparent",
+          color: "black",
+          textDecor: "underline",
+        },
+      }}
+      _active={{ bg: "transparent" }}
     >
       Continue exploring {text}
-      <Button
-        onClick={onClick}
-        fontSize={{ base: "1.4rem", md: "1.6rem" }}
-        variant="brand-secondary"
-        bgColor={{ md: "transparent !important" }}
-        color={{ md: "gray.main !important" }}
-        fontWeight={{ md: "400" }}
-        padding={{ md: "0" }}
-        _hover={{
-          md: {
-            bg: "transparent",
-            color: "black",
-            textDecor: "underline",
-          },
-        }}
-        _active={{ bg: "transparent" }}
-      >
-        Show more
-      </Button>
     </Text>
   )
 }

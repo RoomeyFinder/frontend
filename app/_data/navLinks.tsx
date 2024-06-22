@@ -5,8 +5,8 @@ import HeartShineIcon from "../_assets/SVG/HeartShineIcon"
 import InstagramIcon from "../_assets/SVG/InstagramIcon"
 import MessageIcon from "../_assets/SVG/MessageIcon"
 import NotificationIcon from "../_assets/SVG/NotificationIcon"
+import OverviewIcon from "../_assets/SVG/OverviewIcon"
 import UserIcon from "../_assets/SVG/UserIcon"
-import UserIconSmall from "../_assets/SVG/UserIconSmall"
 import XIcon from "../_assets/SVG/XIcon"
 
 export const privateLinks = [
@@ -37,7 +37,7 @@ export const privateLinks = [
     icon: MessageIcon,
     hideAbove: "md",
     showBelow: "md",
-    isIcon: true
+    isIcon: true,
   },
   {
     name: "Notifications",
@@ -45,10 +45,17 @@ export const privateLinks = [
     icon: NotificationIcon,
     hideAbove: "md",
     showBelow: "md",
-    isIcon: true
+    isIcon: true,
   },
 ]
 export const sidebarLinks = [
+  {
+    name: "Match Hub",
+    href: "/nexus",
+    icon: OverviewIcon,
+    hideAbove: "",
+    showBelow: "md",
+  },
   {
     name: "My Profile",
     href: "/nexus/me",
@@ -77,13 +84,6 @@ export const sidebarLinks = [
     hideAbove: "",
     showBelow: "md",
   },
-  {
-    name: "Account",
-    href: "/nexus/account",
-    icon: UserIconSmall,
-    hideAbove: "",
-    showBelow: "md",
-  }
 ]
 
 export const supportLinks = [
@@ -94,14 +94,6 @@ export const supportLinks = [
   {
     name: "Contact",
     href: "/contact",
-  },
-  {
-    name: "Legal",
-    href: "/legal",
-  },
-  {
-    name: "FAQ",
-    href: "/faq",
   },
 ]
 
@@ -119,16 +111,12 @@ export const footerLinks = [
     href: "/contact",
   },
   {
-    name: "Legal",
-    href: "/legal",
+    name: "Terms & conditions",
+    href: "/terms-and-conditions",
   },
   {
-    name: "Help Center",
-    href: "/help",
-  },
-  {
-    name: "Testimonials",
-    href: "/testimonials",
+    name: "Privacy",
+    href: "/privacy",
   },
 ]
 

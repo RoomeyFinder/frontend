@@ -1,16 +1,15 @@
 import { useRouter } from "next/navigation"
-import { useContext, useCallback } from "react"
+import { useCallback } from "react"
 import toast from "react-hot-toast"
-import { AuthContext } from "../_providers/AuthContext"
-import { UserContext } from "../_providers/UserProvider"
 import useAxios from "./useAxios"
 import { FBUser } from "../_providers/FacebookProvider"
+import { authenticate } from "../_redux/slices/auth.slice"
+import { useAppDispatch } from "../_redux"
 
 export default function useHandleFacebookLogin(onSuccess?: () => void) {
   const router = useRouter()
   const { fetchData } = useAxios()
-  const { updateUser } = useContext(UserContext)
-  const { updateToken } = useContext(AuthContext)
+  const dispatch = useAppDispatch()
 
   const handleFacebookUserData = useCallback(
     async (userData: FBUser) => {
@@ -24,8 +23,12 @@ export default function useHandleFacebookLogin(onSuccess?: () => void) {
       console.log(response, "ssfac")
       if (response.statusCode === 200 || response.statusCode === 201) {
         onSuccess && onSuccess()
-        updateToken(response.token, false)
-        updateUser(response.user, false)
+        dispatch(
+          authenticate({
+            user: response.user,
+            token: response.token,
+          })
+        )
       } else {
         toast.error(
           response.message ||
@@ -34,7 +37,7 @@ export default function useHandleFacebookLogin(onSuccess?: () => void) {
         if (response.statusCode === 302) router.push("/signup")
       }
     },
-    [fetchData, updateToken, updateUser, router, onSuccess]
+    [fetchData, dispatch, router, onSuccess]
   )
   return handleFacebookUserData
 }

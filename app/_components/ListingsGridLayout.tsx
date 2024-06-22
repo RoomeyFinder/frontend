@@ -1,4 +1,4 @@
-import { Grid, GridItem, GridProps } from "@chakra-ui/react"
+import { GridItem, SimpleGrid, SimpleGridProps } from "@chakra-ui/react"
 import { ReactNode } from "react"
 
 export default function ListingsGridLayout({
@@ -6,17 +6,11 @@ export default function ListingsGridLayout({
   justifyContent = "center",
   alignItems = "center",
   alignContent = "center",
-  templateColumns = {
-    base: "repeat(1, 1fr)",
-    sm: "repeat(2, 1fr)",
-    md: "repeat(3, 1fr)",
-    lg: "repeat(4, 1fr)",
-    xl: "repeat(5, 1fr)",
-  },
+  columns = { base: 1, sm: 2, lg: 3 },
   ...rest
-}: { list: ReactNode[] } & GridProps) {
+}: { list: ReactNode[] } & SimpleGridProps) {
   return (
-    <Grid
+    <SimpleGrid
       w="full"
       maxW="180rem"
       mx="auto"
@@ -26,19 +20,17 @@ export default function ListingsGridLayout({
       justifyContent={justifyContent}
       alignContent={alignContent}
       alignItems={alignItems}
-      templateColumns={templateColumns}
+      columns={columns}
       {...rest}
     >
       {list.map((item, idx) => (
         <GridItem
-          display="flex"
-          w="full"
           justifyContent={justifyContent}
           key={idx}
         >
           {item}
         </GridItem>
       ))}
-    </Grid>
+    </SimpleGrid>
   )
 }

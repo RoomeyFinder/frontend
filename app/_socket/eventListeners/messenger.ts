@@ -1,12 +1,22 @@
-import { useContext } from "react"
 import useGetListener from "../useGetListener"
 import { CONVERSATION_EVENTS } from "../events"
-import { MessengerContext } from "@/app/_providers/MessengerProvider"
-import { MessagesContext } from "@/app/_providers/MessagesProvider"
+
+import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { addNewMessage } from "@/app/_redux/slices/messages.slice"
+import { socket } from "../socket"
+import { updateUnreadMsgsCount } from "@/app/_redux/slices/conversations.slice"
 
 export default function useListenForMessengerEvents() {
-  const { socket } = useContext(MessengerContext)
-  const { updateMessages } = useContext(MessagesContext)
+  const dispatch = useAppDispatch()
+  const { user } = useAppSelector((store) => store.auth)
   const useListener = useGetListener(socket)
-  useListener(CONVERSATION_EVENTS.MESSAGE, (val) => updateMessages(val.message))
+  useListener(CONVERSATION_EVENTS.MESSAGE, (val) => {
+    dispatch(addNewMessage(val))
+    dispatch(
+      updateUnreadMsgsCount({
+        ...(val || {}),
+        isSender: val?.message?.sender === user?._id,
+      })
+    )
+  })
 }

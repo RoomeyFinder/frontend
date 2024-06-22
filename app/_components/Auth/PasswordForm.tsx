@@ -1,12 +1,12 @@
 import useAxios from "@/app/_hooks/useAxios"
 import { Box, Text, VStack } from "@chakra-ui/react"
-import { FormEventHandler, useCallback, useContext, useState } from "react"
+import { FormEventHandler, useCallback, useState } from "react"
 import ErrorText from "./ErrorText"
 import { getErrorPropsV1 } from "@/app/signup/utils"
 import AuthPasswordInput from "./AuthPasswordInput"
-import { AuthContext } from "@/app/_providers/AuthContext"
-import { UserContext } from "@/app/_providers/UserProvider"
 import { FormSubmitButton } from "./SignupInputs"
+import { useAppDispatch } from "@/app/_redux"
+import { authenticate } from "@/app/_redux/slices/auth.slice"
 
 export default function PasswordForm({
   email,
@@ -19,8 +19,7 @@ export default function PasswordForm({
   handleUnverifiedEmail: () => void
   handleSuccess: () => void
 }) {
-  const { updateToken } = useContext(AuthContext)
-  const { updateUser } = useContext(UserContext)
+  const dispatch = useAppDispatch()
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [isSubmiting, setIsSubmitting] = useState(false)
@@ -40,8 +39,14 @@ export default function PasswordForm({
         },
       })
       if (res.statusCode === 200) {
-        updateUser(res.user)
-        updateToken(res.token)
+        // updateUser(res.user)
+        // updateToken(res.token)
+        dispatch(
+          authenticate({
+            user: res.user,
+            token: res.token,
+          })
+        )
         handleSuccess()
         setError("")
       } else if (res.statusCode === 302) {
@@ -54,8 +59,7 @@ export default function PasswordForm({
       email,
       password,
       handleSuccess,
-      updateToken,
-      updateUser,
+      dispatch,
       handleUnverifiedEmail,
     ]
   )

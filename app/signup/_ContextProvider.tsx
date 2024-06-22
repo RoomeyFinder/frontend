@@ -1,11 +1,11 @@
-import { ReactNode, useCallback, useContext, useMemo, useState } from "react"
+import { ReactNode, useCallback, useMemo, useState } from "react"
 import useManageStageFlow from "../_hooks/useManageStageFlow"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
 import SignupContext from "./_Context"
-import { UserContext } from "../_providers/UserProvider"
-import { AuthContext } from "../_providers/AuthContext"
 import { validateEmail } from "../_utils"
 import toast from "react-hot-toast"
+import { useAppDispatch } from "../_redux"
+import { authenticate } from "../_redux/slices/auth.slice"
 
 // const SIXTEEN_YEARS_AGO = new Date(Date.now())
 // SIXTEEN_YEARS_AGO.setFullYear(SIXTEEN_YEARS_AGO.getFullYear() - 16)
@@ -69,9 +69,8 @@ export default function SignupProvider({
     else toast.error(res.message)
     setLoading(false)
   }, [contactDetails.formData.email, fetchData])
-
-  const { updateUser } = useContext(UserContext)
-  const { updateToken } = useContext(AuthContext)
+  
+  const dispatch = useAppDispatch()
 
   const verifyEmail = useCallback(
     async (successCallback: () => void) => {
@@ -84,8 +83,14 @@ export default function SignupProvider({
       if (res.statusCode === 200) {
         successCallback()
         setIsSignupDone(true)
-        updateUser(res.user)
-        updateToken(res.token)
+        // updateUser(res.user)
+        // updateToken(res.token)
+        dispatch(
+          authenticate({
+            user: res.user,
+            token: res.token,
+          })
+        )
       } else
         setError((prev) => ({
           ...prev,
@@ -98,8 +103,7 @@ export default function SignupProvider({
       emailVerificationDetails.formData.verificationToken,
       fetchData,
       contactDetails.formData.email,
-      updateUser,
-      updateToken,
+      dispatch
     ]
   )
   const handleSubmitButtonClick = useCallback(() => {

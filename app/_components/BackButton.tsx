@@ -1,9 +1,11 @@
-import { Flex } from "@chakra-ui/react"
+import { BoxProps, Flex } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
-import LeftChevron from "../_assets/SVG/LeftChevron"
+import BackIcon from "../_assets/SVG/BackIcon"
 
-
-export default function BackButton(){
+export default function BackButton({
+  showText,
+  ...props
+}: BoxProps & { showText?: boolean }) {
   const router = useRouter()
 
   return (
@@ -11,11 +13,13 @@ export default function BackButton(){
       gap="1rem"
       alignItems="center"
       fontSize="1.6rem"
-      p="1rem"
+      p=".5rem"
       as="button"
+      {...props}
       onClick={() => router.back()}
+      aria-label="back"
     >
-      <LeftChevron /> Back
+      <BackIcon /> {showText && "Back"}
     </Flex>
   )
 }

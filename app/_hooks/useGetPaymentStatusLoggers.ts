@@ -1,10 +1,11 @@
-import { useCallback, useContext } from "react"
+import { useCallback } from "react"
 import useAxios from "./useAxios"
-import { UserContext } from "../_providers/UserProvider"
+import { useAppDispatch } from "../_redux"
+import { updateUser } from "../_redux/slices/auth.slice"
 
 export default function PaymentStatusLoggers() {
   const { fetchData } = useAxios()
-  const { updateUser } = useContext(UserContext)
+  const dispatch = useAppDispatch()
   const onSuccessLogger = useCallback(
     async (data: any) => {
       const res = await fetchData({
@@ -13,9 +14,9 @@ export default function PaymentStatusLoggers() {
         body: data,
       })
       console.log(res)
-      res.statusCode === 200 && updateUser(res.user)
+      res.statusCode === 200 && dispatch(updateUser(res.user))
     },
-    [fetchData, updateUser]
+    [fetchData, dispatch]
   )
   const onCloseLogger = useCallback(() => {}, [])
   return { onSuccessLogger, onCloseLogger }

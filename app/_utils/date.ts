@@ -57,3 +57,7 @@ export function timeAgo(date: Date) {
     return `${seconds}s`
   } else return "Just now"
 }
+
+export function getAgeInYears(dob: Date) {
+  return new Date(Date.now()).getFullYear() - dob.getFullYear()
+}

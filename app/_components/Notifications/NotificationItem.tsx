@@ -1,4 +1,3 @@
-import useActOnInterest from "@/app/_hooks/useActOnInterest"
 import Conversation, { Message } from "@/app/_types/Conversation"
 import Interest from "@/app/_types/Interest"
 import Notification, { NotificationVariant } from "@/app/_types/Notification"
@@ -8,7 +7,6 @@ import {
   Box,
   Flex,
   Heading,
-  Spinner,
   Text,
   VStack,
   keyframes,
@@ -16,41 +14,74 @@ import {
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useMemo, useRef } from "react"
 
-function getActionButtonsByVariant(
+function useGetVariantActionPathname(
   variant: NotificationVariant,
   data: Notification["data"]
 ) {
-  let actionButtons = null
+  let pathname = ""
   switch (variant) {
-  case NotificationVariant.LISTING_INTEREST ||
-      NotificationVariant.PROFILE_INTEREST: {
-    const dataAsInterest = { ...data } as Interest
-    actionButtons =
-        !data || dataAsInterest?.accepted || dataAsInterest?.declined ? (
-          <></>
-        ) : (
-          <>
-            <AcceptInterestButton interest={dataAsInterest} />
-            <DeclineInterestButton interest={dataAsInterest} />
-          </>
-        )
-    break
+    case NotificationVariant.LISTING_INTEREST:
+    case NotificationVariant.PROFILE_INTEREST: {
+      const dataAsInterest = { ...data } as Interest
+      pathname = `/nexus/interests?id=${dataAsInterest._id}`
+      break
+    }
+    case NotificationVariant.ACCEPTED_INTEREST:
+      pathname = `/messenger?convoId=${(data as Conversation)?._id}`
+      break
+    case NotificationVariant.LISTING_VIEW:
+      pathname = ""
+      break
+    case NotificationVariant.PROFILE_VIEW:
+      pathname = ""
+      break
+    case NotificationVariant.MESSAGE:
+      pathname = `/messenger?convoId=${(data as Message)?.conversationId}`
+      break
   }
-  case NotificationVariant.ACCEPTED_INTEREST:
-    actionButtons = <StartChatButton conversation={data as Conversation} />
-    break
-  case NotificationVariant.LISTING_VIEW:
-    actionButtons = <></>
-    break
-  case NotificationVariant.PROFILE_VIEW:
-    actionButtons = <></>
-    break
-  case NotificationVariant.MESSAGE:
-    actionButtons = <ViewMessageButton message={data as Message} />
-    break
-  }
-  return actionButtons
+  return pathname
 }
+// function getActionButtonsByVariant(
+//   variant: NotificationVariant,
+//   data: Notification["data"]
+// ) {
+//   let actionButtons = null
+//   switch (variant) {
+//     case NotificationVariant.LISTING_INTEREST:
+//     case NotificationVariant.PROFILE_INTEREST: {
+//       const dataAsInterest = { ...data } as Interest
+//       if (dataAsInterest.accepted) {
+//         actionButtons = <StartChatButton conversation={data as Conversation} />
+//         break
+//       }
+//       actionButtons =
+//         !data || dataAsInterest?.accepted || dataAsInterest?.declined ? (
+//           <></>
+//         ) : (
+//           <>
+//             <AcceptInterestButton />
+//             <DeclineInterestButton />
+//           </>
+//         )
+//       break
+//     }
+//     case NotificationVariant.ACCEPTED_INTEREST:
+//       actionButtons = <StartChatButton conversation={data as Conversation} />
+//       break
+//     case NotificationVariant.LISTING_VIEW:
+//       actionButtons = <>lll</>
+//       break
+//     case NotificationVariant.PROFILE_VIEW:
+//       actionButtons = <>nnn</>
+//       break
+//     case NotificationVariant.MESSAGE:
+//       actionButtons = <ViewMessageButton message={data as Message} />
+//       break
+//   }
+//   console.log(variant, "nkjnkjk")
+
+//   return actionButtons
+// }
 export default function NotificationItem({
   variant,
   size,
@@ -62,6 +93,7 @@ export default function NotificationItem({
   notification: Notification
   shouldRedirectToNotificationsPage?: boolean
 }) {
+  const actionPathname = useGetVariantActionPathname(variant, notification.data)
   const router = useRouter()
   const query = useSearchParams()
   const isSmall = useMemo(() => size === "small", [size])
@@ -71,7 +103,7 @@ export default function NotificationItem({
       shouldRedirectToNotificationsPage === false,
     [query, notification._id, shouldRedirectToNotificationsPage]
   )
-  const spin = keyframes`  
+  const pulseBg = keyframes`  
   from {background: rgba(58, 134, 255, 0.5);}   
   to {background: #F9F9F9}`
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -83,7 +115,7 @@ export default function NotificationItem({
         block: "nearest",
       })
       const resetFocusTimeout = setTimeout(() => {
-        router.push("/notifications")
+        router.push("/nexus/notifications")
       }, 2000)
       return () => {
         clearTimeout(resetFocusTimeout)
@@ -93,54 +125,56 @@ export default function NotificationItem({
   return (
     <Flex
       ref={containerRef}
-      animation={isInFocus ? `${spin} 2s linear` : ""}
-      px={isSmall ? ".8rem" : "2rem"}
-      py={isSmall ? "" : "1.5rem"}
+      animation={isInFocus ? `${pulseBg} 2s linear` : ""}
+      px={isSmall ? "1rem" : "2rem"}
+      py={isSmall ? ".5rem" : "1.5rem"}
       gap={isSmall ? ".4rem" : "1.5rem"}
-      alignItems="start"
-      bg={"#F9F9F9"}
+      alignItems="center"
+      border="1px solid #e9e9e9"
       borderRadius={isSmall ? "" : "1.2rem"}
       id={notification._id}
-      onClick={() =>
-        shouldRedirectToNotificationsPage &&
-        router.push(`/notifications?id=${notification._id}`)
-      }
+      cursor="pointer"
+      onClick={() => actionPathname.length && router.push(actionPathname)}
     >
       <Box border="1px solid" borderColor="brand.main" rounded="full">
         <Avatar
           src=""
-          name="Exploit enomah"
+          name={`${notification.from?.firstName} ${notification.from?.lastName}`}
           bg="brand.50"
           w={{ base: isSmall ? "3rem" : "4rem", md: isSmall ? "3rem" : "6rem" }}
           h={{ base: isSmall ? "3rem" : "4rem", md: isSmall ? "3rem" : "6rem" }}
         />
       </Box>
-      <VStack alignItems="stretch" gap=".2rem">
+      <VStack alignItems="stretch" gap=".4rem">
         <Heading
           as="h5"
-          fontSize={isSmall ? "1.4rem" : "1.9rem"}
+          fontSize={isSmall ? "1.6rem" : "1.8rem"}
           fontWeight="600"
           lineHeight="normal"
           textTransform="capitalize"
+          _hover={{ textDecor: "underline" }}
+          onClick={(e) => {
+            e.stopPropagation()
+            router.push(`/users/${notification.from._id}`)
+          }}
         >
           {notification.from?.firstName} {notification.from?.lastName}
         </Heading>
         <Text
-          fontSize="1rem"
+          fontSize="1.3rem"
           fontWeight="400"
           lineHeight="normal"
-          color="gray.100"
+          color="gray.main"
         >
           {notification.body}
         </Text>
-
-        <Flex
+        {/* <Flex
           alignItems="center"
           gap=".5rem"
           fontSize={isSmall ? "1rem" : { base: "1.2rem", md: "1.6rem" }}
         >
           {getActionButtonsByVariant(variant, notification.data)}
-        </Flex>
+        </Flex> */}
       </VStack>
       <Text
         fontSize={isSmall ? "1.1rem" : { base: "1.2rem", md: "1.6rem" }}
@@ -150,85 +184,85 @@ export default function NotificationItem({
         ml="auto"
         alignSelf="center"
       >
-        {timeAgo(new Date("2024-04-11"))}
+        {timeAgo(new Date(notification.createdAt))}
       </Text>
     </Flex>
   )
 }
 
-function AcceptInterestButton({ interest }: { interest: Interest }) {
-  const { handleAccept, loading } = useActOnInterest(interest)
-  return (
-    <Text
-      onClick={(e) => {
-        e.stopPropagation()
-        handleAccept()
-      }}
-      as="button"
-      color="brand.main"
-      fontSize="inherit"
-      fontWeight="700"
-      gap=".5rem"
-    >
-      {loading ? <Spinner color="brand.main" size="sm" /> : <>Accept</>}
-    </Text>
-  )
-}
+// function AcceptInterestButton() {
+//   const { handleAccept, loading } = useActOnInterest()
+//   return (
+//     <Text
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         handleAccept()
+//       }}
+//       as="button"
+//       color="brand.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//     >
+//       {loading ? <Spinner color="brand.main" size="sm" /> : <>Accept</>}
+//     </Text>
+//   )
+// }
 
-function StartChatButton({ conversation }: { conversation: Conversation }) {
-  const router = useRouter()
-  return (
-    <Text
-      as="button"
-      color="brand.main"
-      fontSize="inherit"
-      fontWeight="700"
-      gap=".5rem"
-      onClick={(e) => {
-        e.stopPropagation()
-        console.log(conversation)
-        return
-        router.push(`/messenger?convoId=${conversation?._id}`)
-      }}
-    >
-      Start Chat
-    </Text>
-  )
-}
-function ViewMessageButton({ message }: { message: Message }) {
-  const router = useRouter()
-  return (
-    <Text
-      as="button"
-      color="brand.main"
-      fontSize="inherit"
-      fontWeight="700"
-      gap=".5rem"
-      onClick={(e) => {
-        e.stopPropagation()
-        router.push(`/messenger?convoId=${message?.conversationId}`)
-      }}
-    >
-      View
-    </Text>
-  )
-}
+// function StartChatButton({ conversation }: { conversation: Conversation }) {
+//   const router = useRouter()
+//   return (
+//     <Text
+//       as="button"
+//       color="brand.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         // console.log(conversation)
+//         return
+//         router.push(`/messenger?convoId=${conversation?._id}`)
+//       }}
+//     >
+//       Send a message
+//     </Text>
+//   )
+// }
+// function ViewMessageButton({ message }: { message: Message }) {
+//   const router = useRouter()
+//   return (
+//     <Text
+//       as="button"
+//       color="brand.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         router.push(`/messenger?convoId=${message?.conversationId}`)
+//       }}
+//     >
+//       View
+//     </Text>
+//   )
+// }
 
-function DeclineInterestButton({ interest }: { interest: Interest }) {
-  const { handleDecline, loading } = useActOnInterest(interest)
-  return (
-    <Text
-      onClick={(e) => {
-        e.stopPropagation()
-        handleDecline()
-      }}
-      as="button"
-      color="gray.main"
-      fontSize="inherit"
-      fontWeight="700"
-      gap=".5rem"
-    >
-      {loading ? <Spinner color="brand.main" size="sm" /> : <>Decline</>}
-    </Text>
-  )
-}
+// function DeclineInterestButton() {
+//   const { handleDecline, loading } = useActOnInterest()
+//   return (
+//     <Text
+//       onClick={(e) => {
+//         e.stopPropagation()
+//         handleDecline()
+//       }}
+//       as="button"
+//       color="gray.main"
+//       fontSize="1.4rem"
+//       fontWeight="500"
+//       gap=".5rem"
+//     >
+//       {loading ? <Spinner color="brand.main" size="sm" /> : <>Decline</>}
+//     </Text>
+//   )
+// }

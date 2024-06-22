@@ -1,6 +1,6 @@
 import DropDownInput from "@/app/_components/DropDown"
 import useFilterStringListByText from "@/app/_hooks/useFilterStringListByText"
-import { Input } from "@chakra-ui/react"
+import { BoxProps, Input, InputProps } from "@chakra-ui/react"
 import { useRef, useEffect } from "react"
 import CustomDropDownList from "./CustomDropDownList"
 
@@ -16,7 +16,7 @@ export default function SearchableInput({
   value: string
   options: string[]
   handleChange: (value: string) => void
-  errorProps?: { [x: string]: string }
+  errorProps?: BoxProps | InputProps
   inputVariant?: string
   inputName: string
   inputPlaceholder: string
@@ -32,8 +32,8 @@ export default function SearchableInput({
     <DropDownInput
       options={filteredList}
       returnFocusOnClose={false}
-      closeOnBlur={false}
-      closeOnEsc={false}
+      closeOnBlur={true}
+      closeOnEsc={true}
       initialFocusRef={inputRef}
       trigger={
         <Input
