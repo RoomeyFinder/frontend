@@ -21,7 +21,6 @@ export default function Search() {
   return <ListingsSection />
 }
 function ListingsSection() {
-  const [page, setPage] = useState(1)
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [cache, setCache] = useState({})
   const [results, setResults] = useState([])
@@ -31,7 +30,6 @@ function ListingsSection() {
   })
   const { user } = useAppSelector((store) => store.auth)
   const { listings, loading } = useAppSelector((store) => store.search)
-  if (listings.length === 0 && !loading) return null
 
   useEffect(() => {
     document.body.firstElementChild?.addEventListener("scroll", (e) => {
@@ -97,6 +95,7 @@ function ListingsSection() {
   useEffect(() => {
     if (searchQueryString) search()
   }, [search, searchQueryString, cache])
+
   return (
     <>
       <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
