@@ -5,7 +5,6 @@ import {
   Avatar,
   Heading,
   Button,
-  Show,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -16,14 +15,12 @@ import {
 } from "@chakra-ui/react"
 
 import { useState, useMemo, useCallback } from "react"
-import CheckIcon from "../_assets/SVG/CheckIcon"
-import { TimesIconSmall } from "../_assets/SVG/TimesIcon"
-import useActOnInterest from "../_hooks/useActOnInterest"
 import { FavoriteType } from "../_types/Favorites"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
 import TimeSince from "./TimeSince"
 import { useAppSelector } from "../_redux"
+import useActOnInterest from "../_hooks/useActOnInterest"
 
 export default function InterestComponent({
   isSent,
