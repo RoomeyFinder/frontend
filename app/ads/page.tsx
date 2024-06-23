@@ -91,6 +91,9 @@ function ListingsSection() {
     if (res.statuCode === 200) {
       setCache((prev) => ({ ...prev, [searchQueryString]: res.results }) as any)
       setResults(res.results as any)
+    } else {
+      setCache((prev) => ({ ...prev, [searchQueryString]: [] }) as any)
+      setResults([])
     }
     setLoadingSearch(false)
   }, [searchQueryString, cache, loadingSearch])
