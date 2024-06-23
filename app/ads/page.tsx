@@ -88,7 +88,7 @@ function ListingsSection() {
       url: `/listings/search?${searchQueryString}`,
       method: "get",
     })
-    if (res.statuCode === 200) {
+    if (res.statusCode === 200) {
       setCache((prev) => ({ ...prev, [searchQueryString]: res.results }) as any)
       setResults(res.results as any)
     } else {
