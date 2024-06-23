@@ -114,16 +114,12 @@ export const footerLinks = [
     name: "Terms & conditions",
     href: "/terms-and-conditions",
   },
-  {
-    name: "Privacy",
-    href: "/privacy",
-  },
 ]
 
 export const footerSubLinks = [
   {
-    name: "Privacy Policy",
-    href: "/privacy-policy",
+    name: "Privacy policy",
+    href: "/privacy",
   },
   {
     name: "Blog",

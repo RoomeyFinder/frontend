@@ -36,6 +36,7 @@ export default function useHandleGoogleToken(onSuccess?: () => void) {
             token: response.token,
           })
         )
+        toast.success("Signed in successfully")
       } else {
         toast.error(
           response.message ||

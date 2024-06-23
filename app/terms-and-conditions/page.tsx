@@ -7,7 +7,15 @@ import {
   Divider,
   UnorderedList,
 } from "@chakra-ui/react"
+import appendSharedMetaData from "../_metadata"
 
+export async function generateMetadata() {
+  return appendSharedMetaData({
+    title: "Terms & Conditions • Roomeyfinder",
+    description:
+      "Understand the terms and conditions of using Roomeyfinder. Review the rules and guidelines for using our services and ensuring a safe and positive experience for all users.",
+  })
+}
 const Page = () => (
   <Box w="90dvw" mx="auto" py="4rem" maxW="125rem" fontSize="1.6rem">
     <Heading as="h3" variant="sm" mb={2}>

@@ -18,7 +18,7 @@ export default function Search() {
   }, [dispatch, hasFetchedInitialListings])
   return <ListingsSection />
 }
-
+//search page
 function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)
   const { listings, loading } = useAppSelector((store) => store.search)
@@ -27,7 +27,7 @@ function ListingsSection() {
     <>
       <>
         <ListSectionContainer>
-          <Heading variant="md">Latest Rooms</Heading>
+          <Heading variant="md" fontWeight="500">Latest Rooms</Heading>
           {loading ? (
             <Box opacity=".8" mx="auto" w="100%" maxW="40rem">
               <Loading />
@@ -54,7 +54,7 @@ function ListSectionContainer({
   return (
     <Box
       w={{ base: "95dvw", md: "full" }}
-      maxW={{ base: "94%", xl: "125rem" }}
+      maxW={{ base: "94%", xl: "123rem" }}
       mx="auto"
       display="flex"
       flexDir="column"

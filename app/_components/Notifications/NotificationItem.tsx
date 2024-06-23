@@ -1,5 +1,6 @@
 import Conversation, { Message } from "@/app/_types/Conversation"
 import Interest from "@/app/_types/Interest"
+import { Listing } from "@/app/_types/Listings"
 import Notification, { NotificationVariant } from "@/app/_types/Notification"
 import { timeAgo } from "@/app/_utils/date"
 import {
@@ -30,7 +31,7 @@ function useGetVariantActionPathname(
       pathname = `/messenger?convoId=${(data as Conversation)?._id}`
       break
     case NotificationVariant.LISTING_VIEW:
-      pathname = ""
+      pathname = `/ads/${(data as Listing)?._id}`
       break
     case NotificationVariant.PROFILE_VIEW:
       pathname = ""

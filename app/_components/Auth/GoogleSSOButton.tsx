@@ -7,10 +7,12 @@ export default function GoogleSSOButton({
   onSuccess,
 }: {
   onSuccess?: () => void
-  }) {
+}) {
   const handleGoogleToken = useHandleGoogleToken(onSuccess)
   const googleSignIn = useGoogleLogin({
-    onSuccess: handleGoogleToken,
+    onSuccess: (tokenRes) => {
+      handleGoogleToken(tokenRes)
+    },
   })
   return (
     <SSOButton

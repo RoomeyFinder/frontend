@@ -44,7 +44,12 @@ export default function RoomListingCard({
   return (
     <Flex
       onClick={() =>
-        user ? router.push(`/ads/${listing._id}`) : showAuthModal()
+        user
+          ? router.push(`/ads/${listing._id}`)
+          : showAuthModal({
+              title: "Sign in to view this listing",
+              nextUrl: `/ads/${listing._id}`,
+            })
       }
       w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
