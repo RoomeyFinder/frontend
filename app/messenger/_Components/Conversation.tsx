@@ -2,9 +2,9 @@ import { Flex, VStack } from "@chakra-ui/react"
 import Message from "./Message"
 import { Message as MessageInterface } from "@/app/_types/Conversation"
 import { useCallback, useEffect, useRef } from "react"
-// import { MessengerContext } from "@/app/_providers/MessengerProvider"
 import DownChevron from "@/app/_assets/SVG/DownChevron"
 import { useAppSelector } from "@/app/_redux"
+import { socket } from "@/app/_socket/socket"
 
 export default function Conversation({
   messages,
@@ -14,36 +14,29 @@ export default function Conversation({
   canScrollToLatestMessage: boolean
 }) {
   const { user } = useAppSelector((store) => store.auth)
-  // const { socket } = useContext(MessengerContext)
   const lastMessageRef = useRef<HTMLDivElement | null>(null)
 
   const scrollToLatestMsg = useCallback(() => {
-    lastMessageRef.current?.scrollIntoView({
-      behavior: "smooth",
-      inline: "end",
-      block: "end",
-    })
-  }, [])
+    if (messages?.length > 0)
+      lastMessageRef.current?.scrollIntoView({
+        behavior: "smooth",
+        inline: "end",
+        block: "nearest",
+      })
+  }, [messages])
 
   useEffect(() => {
-    canScrollToLatestMessage && scrollToLatestMsg()
-    // socket.onAny(() => {
-    //   console.log("dfjkadslf", canScrollToLatestMessage)
-    //   if (canScrollToLatestMessage)
-    //     lastMessageRef.current?.scrollIntoView(false)
-    // })
+    scrollToLatestMsg()
+    const lastMessage = lastMessageRef.current
+    socket.on("MESSAGE", () => {
+      if (canScrollToLatestMessage) lastMessage?.scrollIntoView(false)
+    })
     return () => {
-      // socket.offAny(() => {
-      //   console.log("dfjkadslf", canScrollToLatestMessage)
-      //   if (canScrollToLatestMessage)
-      //     lastMessageRef.current?.scrollIntoView(false)
-      // })
+      socket.off("MESSAGE", () => {
+        if (canScrollToLatestMessage) lastMessage?.scrollIntoView(false)
+      })
     }
-  }, [
-    scrollToLatestMsg,
-    canScrollToLatestMessage,
-    // socket,
-  ])
+  }, [scrollToLatestMsg, canScrollToLatestMessage])
 
   return (
     <>
@@ -66,8 +59,7 @@ export default function Conversation({
           <Flex
             alignItems="center"
             justifyContent="center"
-            w="4rem"
-            h="4rem"
+            p="2rem"
             pos="sticky"
             bottom="5rem"
             bg="brand.main"

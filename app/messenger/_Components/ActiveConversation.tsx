@@ -8,12 +8,12 @@ import {
   markMessagesAsRead,
 } from "@/app/_redux/thunks/messages.thunk"
 import { CONVERSATION_EVENTS } from "@/app/_socket/events"
-import { socket } from "@/app/_redux/slices/messages.slice"
 import User from "@/app/_types/User"
 import {
   removeActiveConversation,
   updateConversation,
 } from "@/app/_redux/slices/conversations.slice"
+import { socket } from "@/app/_socket/socket"
 
 export default function ActiveConversation() {
   const dispatch = useAppDispatch()
@@ -65,13 +65,11 @@ export default function ActiveConversation() {
 
   const handleSendMessage = useCallback(
     (msg: string) => {
-      socket.then((socket) =>
-        socket.emit(CONVERSATION_EVENTS.MESSAGE, {
-          recipient: recipient?._id,
-          text: msg,
-          conversationId: activeConversation?._id,
-        })
-      )
+      socket.emit(CONVERSATION_EVENTS.MESSAGE, {
+        recipient: recipient?._id,
+        text: msg,
+        conversationId: activeConversation?._id,
+      })
     },
     [activeConversation?._id, recipient]
   )

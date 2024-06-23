@@ -89,3 +89,22 @@ export async function getTokenFromStorage() {
 export function capitalizeFirstLetter(string: string) {
   return string?.charAt(0).toUpperCase() + string?.slice(1)
 }
+
+export function mergeArrays(
+  arr1: any[],
+  arr2: any[],
+  uniqueIdentifier: string
+) {
+  const combinedArray = arr1.concat(arr2)
+  const uniqueIds: any = {}
+  const mergedArray = combinedArray.filter((doc) => {
+    const id = doc[uniqueIdentifier]
+    if (!uniqueIds[id]) {
+      uniqueIds[id] = true
+      return true
+    }
+    return false
+  })
+
+  return mergedArray
+}

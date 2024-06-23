@@ -47,7 +47,7 @@ export default function Welcome() {
             ideal roommate.
           </Text>
         </Text>
-        <Button variant="brand-secondary" onClick={() => router.push("/")}>
+        <Button variant="brand-secondary" onClick={() => router.push("/nexus")}>
           Find My roommate
         </Button>
       </Flex>

@@ -16,6 +16,7 @@ import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
 import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserNotifications } from "../_redux/thunks/notifications.thunk"
+import useProtectRoutes from "../_hooks/useProtectRoutes"
 
 export default function GlobalLayout({
   children,
@@ -66,6 +67,7 @@ export default function GlobalLayout({
     hasFetchedNotifications,
     user,
   ])
+  useProtectRoutes()
 
   if (pathname.includes("nexus"))
     return (

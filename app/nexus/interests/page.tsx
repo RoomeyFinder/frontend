@@ -123,7 +123,7 @@ function InterestsList({
       />
     )
   return (
-    <SimpleGrid columns={{ base: 1 }}>
+    <SimpleGrid columns={{ base: 1 }} gap="1rem">
       {interests.map((interest) => (
         <InterestComponent
           key={interest._id}

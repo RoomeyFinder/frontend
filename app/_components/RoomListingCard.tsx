@@ -44,7 +44,12 @@ export default function RoomListingCard({
   return (
     <Flex
       onClick={() =>
-        user ? router.push(`/ads/${listing._id}`) : showAuthModal()
+        user
+          ? router.push(`/ads/${listing._id}`)
+          : showAuthModal({
+              title: "Sign in to view this listing",
+              nextUrl: `/ads/${listing._id}`,
+            })
       }
       w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
@@ -67,12 +72,13 @@ export default function RoomListingCard({
       <Box w="full" pos="relative">
         <ListingCardImageCarousel
           slides={listing.photos}
+          height="27rem"
           swiperSlideContent={({ slide }) => (
             <Image
               key={slide.secure_url}
               src={slide.secure_url}
               w="100%"
-              h="27.7rem"
+              h="full"
               rounded="1.2rem"
               objectFit="cover"
               alt=""

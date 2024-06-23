@@ -30,6 +30,7 @@ import { obfuscateEmail } from "@/app/_utils"
 import toast from "react-hot-toast"
 import { AuthModalContext } from "@/app/_providers/AuthModalProvider"
 import ForgotPasswordForm from "./ForgotPasswordForm"
+import { useRouter } from "next/navigation"
 
 const modalContentProps: BoxProps = {
   bgColor: "white",
@@ -48,17 +49,28 @@ const modalHeaderProps: BoxProps = {
 }
 
 export default function AuthModalContainer() {
-  const { isOpen, close } = useContext(AuthModalContext)
+  const { isOpen, close, actionHeading, nextUrl } = useContext(AuthModalContext)
 
-  return isOpen ? <AuthModal isOpen={isOpen} onClose={close} /> : null
+  return isOpen ? (
+    <AuthModal
+      heading={actionHeading}
+      nextUrl={nextUrl}
+      isOpen={isOpen}
+      onClose={close}
+    />
+  ) : null
 }
 
 function AuthModal({
   isOpen,
   onClose,
+  heading,
+  nextUrl,
 }: {
   onClose: () => void
   isOpen: boolean
+  heading: string
+  nextUrl: string
 }) {
   const [accountIsSSOProvided, setAccountIsSSOProvided] = useState(false)
   const [usersFirstName, setUsersFirstName] = useState("")
@@ -74,6 +86,7 @@ function AuthModal({
     "google" | "facebook" | undefined
   >()
 
+  const router = useRouter()
   const handleEmailCheckStatus = useCallback(
     (res: AccountCheckResponse) => {
       setHasAccount(res.hasAccount)
@@ -135,9 +148,9 @@ function AuthModal({
         duration: 5000,
       }
     )
-    //push to /dashboard
+    nextUrl ? router.push(nextUrl) : router.push("/nexus")
     onClose()
-  }, [usersFirstName, onClose])
+  }, [usersFirstName, onClose, nextUrl, router])
 
   return (
     <>
@@ -165,7 +178,7 @@ function AuthModal({
           <ModalBody p="2.4rem" display="flex" flexDir="column" gap="2.4rem">
             {!accountIsSSOProvided && currentStage === 0 && (
               <Heading as="h3" fontSize="2.2rem" fontWeight="600" my=".8rem">
-                Welcome to RoomeyFinder
+                {heading || <>Welcome to RoomeyFinder</>}
               </Heading>
             )}
             <VStack gap="2.4rem" alignItems="stretch" w="100%">

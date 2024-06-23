@@ -1,5 +1,6 @@
 import {
   Box,
+  BoxProps,
   Button,
   Flex,
   HStack,
@@ -34,7 +35,7 @@ export default function PremiumModal({
   show: boolean
   onClose: () => void
 }) {
-  const { user } = useAppSelector(store => store.auth)
+  const { user } = useAppSelector((store) => store.auth)
   const hasPremium = useMemo(() => {
     if (!user) return false
     if (!user.premiumPurchaseExpiry) return false
@@ -176,13 +177,13 @@ export default function PremiumModal({
 export function PremiumModalInfoOnly({
   show,
   onClose,
-  heading
+  heading,
 }: {
   show: boolean
   onClose: () => void
   heading?: ReactNode
 }) {
-  const { user } = useAppSelector(store => store.auth)
+  const { user } = useAppSelector((store) => store.auth)
   const hasPremium = useMemo(() => {
     if (!user) return false
     if (!user.premiumPurchaseExpiry) return false
@@ -336,9 +337,12 @@ function TermsOfService() {
   )
 }
 
-export function DividerWithCenteredText({ text }: { text: ReactNode }) {
+export function DividerWithCenteredText({
+  text,
+  ...rest
+}: { text: ReactNode } & BoxProps) {
   return (
-    <Box pos="relative" py=".8rem" w="full">
+    <Box pos="relative" py=".8rem" w="full" {...rest}>
       <Text h="1px" w="full" bg="#dddddd">
         <Text
           as="span"

@@ -95,14 +95,6 @@ export const supportLinks = [
     name: "Contact",
     href: "/contact",
   },
-  {
-    name: "Legal",
-    href: "/legal",
-  },
-  {
-    name: "FAQ",
-    href: "/faq",
-  },
 ]
 
 export const footerLinks = [
@@ -119,23 +111,15 @@ export const footerLinks = [
     href: "/contact",
   },
   {
-    name: "Legal",
-    href: "/legal",
-  },
-  {
-    name: "Help Center",
-    href: "/help",
-  },
-  {
-    name: "Testimonials",
-    href: "/testimonials",
+    name: "Terms & conditions",
+    href: "/terms-and-conditions",
   },
 ]
 
 export const footerSubLinks = [
   {
-    name: "Privacy Policy",
-    href: "/privacy-policy",
+    name: "Privacy policy",
+    href: "/privacy",
   },
   {
     name: "Blog",
