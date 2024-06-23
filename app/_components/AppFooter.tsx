@@ -46,7 +46,7 @@ export default function AppFooter() {
           <Flex as="small" gap=".978rem" alignItems="center">
             <CopyrightIcon />
             <Text as="span" color="#333" fontSize="1.6rem" lineHeight="218%">
-              2023 Roomeyfinder, Inc.
+              {new Date(Date.now()).getFullYear()} Roomeyfinder, Inc.
             </Text>
           </Flex>
           <FooterSubLinks />
@@ -73,6 +73,17 @@ function FooterLinks() {
           <FooterLink href={link.href}>{link.name}</FooterLink>
         </ListItem>
       ))}
+      <ListItem ml="auto">
+        <Link
+          href="mailto:support@roomeyfinder.com"
+          fontSize="1.6rem"
+          fontWeight="500"
+          color="gray.main"
+          letterSpacing="105%"
+        >
+          support@roomeyfinder.com
+        </Link>
+      </ListItem>
     </List>
   )
 }

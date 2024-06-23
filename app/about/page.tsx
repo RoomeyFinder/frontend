@@ -1,10 +1,18 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react"
+import AboutPageSvg from "../_assets/SVG/AboutPage"
 import ChatIcon from "../_assets/SVG/ChatIcon"
 import Handlens from "../_assets/SVG/Handlens"
 import PeopleGroup from "../_assets/SVG/PeopleGroup"
 import FeatureCard from "../_components/FeatureCard"
-import AboutPageSvg from "../_assets/SVG/AboutPage"
+import appendSharedMetaData from "../_metadata"
 
+export async function generateMetadata() {
+  return appendSharedMetaData({
+    title: "About Us • Roomeyfinder",
+    description:
+      "Learn more about Roomeyfinder, our mission, values, and the services we offer to help you find the perfect living arrangement and roommates.",
+  })
+}
 export default function Home() {
   return (
     <>

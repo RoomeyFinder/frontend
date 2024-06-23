@@ -6,19 +6,27 @@ import {
   UnorderedList,
   Link,
 } from "@chakra-ui/react"
+import appendSharedMetaData from "../_metadata"
 
+export async function generateMetadata() {
+  return appendSharedMetaData({
+    title: "Privacy Policy • Roomeyfinder",
+    description:
+      "Read our Privacy Policy to understand how Roomeyfinder collects, uses, and protects your personal information. Your privacy is important to us.",
+  })
+}
 const PrivacyPolicy = () => (
   <Box w="90dvw" mx="auto" py="4rem" maxW="125rem" fontSize="1.6rem">
     <Heading as="h1" variant="md" mb={4}>
       Privacy
-    </Heading>
+    </Heading>s
     <Text mb={4}>
       ROOMEYFINDER LIMITED (Roomeyfinder.com) is committed to protecting your
-      privacy. Roommates International&apos;s privacy policy is outlined below. This
-      privacy policy is regularly reviewed and Roomeyfinder.com may amend it
-      from time to time. While Roommates International will endeavour to notify
-      you of any major changes to this Privacy Policy from time to time, you
-      agree that you will periodically review the most up-to-date version of
+      privacy.  ROOMEYFINDER LIMITED&apos;s privacy policy is outlined below.
+      This privacy policy is regularly reviewed and Roomeyfinder.com may amend
+      it from time to time. While  ROOMEYFINDER LIMITED will endeavour to
+      notify you of any major changes to this Privacy Policy from time to time,
+      you agree that you will periodically review the most up-to-date version of
       this Privacy Policy available.
     </Text>
     <Text mb={4}>
@@ -49,9 +57,9 @@ const PrivacyPolicy = () => (
     </Text>
     <Text mb={4}>
       You may delete your account at any time, for any reason, by visiting your
-      account settings and locating &apos;Delete Account&apos; at the bottom of the page.
-      Once an account is deleted, your personal information and active listings
-      will be removed from the website.
+      account settings and locating &apos;Delete Account&apos; at the bottom of
+      the page. Once an account is deleted, your personal information and active
+      listings will be removed from the website.
     </Text>
     <Text mb={4}>
       If you wish to pause your listing but keep your account with us, you may
@@ -96,10 +104,11 @@ const PrivacyPolicy = () => (
     <Text mb={4}>
       Roomeyfinder.com may disclose your personal information, and you consent
       to Roomeyfinder.com disclosing your personal information, to
-      Roomeyfinder.com&apos;s related bodies corporate and associated entities (as
-      those terms are defined in the Companies and Allied Matters Act (CAMA) 2020.) (Other
-      Entities) whereby your personal information will be collected, used,
-      disclosed, managed and stored in accordance with this policy.
+      Roomeyfinder.com&apos;s related bodies corporate and associated entities
+      (as those terms are defined in the Companies and Allied Matters Act (CAMA)
+      2020.) (Other Entities) whereby your personal information will be
+      collected, used, disclosed, managed and stored in accordance with this
+      policy.
     </Text>
     <Text mb={4}>
       Roomeyfinder.com may also disclose personal information, and you consent
@@ -112,8 +121,8 @@ const PrivacyPolicy = () => (
         services on its behalf;
       </ListItem>
       <ListItem>
-        that are Roomeyfinder.com&apos;s agents, business partners or joint venture
-        entities;
+        that are Roomeyfinder.com&apos;s agents, business partners or joint
+        venture entities;
       </ListItem>
       <ListItem>
         authorised by you to receive information held by Roomeyfinder.com;
@@ -238,15 +247,15 @@ const PrivacyPolicy = () => (
       Roomeyfinder.com collects data about your browsing activity on the
       Website, such as the search terms you have used and other details of the
       way you use the Website, in order to provide suggested search results to
-      you and, once aggregated with other users&apos; data, other users based on your
-      and other users&apos; searches on the Website. This data does not include your
-      personal information. However, this data may be associated with your
-      personal information if you have an Account or if you sign-up for an
-      Account in the future. The collection, use and disclosure, storage of, and
-      access to, that data (if it is associated with your personal information)
-      will be in accordance with this Privacy Policy. Roomeyfinder.com will not
-      provide that data to any third parties in a way which will enable them to
-      personally identify you.
+      you and, once aggregated with other users&apos; data, other users based on
+      your and other users&apos; searches on the Website. This data does not
+      include your personal information. However, this data may be associated
+      with your personal information if you have an Account or if you sign-up
+      for an Account in the future. The collection, use and disclosure, storage
+      of, and access to, that data (if it is associated with your personal
+      information) will be in accordance with this Privacy Policy.
+      Roomeyfinder.com will not provide that data to any third parties in a way
+      which will enable them to personally identify you.
     </Text>
 
     <Heading as="h2" variant="sm" mb={4}>
