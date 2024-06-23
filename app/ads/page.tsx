@@ -88,8 +88,10 @@ function ListingsSection() {
       url: `/listings/search?${searchQueryString}`,
       method: "get",
     })
-    setCache((prev) => ({ ...prev, [searchQueryString]: res.results }) as any)
-    setResults(res.results as any)
+    if (res.statuCode === 200) {
+      setCache((prev) => ({ ...prev, [searchQueryString]: res.results }) as any)
+      setResults(res.results as any)
+    }
     setLoadingSearch(false)
   }, [searchQueryString, cache, loadingSearch])
   useEffect(() => {
