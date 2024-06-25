@@ -73,7 +73,10 @@ function FooterLinks() {
           <FooterLink href={link.href}>{link.name}</FooterLink>
         </ListItem>
       ))}
-      <ListItem ml="auto">
+      <ListItem
+        ml={{ base: "auto", md: "auto" }}
+        mr={{ base: "auto", md: "0" }}
+      >
         <Link
           href="mailto:support@roomeyfinder.com"
           fontSize="1.6rem"

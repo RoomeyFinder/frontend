@@ -96,7 +96,7 @@ function ListingsSection() {
       setResults([])
     }
     setLoadingSearch(false)
-  }, [searchQueryString, cache, loadingSearch])
+  }, [searchQueryString, cache, loadingSearch, fetchData])
   useEffect(() => {
     if (searchQueryString) search()
   }, [search, searchQueryString, cache])

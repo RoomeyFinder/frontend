@@ -19,14 +19,14 @@ const PrivacyPolicy = () => (
   <Box w="90dvw" mx="auto" py="4rem" maxW="125rem" fontSize="1.6rem">
     <Heading as="h1" variant="md" mb={4}>
       Privacy
-    </Heading>s
+    </Heading>
     <Text mb={4}>
       ROOMEYFINDER LIMITED (Roomeyfinder.com) is committed to protecting your
-      privacy.  ROOMEYFINDER LIMITED&apos;s privacy policy is outlined below.
+      privacy. ROOMEYFINDER LIMITED&apos;s privacy policy is outlined below.
       This privacy policy is regularly reviewed and Roomeyfinder.com may amend
-      it from time to time. While  ROOMEYFINDER LIMITED will endeavour to
-      notify you of any major changes to this Privacy Policy from time to time,
-      you agree that you will periodically review the most up-to-date version of
+      it from time to time. While ROOMEYFINDER LIMITED will endeavour to notify
+      you of any major changes to this Privacy Policy from time to time, you
+      agree that you will periodically review the most up-to-date version of
       this Privacy Policy available.
     </Text>
     <Text mb={4}>

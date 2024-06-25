@@ -36,6 +36,7 @@ import {
   deactivateListing,
   deleteListing,
 } from "../_redux/thunks/listings.thunk"
+import toast from "react-hot-toast"
 
 const actionBasedOnStatus = {
   active: "Deactivate",
@@ -136,7 +137,9 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
       <Flex gap={{ base: ".8rem", md: "1rem" }} alignItems="center">
         <IconButton
           aria-label="Edit"
-          onClick={() => router.push(`/nexus/ads/edit?id=${listing._id}`)}
+          onClick={() => {
+            router.push(`/nexus/ads/edit?id=${listing._id}`)
+          }}
           icon={<EditSVG />}
           {...buttonProps}
         />

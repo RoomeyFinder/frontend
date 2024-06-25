@@ -143,7 +143,16 @@ function SignupConsumer() {
             mx="auto"
             text="Continue with"
           />
-          <HStack w="full" gap="2rem" alignItems="center">
+          <HStack
+            w="full"
+            rowGap="2rem"
+            columnGap="2rem"
+            alignItems="center"
+            flexWrap="wrap"
+            px="1rem"
+            display={{ base: "flex", sm: "grid" }}
+            gridTemplateColumns="repeat(2, 1fr)"
+          >
             <GoogleSSOButton />
             <FacebookSSOButton />
           </HStack>
