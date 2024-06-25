@@ -161,7 +161,7 @@ export default function AuthFormLayout({
               sm: submitButtonVariant || "brand-secondary",
             }}
             w="50%"
-            maxW={{ md: "19.8rem" }}
+            maxW={{ sm: "19.8rem" }}
             lineHeight="150%"
             padding={{ base: "1.5rem 2rem", md: "1.5rem 2rem" }}
             {...submitButtonProps}
