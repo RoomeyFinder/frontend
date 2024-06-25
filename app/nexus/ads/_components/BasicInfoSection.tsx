@@ -29,7 +29,7 @@ export default function BasicInfoSection({
       <HStack w="full">
         <FormLabel w={{ base: "full" }}>
           <Text as="span" fontSize="1.4rem" fontWeight="500">
-            I'm looking for
+            I&apos;m looking for
           </Text>
           <Input
             name="lookingFor"

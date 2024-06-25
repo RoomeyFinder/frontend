@@ -36,7 +36,6 @@ import {
   deactivateListing,
   deleteListing,
 } from "../_redux/thunks/listings.thunk"
-import toast from "react-hot-toast"
 
 const actionBasedOnStatus = {
   active: "Deactivate",
