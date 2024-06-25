@@ -62,8 +62,11 @@ export default function ListingForm({
     streetAddress: listing?.streetAddress || "",
     city: listing?.city || "",
     state: listing?.state || "",
+    lookingFor: listing?.lookingFor || "",
   })
 
+  console.log(listing?.state)
+  console.log(listing?.city)
   const validateAddress = useCallback(async () => {
     setIsCheckingAddress(true)
     const response = await getAddressComponents({
@@ -214,6 +217,7 @@ export default function ListingForm({
         streetAddress: listing?.streetAddress || "",
         city: listing?.city || "",
         state: listing?.state || "",
+        lookingFor: listing?.lookingFor || "",
       })
       setFiles([])
       setFeatures([])

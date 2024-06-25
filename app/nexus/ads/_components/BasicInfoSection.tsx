@@ -13,7 +13,7 @@ import { ChangeEventHandler } from "react"
 
 export default function BasicInfoSection({
   listingInfo,
-  handleChange
+  handleChange,
 }: {
   listingInfo: Partial<Listing> & { apartmentType: string }
   handleChange: ChangeEventHandler<HTMLInputElement>
@@ -26,6 +26,22 @@ export default function BasicInfoSection({
       pt="1rem"
       gap={{ base: "1rem", sm: "2rem" }}
     >
+      <HStack w="full">
+        <FormLabel w={{ base: "full" }}>
+          <Text as="span" fontSize="1.4rem" fontWeight="500">
+            I'm looking for
+          </Text>
+          <Input
+            name="lookingFor"
+            placeholder="A roommate to share my apartment with"
+            type="string"
+            onChange={handleChange}
+            variant="filled"
+            w="full"
+            value={listingInfo.lookingFor}
+          />
+        </FormLabel>
+      </HStack>
       <HStack
         w="full"
         gap={{ base: "1rem", sm: "2rem" }}
