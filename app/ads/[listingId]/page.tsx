@@ -13,21 +13,21 @@ export async function generateMetadata({
     }
   )
   const json = await res.json()
-  if (!json) {
+  if (json.statusCode !== 200) {
     return {
       title: "Listing not found",
       description: "The requested listing was not found.",
     }
   }
-  const title = `Stay with ${json.listing.owner.firstName}`
-  const description = `${json.listing.isStudioApartment ? "Studio apartment" : `${json.listing.numberOfBedrooms} bedroom apartment`} located at ${json.listing.streetAddress}`
+  const title = `Stay with ${json?.listing?.owner?.firstName}`
+  const description = `${json?.listing?.isStudioApartment ? "Studio apartment" : `${json?.listing?.numberOfBedrooms} bedroom apartment`} located at ${json?.listing?.streetAddress}`
   return {
     title,
     description,
     openGraph: {
       title,
       description,
-      images: ((json.listing.photos as Listing["photos"]) || []).map(
+      images: ((json?.listing.photos as Listing["photos"]) || []).map(
         (photo) => ({
           url: photo.secure_url,
           width: 800,
