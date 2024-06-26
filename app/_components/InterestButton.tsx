@@ -1,6 +1,6 @@
 import { Button, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
-import { useState, useMemo, useCallback, ReactNode } from "react"
+import { useState, useMemo, useCallback, ReactNode, useContext } from "react"
 import toast from "react-hot-toast"
 import useAxios from "../_hooks/useAxios"
 import { useAppSelector, useAppDispatch } from "../_redux"
@@ -10,6 +10,7 @@ import { Listing } from "../_types/Listings"
 import { capitalizeFirstLetter } from "../_utils"
 import { PersonIconTwo } from "../_assets/SVG/PersonIcon"
 import useActOnInterest from "../_hooks/useActOnInterest"
+import { AuthModalContext } from "../_providers/AuthModalProvider"
 
 export default function InterestButton({
   doc,
@@ -20,6 +21,7 @@ export default function InterestButton({
   docType: "User" | "Listing"
   docOwner: string
 }) {
+  const { open: showAuthModal } = useContext(AuthModalContext)
   const router = useRouter()
   const { fetchData } = useAxios()
   const { user } = useAppSelector((store) => store.auth)
@@ -70,13 +72,19 @@ export default function InterestButton({
             countOfInterestsLeft: user.countOfInterestsLeft - 1,
           })
         )
-    } else
-      toast.error(
-        res.message ||
-          "Sorry, we are unable to send that interest at the moment. Please try again."
-      )
+    } else {
+      if (res.statusCode >= 400) {
+        showAuthModal({
+          title: `Sign in to show interest in this ${docType === "Listing" ? "Listing" : "Profile"}`,
+        })
+      } else
+        toast.error(
+          res.message ||
+            "Sorry, we are unable to send that interest at the moment. Please try again."
+        )
+    }
     setSendingInterest(false)
-  }, [fetchData, doc, docType, docOwner, user, dispatch])
+  }, [fetchData, doc, docType, docOwner, user, dispatch, showAuthModal])
 
   const buttonProps = useMemo(() => {
     if (existingInterest) {
@@ -101,7 +109,12 @@ export default function InterestButton({
       }
     }
     return {
-      onClick: handleSendInterest,
+      onClick: user?._id
+        ? handleSendInterest
+        : () =>
+            showAuthModal({
+              title: `Sign in to show interest in this ${docType === "Listing" ? "Listing" : "Profile"}`,
+            }),
       children: "Show Interest",
     }
   }, [
@@ -111,6 +124,8 @@ export default function InterestButton({
     isSender,
     handleAccept,
     user?._id,
+    docType,
+    showAuthModal,
   ])
   return (
     <>
