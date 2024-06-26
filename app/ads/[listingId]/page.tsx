@@ -15,7 +15,7 @@ export async function generateMetadata({
   const json = await res.json()
   if (!json) {
     return {
-      title: `Listing not found`,
+      title: "Listing not found",
       description: "The requested listing was not found.",
     }
   }
