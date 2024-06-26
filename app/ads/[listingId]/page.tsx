@@ -1,3 +1,4 @@
+import { capitalizeFirstLetter } from "@/app/_utils"
 import ClientContent from "./ClientContent"
 import { Listing } from "@/app/_types/Listings"
 
@@ -6,20 +7,25 @@ export async function generateMetadata({
 }: {
   params: { listingId: string }
 }) {
-  const res = await fetch(
-    `http://${process.env.SERVER_URL}/api/v1/listings/${params.listingId}`,
-    {
-      method: "get",
-    }
-  )
-  const json = await res.json()
-  if (json.statusCode !== 200) {
+  let res: Response | undefined
+  try {
+    res = await fetch(
+      `${process.env.SERVER_URL}/api/v1/listings/${params.listingId}`,
+      {
+        method: "get",
+      }
+    )
+  } catch (err) {
+    console.log(err)
+  }
+  const json = await res?.json()
+  if (json?.statusCode !== 200) {
     return {
       title: "Listing not found",
       description: "The requested listing was not found.",
     }
   }
-  const title = `Stay with ${json?.listing?.owner?.firstName}`
+  const title = `Stay with ${capitalizeFirstLetter(json?.listing?.owner?.firstName || "")}`
   const description = `${json?.listing?.isStudioApartment ? "Studio apartment" : `${json?.listing?.numberOfBedrooms} bedroom apartment`} located at ${json?.listing?.streetAddress}`
   return {
     title,
