@@ -15,6 +15,7 @@ export async function generateMetadata({
       }
     )
   } catch (err) {
+    console.log(err)
   }
   const json = await res?.json()
   if (json?.statusCode !== 200) {
