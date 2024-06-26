@@ -6,14 +6,18 @@ export async function generateMetadata({
 }: {
   params: { listingId: string }
 }) {
-  const res = await fetch(
-    `http://${process.env.SERVER_URL}/api/v1/listings/${params.listingId}`,
-    {
-      method: "get",
-    }
-  )
-  const json = await res.json()
-  if (json.statusCode !== 200) {
+  let res: Response | undefined
+  try {
+    res = await fetch(
+      `http://${process.env.SERVER_URL}/api/v1/listings/${params.listingId}`,
+      {
+        method: "get",
+      }
+    )
+  } catch (err) {
+  }
+  const json = await res?.json()
+  if (json?.statusCode !== 200) {
     return {
       title: "Listing not found",
       description: "The requested listing was not found.",
