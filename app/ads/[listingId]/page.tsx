@@ -7,7 +7,7 @@ export async function generateMetadata({
   params: { listingId: string }
 }) {
   const res = await fetch(
-    `http://${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/listings/${params.listingId}`,
+    `http://${process.env.SERVER_URL}/api/v1/listings/${params.listingId}`,
     {
       method: "get",
     }
