@@ -24,10 +24,11 @@ export function RoomeyListingCardSkeleton({
 `
   return (
     <Flex
-      py="2rem"
-      w="95dvw"
-      minH="38rem"
+      minH="28rem"
       maxW={{ base: "95dvw", sm: "28.3rem" }}
+      animation={`${pulse} infinite 2s linear`}
+      py="2rem"
+      w="100%"
       alignItems="center"
       flexDir="column"
       gap="1.5rem"
@@ -36,30 +37,64 @@ export function RoomeyListingCardSkeleton({
       borderRadius="1.2rem"
       background="transparent"
       cursor="pointer"
-      animation={`${pulse} infinite 2s linear`}
+      h="full"
+      _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
     >
       <Box pos="absolute" right="2.4rem">
         <FavouriteIcon isFilled={true} />
       </Box>
-      <ProfileAvatar width={180} height={180} showVerifiedBadge />
-      <Flex gap="1rem" alignItems="center">
-        <Heading width="5rem" height=".4rem" bgColor="gray.100"></Heading>
-        <DotSeparator />
-        <Text width="3rem" height=".4rem" bgColor="gray.100"></Text>
-      </Flex>
+      <ProfileAvatar width={100} height={100} />
+      <VStack gap="1rem" alignItems="center">
+        <Text width="5rem" bgColor="gray.100" h=".6rem" opacity=".3"></Text>
+        <Flex alignItems="center" gap="1rem">
+          <Text
+            width="5rem"
+            height=".4rem"
+            bgColor="gray.100"
+            opacity=".3"
+          ></Text>
+          <DotSeparator />
+          <Text width="5rem" bgColor="gray.100" h=".4rem" opacity=".3"></Text>
+        </Flex>
+      </VStack>
       <PadlockDivider />
-      <Flex flexDir="column" textAlign="center" gap=".5rem" w="full">
-        <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
-        <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
-        <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
-        <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
-        <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
+      <Flex flexDir="column" textAlign="center" gap="1rem" w="full">
+        <Text
+          maxW="24rem"
+          bgColor="gray.main"
+          w="full"
+          h=".7rem"
+          opacity=".1"
+          mx="auto"
+        ></Text>
+        <Text
+          h="1.7rem"
+          maxW="24rem"
+          whiteSpace="wrap"
+          mx="auto"
+          bgColor="gray.main"
+          w="full"
+          opacity=".1"
+        ></Text>
+        <Text
+          h="1.7rem"
+          maxW="24rem"
+          whiteSpace="wrap"
+          mx="auto"
+          bgColor="gray.main"
+          w="full"
+          opacity=".1"
+        ></Text>
       </Flex>
     </Flex>
   )
 }
 
-export function RoomListingCardSkeleton() {
+export function RoomListingCardSkeleton({
+  hasBorder,
+}: {
+  hasBorder?: boolean
+}) {
   const pulse = keyframes`  
     0% {opacity: .4;}   
     50% {opacity: .8} 
@@ -67,6 +102,11 @@ export function RoomListingCardSkeleton() {
   `
   return (
     <Flex
+      py="1rem"
+      px="1rem"
+      border={hasBorder ? "1px solid #7070704D" : ""}
+      h="full"
+      _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
       w="95dvw"
       minH="38rem"
       maxW={{ base: "32rem", sm: "28.3rem" }}
@@ -78,7 +118,6 @@ export function RoomListingCardSkeleton() {
       overflow="hidden"
       background="transparent"
       cursor="pointer"
-      _hover={{ background: "white" }}
       animation={`${pulse} infinite 2s linear`}
     >
       <Box pos="absolute" right="2.4rem" top="2.4rem">
@@ -90,6 +129,7 @@ export function RoomListingCardSkeleton() {
         minH="27.7rem"
         bg="gray.main"
         opacity=".1"
+        rounded="1rem"
       ></Box>
       <Flex gap=".8rem" alignItems="center">
         <Avatar w={25} h={25} src={""} name="" />
