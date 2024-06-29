@@ -59,24 +59,7 @@ export default function UserOverview({
   const aboutPreview = useMemo(() => user.about?.slice(0, 600), [user.about])
   return (
     <Box minH="calc(100vh - 9rem)" w="full">
-      <Box
-        pos="fixed"
-        bg="white"
-        top="10rem"
-        zIndex="300"
-        shadow="lg"
-        rounded="lg"
-        left={{base:"3%", xl: "15%"}}
-        px="2rem"
-        py="1rem"
-        dropShadow="-1px 3px 39px #00000059"
-        opacity=".7"
-        _hover={{
-          opacity: 1,
-        }}
-      >
-        <BackButton showText />
-      </Box>
+      <BackButton />
       <Box
         w="full"
         bg="linear-gradient(to top, #FFFFFF, rgb(255 255 221 / 24%), rgb(255 255 221 / 27%), rgb(131 166 212 / 30%), rgb(59 134 255 / 25%))"

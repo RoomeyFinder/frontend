@@ -19,15 +19,15 @@ export const AuthContext = createContext<{
   resetAuthorization: (saveUrlState?: boolean) => void
   deleteToken: () => void
   loading: boolean
-    }>({
-      token: null,
-      isAuthorized: false,
-      updateToken: () => {},
-      isSessionStorage: undefined,
-      resetAuthorization: () => {},
-      deleteToken: () => {},
-      loading: true,
-    })
+}>({
+  token: null,
+  isAuthorized: false,
+  updateToken: () => {},
+  isSessionStorage: undefined,
+  resetAuthorization: () => {},
+  deleteToken: () => {},
+  loading: true,
+})
 
 export default function AuthProvider({
   children,
@@ -71,6 +71,16 @@ export default function AuthProvider({
     redirectWhenNotAuthorized()
   }, [redirectWhenNotAuthorized])
 
+  const storePathValues = useCallback((pathname: string) => {
+    const storage = globalThis?.sessionStorage
+    if (!storage) return
+    const prevPath = storage.getItem("currentPath")
+    if (prevPath) storage.setItem("prevPath", prevPath)
+    storage.setItem("currentPath", pathname)
+  }, [])
+  useEffect(() => {
+    storePathValues(pathname)
+  }, [pathname])
   return (
     <AuthContext.Provider
       value={{
