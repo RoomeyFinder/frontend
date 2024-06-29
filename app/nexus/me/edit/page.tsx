@@ -10,6 +10,7 @@ import { isUnderage } from "@/app/_utils"
 import useAxios from "@/app/_hooks/useAxios"
 import toast from "react-hot-toast"
 import { updateUser } from "@/app/_redux/slices/auth.slice"
+import { useRouter } from "next/navigation"
 
 export default function ProfileEdit() {
   const dispatch = useAppDispatch()
@@ -58,6 +59,7 @@ export default function ProfileEdit() {
     [occupation]
   )
   const { fetchData } = useAxios()
+  const router = useRouter()
   const handleSubmit = useCallback(
     async (
       values: Partial<User>,
@@ -81,7 +83,7 @@ export default function ProfileEdit() {
       if (res.statusCode === 200) {
         dispatch(updateUser(res.user))
         toast.success("Profile updated successfully")
-        resetForm()
+        router.push("/nexus/me")
       } else
         toast.error(res.message || "Something went wrong 😔 , Pleae try again.")
       setSubmitting(false)
