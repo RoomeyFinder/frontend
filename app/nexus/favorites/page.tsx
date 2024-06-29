@@ -164,10 +164,21 @@ function FavoriteComponent({
 }) {
   if (filter === "roomies") {
     const roomey = document as User
-    return <RoomeyListingCard user={roomey} variant="outlined" />
+    return (
+      <RoomeyListingCard
+        useConfirmationToRemoveFavorite
+        user={roomey}
+        variant="outlined"
+      />
+    )
   }
   const listing = document as Listing
   return (
-    <RoomListingCard variant="outlined" showFavoriteButton listing={listing} />
+    <RoomListingCard
+      variant="outlined"
+      useConfirmationToRemoveFavorite
+      showFavoriteButton
+      listing={listing}
+    />
   )
 }

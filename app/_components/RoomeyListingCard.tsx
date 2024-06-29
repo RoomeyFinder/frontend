@@ -11,10 +11,12 @@ export default function RoomeyListingCard({
   variant,
   isLocked = false,
   user,
+  useConfirmationToRemoveFavorite = false,
 }: {
   variant?: "outlined" | "default"
   isLocked?: boolean
   user: User
+  useConfirmationToRemoveFavorite?: boolean
 }) {
   const router = useRouter()
 
@@ -35,7 +37,11 @@ export default function RoomeyListingCard({
       _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
     >
       {!isLocked && (
-        <FavouriteButton listingId={user._id} type={FavoriteType.USER} />
+        <FavouriteButton
+          listingId={user._id}
+          type={FavoriteType.USER}
+          useConfirmation={useConfirmationToRemoveFavorite}
+        />
       )}
       <ProfileAvatar
         imageSrc={user.profileImage?.secure_url}

@@ -64,7 +64,11 @@ function RecomendationsDisplay({
       type === "Roomey" ? (
         <RoomeyListingCard user={data as User} variant="outlined" />
       ) : (
-        <RoomListingCard listing={data as Listing} variant="outlined" />
+        <RoomListingCard
+          listing={data as Listing}
+          variant="outlined"
+          showFavoriteButton
+        />
       ),
     [type]
   )
