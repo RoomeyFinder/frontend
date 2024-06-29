@@ -64,9 +64,6 @@ export default function ListingForm({
     state: listing?.state || "",
     lookingFor: listing?.lookingFor || "",
   })
-
-  console.log(listing?.state)
-  console.log(listing?.city)
   const validateAddress = useCallback(async () => {
     setIsCheckingAddress(true)
     const response = await getAddressComponents({
