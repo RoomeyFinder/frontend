@@ -194,7 +194,7 @@ export function Hero() {
         </Box>
         <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>
           <Image
-            src={heroImage.src}
+            src="https://res.cloudinary.com/messengerapptask/image/upload/v1719666871/hero-image_hokwu8.jpg"
             alt="Hero image for Roomeyfinder. Two ladies sitting on a blue couch having coffee"
           />
         </Box>
