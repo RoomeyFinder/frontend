@@ -38,6 +38,8 @@ export default function ProfileSettings({
         <VStack alignItems="start" fontSize="1.4rem" w="full" color="gray.main">
           <Link
             href="/nexus/me/preferences"
+            textDecor="underline"
+            _hover={{ color: "brand.main" }}
             onClick={(e) => {
               e.preventDefault()
               router.push("/nexus/me/preferences")
@@ -51,6 +53,8 @@ export default function ProfileSettings({
               e.preventDefault()
               handleProfileSettingsClick()
             }}
+            textDecor="underline"
+            _hover={{ color: "brand.main" }}
           >
             Profile settings
           </Link>
@@ -60,6 +64,8 @@ export default function ProfileSettings({
               e.preventDefault()
               handleDeleteAccountClick()
             }}
+            textDecor="underline"
+            _hover={{ color: "brand.main" }}
           >
             Delete account
           </Link>
