@@ -81,7 +81,7 @@ export default function ProfileInfoSection({ user }: { user: User | null }) {
         </Flex>
         <Flex fontSize="1.6rem" justifyContent="space-between" w="full">
           <Text fontWeight="600">Email: </Text>
-          <Text textTransform="capitalize">{user?.email}</Text>
+          <Text textTransform="lowercase">{user?.email}</Text>
         </Flex>
       </VStack>
       <>
