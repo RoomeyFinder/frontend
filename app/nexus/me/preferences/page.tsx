@@ -66,6 +66,7 @@ export default function PreferencesPage() {
       }
       dispatch(updatePreferences(formData)).then(() => {
         setSubmitting(false)
+        router.push("/nexus/me")
       })
     },
     [lifestyle, leaseDurations, dispatch]

@@ -38,7 +38,7 @@ export default function ChangePasswordModal({
         )
           errors[key] = "This field is required!"
       })
-      if (!user?.ssoProvider && user?.password)
+      if (!user?.ssoProvider && !user?.password)
         errors.old = "This field is required"
       if (Object.keys(errors).length > 0) return setPasswordErrors(errors)
       if (passwords.new !== passwords.confirmNew)
