@@ -2,6 +2,7 @@ import User from "@/app/_types/User"
 import CoverAndProfileImage from "@/app/nexus/me/_components/CoverAndProfileImage"
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -32,6 +33,8 @@ import TextCheckbox from "@/app/nexus/me/_components/TextCheckbox"
 import { Listing } from "@/app/_types/Listings"
 import RoomListingCard from "@/app/_components/RoomListingCard"
 import BackButton from "@/app/_components/BackButton"
+import EditSVG from "@/app/_assets/SVG/Edit"
+import { useRouter } from "next/navigation"
 
 const lookingForMappings = {
   both: "a Roommate and an Apartment",
@@ -57,6 +60,7 @@ export default function UserOverview({
 }) {
   const [showMore, setShowMore] = useState(false)
   const aboutPreview = useMemo(() => user.about?.slice(0, 600), [user.about])
+  const router = useRouter()
   return (
     <Box minH="calc(100vh - 9rem)" w="full">
       <BackButton />
@@ -111,15 +115,31 @@ export default function UserOverview({
                 )}
               </Flex>
             </VStack>
-            {!isOwnProfile && (
-              <Box ml="auto">
+            <Box ml="auto">
+              {isOwnProfile ? (
+                <Button
+                  variant="brand-secondary"
+                  bg="brand.main"
+                  color="white"
+                  _hover={{ filter: "brightness(115%)" }}
+                  display="flex"
+                  gap="1.6rem"
+                  alignItems="center"
+                  fontWeight="600"
+                  py={{ base: "1rem" }}
+                  px={{ base: "1.2rem" }}
+                  onClick={() => router.push("/nexus/me/edit")}
+                >
+                  Edit Profile <EditSVG />
+                </Button>
+              ) : (
                 <InterestButton
                   doc={user._id}
                   docType={"User"}
                   docOwner={user._id}
                 />
-              </Box>
-            )}
+              )}
+            </Box>
           </HStack>
         </Box>
       </Box>
@@ -266,6 +286,18 @@ export default function UserOverview({
                 >
                   Oops, nothing to show
                 </Heading>
+                {isOwnProfile && (
+                  <Button
+                    variant="brand"
+                    fontWeight="600"
+                    mt="2rem"
+                    mx="auto"
+                    py="1.2rem"
+                    onClick={() => router.push("/nexus/ads/new")}
+                  >
+                    Create ad
+                  </Button>
+                )}
               </Box>
             )}
             <SimpleGrid

@@ -40,11 +40,11 @@ export default function GlobalLayout({
   }, [dispatch, router, pathname])
 
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
+  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
   useEffect(() => {
-    !hasFetchedInitialListings && dispatch(fetchListings())
-  }, [dispatch, hasFetchedInitialListings])
-
-  const { user } = useAppSelector((store) => store.auth)
+    if (!loadingUser)
+      !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
+  }, [dispatch, hasFetchedInitialListings, user, loadingUser])
   const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
   const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
   const { hasFetchedUserListings } = useAppSelector((store) => store.listings)

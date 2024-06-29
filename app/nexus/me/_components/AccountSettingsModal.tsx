@@ -32,7 +32,6 @@ export default function ProfileSettingsModal({
     isStateOfOriginVisibleOnProfile:
       user?.settings?.isStateOfOriginVisibleOnProfile || false,
   })
-  console.log(user?.settings, "dafdsfd")
   const dispatch = useAppDispatch()
 
   const handleSubmit = useCallback(

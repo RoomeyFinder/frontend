@@ -39,7 +39,8 @@ export default function InterestButton({
       ),
     [doc, interests]
   )
-  const { handleAccept, loading } = useActOnInterest(existingInterest)
+  const { handleAccept, loading, handleUnsend } =
+    useActOnInterest(existingInterest)
   const isSender = useMemo(
     () =>
       existingInterest?.sender?._id &&
@@ -100,8 +101,9 @@ export default function InterestButton({
       if (isSender)
         return {
           title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
-          isDisabled: isSender,
-          children: "Interest sent",
+          children: "Unsend interest",
+          onClick: () => handleUnsend(),
+          variant: "brand-secondary"
         }
       return {
         children: "Accept interest",
@@ -126,6 +128,7 @@ export default function InterestButton({
     user?._id,
     docType,
     showAuthModal,
+    handleUnsend,
   ])
   return (
     <>
