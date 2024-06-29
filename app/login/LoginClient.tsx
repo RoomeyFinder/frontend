@@ -3,13 +3,14 @@ import LoginForm from "./_Form"
 import AuthFormLayout from "../_components/Auth/AuthFormLayout"
 import { ChangeEventHandler, useCallback, useState } from "react"
 import useAxios, { RequestBody } from "../_hooks/useAxios"
-import { HStack, VStack, useToast } from "@chakra-ui/react"
+import { Box, HStack, VStack, useToast } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "../_redux"
 import { authenticate } from "../_redux/slices/auth.slice"
 import FacebookSSOButton from "../_components/Auth/FacebookSSOButton"
 import GoogleSSOButton from "../_components/Auth/GoogleSSOButton"
 import { DividerWithCenteredText } from "../_components/PremiumModal"
+import AuthPageSSO from "../_components/Auth/AuthPageSSO"
 
 export default function LoginClient() {
   const router = useRouter()
@@ -95,27 +96,9 @@ export default function LoginClient() {
           loginData={loginData}
         />
       </AuthFormLayout>
-      <VStack maxW="90rem" gap="2rem" mx="auto" alignItems="start" mt="3rem">
-        <DividerWithCenteredText
-          maxW="50rem"
-          my="1rem"
-          mx="auto"
-          text="Continue with"
-        />
-        <HStack
-          w="full"
-          rowGap="2rem"
-          columnGap="2rem"
-          alignItems="center"
-          flexWrap="wrap"
-          px="1rem"
-          display={{ base: "flex", sm: "grid"}}
-          gridTemplateColumns="repeat(2, 1fr)"
-        >
-          <GoogleSSOButton />
-          <FacebookSSOButton />
-        </HStack>
-      </VStack>
+      <Box mt="2.5rem">
+        <AuthPageSSO />
+      </Box>
     </>
   )
 }
