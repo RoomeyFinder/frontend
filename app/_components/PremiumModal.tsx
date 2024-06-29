@@ -303,7 +303,7 @@ function PremiumBenefit({
         </Flex>
         <VStack gap="1rem" alignItems="start" mr="auto">
           <Heading
-            color="black"
+            color="#222222"
             fontWeight="600"
             fontSize={{ base: "1.6rem", md: "1.9rem" }}
           >

@@ -6,12 +6,13 @@ import useAxios from "@/app/_hooks/useAxios"
 import { useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
 import {
+  Avatar,
   Box,
   Button,
-  Divider,
   HStack,
   Heading,
   Hide,
+  SimpleGrid,
   Text,
   VStack,
 } from "@chakra-ui/react"
@@ -23,8 +24,9 @@ import ListingCTAs from "./_components/ListingCTAs"
 import ListingFeatures from "./_components/ListingFeatures"
 import ListingHeading from "./_components/ListingHeading"
 import ListingMap from "./_components/ListingMap"
-import ListingOwnerOverview from "./_components/ListingOwnerOverview"
 import ListingPhotos from "./_components/ListingPhotos"
+import { capitalizeFirstLetter, rentDurationMapping } from "@/app/_utils"
+import InterestButton from "@/app/_components/InterestButton"
 
 export default function ClientContent() {
   const params = useParams()
@@ -105,50 +107,173 @@ export default function ClientContent() {
       <VStack
         gap={{ base: "3rem" }}
         alignItems="start"
-        w="95%"
-        maxW={{ sm: "95%", xl: "120rem" }}
+        maxW={{ sm: "90%", md: "88dvw", xl: "125rem" }}
         mx="auto"
-        pt={{ base: "4rem", md: "2rem" }}
+        pt={{ base: "7.5rem" }}
         pb={{ base: "8rem", md: "12rem" }}
       >
-        <HStack w="full">
-          <VStack gap="1.5rem" alignItems="start" w="full">
-            <BackButton />
-            {listing && (
-              <>
+        <BackButton left="" />
+        <VStack gap="1.5rem" alignItems="start" w="full">
+          {listing && (
+            <>
+              <Hide below="sm">
                 <ListingHeading
                   handleShare={handleShare}
                   isOwnListing={isOwnListing}
                   listing={listing}
                 />
-                <ListingPhotos photos={listing?.photos} />
-              </>
-            )}
-          </VStack>
-        </HStack>
-        {listing && (
+              </Hide>
+              <ListingPhotos photos={listing?.photos} />
+            </>
+          )}
+        </VStack>
+        {/* {listing && (
           <ListingOwnerOverview listing={listing} isOwnListing={isOwnListing} />
-        )}
-        <Divider
-          border={{
-            base: ".15rem solid #3A86FF1A",
-            md: ".3rem solid #3A86FF1A",
-          }}
-        />
-        {listing && <ListingFeatures listing={listing} />}
-        {listing && <ListingAbout listing={listing} />}
-        <Hide above="sm">
-          <Box w="100%" h="30rem">
-            <Heading px="1rem" fontSize="2.2rem" fontWeight="600" mb="2rem">
-              Location
-            </Heading>
-            <ListingMap
-              lng={listing?.location?.coordinates[0]}
-              lat={listing?.location?.coordinates[1]}
-              label={listing?.streetAddress}
-            />
-          </Box>
-        </Hide>
+        )} */}
+
+        <SimpleGrid
+          columns={{ base: 1, sm: 2 }}
+          px={{ base: "" }}
+          rowGap={{ base: "4rem", sm: "8rem" }}
+          display={{ base: "flex", sm: "grid" }}
+          flexDir={{ base: "column-reverse" }}
+        >
+          <VStack alignItems="start" gap="1.8rem">
+            <HStack
+              alignItems="center"
+              gap="1rem"
+              w="full"
+              mb="1rem"
+              px={{ base: "1rem", sm: "0" }}
+            >
+              <Avatar
+                src={listing?.owner?.profileImage?.secure_url}
+                name={
+                  listing?.owner?.firstName + " " + listing?.owner?.lastName
+                }
+                size="xl"
+              />
+              <Box flexGrow="1">
+                <Heading fontSize="1.8rem" fontWeight="600" mb=".3rem">
+                  Stay with{" "}
+                  {capitalizeFirstLetter(listing?.owner?.firstName || "")}
+                </Heading>
+                <Text fontSize="1.6rem">
+                  <Text as="span" color="brand.main" fontWeight="500">
+                    I am looking for{" "}
+                  </Text>
+                  <Text as="span" textTransform="lowercase">
+                    {listing?.lookingFor}
+                  </Text>
+                </Text>
+              </Box>
+            </HStack>
+            {listing && <ListingFeatures listing={listing} />}
+            {listing && <ListingAbout listing={listing} />}
+            <Box w="100%" h="30rem" px={{ base: "1rem", sm: "0" }}>
+              <Heading fontSize="2.2rem" fontWeight="600" mb="2rem">
+                Location
+              </Heading>
+              <ListingMap
+                lng={listing?.location?.coordinates[0]}
+                lat={listing?.location?.coordinates[1]}
+                label={listing?.streetAddress}
+              />
+            </Box>
+          </VStack>
+          <VStack
+            pos={{ sm: "sticky" }}
+            alignItems={{ base: "center", sm: "end" }}
+            top="12rem"
+            w="full"
+            h={{ sm: "60rem" }}
+          >
+            <VStack
+              border="1px solid #ddd"
+              rounded="1.2rem"
+              boxShadow="rgba(0, 0, 0, 0.12) 0px 6px 16px"
+              p="2.4rem"
+              w={{ base: "95%", lg: "70%" }}
+              gap="1.6rem"
+              alignItems="start"
+            >
+              <HStack fontSize="1.5rem" alignItems="center">
+                <Text
+                  as="span"
+                  color="brand.main"
+                  fontSize="2.4rem"
+                  fontWeight="700"
+                >
+                  {listing?.rentAmount?.toLocaleString("en-us", {
+                    style: "currency",
+                    currency: "ngn",
+                    currencyDisplay: "narrowSymbol",
+                    maximumFractionDigits: 0,
+                  })}
+                </Text>
+                <Text>per</Text>
+                <Text fontWeight="600" textTransform="capitalize">
+                  {" "}
+                  roomey
+                </Text>
+                <Text>for</Text>
+                <Text fontWeight="600" textTransform="capitalize">
+                  {" "}
+                  {listing && rentDurationMapping[listing?.rentDuration as keyof typeof rentDurationMapping]}
+                </Text>
+              </HStack>
+              <HStack
+                border="1px solid #b0b0b0"
+                w="full"
+                textTransform="uppercase"
+                rounded=".8rem"
+              >
+                <VStack
+                  flexBasis="50%"
+                  py="1rem"
+                  px="1.2rem"
+                  alignItems="start"
+                  gap="0"
+                >
+                  <Text fontWeight="700">Earliest Move-in</Text>
+                  <Text fontSize="1.25rem">
+                    {new Date(Date.now()).toLocaleDateString("en-us", {
+                      month: "2-digit",
+                      day: "2-digit",
+                      year: "numeric",
+                    })}
+                  </Text>
+                </VStack>
+                <VStack
+                  flexBasis="50%"
+                  py="1rem"
+                  px="1.2rem"
+                  alignItems="start"
+                  gap="0"
+                  borderLeft="1px solid #222"
+                >
+                  <Text fontWeight="700">Current no. of occupants</Text>
+                  <Text fontSize="1.25rem">
+                    {listing?.currentOccupancyCount || 1}
+                  </Text>
+                </VStack>
+              </HStack>
+              {listing && (
+                <Box w="full">
+                  <InterestButton
+                    doc={listing?._id}
+                    docOwner={listing?.owner?._id || ""}
+                    docType="Listing"
+                    styleProps={{
+                      w: "full",
+                      py: "1.6rem",
+                    }}
+                  />
+                </Box>
+              )}
+            </VStack>
+          </VStack>
+        </SimpleGrid>
       </VStack>
       {!isOwnListing && listing && (
         <Hide above="sm">

@@ -1,4 +1,4 @@
-import { Button, Text, TextProps } from "@chakra-ui/react"
+import { BoxProps, Button, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useState, useMemo, useCallback, ReactNode, useContext } from "react"
 import toast from "react-hot-toast"
@@ -16,10 +16,12 @@ export default function InterestButton({
   doc,
   docType,
   docOwner,
+  styleProps = {},
 }: {
   doc: string
   docType: "User" | "Listing"
   docOwner: string
+  styleProps?: BoxProps
 }) {
   const { open: showAuthModal } = useContext(AuthModalContext)
   const router = useRouter()
@@ -103,7 +105,7 @@ export default function InterestButton({
           title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
           children: "Unsend interest",
           onClick: () => handleUnsend(),
-          variant: "brand-secondary"
+          variant: "brand-secondary",
         }
       return {
         children: "Accept interest",
@@ -158,6 +160,7 @@ export default function InterestButton({
           cursor: "not-allowed",
         }}
         isLoading={sendingInterest || loading}
+        {...styleProps}
         {...buttonProps}
       >
         {buttonProps.children} <PersonIconTwo />
@@ -186,7 +189,7 @@ export function KeyValue({
       lineHeight="1.52rem"
       {...generalProps}
     >
-      <Text color="black" as="span" {...keyProps}>
+      <Text color="#222222" as="span" {...keyProps}>
         {keyNode}:
       </Text>
       &nbsp;

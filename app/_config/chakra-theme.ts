@@ -15,7 +15,6 @@ const colors = {
     400: "#F9F9F9",
     500: "#EEEEEE",
     600: "#E5E5E5",
-
   },
   brand: {
     main: "#3A86FF",
@@ -32,14 +31,17 @@ const colors = {
   },
   red: {
     main: "#FE251B",
-    50: "#FF00004D"
+    50: "#FF00004D",
   },
   gray: {
     main: "#707070",
     100: "#A1A1A1",
     200: "#D9D9D9",
-    300: "#5C5F62"
-  }
+    300: "#5C5F62",
+  },
+  black: {
+    500: "#222222",
+  },
 }
 
 const fonts = {

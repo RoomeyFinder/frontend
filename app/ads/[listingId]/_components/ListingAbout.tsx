@@ -31,8 +31,8 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
             fontSize="2.2rem"
             fontWeight="600"
             as="h3"
-            maxH={{ md: "7.4rem"}}
-            py={{ base: "2rem", md: "3rem" }}
+            maxH={{ md: "7.4rem" }}
+            py=".4rem"
             w="fit-content"
           >
             About this space
@@ -101,7 +101,7 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
             <Text
               as="button"
               onClick={() => setShowMore(false)}
-              color="black"
+              color="#222222"
               display="flex"
               ml="auto"
             >

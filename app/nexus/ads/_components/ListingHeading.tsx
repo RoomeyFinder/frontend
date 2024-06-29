@@ -46,8 +46,8 @@ export default function ListingHeading({
           {listing.isStudioApartment
             ? "Studio Apartment"
             : (Number(listing.numberOfBedrooms) > 1
-              ? listing.numberOfBedrooms
-              : "Single") + " bedroom apartment"}
+                ? listing.numberOfBedrooms
+                : "Single") + " bedroom apartment"}
         </Text>
         <Text
           as="span"
@@ -78,7 +78,7 @@ export default function ListingHeading({
       >
         <Button
           variant="brand-secondary"
-          color="black"
+          color="#222222"
           rounded="full"
           p={{ base: "1.2rem", md: "1.8rem" }}
           onClick={handleShare}
@@ -88,14 +88,14 @@ export default function ListingHeading({
         {!isOwnListing && (
           <FavouriteButton
             listingId={listing?._id}
-            color="black"
+            color="#222222"
             type={FavoriteType.LISTING}
             useConfirmation={false}
             buttonProps={{
               p: { base: "1.2rem", md: "1.8rem" },
               rounded: "full",
               pos: "static",
-              bg: "brand.10"
+              bg: "brand.10",
             }}
           />
         )}

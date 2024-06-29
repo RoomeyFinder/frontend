@@ -10,7 +10,7 @@ export default function PageText({
   return (
     <Text
       fontSize={{ base: "1.3rem", sm: "1.6rem", md: "1.9rem" }}
-      color="black"
+      color="#222222"
       lineHeight="2.2rem"
       maxW="70rem"
       {...rest}

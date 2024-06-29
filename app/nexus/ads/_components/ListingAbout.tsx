@@ -101,7 +101,7 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
             <Text
               as="button"
               onClick={() => setShowMore(false)}
-              color="black"
+              color="#222222"
               display="flex"
               ml="auto"
             >

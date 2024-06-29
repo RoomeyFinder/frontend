@@ -21,7 +21,6 @@ export default function ListingPhotos({
       <Image
         w="100%"
         h="100%"
-        borderRadius="xl"
         display="inline-block"
         objectFit="cover"
         src={src}
@@ -55,6 +54,8 @@ export default function ListingPhotos({
             gap=".8rem"
             maxH="53.7rem"
             margin="0 auto"
+            borderRadius={{ sm: "1.8rem" }}
+            overflow="hidden"
           >
             <Flex
               flexGrow="1"
@@ -63,7 +64,6 @@ export default function ListingPhotos({
             >
               <Image
                 w="100%"
-                borderRadius="xl"
                 display="inline-block"
                 src={photos?.[0]?.secure_url}
                 alt="Alt"

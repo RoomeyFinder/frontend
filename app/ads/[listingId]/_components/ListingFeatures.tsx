@@ -2,68 +2,74 @@ import { icons } from "@/app/_data/adFeatures"
 import { Listing } from "@/app/_types/Listings"
 import {
   Box,
-  Flex,
+  Button,
   HStack,
   Heading,
   Show,
+  SimpleGrid,
   Text,
   VStack,
 } from "@chakra-ui/react"
+import { useMemo, useState } from "react"
+import { IoChevronForward } from "react-icons/io5"
 
 export default function ListingFeatures({ listing }: { listing: Listing }) {
+  const [showAll, setShowAll] = useState(
+    listing?.features?.length && listing?.features?.length > 6 ? false : true
+  )
+  const firstSixFeatures = useMemo(
+    () => listing?.features?.toSpliced(0, 5),
+    [listing?.features]
+  )
+  if (!listing?.features) return null
   return (
     <>
-      <Box px={{ base: "1rem", md: "0" }} w="full">
-        <Heading fontSize="2.2rem" fontWeight="600" as="h3" mb="2rem">
+      <VStack alignItems="start" px={{ base: "1rem", md: "0" }} w="full">
+        <Heading fontSize="2.2rem" fontWeight="600" as="h3" mb="1.5rem">
           Features
         </Heading>
-        <Flex
+        <SimpleGrid
+          columns={2}
+          gridColumnGap="1.8rem"
+          gridRowGap="1rem"
           flexWrap="wrap"
           columnGap={{ base: "2%", md: "1rem" }}
           rowGap={{ base: ".8rem", md: "1rem" }}
           w="full"
         >
-          {listing.features?.map((feature) => (
+          {(showAll ? listing.features : firstSixFeatures)?.map((feature) => (
             <ListingFeature key={feature} feature={feature} />
           ))}
-        </Flex>
-      </Box>
+        </SimpleGrid>
+        <Button
+          marginLeft={{ base: "auto", sm: "0", md: "auto" }}
+          mt=".3rem"
+          onClick={() => setShowAll((prev) => !prev)}
+          bg="transparent"
+          rounded=".8rem"
+          h="unset"
+          py=".6rem"
+          px={{ base: "0", sm: ".8rem" }}
+          gap=".8rem"
+          display="flex"
+          fontSize="1.4rem"
+        >
+          {showAll ? "Hide features" : "Show all features"} <IoChevronForward />
+        </Button>
+      </VStack>
     </>
   )
 }
 
-function ListingFeature({
-  feature,
-}: {
-  feature: string
-}) {
-
+function ListingFeature({ feature }: { feature: string }) {
   return (
-    <Box
-      w="48%"
-      maxW={{ sm: "11rem" }}
-      fontSize={{ base: "1.4rem", sm: "1.2rem" }}
-    >
-      <Show above="sm">
-        <VStack
-          border="1px solid"
-          borderColor="brand.50"
-          rounded="1.5rem"
-          p=".2rem"
-          h={{ sm: "6.6rem", md: "9.6rem" }}
-          justifyContent="center"
-          gap=".6rem"
-          as={Text}
-          color="gray.main"
-        >
+    <Box w="full" fontSize={{ base: "1.5rem" }}>
+      <Show above="base">
+        <HStack w="full" alignItems="center" gap=".8rem" as={Text}>
           {icons[feature as keyof typeof icons]}
-          <Text as="span" textAlign="center">{feature}</Text>
-        </VStack>
-      </Show>
-      <Show below="sm">
-        <HStack alignItems="center" gap=".6rem" as={Text}>
-          {icons[feature as keyof typeof icons]}
-          <Text as="span" textAlign="center">{feature}</Text>
+          <Text as="span" flexGrow="1" textAlign="start">
+            {feature}
+          </Text>
         </HStack>
       </Show>
     </Box>

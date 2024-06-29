@@ -62,13 +62,13 @@ export function ResendCodeButton({ onClick }: { onClick: () => void }) {
         cursor="pointer"
         disabled={!completed}
         _disabled={{
-          cursor: "not-allowed"
+          cursor: "not-allowed",
         }}
         onClick={() => {
           setTime(Date.now() + 180000)
           onClick()
         }}
-        color="black"
+        color="#222222"
         fontSize={{ base: "1.4rem", md: "1.6rem" }}
       >
         {completed ? (
@@ -76,7 +76,8 @@ export function ResendCodeButton({ onClick }: { onClick: () => void }) {
         ) : (
           <>
             <Text color="gray.100" as="span">
-              Resend Code ( {formatNumberToTwoDigits(minutes)}:{formatNumberToTwoDigits(seconds)} )
+              Resend Code ( {formatNumberToTwoDigits(minutes)}:
+              {formatNumberToTwoDigits(seconds)} )
             </Text>
           </>
         )}
