@@ -9,12 +9,10 @@ import {
   ImageProps,
   SimpleGrid,
   GridItem,
-  DrawerOverlay,
   Text,
 } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
-import { MdChevronLeft, MdChevronRight } from "react-icons/md"
-import Lightbox, { ImagesListType } from "react-spring-lightbox"
+import Lightbox from "react-spring-lightbox"
 
 export default function ListingPhotos({
   photos,
