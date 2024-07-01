@@ -3,7 +3,6 @@ import { Box, Heading } from "@chakra-ui/react"
 import {
   ReactNode,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,

@@ -1,7 +1,7 @@
-import { VStack, HStack } from "@chakra-ui/react";
-import { DividerWithCenteredText } from "../PremiumModal";
-import FacebookSSOButton from "./FacebookSSOButton";
-import GoogleSSOButton from "./GoogleSSOButton";
+import { VStack, HStack } from "@chakra-ui/react"
+import { DividerWithCenteredText } from "../PremiumModal"
+import FacebookSSOButton from "./FacebookSSOButton"
+import GoogleSSOButton from "./GoogleSSOButton"
 
 
 export default function AuthPageSSO(){

@@ -63,7 +63,7 @@ export default function ProfileEdit() {
   const handleSubmit = useCallback(
     async (
       values: Partial<User>,
-      { setSubmitting, resetForm }: FormikHelpers<Partial<User>>
+      { setSubmitting }: FormikHelpers<Partial<User>>
     ) => {
       const formData = new FormData()
       Object.keys({ ...values, ...occupation }).forEach((key) => {
@@ -95,6 +95,7 @@ export default function ProfileEdit() {
       fetchData,
       user,
       dispatch,
+      router,
     ]
   )
 

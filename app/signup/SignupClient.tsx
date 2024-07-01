@@ -11,16 +11,11 @@ import {
   Box,
   Collapse,
   GridItem,
-  HStack,
   Link,
   Text,
-  VStack,
 } from "@chakra-ui/react"
 import SignupContext from "./_Context"
 import Welcome from "./_Welcome"
-import { DividerWithCenteredText } from "../_components/PremiumModal"
-import GoogleSSOButton from "../_components/Auth/GoogleSSOButton"
-import FacebookSSOButton from "../_components/Auth/FacebookSSOButton"
 import AuthPageSSO from "../_components/Auth/AuthPageSSO"
 
 export default function SignupClient() {

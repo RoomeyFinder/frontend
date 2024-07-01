@@ -26,7 +26,7 @@ export default function ListingPhotos({
     () =>
       sourceIndex + 1 < (photos || []).length &&
       setSourceIndex(sourceIndex + 1),
-    [sourceIndex]
+    [sourceIndex, photos]
   )
 
   const handlePrev = useCallback(

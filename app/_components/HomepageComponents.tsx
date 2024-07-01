@@ -14,7 +14,6 @@ import ListingsGridLayout from "./ListingsGridLayout"
 import RoomListingCard from "./RoomListingCard"
 import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "./Skeletons/SkeletalLoader"
-import heroImage from "../_assets/images/hero-image.jpg"
 
 export default function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)

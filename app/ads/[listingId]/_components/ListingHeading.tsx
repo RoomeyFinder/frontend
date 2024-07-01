@@ -3,7 +3,7 @@ import { FavouriteButton } from "@/app/_components/RoomListingCard"
 import { FavoriteType } from "@/app/_types/Favorites"
 import { Listing } from "@/app/_types/Listings"
 import { appendCommaIfLengthNotZero } from "@/app/_utils"
-import { Button, Flex, Heading, Show, Text } from "@chakra-ui/react"
+import { Button, Flex, Heading, Text } from "@chakra-ui/react"
 
 export default function ListingHeading({
   listing,

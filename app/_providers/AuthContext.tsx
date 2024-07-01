@@ -80,7 +80,7 @@ export default function AuthProvider({
   }, [])
   useEffect(() => {
     storePathValues(pathname)
-  }, [pathname])
+  }, [pathname, storePathValues])
   return (
     <AuthContext.Provider
       value={{

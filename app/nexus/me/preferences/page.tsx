@@ -69,7 +69,7 @@ export default function PreferencesPage() {
         router.push("/nexus/me")
       })
     },
-    [lifestyle, leaseDurations, dispatch]
+    [lifestyle, leaseDurations, dispatch, router]
   )
   return (
     <Box pt="3rem" pb="3rem" px={{ base: "2rem", md: "5rem" }} h="80dvh">
