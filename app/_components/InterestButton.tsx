@@ -1,4 +1,4 @@
-import { BoxProps, Button, Text, TextProps } from "@chakra-ui/react"
+import { Button, ButtonProps, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useState, useMemo, useCallback, ReactNode, useContext } from "react"
 import toast from "react-hot-toast"
@@ -21,7 +21,7 @@ export default function InterestButton({
   doc: string
   docType: "User" | "Listing"
   docOwner: string
-  styleProps?: BoxProps
+  styleProps?: ButtonProps
 }) {
   const { open: showAuthModal } = useContext(AuthModalContext)
   const router = useRouter()

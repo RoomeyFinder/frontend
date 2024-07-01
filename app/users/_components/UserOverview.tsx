@@ -36,13 +36,13 @@ import BackButton from "@/app/_components/BackButton"
 import EditSVG from "@/app/_assets/SVG/Edit"
 import { useRouter } from "next/navigation"
 
-const lookingForMappings = {
+export const lookingForMappings = {
   both: "a Roommate and an Apartment",
   room: "an apartment",
   roommate: "a Roommate",
   none: "",
 }
-const preferredRoommateGenderMappings = {
+export const preferredRoommateGenderMappings = {
   male: "a Male roommate",
   female: "a Female roommate",
   both: "a Male or Female roommate",
@@ -321,7 +321,7 @@ export default function UserOverview({
   )
 }
 
-function ProfileIconTextPair({
+export function ProfileIconTextPair({
   icon,
   mainText,
   startText,
@@ -350,7 +350,7 @@ function ProfileIconTextPair({
     </>
   )
 }
-function Lifestyle({ children }: { children: ReactNode | ReactNode[] }) {
+export function Lifestyle({ children }: { children: ReactNode | ReactNode[] }) {
   return (
     <>
       <TextCheckbox isSelected name={""} value={""}>
@@ -360,7 +360,7 @@ function Lifestyle({ children }: { children: ReactNode | ReactNode[] }) {
   )
 }
 
-function ProfileCard({
+export function ProfileCard({
   children,
   heading,
 }: {

@@ -65,10 +65,10 @@ export default function ListingAbout({ listing }: { listing: Listing }) {
         {previewOfDescription?.length === 600 && (
           <Text
             as="button"
-            fontSize="1.9rem"
+            fontSize="1.5rem"
             display="flex"
             alignItems="center"
-            mt="1.5rem"
+            mt=".8rem"
             gap=".5rem"
             fontWeight="600"
             onClick={() => setShowMore(true)}

@@ -12,12 +12,17 @@ import {
   HStack,
   Heading,
   Hide,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
   SimpleGrid,
   Text,
   VStack,
 } from "@chakra-ui/react"
 import { useParams } from "next/navigation"
-import { useState, useMemo, useCallback, useEffect } from "react"
+import { useState, useMemo, useCallback, useEffect, useRef } from "react"
 import toast from "react-hot-toast"
 import ListingAbout from "./_components/ListingAbout"
 import ListingCTAs from "./_components/ListingCTAs"
@@ -25,11 +30,18 @@ import ListingFeatures from "./_components/ListingFeatures"
 import ListingHeading from "./_components/ListingHeading"
 import ListingMap from "./_components/ListingMap"
 import ListingPhotos from "./_components/ListingPhotos"
-import { capitalizeFirstLetter, rentDurationMapping } from "@/app/_utils"
-import InterestButton from "@/app/_components/InterestButton"
+import { appendCommaIfLengthNotZero, capitalizeFirstLetter } from "@/app/_utils"
+import ListingInfoCard from "./_components/ListingInfoCard"
+import ListingOwnerSection from "./_components/ListingOwnerSection"
+import SSOButton from "@/app/_components/Auth/SSOButton"
+import { MdFacebook, MdOutlineAlternateEmail, MdWhatsapp } from "react-icons/md"
+import FacebookIcon from "@/app/_assets/SVG/FacebookIcon"
+import { PiCopyBold } from "react-icons/pi"
+import { TbMail } from "react-icons/tb"
 
 export default function ClientContent() {
   const params = useParams()
+  const [showShareOptions, setShowShareOptions] = useState(false)
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
   const listingId = useMemo(() => params.listingId, [params])
@@ -71,10 +83,10 @@ export default function ClientContent() {
         console.log(err)
       }
     } else {
-      navigator.clipboard.writeText(shareData.url)
-      toast.success("Copied to clipboard!")
+      setShowShareOptions(true)
     }
   }, [listing])
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   if (loading)
     return (
@@ -102,8 +114,9 @@ export default function ClientContent() {
         />
       </>
     )
+
   return (
-    <>
+    <Box height="calc(100dvh - 9rem)" overflow="auto" ref={containerRef as any}>
       <VStack
         gap={{ base: "3rem" }}
         alignItems="start"
@@ -154,7 +167,19 @@ export default function ClientContent() {
                 size="xl"
               />
               <Box flexGrow="1">
-                <Heading fontSize="1.8rem" fontWeight="600" mb=".3rem">
+                <Heading
+                  as="button"
+                  onClick={() => {
+                    containerRef.current?.scrollBy({
+                      top: 200000,
+                      behavior: "smooth",
+                    })
+                    console.log(containerRef.current, "dfsdasd")
+                  }}
+                  fontSize="1.8rem"
+                  fontWeight="600"
+                  mb=".3rem"
+                >
                   Stay with{" "}
                   {capitalizeFirstLetter(listing?.owner?.firstName || "")}
                 </Heading>
@@ -180,6 +205,7 @@ export default function ClientContent() {
                 label={listing?.streetAddress}
               />
             </Box>
+            {listing && <ListingOwnerSection listing={listing} />}
           </VStack>
           <VStack
             pos={{ sm: "sticky" }}
@@ -188,90 +214,7 @@ export default function ClientContent() {
             w="full"
             h={{ sm: "60rem" }}
           >
-            <VStack
-              border="1px solid #ddd"
-              rounded="1.2rem"
-              boxShadow="rgba(0, 0, 0, 0.12) 0px 6px 16px"
-              p="2.4rem"
-              w={{ base: "95%", lg: "70%" }}
-              gap="1.6rem"
-              alignItems="start"
-            >
-              <HStack fontSize="1.5rem" alignItems="center">
-                <Text
-                  as="span"
-                  color="brand.main"
-                  fontSize="2.4rem"
-                  fontWeight="700"
-                >
-                  {listing?.rentAmount?.toLocaleString("en-us", {
-                    style: "currency",
-                    currency: "ngn",
-                    currencyDisplay: "narrowSymbol",
-                    maximumFractionDigits: 0,
-                  })}
-                </Text>
-                <Text>per</Text>
-                <Text fontWeight="600" textTransform="capitalize">
-                  {" "}
-                  roomey
-                </Text>
-                <Text>for</Text>
-                <Text fontWeight="600" textTransform="capitalize">
-                  {" "}
-                  {listing && rentDurationMapping[listing?.rentDuration as keyof typeof rentDurationMapping]}
-                </Text>
-              </HStack>
-              <HStack
-                border="1px solid #b0b0b0"
-                w="full"
-                textTransform="uppercase"
-                rounded=".8rem"
-              >
-                <VStack
-                  flexBasis="50%"
-                  py="1rem"
-                  px="1.2rem"
-                  alignItems="start"
-                  gap="0"
-                >
-                  <Text fontWeight="700">Earliest Move-in</Text>
-                  <Text fontSize="1.25rem">
-                    {new Date(Date.now()).toLocaleDateString("en-us", {
-                      month: "2-digit",
-                      day: "2-digit",
-                      year: "numeric",
-                    })}
-                  </Text>
-                </VStack>
-                <VStack
-                  flexBasis="50%"
-                  py="1rem"
-                  px="1.2rem"
-                  alignItems="start"
-                  gap="0"
-                  borderLeft="1px solid #222"
-                >
-                  <Text fontWeight="700">Current no. of occupants</Text>
-                  <Text fontSize="1.25rem">
-                    {listing?.currentOccupancyCount || 1}
-                  </Text>
-                </VStack>
-              </HStack>
-              {listing && (
-                <Box w="full">
-                  <InterestButton
-                    doc={listing?._id}
-                    docOwner={listing?.owner?._id || ""}
-                    docType="Listing"
-                    styleProps={{
-                      w: "full",
-                      py: "1.6rem",
-                    }}
-                  />
-                </Box>
-              )}
-            </VStack>
+            <ListingInfoCard listing={listing as any} />
           </VStack>
         </SimpleGrid>
       </VStack>
@@ -284,6 +227,103 @@ export default function ClientContent() {
           />
         </Hide>
       )}
-    </>
+      <Modal
+        isOpen={showShareOptions}
+        onClose={() => setShowShareOptions(false)}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent
+          bg="white"
+          w="95%"
+          maxW="56.8rem"
+          p="2.4rem"
+          rounded="1.4rem"
+        >
+          <ModalCloseButton
+            size="xl"
+            color="#313131"
+            top="2.4rem"
+            left="2.4rem"
+            w="fit-content"
+            right="unset"
+          />
+          <ModalBody p="0">
+            <Heading fontWeight="600" fontSize="2.6rem" mt="3rem" mb="2rem">
+              Share this Listing
+            </Heading>
+            <HStack gap="1.5rem">
+              <Avatar
+                borderRadius="1.2rem"
+                src={listing?.photos?.[0]?.secure_url}
+                size="xl"
+              />
+              <Text
+                as="span"
+                display="block"
+                fontSize="1.6rem"
+                fontWeight="400"
+              >
+                Stay with{" "}
+                {capitalizeFirstLetter(listing?.owner?.firstName || "")}
+                <br />
+                {listing?.isStudioApartment
+                  ? "Studio Apartment"
+                  : (Number(listing?.numberOfBedrooms) > 1
+                      ? listing?.numberOfBedrooms
+                      : "Single") + " bedroom apartment"}{" "}
+                in{" "}
+                <Text as="span">
+                  {appendCommaIfLengthNotZero(listing?.city || "") || " "}
+                  {appendCommaIfLengthNotZero(listing?.state || "") || " "}
+                  {listing?.country}
+                </Text>
+              </Text>
+            </HStack>
+            <SimpleGrid columns={2} mt="3rem" mb="2rem" gap="1.2rem">
+              <SSOButton
+                icon={<PiCopyBold size={20} />}
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href)
+                  toast.success("Copied to clipboard!")
+                }}
+                text={"Copy link"}
+                justifyContent="start"
+              />
+              <SSOButton
+                icon={<MdWhatsapp size={20} />}
+                onClick={() =>
+                  window.open(
+                    `https://web.whatsapp.com/send?text=${window.location.href}`
+                  )
+                }
+                text={"Whatsapp"}
+                justifyContent="start"
+              />
+              <SSOButton
+                icon={<TbMail size={20} />}
+                onClick={() =>
+                  window.open(
+                    `mailto:?subject=${"Checkout this listing on Roomeyfinder"}&body=${window.location.href}`
+                  )
+                }
+                text={"Email"}
+                justifyContent="start"
+              />
+              <SSOButton
+                icon={<MdFacebook size={20} />}
+                onClick={() =>
+                  window.open(
+                    `https://web.facebook.com/share_channel/?link=https://roomeyfinder.netlify.app/ads/65f615685d3eac64cd87a07b&app_id=${process.env.NEXT_PUBLIC_FB_APP_ID}&source_surface=external_reshare&display&hashtag`
+                  )
+                }
+                text={"Facebook"}
+                justifyContent="start"
+              />
+            </SimpleGrid>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Box>
   )
 }
