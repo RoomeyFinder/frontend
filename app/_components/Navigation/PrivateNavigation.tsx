@@ -239,7 +239,7 @@ export function InterestsAccessCount() {
         rounded="1rem"
         w="full"
       >
-        {/* <Text lineHeight="1" color="black">
+        {/* <Text lineHeight="1" color="#222222">
           {user?.countOfInterestsLeft}
         </Text>
         <Text lineHeight="1">Interests Left</Text> */}

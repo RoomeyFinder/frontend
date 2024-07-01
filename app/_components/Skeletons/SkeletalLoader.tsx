@@ -22,7 +22,7 @@ export default function SkeletalLoading({
     <HStack flexWrap="wrap" w="full">
       {list.map((_, idx) =>
         variant === "rooms" ? (
-          <RoomListingCardSkeleton key={idx} />
+          <RoomListingCardSkeleton key={idx} hasBorder />
         ) : (
           <RoomeyListingCardSkeleton key={idx} hasBorder />
         )

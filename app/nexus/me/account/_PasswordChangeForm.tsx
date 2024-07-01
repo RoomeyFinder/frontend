@@ -111,7 +111,14 @@ export default function PasswordChangeForm() {
         }
         setLoading(false)
       },
-      [newPassword, oldPassword, sendRequest, passwordResetCode, confirmNewPassword, navigateToStage]
+      [
+        newPassword,
+        oldPassword,
+        sendRequest,
+        passwordResetCode,
+        confirmNewPassword,
+        navigateToStage,
+      ]
     )
 
   const handleSubmitOldPassword: FormEventHandler = useCallback(

@@ -32,10 +32,12 @@ export default function RoomListingCard({
   listing,
   variant,
   showFavoriteButton = false,
+  useConfirmationToRemoveFavorite = false,
 }: {
   variant?: "outlined" | "default"
   showFavoriteButton?: boolean
   listing: Listing
+  useConfirmationToRemoveFavorite?: boolean
 }) {
   const router = useRouter()
   const { user } = useAppSelector((store) => store.auth)
@@ -66,6 +68,7 @@ export default function RoomListingCard({
         <FavouriteButton
           color="white"
           listingId={listing._id}
+          useConfirmation={useConfirmationToRemoveFavorite}
           type={FavoriteType.LISTING}
         />
       )}
@@ -180,8 +183,9 @@ export function FavouriteButton({
         w="95dvw"
         maxW="22rem"
         fontWeight="600"
+        boxShadow="md"
       >
-        <Text as="h6" color="black" mb="1.5rem">
+        <Text as="h6" color="#222222" mb="1.5rem">
           Are you sure you want to remove this favorite?
         </Text>
         <Flex justifyContent="center" alignItems="center" gap="1.5rem">

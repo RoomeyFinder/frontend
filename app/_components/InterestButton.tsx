@@ -1,4 +1,4 @@
-import { Button, Text, TextProps } from "@chakra-ui/react"
+import { Button, ButtonProps, Text, TextProps } from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { useState, useMemo, useCallback, ReactNode, useContext } from "react"
 import toast from "react-hot-toast"
@@ -16,10 +16,12 @@ export default function InterestButton({
   doc,
   docType,
   docOwner,
+  styleProps = {},
 }: {
   doc: string
   docType: "User" | "Listing"
   docOwner: string
+  styleProps?: ButtonProps
 }) {
   const { open: showAuthModal } = useContext(AuthModalContext)
   const router = useRouter()
@@ -39,7 +41,8 @@ export default function InterestButton({
       ),
     [doc, interests]
   )
-  const { handleAccept, loading } = useActOnInterest(existingInterest)
+  const { handleAccept, loading, handleUnsend } =
+    useActOnInterest(existingInterest)
   const isSender = useMemo(
     () =>
       existingInterest?.sender?._id &&
@@ -100,8 +103,9 @@ export default function InterestButton({
       if (isSender)
         return {
           title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
-          isDisabled: isSender,
-          children: "Interest sent",
+          children: "Unsend interest",
+          onClick: () => handleUnsend(),
+          variant: "brand-secondary",
         }
       return {
         children: "Accept interest",
@@ -126,6 +130,7 @@ export default function InterestButton({
     user?._id,
     docType,
     showAuthModal,
+    handleUnsend,
   ])
   return (
     <>
@@ -155,6 +160,7 @@ export default function InterestButton({
           cursor: "not-allowed",
         }}
         isLoading={sendingInterest || loading}
+        {...styleProps}
         {...buttonProps}
       >
         {buttonProps.children} <PersonIconTwo />
@@ -183,7 +189,7 @@ export function KeyValue({
       lineHeight="1.52rem"
       {...generalProps}
     >
-      <Text color="black" as="span" {...keyProps}>
+      <Text color="#222222" as="span" {...keyProps}>
         {keyNode}:
       </Text>
       &nbsp;

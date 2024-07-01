@@ -19,7 +19,7 @@ export default function PreferencesReminder() {
     let timeoutId: NodeJS.Timeout
     if (
       user &&
-      user.hasSetPreferences &&
+      user.hasSetPreferences !== true &&
       (pathname === "/nexus" || pathname === "/nexus/me") &&
       !hasClosedPreferenceReminder
     ) {

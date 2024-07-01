@@ -2,6 +2,7 @@ import User from "@/app/_types/User"
 import CoverAndProfileImage from "@/app/nexus/me/_components/CoverAndProfileImage"
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -32,14 +33,16 @@ import TextCheckbox from "@/app/nexus/me/_components/TextCheckbox"
 import { Listing } from "@/app/_types/Listings"
 import RoomListingCard from "@/app/_components/RoomListingCard"
 import BackButton from "@/app/_components/BackButton"
+import EditSVG from "@/app/_assets/SVG/Edit"
+import { useRouter } from "next/navigation"
 
-const lookingForMappings = {
+export const lookingForMappings = {
   both: "a Roommate and an Apartment",
   room: "an apartment",
   roommate: "a Roommate",
   none: "",
 }
-const preferredRoommateGenderMappings = {
+export const preferredRoommateGenderMappings = {
   male: "a Male roommate",
   female: "a Female roommate",
   both: "a Male or Female roommate",
@@ -57,26 +60,10 @@ export default function UserOverview({
 }) {
   const [showMore, setShowMore] = useState(false)
   const aboutPreview = useMemo(() => user.about?.slice(0, 600), [user.about])
+  const router = useRouter()
   return (
     <Box minH="calc(100vh - 9rem)" w="full">
-      <Box
-        pos="fixed"
-        bg="white"
-        top="10rem"
-        zIndex="300"
-        shadow="lg"
-        rounded="lg"
-        left={{base:"3%", xl: "15%"}}
-        px="2rem"
-        py="1rem"
-        dropShadow="-1px 3px 39px #00000059"
-        opacity=".7"
-        _hover={{
-          opacity: 1,
-        }}
-      >
-        <BackButton showText />
-      </Box>
+      <BackButton />
       <Box
         w="full"
         bg="linear-gradient(to top, #FFFFFF, rgb(255 255 221 / 24%), rgb(255 255 221 / 27%), rgb(131 166 212 / 30%), rgb(59 134 255 / 25%))"
@@ -128,15 +115,31 @@ export default function UserOverview({
                 )}
               </Flex>
             </VStack>
-            {!isOwnProfile && (
-              <Box ml="auto">
+            <Box ml="auto">
+              {isOwnProfile ? (
+                <Button
+                  variant="brand-secondary"
+                  bg="brand.main"
+                  color="white"
+                  _hover={{ filter: "brightness(115%)" }}
+                  display="flex"
+                  gap="1.6rem"
+                  alignItems="center"
+                  fontWeight="600"
+                  py={{ base: "1rem" }}
+                  px={{ base: "1.2rem" }}
+                  onClick={() => router.push("/nexus/me/edit")}
+                >
+                  Edit Profile <EditSVG />
+                </Button>
+              ) : (
                 <InterestButton
                   doc={user._id}
                   docType={"User"}
                   docOwner={user._id}
                 />
-              </Box>
-            )}
+              )}
+            </Box>
           </HStack>
         </Box>
       </Box>
@@ -283,6 +286,18 @@ export default function UserOverview({
                 >
                   Oops, nothing to show
                 </Heading>
+                {isOwnProfile && (
+                  <Button
+                    variant="brand"
+                    fontWeight="600"
+                    mt="2rem"
+                    mx="auto"
+                    py="1.2rem"
+                    onClick={() => router.push("/nexus/ads/new")}
+                  >
+                    Create ad
+                  </Button>
+                )}
               </Box>
             )}
             <SimpleGrid
@@ -306,7 +321,7 @@ export default function UserOverview({
   )
 }
 
-function ProfileIconTextPair({
+export function ProfileIconTextPair({
   icon,
   mainText,
   startText,
@@ -335,7 +350,7 @@ function ProfileIconTextPair({
     </>
   )
 }
-function Lifestyle({ children }: { children: ReactNode | ReactNode[] }) {
+export function Lifestyle({ children }: { children: ReactNode | ReactNode[] }) {
   return (
     <>
       <TextCheckbox isSelected name={""} value={""}>
@@ -345,7 +360,7 @@ function Lifestyle({ children }: { children: ReactNode | ReactNode[] }) {
   )
 }
 
-function ProfileCard({
+export function ProfileCard({
   children,
   heading,
 }: {

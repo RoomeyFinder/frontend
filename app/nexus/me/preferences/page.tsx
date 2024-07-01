@@ -14,7 +14,7 @@ import User from "@/app/_types/User"
 import { getAddressComponents } from "@/app/_utils/google"
 import { updatePreferences } from "@/app/_redux/thunks/auth.thunk"
 import { useRouter } from "next/navigation"
-import BackIcon from "@/app/_assets/SVG/BackIcon"
+import BackButton from "@/app/_components/BackButton"
 
 export default function PreferencesPage() {
   const router = useRouter()
@@ -66,17 +66,17 @@ export default function PreferencesPage() {
       }
       dispatch(updatePreferences(formData)).then(() => {
         setSubmitting(false)
+        router.push("/nexus/me")
       })
     },
-    [lifestyle, leaseDurations, dispatch]
+    [lifestyle, leaseDurations, dispatch, router]
   )
   return (
     <Box pt="3rem" pb="3rem" px={{ base: "2rem", md: "5rem" }} h="80dvh">
-      <Text as="button" mb="2rem" color="gray.main" onClick={() => router.back()}>
-        <BackIcon />
-      </Text>
+      <BackButton left="" />
       <VStack
         alignItems="start"
+        pt="4rem"
         pb="2rem"
         borderBottom="1px solid #d2d2d244"
         gap="1rem"
@@ -102,8 +102,8 @@ export default function PreferencesPage() {
           targetState: user?.preferences?.targetState || "",
           earliestMoveDate: user?.preferences?.earliestMoveDate
             ? new Date(user?.preferences?.earliestMoveDate)
-              .toISOString()
-              .split("T")[0]
+                .toISOString()
+                .split("T")[0]
             : "",
           lookingFor: user?.preferences?.lookingFor || "",
         }}

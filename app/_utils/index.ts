@@ -3,15 +3,15 @@ import { getGeocode, getZipCode, getLatLng } from "use-places-autocomplete"
 import STORAGE_KEYS from "../STORAGE_KEYS"
 
 export const rentDurationMapping: {
-  annually: "year"
-  monthly: "month"
-  biannually: "6months"
-  quarterly: "4months"
+  annually: "a year"
+  monthly: "a month"
+  biannually: "6 months"
+  quarterly: "4 months"
 } = {
-  annually: "year",
-  monthly: "month",
-  biannually: "6months",
-  quarterly: "4months",
+  annually: "a year",
+  monthly: "a month",
+  biannually: "6 months",
+  quarterly: "4 months",
 }
 
 export const FOURTEEN_YEARS_IN_MILLISECONDS = 4.418e11

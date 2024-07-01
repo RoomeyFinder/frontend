@@ -36,6 +36,8 @@ export default function ProfileAccountInfoSection({
             onClick={() => {
               handleChangePasswordClick()
             }}
+            textDecor="underline"
+            _hover={{ color: "brand.main" }}
           >
             Change password
           </Link>
@@ -44,6 +46,8 @@ export default function ProfileAccountInfoSection({
             onClick={() => {
               handleChangeEmailClick()
             }}
+            textDecor="underline"
+            _hover={{ color: "brand.main" }}
           >
             Change email address
           </Link>

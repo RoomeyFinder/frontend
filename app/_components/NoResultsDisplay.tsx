@@ -24,7 +24,7 @@ export default function NoResultsDisplay({
           flexDir="column"
           gap="1rem"
           lineHeight="normal"
-          color="black"
+          color="#222222"
           textAlign="center"
         >
           <Text

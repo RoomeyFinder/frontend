@@ -14,7 +14,6 @@ import ListingsGridLayout from "./ListingsGridLayout"
 import RoomListingCard from "./RoomListingCard"
 import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "./Skeletons/SkeletalLoader"
-import heroImage from "../_assets/images/hero-image.jpg"
 
 export default function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)
@@ -194,7 +193,7 @@ export function Hero() {
         </Box>
         <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>
           <Image
-            src={heroImage.src}
+            src="https://res.cloudinary.com/messengerapptask/image/upload/v1719666871/hero-image_hokwu8.jpg"
             alt="Hero image for Roomeyfinder. Two ladies sitting on a blue couch having coffee"
           />
         </Box>

@@ -5,14 +5,12 @@ import localforage from "localforage"
 
 export const fetchListings = createAsyncThunk(
   "listings/fetchListings",
-  async () => {
+  async (isAuth: boolean) => {
     const response = await axiosFetcher({
-      url: "/listings",
+      url: `/listings/${isAuth ? "auth" : ""}`,
       method: "get",
     })
-    const storedListings = await localforage.getItem(
-      STORAGE_KEYS.RF_LISTINGS
-    )
+    const storedListings = await localforage.getItem(STORAGE_KEYS.RF_LISTINGS)
     return {
       listings:
         response.statusCode === 200 ? response.listings : storedListings || [],

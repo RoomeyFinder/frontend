@@ -11,16 +11,12 @@ import {
   Box,
   Collapse,
   GridItem,
-  HStack,
   Link,
   Text,
-  VStack,
 } from "@chakra-ui/react"
 import SignupContext from "./_Context"
 import Welcome from "./_Welcome"
-import { DividerWithCenteredText } from "../_components/PremiumModal"
-import GoogleSSOButton from "../_components/Auth/GoogleSSOButton"
-import FacebookSSOButton from "../_components/Auth/FacebookSSOButton"
+import AuthPageSSO from "../_components/Auth/AuthPageSSO"
 
 export default function SignupClient() {
   return (
@@ -137,26 +133,9 @@ function SignupConsumer() {
             </>
           </AuthFormLayout>
         </Box>
-        <VStack maxW="90rem" gap="2rem" mx="auto" alignItems="start" mt="-3rem">
-          <DividerWithCenteredText
-            maxW="50rem"
-            mx="auto"
-            text="Continue with"
-          />
-          <HStack
-            w="full"
-            rowGap="2rem"
-            columnGap="2rem"
-            alignItems="center"
-            flexWrap="wrap"
-            px="1rem"
-            display={{ base: "flex", sm: "grid" }}
-            gridTemplateColumns="repeat(2, 1fr)"
-          >
-            <GoogleSSOButton />
-            <FacebookSSOButton />
-          </HStack>
-        </VStack>
+        <Box mt="-3rem">
+          <AuthPageSSO />
+        </Box>
       </Collapse>
     </>
   )

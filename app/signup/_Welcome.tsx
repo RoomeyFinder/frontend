@@ -12,7 +12,9 @@ export default function Welcome() {
       minH={{ base: "60dvh", md: "60dvh" }}
       alignItems={{ sm: "center" }}
       px={{ base: "3rem", sm: "6rem" }}
-      bgImage={{ base: "url(/images/welcome.svg)" }}
+      bgImage={{
+        base: "url(https://res.cloudinary.com/messengerapptask/image/upload/v1719666824/welcome_eeuyan.svg)",
+      }}
       bgSize={{ base: "25rem", sm: "30rem", md: "contain" }}
       bgRepeat="no-repeat"
       bgPos={{ base: "top", sm: "left" }}

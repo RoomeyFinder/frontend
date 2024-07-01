@@ -1,6 +1,12 @@
 "use client"
 import { Box, Heading } from "@chakra-ui/react"
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
 import ListingsGridLayout from "../_components/ListingsGridLayout"
@@ -14,10 +20,12 @@ import { pluralizeText } from "../_utils"
 
 export default function Search() {
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
+  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
   useEffect(() => {
-    !hasFetchedInitialListings && dispatch(fetchListings())
-  }, [dispatch, hasFetchedInitialListings])
+    if (!loadingUser)
+      !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
+  }, [dispatch, hasFetchedInitialListings, user, loadingUser])
   return <ListingsSection />
 }
 function ListingsSection() {

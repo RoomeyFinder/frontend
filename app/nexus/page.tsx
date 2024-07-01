@@ -32,7 +32,7 @@ export default function NexusPage() {
                 Recommended Profiles
               </Heading>
               <RecomendationsDisplay type="Roomey" list={roomies} />
-              {loadingRoomies && <SkeletalLoading  variant="roomies" />}
+              {loadingRoomies && <SkeletalLoading variant="roomies" />}
             </VStack>
           )}
         {(loadingRooms || rooms.length > 0) &&
@@ -44,7 +44,7 @@ export default function NexusPage() {
                 Recommended Rooms
               </Heading>
               <RecomendationsDisplay type="Room" list={rooms} />
-              {loadingRoomies && <SkeletalLoading variant="rooms" />}
+              {loadingRooms && <SkeletalLoading variant="rooms" />}n
             </VStack>
           )}
       </VStack>
@@ -64,7 +64,11 @@ function RecomendationsDisplay({
       type === "Roomey" ? (
         <RoomeyListingCard user={data as User} variant="outlined" />
       ) : (
-        <RoomListingCard listing={data as Listing} variant="outlined" />
+        <RoomListingCard
+          listing={data as Listing}
+          variant="outlined"
+          showFavoriteButton
+        />
       ),
     [type]
   )
@@ -85,4 +89,3 @@ function RecomendationsDisplay({
     </>
   )
 }
-
