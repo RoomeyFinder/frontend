@@ -43,7 +43,7 @@ export default function Carousel({
       >
         {slides.map((slide, idx) => (
           <SwiperSlide key={idx} style={{ height: "100%" }}>
-            {swiperSlideContent({ slide })}
+            {swiperSlideContent({ slide, index: idx })}
           </SwiperSlide>
         ))}
       </Swiper>
