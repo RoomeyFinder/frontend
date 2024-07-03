@@ -1,4 +1,5 @@
 import CarouselNavIcon from "@/app/_assets/SVG/CarouselNavIcon"
+import TimesIcon from "@/app/_assets/SVG/TimesIcon"
 import Carousel from "@/app/_components/ListingCardImageCarousel"
 import { Listing } from "@/app/_types/Listings"
 import {
@@ -10,8 +11,10 @@ import {
   SimpleGrid,
   GridItem,
   Text,
+  Button,
 } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
+import { IoClose } from "react-icons/io5"
 import Lightbox from "react-spring-lightbox"
 
 export default function ListingPhotos({
@@ -43,6 +46,7 @@ export default function ListingPhotos({
           objectFit="cover"
           src={src}
           alt="Alt"
+          cursor="pointer"
           onClick={() => {
             setShowPhotosInModal((prev) => !prev)
             setSourceIndex(index)
@@ -67,6 +71,7 @@ export default function ListingPhotos({
                 height="100%"
                 mx="auto"
                 display="block"
+                cursor="pointer"
                 alt=""
                 onClick={() => {
                   setShowPhotosInModal((prev) => !prev)
@@ -95,6 +100,7 @@ export default function ListingPhotos({
                 display="inline-block"
                 src={photos?.[0]?.secure_url}
                 alt=""
+                cursor="pointer"
                 onClick={() => {
                   setShowPhotosInModal((prev) => !prev)
                   setSourceIndex(0)
@@ -145,6 +151,20 @@ export default function ListingPhotos({
           leave: { transform: "scale(0.75)", opacity: 0 },
           config: { mass: 1, tension: 320, friction: 32 },
         }}
+        renderHeader={() => (
+          <Box pos="absolute" right="4rem" top="4rem" zIndex="100">
+            <Button
+              h="unset"
+              w="unset"
+              bg="transparent"
+              _hover={{ bg: "transparent" }}
+              color="white.300"
+              onClick={() => setShowPhotosInModal((prev) => !prev)}
+            >
+              <TimesIcon />
+            </Button>
+          </Box>
+        )}
         renderPrevButton={() => (
           <Text
             as="button"
