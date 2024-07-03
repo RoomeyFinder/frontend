@@ -18,6 +18,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  Show,
   SimpleGrid,
   Text,
   VStack,
@@ -188,25 +189,38 @@ export default function ClientContent() {
                   Stay with{" "}
                   {capitalizeFirstLetter(listing?.owner?.firstName || "")}
                 </Heading>
-                <Flex fontSize="1.6rem" gap="1rem" alignItems="center">
+                <Flex
+                  fontSize="1.6rem"
+                  gap={{ base: ".8rem", sm: "1rem" }}
+                  flexWrap="wrap"
+                  justifyContent="start"
+                  alignItems={{ base: "start", sm: "center" }}
+                  // flexDir={{ base: "column", sm: "row" }}
+                >
                   <Text as="span">
                     {listing?.isStudioApartment
                       ? "Studio apartment"
                       : `${listing?.numberOfBedrooms} bedroom apartmennt`}
                   </Text>
-                  <DotSeparator />
+                  <Show above="sm">
+                    <DotSeparator />
+                  </Show>
                   <Text as="span">
                     {listing?.currentOccupancyCount}
                     {` ${pluralizeText("occupant", listing?.currentOccupancyCount || 0, "s")}`}
                   </Text>
-                  <DotSeparator />
+                  <Show above="sm">
+                    <DotSeparator />
+                  </Show>
                   <Text as="span">
                     Move in by{" "}
                     {new Date(
                       listing?.earliestMoveDate || Date.now()
-                    ).toLocaleDateString(
-                      "en-gb", {month: "short", day: "2-digit", year: "numeric"}
-                    )}
+                    ).toLocaleDateString("en-gb", {
+                      month: "short",
+                      day: "2-digit",
+                      year: "numeric",
+                    })}
                   </Text>
                 </Flex>
               </Box>
