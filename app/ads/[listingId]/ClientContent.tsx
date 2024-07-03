@@ -9,6 +9,7 @@ import {
   Avatar,
   Box,
   Button,
+  Flex,
   HStack,
   Heading,
   Hide,
@@ -30,13 +31,18 @@ import ListingFeatures from "./_components/ListingFeatures"
 import ListingHeading from "./_components/ListingHeading"
 import ListingMap from "./_components/ListingMap"
 import ListingPhotos from "./_components/ListingPhotos"
-import { appendCommaIfLengthNotZero, capitalizeFirstLetter } from "@/app/_utils"
+import {
+  appendCommaIfLengthNotZero,
+  capitalizeFirstLetter,
+  pluralizeText,
+} from "@/app/_utils"
 import ListingInfoCard from "./_components/ListingInfoCard"
 import ListingOwnerSection from "./_components/ListingOwnerSection"
 import SSOButton from "@/app/_components/Auth/SSOButton"
 import { MdFacebook, MdWhatsapp } from "react-icons/md"
 import { PiCopyBold } from "react-icons/pi"
 import { TbMail } from "react-icons/tb"
+import DotSeparator from "@/app/_components/DotSeparator"
 
 export default function ClientContent() {
   const params = useParams()
@@ -182,14 +188,27 @@ export default function ClientContent() {
                   Stay with{" "}
                   {capitalizeFirstLetter(listing?.owner?.firstName || "")}
                 </Heading>
-                <Text fontSize="1.6rem">
-                  <Text as="span" color="brand.main" fontWeight="500">
-                    I am looking for{" "}
+                <Flex fontSize="1.6rem" gap="1rem" alignItems="center">
+                  <Text as="span">
+                    {listing?.isStudioApartment
+                      ? "Studio apartment"
+                      : `${listing?.numberOfBedrooms} bedroom apartmennt`}
                   </Text>
-                  <Text as="span" textTransform="lowercase">
-                    {listing?.lookingFor}
+                  <DotSeparator />
+                  <Text as="span">
+                    {listing?.currentOccupancyCount}
+                    {` ${pluralizeText("occupant", listing?.currentOccupancyCount || 0, "s")}`}
                   </Text>
-                </Text>
+                  <DotSeparator />
+                  <Text as="span">
+                    Move in by{" "}
+                    {new Date(
+                      listing?.earliestMoveDate || Date.now()
+                    ).toLocaleDateString(
+                      "en-gb", {month: "short", day: "2-digit", year: "numeric"}
+                    )}
+                  </Text>
+                </Flex>
               </Box>
             </HStack>
             {listing && <ListingFeatures listing={listing} />}
