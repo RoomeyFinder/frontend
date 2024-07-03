@@ -14,7 +14,6 @@ import {
   Button,
 } from "@chakra-ui/react"
 import { useCallback, useState } from "react"
-import { IoClose } from "react-icons/io5"
 import Lightbox from "react-spring-lightbox"
 
 export default function ListingPhotos({
