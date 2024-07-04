@@ -49,9 +49,11 @@ export default function PhotoUploadSection({
           fontSize="1.5rem"
           mb="1.5rem"
           fontWeight="500"
-          color="gray.main"
           mx="auto"
           textAlign="center"
+          color={
+            previews.length > 0 && previews.length <= 4 ? "red" : "gray.main"
+          }
         >
           A minimum of 5 photos and a maximum 8
         </Text>

@@ -191,7 +191,8 @@ export default function ClientContent() {
                 </Heading>
                 <Flex
                   fontSize="1.6rem"
-                  gap={{ base: ".8rem", sm: "1rem" }}
+                  columnGap={{ base: ".8rem", sm: "1rem" }}
+                  rowGap="0"
                   flexWrap="wrap"
                   justifyContent="start"
                   alignItems={{ base: "start", sm: "center" }}
@@ -202,14 +203,14 @@ export default function ClientContent() {
                       ? "Studio apartment"
                       : `${listing?.numberOfBedrooms} bedroom apartmennt`}
                   </Text>
-                  <Show above="sm">
+                  <Show above="base">
                     <DotSeparator />
                   </Show>
                   <Text as="span">
                     {listing?.currentOccupancyCount}
                     {` ${pluralizeText("occupant", listing?.currentOccupancyCount || 0, "s")}`}
                   </Text>
-                  <Show above="sm">
+                  <Show above="base">
                     <DotSeparator />
                   </Show>
                   <Text as="span">
