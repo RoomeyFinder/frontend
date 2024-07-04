@@ -89,11 +89,20 @@ export default function Conversations() {
             countOfUnreadMsgs={convo.unreadMsgsCount}
           />
         ))}
-        {conversationsThatMatchFilter.length === 0 && (
+        {conversations.length > 0 &&
+          conversationsThatMatchFilter.length === 0 && (
+            <>
+              <NoConversation
+                heading="No Conversations match your search"
+                body="Try removing some filters"
+              />
+            </>
+          )}
+        {conversations.length === 0 && (
           <>
             <NoConversation
-              heading="No Conversations match your search"
-              body="Try removing some filters"
+              heading="You don't have any conversation"
+              body="Send and accept interests to initiate conversations"
             />
           </>
         )}
