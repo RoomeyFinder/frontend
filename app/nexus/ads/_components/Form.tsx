@@ -62,7 +62,7 @@ export default function ListingForm({
     streetAddress: listing?.streetAddress || "",
     city: listing?.city || "",
     state: listing?.state || "",
-    lookingFor: listing?.lookingFor || "",
+    earliestMoveDate: listing?.earliestMoveDate || "",
   })
   const validateAddress = useCallback(async () => {
     setIsCheckingAddress(true)
@@ -214,7 +214,7 @@ export default function ListingForm({
         streetAddress: listing?.streetAddress || "",
         city: listing?.city || "",
         state: listing?.state || "",
-        lookingFor: listing?.lookingFor || "",
+        earliestMoveDate: listing?.earliestMoveDate || "",
       })
       setFiles([])
       setFeatures([])
