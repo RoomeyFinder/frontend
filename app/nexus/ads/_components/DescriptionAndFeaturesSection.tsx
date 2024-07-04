@@ -52,7 +52,9 @@ export default function DescriptionAndFeaturesSection({
               Decription
             </Text>
             {descriptionError && (
-              <ErrorText m="0">{descriptionError}</ErrorText>
+              <ErrorText m="0" fontSize="1.4rem">
+                {descriptionError}
+              </ErrorText>
             )}
           </VStack>
           <Input
@@ -92,8 +94,8 @@ export default function DescriptionAndFeaturesSection({
           <Heading fontSize="1.4rem" fontWeight="600">
             Features
           </Heading>
-          <ErrorText m="0">
-            {selectedFeatures.length < 10 && <>A minimum of 10 features</>}
+          <ErrorText m="0" fontSize="1.4rem">
+            {selectedFeatures.length < 2 && <>A minimum of 2 features</>}
           </ErrorText>
         </VStack>
         {Object.keys(categorizedList).map((key) => (

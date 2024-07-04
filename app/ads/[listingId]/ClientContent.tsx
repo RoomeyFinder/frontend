@@ -216,7 +216,7 @@ export default function ClientContent() {
                   <Text as="span">
                     Move in by{" "}
                     {new Date(
-                      listing?.earliestMoveDate || Date.now()
+                      listing?.earliestMoveInDate || Date.now()
                     ).toLocaleDateString("en-gb", {
                       month: "short",
                       day: "2-digit",

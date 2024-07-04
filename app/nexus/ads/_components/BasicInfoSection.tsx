@@ -69,12 +69,12 @@ export default function BasicInfoSection({
             Earliest move-in date
           </Text>
           <Input
-            name="earliestMoveDate"
+            name="earliestMoveInDate"
             type="date"
             onChange={handleChange}
             variant="filled"
             w="full"
-            value={listingInfo.lookingFor}
+            value={listingInfo.earliestMoveInDate}
           />
         </FormLabel>
       </HStack>

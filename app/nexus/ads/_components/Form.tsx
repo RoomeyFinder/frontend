@@ -62,7 +62,7 @@ export default function ListingForm({
     streetAddress: listing?.streetAddress || "",
     city: listing?.city || "",
     state: listing?.state || "",
-    earliestMoveDate: listing?.earliestMoveDate || "",
+    earliestMoveInDate: listing?.earliestMoveInDate || "",
   })
   const validateAddress = useCallback(async () => {
     setIsCheckingAddress(true)
@@ -176,7 +176,7 @@ export default function ListingForm({
       return (
         description.trim().length < 50 ||
         description.trim().length > 1500 ||
-        features.length < 10
+        features.length <= 1
       )
   }, [currentStage, photosPreview, listingInfoErrors, description, features])
   const finalSubmitData = useMemo(() => {
@@ -214,7 +214,7 @@ export default function ListingForm({
         streetAddress: listing?.streetAddress || "",
         city: listing?.city || "",
         state: listing?.state || "",
-        earliestMoveDate: listing?.earliestMoveDate || "",
+        earliestMoveInDate: listing?.earliestMoveInDate || "",
       })
       setFiles([])
       setFeatures([])
