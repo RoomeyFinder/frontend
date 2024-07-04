@@ -13,6 +13,18 @@ import { useState } from "react"
 import { getErrorPropsV1 } from "@/app/signup/utils"
 import ErrorText from "@/app/_components/Auth/ErrorText"
 
+function getCharacterCountMessage(
+  value: string,
+  { min, max }: { min: number; max: number }
+) {
+  if (value.trim().length >= min && value.trim().length <= max) {
+    return `You have ${max - value.trim().length} characters left.`
+  } else if (value.trim().length < min) {
+    return `You need at least ${min} characters. Enter ${min - value.trim().length} more characters.`
+  } else {
+    return `You have exceeded the maximum character limit by ${value.trim().length - max} characters.`
+  }
+}
 export default function DescriptionAndFeaturesSection({
   description,
   selectedFeatures,
@@ -46,16 +58,25 @@ export default function DescriptionAndFeaturesSection({
             w="full"
             justifyContent="space-between"
             alignItems="start"
-            mb="1rem"
+            mb=".4rem"
           >
             <Text as="span" fontSize="1.4rem" fontWeight="500">
               Decription
             </Text>
-            {descriptionError && (
-              <ErrorText m="0" fontSize="1.4rem">
-                {descriptionError}
-              </ErrorText>
-            )}
+            {
+              //
+              //  ||
+              ((description.trim().length > 0 &&
+                description.trim().length < 50) ||
+                description.trim().length > 1200) && (
+                <ErrorText m="0" fontSize="1.4rem" color={description.trim().length > 1200 ? "gray.main" : "red"}>
+                  {getCharacterCountMessage(description, {
+                    min: 50,
+                    max: 1500,
+                  })}
+                </ErrorText>
+              )
+            }
           </VStack>
           <Input
             value={description}
@@ -76,7 +97,7 @@ export default function DescriptionAndFeaturesSection({
             onBlur={() => {
               if (description.length < 50)
                 setDescriptionError("A minimum of 50 characters")
-              else if (description.length >= 1500)
+              else if (description.length > 1500)
                 setDescriptionError("A maximum of 1500 characters")
               // else setDescriptionError("")
             }}
