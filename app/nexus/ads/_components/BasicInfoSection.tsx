@@ -26,22 +26,6 @@ export default function BasicInfoSection({
       pt="1rem"
       gap={{ base: "1rem", sm: "2rem" }}
     >
-      <HStack w="full">
-        <FormLabel w={{ base: "full" }}>
-          <Text as="span" fontSize="1.4rem" fontWeight="500">
-            I&apos;m looking for
-          </Text>
-          <Input
-            name="lookingFor"
-            placeholder="A roommate to share my apartment with"
-            type="string"
-            onChange={handleChange}
-            variant="filled"
-            w="full"
-            value={listingInfo.lookingFor}
-          />
-        </FormLabel>
-      </HStack>
       <HStack
         w="full"
         gap={{ base: "1rem", sm: "2rem" }}
@@ -77,6 +61,21 @@ export default function BasicInfoSection({
             <option value="quarterly">Quarterly</option>
             <option value="monthly">Monthly</option>
           </Input>
+        </FormLabel>
+      </HStack>
+      <HStack w="full">
+        <FormLabel w={{ base: "full" }}>
+          <Text as="span" fontSize="1.4rem" fontWeight="500">
+            Earliest move-in date
+          </Text>
+          <Input
+            name="earliestMoveInDate"
+            type="date"
+            onChange={handleChange}
+            variant="filled"
+            w="full"
+            value={listingInfo.earliestMoveInDate}
+          />
         </FormLabel>
       </HStack>
       <HStack

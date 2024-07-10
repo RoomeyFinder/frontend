@@ -148,6 +148,8 @@ export default function InterestButton({
           opacity: ".3",
           justifyContent: "center !important",
           alignItems: "center !important",
+          px: "1rem",
+          py: ".67rem",
         }}
         _disabled={{
           bg: "brand.10",
