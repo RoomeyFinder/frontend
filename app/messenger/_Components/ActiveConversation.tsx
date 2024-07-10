@@ -13,9 +13,11 @@ import {
   removeActiveConversation,
   updateConversation,
 } from "@/app/_redux/slices/conversations.slice"
-import { socket } from "@/app/_socket/socket"
+import { Socket } from "socket.io-client"
 
-export default function ActiveConversation() {
+export default function ActiveConversation({ socket }: { socket: Socket }) {
+  const { user } = useAppSelector((store) => store.auth)
+
   const dispatch = useAppDispatch()
   const [isUserIntentionallyScrolling, setIsUserIntentionallyScrolling] =
     useState(false)
@@ -46,7 +48,6 @@ export default function ActiveConversation() {
       dispatch(fetchUserMessages(activeConversation._id))
     }
   }, [messagesInActiveConversation, activeConversation, dispatch])
-  const { user } = useAppSelector((store) => store.auth)
 
   const recipient = useMemo(() => {
     if (activeConversation?.creator?._id === user?._id)

@@ -8,17 +8,15 @@ import {
   Suspense,
   useEffect,
   useMemo,
-  // useContext, useEffect, useMemo
 } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
 import Loading from "../_assets/SVG/Loading"
-import {  useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { setActiveConversation } from "../_redux/slices/conversations.slice"
-// import InactiveConversationView from "./_Components/InactiveConversationView"
-// import NoConversation from "./_Components/NoConversations"
-// import { useRouter, useSearchParams } from "next/navigation"
+import { socket } from "../_socket/socket"
+import { logout } from "../_redux/slices/auth.slice"
 
 export default function Messenger() {
   return (
@@ -34,10 +32,15 @@ export default function Messenger() {
   )
 }
 function Page() {
+  const { user } = useAppSelector((store) => store.auth)
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    if (!socket.connected && user !== null) socket.connect()
+    if ((socket.auth as any).token === null) dispatch(logout())
+  }, [user, dispatch])
   const { activeConversation, conversations, loading } = useAppSelector(
     (store) => store.conversations
   )
-  const dispatch = useAppDispatch()
   const showChat = useMemo(
     () => activeConversation !== null,
     [activeConversation]
@@ -84,7 +87,7 @@ function Page() {
         >
           {!loading &&
             (activeConversation ? (
-              <ActiveConversation />
+              <ActiveConversation socket={socket} />
             ) : (
               <InactiveConversationView />
             ))}

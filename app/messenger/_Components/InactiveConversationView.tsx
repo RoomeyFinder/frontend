@@ -15,7 +15,7 @@ export default function InactiveConversationView(){
       overflow="hidden"
     >
       <AppLogo showTextLogoAlways />
-      <Heading fontWeight="500" fontSize="2.4rem" color="#7070704D">
+      <Heading fontWeight="500" fontSize="1.6rem" color="#707070">
         Send and receive messages
       </Heading>
     </Flex>
