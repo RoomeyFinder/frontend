@@ -1,5 +1,12 @@
 "use client"
-import { GridItem, Heading, SimpleGrid, VStack } from "@chakra-ui/react"
+import {
+  Button,
+  Flex,
+  GridItem,
+  Heading,
+  SimpleGrid,
+  VStack,
+} from "@chakra-ui/react"
 import { useAppSelector } from "../_redux"
 import RoomeyListingCard from "../_components/RoomeyListingCard"
 import { useCallback } from "react"
@@ -7,12 +14,14 @@ import RoomListingCard from "../_components/RoomListingCard"
 import { Listing } from "../_types/Listings"
 import User from "../_types/User"
 import SkeletalLoading from "../_components/Skeletons/SkeletalLoader"
+import { useRouter } from "next/navigation"
 
 export default function NexusPage() {
   const { user } = useAppSelector((store) => store.auth)
   const { loadingRoomies, loadingRooms, roomies, rooms } = useAppSelector(
     (store) => store.recommendations
   )
+  const router = useRouter()
   if (!user) return <></>
   return (
     <>
@@ -28,9 +37,21 @@ export default function NexusPage() {
             user.preferences?.lookingFor === "both" ||
             !user.preferences?.lookingFor) && (
             <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Heading fontWeight="600" fontSize="3.2rem">
-                Recommended Profiles
-              </Heading>
+              <Flex justifyContent="space-between" alignItems="center" w="full">
+                <Heading fontWeight="600" fontSize="3.2rem">
+                  Recommended Profiles
+                </Heading>
+                <Button
+                  bg="transparent"
+                  _hover={{ bg: "transparent" }}
+                  h="unset"
+                  fontSize="1.6rem"
+                  color="brand.main"
+                  textDecor="underline"
+                >
+                  View More
+                </Button>
+              </Flex>
               <RecomendationsDisplay type="Roomey" list={roomies} />
               {loadingRoomies && <SkeletalLoading variant="roomies" />}
             </VStack>
@@ -40,9 +61,22 @@ export default function NexusPage() {
             user.preferences?.lookingFor === "both" ||
             !user.preferences?.lookingFor) && (
             <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Heading fontWeight="600" fontSize="3.2rem">
-                Recommended Rooms
-              </Heading>
+              <Flex justifyContent="space-between" w="full" alignItems="center">
+                <Heading fontWeight="600" fontSize="3.2rem">
+                  Recommended Rooms
+                </Heading>
+                <Button
+                  bg="transparent"
+                  _hover={{ bg: "transparent" }}
+                  h="unset"
+                  fontSize="1.6rem"
+                  color="brand.main"
+                  textDecor="underline"
+                  onClick={() => router.push("/ads/")}
+                >
+                  View More
+                </Button>
+              </Flex>
               <RecomendationsDisplay type="Room" list={rooms} />
               {loadingRooms && <SkeletalLoading variant="rooms" />}n
             </VStack>
