@@ -110,17 +110,19 @@ const NumberOfBedroomsFilter = ({
     </Input>
   )
 }
-const RentDurationFilter = ({
+export const RentDurationFilter = ({
   handleSelection,
+  placeholder,
 }: {
   handleSelection: ChangeEventHandler
+  placeholder?: string
 }) => {
   const [value, setValue] = useState("")
   return (
     <Input
       rounded=".5rem"
       fontSize="1.6rem"
-      placeholder="Duration"
+      placeholder={placeholder || "Duration"}
       value={value}
       onChange={(e) => {
         handleSelection(e)
@@ -136,17 +138,19 @@ const RentDurationFilter = ({
     </Input>
   )
 }
-const RentFilter = ({
+export const RentFilter = ({
   handleSelection,
+  placeholder,
 }: {
   handleSelection: ChangeEventHandler
+  placeholder?: string
 }) => {
   const [value, setValue] = useState("")
   return (
     <Input
       rounded=".5rem"
       fontSize="1.6rem"
-      placeholder="Rent"
+      placeholder={placeholder || "Rent"}
       onChange={(e) => {
         handleSelection(e)
         setValue(e.target.value)
@@ -208,6 +212,62 @@ const RentFilter = ({
           maximumFractionDigits: 0,
         })}
       </option>
+    </Input>
+  )
+}
+
+export const GenderFilter = ({
+  handleSelection,
+  placeholder,
+}: {
+  handleSelection: ChangeEventHandler
+  placeholder?: string
+}) => {
+  const [value, setValue] = useState("")
+  return (
+    <Input
+      rounded=".5rem"
+      fontSize="1.6rem"
+      placeholder={placeholder || "Gender"}
+      onChange={(e) => {
+        handleSelection(e)
+        setValue(e.target.value)
+      }}
+      value={value}
+      as={Select}
+      py=".5rem"
+    >
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="both">Both</option>
+    </Input>
+  )
+}
+
+export const LookingForFilter = ({
+  handleSelection,
+  placeholder,
+}: {
+  handleSelection: ChangeEventHandler
+  placeholder?: string
+}) => {
+  const [value, setValue] = useState("")
+  return (
+    <Input
+      rounded=".5rem"
+      fontSize="1.6rem"
+      placeholder={placeholder || "Looking for"}
+      onChange={(e) => {
+        handleSelection(e)
+        setValue(e.target.value)
+      }}
+      value={value}
+      as={Select}
+      py=".5rem"
+    >
+      <option value="room">Room</option>
+      <option value="roommate">Roommate</option>
+      <option value="both">Both</option>
     </Input>
   )
 }

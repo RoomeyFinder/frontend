@@ -48,6 +48,7 @@ export default function NexusPage() {
                   fontSize="1.6rem"
                   color="brand.main"
                   textDecor="underline"
+                  onClick={() => router.push("/users/")}
                 >
                   View More
                 </Button>
