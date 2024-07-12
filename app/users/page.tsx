@@ -1,5 +1,5 @@
 "use client"
-import { Box, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react"
+import { Box, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import {
   ChangeEvent,
   ReactNode,
@@ -109,7 +109,7 @@ function ListingsSection() {
       setResults([])
     }
     setLoadingSearch(false)
-  }, [searchQueryString, cache, loadingSearch, fetchData])
+  }, [searchQueryString, cache, loadingSearch, fetchData, user])
 
   useEffect(() => {
     if (searchQueryString) search()
