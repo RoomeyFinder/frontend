@@ -72,7 +72,7 @@ export default function ActiveConversation({ socket }: { socket: Socket }) {
         conversationId: activeConversation?._id,
       })
     },
-    [activeConversation?._id, recipient]
+    [activeConversation?._id, recipient, socket]
   )
 
   useEffect(() => {
