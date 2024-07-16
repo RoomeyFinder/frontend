@@ -1,7 +1,7 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
-import { Box, Flex } from "@chakra-ui/react"
+import { Box, Fade, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
 // import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 import { usePathname } from "next/navigation"
@@ -17,6 +17,7 @@ import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserNotifications } from "../_redux/thunks/notifications.thunk"
 import useProtectRoutes from "../_hooks/useProtectRoutes"
+import PageLoader from "./PageLoader"
 
 export default function GlobalLayout({
   children,
@@ -69,24 +70,33 @@ export default function GlobalLayout({
   ])
   useProtectRoutes()
 
+  if (loadingUser) return (
+    <Fade in>
+      <PageLoader />
+    </Fade>
+  )
   if (pathname.includes("nexus"))
     return (
-      <NexusLayout>
-        <PreferencesReminder />
-        {children}
-      </NexusLayout>
+      <Fade in>
+        <NexusLayout>
+          <PreferencesReminder />
+          {children}
+        </NexusLayout>
+      </Fade>
     )
   return (
-    <Box maxW={{ "2xl": "144rem" }} mx="auto" h="full" overflow="auto">
-      <AppHeader />
-      <Flex
-        justifyContent="center"
-        alignItems="center"
-        minH={{ base: "80dvh" }}
-      >
-        <Box flexGrow="1">{children}</Box>
-      </Flex>
-      <AppFooter />
-    </Box>
+    <Fade in>
+      <Box maxW={{ "2xl": "144rem" }} mx="auto" h="full" overflow="auto">
+        <AppHeader />
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          minH={{ base: "80dvh" }}
+        >
+          <Box flexGrow="1">{children}</Box>
+        </Flex>
+        <AppFooter />
+      </Box>
+    </Fade>
   )
 }
