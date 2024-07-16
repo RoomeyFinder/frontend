@@ -34,15 +34,11 @@ const PageLoader = () => {
       <Text fontSize="2rem" fontWeight="500">
         RoomeyFinder
       </Text>
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        width="full"
-      >
+      <Flex alignItems="center" justifyContent="center" width="full" height="auto">
         <Box
           height="14"
           width="3"
-          bg="brand.main"
+          bg="#3a86ff"
           borderTopRadius="5px"
           transformOrigin="top"
           position="relative"
@@ -59,7 +55,7 @@ const PageLoader = () => {
             height="12"
             width="12"
             border="2px solid"
-            borderColor="brand.main"
+            borderColor="#3a86ff"
             borderRadius="full"
             position="absolute"
             top="98%"
@@ -83,7 +79,7 @@ const PageLoader = () => {
         <Box
           height="14"
           width="3"
-          bg="brand.main"
+          bg="#3a86ff"
           borderTopRadius="5px"
           transformOrigin="top"
           position="relative"
@@ -100,7 +96,7 @@ const PageLoader = () => {
             height="12"
             width="12"
             border="2px solid"
-            borderColor="brand.main"
+            borderColor="#3a86ff"
             borderRadius="full"
             position="absolute"
             top="98%"

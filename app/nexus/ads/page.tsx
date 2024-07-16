@@ -7,7 +7,6 @@ import {
   Heading,
   Show,
   SimpleGrid,
-  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -25,16 +24,11 @@ import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/listings.slice"
 import { useRouter } from "next/navigation"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
+import PageLoader from "@/app/_components/PageLoader"
 
 export default function MyAds() {
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness=".4rem" />
-        </Flex>
-      }
-    >
+    <Suspense fallback={<PageLoader />}>
       <Renderer />
     </Suspense>
   )

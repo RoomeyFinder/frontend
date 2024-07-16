@@ -70,22 +70,23 @@ export default function GlobalLayout({
   ])
   useProtectRoutes()
 
-  if (loadingUser) return (
-    <Fade in>
-      <PageLoader />
-    </Fade>
-  )
-  if (pathname.includes("nexus"))
+  if (loadingUser)
     return (
       <Fade in>
+        <PageLoader />
+      </Fade>
+    )
+  if (pathname.includes("nexus"))
+    return (
+      <>
         <NexusLayout>
           <PreferencesReminder />
           {children}
         </NexusLayout>
-      </Fade>
+      </>
     )
   return (
-    <Fade in>
+    <>
       <Box maxW={{ "2xl": "144rem" }} mx="auto" h="full" overflow="auto">
         <AppHeader />
         <Flex
@@ -97,6 +98,6 @@ export default function GlobalLayout({
         </Flex>
         <AppFooter />
       </Box>
-    </Fade>
+    </>
   )
 }

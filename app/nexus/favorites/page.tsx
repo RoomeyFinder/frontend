@@ -23,16 +23,11 @@ import AppNotification from "@/app/_components/AppNotification"
 import { resetError } from "@/app/_redux/slices/favorites.slice"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
+import PageLoader from "@/app/_components/PageLoader"
 
 export default function Favorites() {
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness=".4rem" />
-        </Flex>
-      }
-    >
+    <Suspense fallback={<PageLoader />}>
       <Renderer />
     </Suspense>
   )

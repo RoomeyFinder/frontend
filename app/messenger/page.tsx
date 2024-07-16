@@ -4,11 +4,7 @@ import { Flex, Spinner } from "@chakra-ui/react"
 // import Conversations from "./_Components/Conversations"
 // import Banner from "./_Components/Banner"
 // import { MessengerContext } from "../../_providers/MessengerProvider"
-import {
-  Suspense,
-  useEffect,
-  useMemo,
-} from "react"
+import { Suspense, useEffect, useMemo } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
@@ -17,16 +13,11 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { setActiveConversation } from "../_redux/slices/conversations.slice"
 import { socket } from "../_socket/socket"
 import { logout } from "../_redux/slices/auth.slice"
+import PageLoader from "../_components/PageLoader"
 
 export default function Messenger() {
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness=".4rem" />
-        </Flex>
-      }
-    >
+    <Suspense fallback={<PageLoader />}>
       <Page />
     </Suspense>
   )
