@@ -28,6 +28,10 @@ export default function GlobalLayout({
   // useListenForMessengerEvents()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    localStorage.setItem("prevPath", pathname)
+  }, [pathname])
   useEffect(() => {
     dispatch(checkAuthStatus()).then((res) => {
       if (

@@ -24,6 +24,7 @@ import NoResultsDisplay from "../_components/NoResultsDisplay"
 import { pluralizeText } from "../_utils"
 import User from "../_types/User"
 import RoomeyListingCard from "../_components/RoomeyListingCard"
+import BackButton from "../_components/BackButton"
 
 export default function Search() {
   const { hasFetchedInitialUsers } = useAppSelector((store) => store.search)
@@ -118,6 +119,7 @@ function ListingsSection() {
   return (
     <>
       <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
+        <BackButton left="5%" />
         <Box
           pos="fixed"
           left="50%"
@@ -134,7 +136,6 @@ function ListingsSection() {
             py="1.8rem"
             mx="auto"
           >
-            {" "}
             <Heading variant="md" color="" fontWeight="500" mb="2.5rem">
               {searchQueryString
                 ? `${results.length} ${pluralizeText("Roomie", results.length, "s")} found`

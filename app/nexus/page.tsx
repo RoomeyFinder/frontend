@@ -39,7 +39,7 @@ export default function NexusPage() {
             <VStack gap="3rem" alignItems="start" as="section" w="full">
               <Flex justifyContent="space-between" alignItems="center" w="full">
                 <Heading fontWeight="600" fontSize="3.2rem">
-                  Recommended Profiles
+                  Roomies you might like
                 </Heading>
                 <Button
                   bg="transparent"
