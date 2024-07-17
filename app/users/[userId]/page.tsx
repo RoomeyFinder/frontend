@@ -1,7 +1,6 @@
 "use client"
 import UserOverview from "../_components/UserOverview"
 import { Flex, Heading, Text, VStack } from "@chakra-ui/react"
-import Loading from "@/app/_assets/SVG/Loading"
 import { useParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import useAxios from "@/app/_hooks/useAxios"
@@ -9,6 +8,7 @@ import User from "@/app/_types/User"
 import { Listing } from "@/app/_types/Listings"
 import NoResults from "@/app/_assets/SVG/NoResults"
 import { useAppSelector } from "@/app/_redux"
+import PageLoader from "@/app/_components/PageLoader"
 
 export default function UserViewPage() {
   const { user: userInState } = useAppSelector((store) => store.auth)
@@ -35,12 +35,7 @@ export default function UserViewPage() {
   useEffect(() => {
     fetchUserById()
   }, [fetchUserById])
-  if (loading)
-    return (
-      <Flex w="full" justifyContent="center" alignItems="center">
-        <Loading />
-      </Flex>
-    )
+  if (loading) return <PageLoader />
   if (!user)
     return (
       <VStack w="full" maxW="50rem" mx="auto">

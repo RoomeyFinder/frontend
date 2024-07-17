@@ -1,5 +1,4 @@
 "use client"
-import Loading from "@/app/_assets/SVG/Loading"
 import BackButton from "@/app/_components/BackButton"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
 import useAxios from "@/app/_hooks/useAxios"
@@ -44,6 +43,7 @@ import { MdFacebook, MdWhatsapp } from "react-icons/md"
 import { PiCopyBold } from "react-icons/pi"
 import { TbMail } from "react-icons/tb"
 import DotSeparator from "@/app/_components/DotSeparator"
+import PageLoader from "@/app/_components/PageLoader"
 
 export default function ClientContent() {
   const params = useParams()
@@ -94,12 +94,7 @@ export default function ClientContent() {
   }, [listing])
   const containerRef = useRef<HTMLDivElement | null>(null)
 
-  if (loading)
-    return (
-      <VStack w="full" minH="80dvh" alignItems="center" justifyContent="center">
-        <Loading />
-      </VStack>
-    )
+  if (loading) return <PageLoader />
 
   if (!listing && !loading)
     return (

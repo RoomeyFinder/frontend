@@ -1,5 +1,5 @@
 "use client"
-import { Flex, Spinner } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 // import ActiveConversation from "./_Components/ActiveConversation"
 // import Conversations from "./_Components/Conversations"
 // import Banner from "./_Components/Banner"
@@ -8,7 +8,6 @@ import { Suspense, useEffect, useMemo } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
-import Loading from "../_assets/SVG/Loading"
 import { useRouter, useSearchParams } from "next/navigation"
 import { setActiveConversation } from "../_redux/slices/conversations.slice"
 import { socket } from "../_socket/socket"
@@ -83,9 +82,7 @@ function Page() {
               <InactiveConversationView />
             ))}
           {loading && (
-            <Flex minH="60dvh" justifyContent="center" alignItems="center">
-              <Loading />
-            </Flex>
+            <PageLoader />
           )}
         </Flex>
       </Flex>

@@ -4,8 +4,7 @@ import ListingFormForCreateOrEdit from "../_components/ListingFormForCreateOrEdi
 import { useAppSelector } from "@/app/_redux"
 import { useMemo } from "react"
 import NoResultsDisplay from "@/app/_components/NoResultsDisplay"
-import Loading from "@/app/_assets/SVG/Loading"
-import { Flex } from "@chakra-ui/react"
+import PageLoader from "@/app/_components/PageLoader"
 
 export default function ListingPage() {
   const query = useSearchParams()
@@ -14,12 +13,7 @@ export default function ListingPage() {
     () => listings.find((it) => it._id === query.get("id")),
     [listings, query]
   )
-  if (loading)
-    return (
-      <Flex w="full" h="full" justifyContent="center" alignItems="center">
-        <Loading />
-      </Flex>
-    )
+  if (loading) return <PageLoader />
   if (!listing && loading)
     return <NoResultsDisplay body="That ad was not found" heading="Oops!" />
   return <ListingFormForCreateOrEdit isCreate={false} listing={listing} />
