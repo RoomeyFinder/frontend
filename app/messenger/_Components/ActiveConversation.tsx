@@ -67,7 +67,7 @@ export default function ActiveConversation({ socket }: { socket: Socket }) {
 
   const handleSendMessage = useCallback(
     (msg: string) => {
-      if (activeConversation)
+      if (activeConversation?._id)
         dispatch(
           pseudoAddNewMessage({
             conversationId: activeConversation?._id,

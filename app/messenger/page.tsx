@@ -26,7 +26,7 @@ function Page() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!socket.connected && user !== null) socket.connect()
-    if ((socket.auth as any).token === null) dispatch(logout())
+    if ((socket.auth as any)?.token === null) dispatch(logout())
   }, [user, dispatch])
   const { activeConversation, conversations, loading } = useAppSelector(
     (store) => store.conversations

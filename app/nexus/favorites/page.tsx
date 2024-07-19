@@ -1,9 +1,7 @@
 "use client"
 import {
   Box,
-  Flex,
   Heading,
-  Spinner,
   Tab,
   TabList,
   TabPanel,

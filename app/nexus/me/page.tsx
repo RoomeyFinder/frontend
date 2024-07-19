@@ -1,5 +1,5 @@
 "use client"
-import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react"
+import { Grid, GridItem } from "@chakra-ui/react"
 import { Suspense, useState } from "react"
 import { useAppSelector } from "../../_redux"
 import ProfileInfoSection from "./_components/ProfileInfoSection"

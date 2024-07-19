@@ -68,7 +68,7 @@ const PageLoader = () => {
             left="50%"
             transform="translateX(-50%)"
             _before={{
-              content: '""',
+              content: "",
               position: "absolute",
               top: "50%",
               left: "40%",
@@ -110,7 +110,7 @@ const PageLoader = () => {
             left="50%"
             transform="translateX(-50%)"
             _before={{
-              content: '""',
+              content: "",
               position: "absolute",
               top: "50%",
               left: "40%",

@@ -29,7 +29,7 @@ export default function InterestButton({
   const { user } = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
   const { interests } = useAppSelector((store) => store.interests)
-  const [sendingInterest, setSendingInterest] = useState(false)
+  const [sendingInterest] = useState(false)
 
   const existingInterest = useMemo(
     () =>

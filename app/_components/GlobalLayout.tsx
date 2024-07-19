@@ -18,6 +18,8 @@ import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserNotifications } from "../_redux/thunks/notifications.thunk"
 import useProtectRoutes from "../_hooks/useProtectRoutes"
 import PageLoader from "./PageLoader"
+import STORAGE_KEYS from "../STORAGE_KEYS"
+import localforage from "localforage"
 
 export default function GlobalLayout({
   children,
@@ -28,6 +30,7 @@ export default function GlobalLayout({
   // useListenForMessengerEvents()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
+  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
 
   useEffect(() => {
     localStorage.setItem("prevPath", pathname)
@@ -44,8 +47,20 @@ export default function GlobalLayout({
     })
   }, [dispatch, router, pathname])
 
+  useEffect(() => {
+    const hasForcedLogout = localStorage.getItem("hasForcedLogout")
+    if (hasForcedLogout === null && user) {
+      localforage.clear(() => {
+        dispatch(logout())
+        localStorage.removeItem(STORAGE_KEYS.RF_TOKEN)
+        localStorage.setItem("hasForcedLogout", "true")
+        router.push("/")
+      })
+    }
+    if (!user && !loadingUser) localStorage.setItem("hasForcedLogout", "true")
+  }, [dispatch, logout, user, loadingUser, router])
+
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
-  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
   useEffect(() => {
     if (!loadingUser)
       !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))

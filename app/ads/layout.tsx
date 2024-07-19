@@ -12,6 +12,6 @@ export default function NexusLayout({
   const router = useRouter()
   useEffect(() => {
     if (!loading && !user) router.push("/")
-  }, [user, loading])
+  }, [user, loading, router])
   return <>{children}</>
 }

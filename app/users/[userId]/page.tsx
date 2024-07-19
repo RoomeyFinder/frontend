@@ -1,6 +1,6 @@
 "use client"
 import UserOverview from "../_components/UserOverview"
-import { Flex, Heading, Text, VStack } from "@chakra-ui/react"
+import { Heading, Text, VStack } from "@chakra-ui/react"
 import { useParams } from "next/navigation"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import useAxios from "@/app/_hooks/useAxios"
