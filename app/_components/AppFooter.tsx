@@ -22,6 +22,13 @@ import { usePathname, useRouter } from "next/navigation"
 export default function AppFooter() {
   const pathname = usePathname()
 
+  if (pathname.startsWith("/ads")) return null
+  return <AppFooterContent />
+}
+
+export function AppFooterContent() {
+  const pathname = usePathname()
+
   return (
     <Box
       as="footer"
@@ -58,7 +65,6 @@ export default function AppFooter() {
     </Box>
   )
 }
-
 function FooterLinks() {
   return (
     <List

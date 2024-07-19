@@ -44,6 +44,7 @@ import { PiCopyBold } from "react-icons/pi"
 import { TbMail } from "react-icons/tb"
 import DotSeparator from "@/app/_components/DotSeparator"
 import PageLoader from "@/app/_components/PageLoader"
+import { AppFooterContent } from "@/app/_components/AppFooter"
 
 export default function ClientContent() {
   const params = useParams()
@@ -144,10 +145,9 @@ export default function ClientContent() {
         {/* {listing && (
           <ListingOwnerOverview listing={listing} isOwnListing={isOwnListing} />
         )} */}
-
         <SimpleGrid
           columns={{ base: 1, sm: 2 }}
-          px={{ base: "" }}
+          px={{ base: "1.6rem", sm: "0" }}
           rowGap={{ base: "4rem", sm: "8rem" }}
           display={{ base: "flex", sm: "grid" }}
           flexDir={{ base: "column-reverse" }}
@@ -190,7 +190,7 @@ export default function ClientContent() {
                   rowGap="0"
                   flexWrap="wrap"
                   justifyContent="start"
-                  alignItems={{ base: "start", sm: "center" }}
+                  alignItems={{ base: "center", sm: "center" }}
                   // flexDir={{ base: "column", sm: "row" }}
                 >
                   <Text as="span">
@@ -246,6 +246,7 @@ export default function ClientContent() {
           </VStack>
         </SimpleGrid>
       </VStack>
+      <AppFooterContent />
       {!isOwnListing && listing && (
         <Hide above="sm">
           <ListingCTAs
