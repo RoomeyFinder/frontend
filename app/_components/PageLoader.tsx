@@ -34,10 +34,16 @@ const PageLoader = () => {
       <Text fontSize="2rem" fontWeight="500">
         RoomeyFinder
       </Text>
-      <Flex alignItems="center" justifyContent="center" width="full" height="auto">
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        width="full"
+        height="auto"
+      >
         <Box
-          height="14"
-          width="3"
+          className="pendulum-one"
+          height="4.5rem"
+          width="1rem"
           bg="#3a86ff"
           borderTopRadius="5px"
           transformOrigin="top"
@@ -45,18 +51,18 @@ const PageLoader = () => {
           animation={`${pendulum1} 650ms ease-in-out infinite alternate-reverse`}
         >
           <Box
-            height="1"
-            width="full"
+            height="1px"
+            width="100%"
             bg="white"
             position="absolute"
             top="18px"
           ></Box>
           <Box
-            height="12"
-            width="12"
+            height="3.5rem"
+            width="3.5rem"
             border="2px solid"
             borderColor="#3a86ff"
-            borderRadius="full"
+            borderRadius="50%"
             position="absolute"
             top="98%"
             left="50%"
@@ -77,8 +83,8 @@ const PageLoader = () => {
           ></Box>
         </Box>
         <Box
-          height="14"
-          width="3"
+          height="4.5rem"
+          width="1rem"
           bg="#3a86ff"
           borderTopRadius="5px"
           transformOrigin="top"
@@ -86,18 +92,19 @@ const PageLoader = () => {
           animation={`${pendulum2} 650ms ease-in-out infinite alternate-reverse`}
         >
           <Box
-            height="1"
-            width="full"
+            height="1px"
+            width="100%"
             bg="white"
             position="absolute"
             top="18px"
+            className="pendulum-marker"
           ></Box>
           <Box
-            height="12"
-            width="12"
+            height="3.5rem"
+            width="3.5rem"
             border="2px solid"
             borderColor="#3a86ff"
-            borderRadius="full"
+            borderRadius="50%"
             position="absolute"
             top="98%"
             left="50%"
