@@ -9,7 +9,7 @@ export default function AppHeader() {
       data-testid="header"
       as="header"
       position="sticky"
-      zIndex="150"
+      zIndex="1000"
       top="0"
       minH="8rem"
       px={{ base: "5.5%", md: "5.5%" }}
