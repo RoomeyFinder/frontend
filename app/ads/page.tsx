@@ -201,7 +201,7 @@ function RoomsList({
       <ListingsGridLayout
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
         list={new Array(12).fill(1).map((_, idx) => (
-          <RoomListingCardSkeleton key={idx} />
+          <RoomListingCardSkeleton key={idx} hasBorder />
         ))}
       />
     )
@@ -211,7 +211,12 @@ function RoomsList({
     <>
       <ListingsGridLayout
         list={rooms.map((room) => (
-          <RoomListingCard key={room._id} listing={room} variant="outlined" />
+          <RoomListingCard
+            showFavoriteButton
+            key={room._id}
+            listing={room}
+            variant="outlined"
+          />
         ))}
         justifyContent="start"
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}

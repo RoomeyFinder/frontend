@@ -30,12 +30,11 @@ export default function SearchBar({
       strictBounds: false,
       type: "(regions)",
     }
-    const autocomplete = new window.google.maps.places.Autocomplete(
-      input,
-      options
-    )
-    autocomplete.addListener("place_changed", () => {
-      if (autocomplete.getPlace().geometry?.location) {
+    const autocomplete =
+      window.google?.maps?.places &&
+      new window.google.maps.places.Autocomplete(input, options)
+    autocomplete?.addListener("place_changed", () => {
+      if (autocomplete?.getPlace().geometry?.location) {
         const coordinates = {
           lat: autocomplete.getPlace().geometry?.location?.lat(),
           lng: autocomplete.getPlace().geometry?.location?.lng(),

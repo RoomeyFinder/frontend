@@ -80,6 +80,7 @@ export default function RoomListingCard({
             <Image
               key={slide.secure_url}
               src={slide.secure_url}
+              bg="brand.50"
               w="100%"
               h="full"
               rounded="1.2rem"
