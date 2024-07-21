@@ -24,10 +24,10 @@ export default function BackButton(props: BoxProps) {
       }}
       {...props}
       onClick={() => {
-        const prevPath = sessionStorage.getItem("prevPath")
+        const prevPath = localStorage.getItem("prevPath")
         if (prevPath) router.back()
         else {
-          sessionStorage.setItem("prevPath", pathname)
+          localStorage.setItem("prevPath", pathname)
           router.replace("/")
         }
       }}

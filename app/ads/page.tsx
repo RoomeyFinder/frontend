@@ -1,12 +1,6 @@
 "use client"
 import { Box, Heading } from "@chakra-ui/react"
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
 import ListingsGridLayout from "../_components/ListingsGridLayout"
@@ -17,6 +11,7 @@ import SearchBar from "../_components/Search/SearchBar"
 import useAxios from "../_hooks/useAxios"
 import NoResultsDisplay from "../_components/NoResultsDisplay"
 import { pluralizeText } from "../_utils"
+import BackButton from "../_components/BackButton"
 
 export default function Search() {
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
@@ -112,6 +107,7 @@ function ListingsSection() {
   return (
     <>
       <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
+        <BackButton left="5%" />
         <Box
           pos="fixed"
           left="50%"
@@ -205,7 +201,7 @@ function RoomsList({
       <ListingsGridLayout
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
         list={new Array(12).fill(1).map((_, idx) => (
-          <RoomListingCardSkeleton key={idx} />
+          <RoomListingCardSkeleton key={idx} hasBorder />
         ))}
       />
     )
@@ -215,7 +211,12 @@ function RoomsList({
     <>
       <ListingsGridLayout
         list={rooms.map((room) => (
-          <RoomListingCard key={room._id} listing={room} variant="outlined" />
+          <RoomListingCard
+            showFavoriteButton
+            key={room._id}
+            listing={room}
+            variant="outlined"
+          />
         ))}
         justifyContent="start"
         columns={{ base: 1, sm: 2, md: 2, lg: 4 }}

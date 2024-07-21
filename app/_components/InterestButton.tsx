@@ -29,7 +29,7 @@ export default function InterestButton({
   const { user } = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
   const { interests } = useAppSelector((store) => store.interests)
-  const [sendingInterest, setSendingInterest] = useState(false)
+  const [sendingInterest] = useState(false)
 
   const existingInterest = useMemo(
     () =>
@@ -40,6 +40,9 @@ export default function InterestButton({
           (interest.doc as Listing)?.owner?._id === doc
       ),
     [doc, interests]
+  )
+  const [hasInterest, setHasInterest] = useState(() =>
+    Boolean(existingInterest)
   )
   const { handleAccept, loading, handleUnsend } =
     useActOnInterest(existingInterest)
@@ -59,7 +62,8 @@ export default function InterestButton({
       type: docType,
       docOwner,
     }
-    setSendingInterest(true)
+    // setSendingInterest(true)
+    setHasInterest((prev) => !prev)
     const res = await fetchData({ url: "/interests", method: "post", body })
     if (res.statusCode === 201) {
       res.alreadyReceivedInterest &&
@@ -86,12 +90,12 @@ export default function InterestButton({
             "Sorry, we are unable to send that interest at the moment. Please try again."
         )
     }
-    setSendingInterest(false)
+    // setSendingInterest(false)
   }, [fetchData, doc, docType, docOwner, user, dispatch, showAuthModal])
 
   const buttonProps = useMemo(() => {
-    if (existingInterest) {
-      if (existingInterest.accepted)
+    if (existingInterest || hasInterest) {
+      if (existingInterest?.accepted)
         return {
           onClick: () => {
             router.push(
@@ -107,6 +111,14 @@ export default function InterestButton({
           onClick: () => handleUnsend(),
           variant: "brand-secondary",
         }
+      if (hasInterest) {
+        return {
+          title: `You will notified when ${(existingInterest?.doc as any)?.firstName || (existingInterest?.doc as any)?.owner?.firstName} accepts your interest`,
+          children: "Unsend interest",
+          variant: "brand-secondary",
+          onClick: () => setHasInterest((prev) => !prev),
+        }
+      }
       return {
         children: "Accept interest",
         onClick: () => handleAccept(),
@@ -131,6 +143,7 @@ export default function InterestButton({
     docType,
     showAuthModal,
     handleUnsend,
+    hasInterest,
   ])
   return (
     <>

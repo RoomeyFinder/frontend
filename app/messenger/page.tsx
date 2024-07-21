@@ -1,32 +1,22 @@
 "use client"
-import { Flex, Spinner } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react"
 // import ActiveConversation from "./_Components/ActiveConversation"
 // import Conversations from "./_Components/Conversations"
 // import Banner from "./_Components/Banner"
 // import { MessengerContext } from "../../_providers/MessengerProvider"
-import {
-  Suspense,
-  useEffect,
-  useMemo,
-} from "react"
+import { Suspense, useEffect, useMemo } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
-import Loading from "../_assets/SVG/Loading"
 import { useRouter, useSearchParams } from "next/navigation"
 import { setActiveConversation } from "../_redux/slices/conversations.slice"
 import { socket } from "../_socket/socket"
 import { logout } from "../_redux/slices/auth.slice"
+import PageLoader from "../_components/PageLoader"
 
 export default function Messenger() {
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness=".4rem" />
-        </Flex>
-      }
-    >
+    <Suspense fallback={<PageLoader />}>
       <Page />
     </Suspense>
   )
@@ -36,7 +26,7 @@ function Page() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!socket.connected && user !== null) socket.connect()
-    if ((socket.auth as any).token === null) dispatch(logout())
+    if ((socket.auth as any)?.token === null) dispatch(logout())
   }, [user, dispatch])
   const { activeConversation, conversations, loading } = useAppSelector(
     (store) => store.conversations
@@ -92,9 +82,7 @@ function Page() {
               <InactiveConversationView />
             ))}
           {loading && (
-            <Flex minH="60dvh" justifyContent="center" alignItems="center">
-              <Loading />
-            </Flex>
+            <PageLoader />
           )}
         </Flex>
       </Flex>

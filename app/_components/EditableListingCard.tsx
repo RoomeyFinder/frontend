@@ -83,12 +83,6 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
         gap="1rem"
         onClick={(e) => {
           e.preventDefault()
-          console.log(
-            isActivated,
-            listing.isActivated,
-            listing.isDraft,
-            listing._id
-          )
           if (isActivated) {
             router.push(`/ads/${listing._id}`)
           }

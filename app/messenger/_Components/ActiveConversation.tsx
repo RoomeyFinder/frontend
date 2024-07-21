@@ -14,6 +14,7 @@ import {
   updateConversation,
 } from "@/app/_redux/slices/conversations.slice"
 import { Socket } from "socket.io-client"
+import { pseudoAddNewMessage } from "@/app/_redux/slices/messages.slice"
 
 export default function ActiveConversation({ socket }: { socket: Socket }) {
   const { user } = useAppSelector((store) => store.auth)
@@ -66,13 +67,27 @@ export default function ActiveConversation({ socket }: { socket: Socket }) {
 
   const handleSendMessage = useCallback(
     (msg: string) => {
+      if (activeConversation?._id)
+        dispatch(
+          pseudoAddNewMessage({
+            conversationId: activeConversation?._id,
+            message: {
+              recipient: recipient?._id as any,
+              text: msg,
+              conversationId: activeConversation?._id,
+              sender: user?._id as any,
+              isPending: true,
+              _id: Math.random().toString(),
+            },
+          })
+        )
       socket.emit(CONVERSATION_EVENTS.MESSAGE, {
         recipient: recipient?._id,
         text: msg,
         conversationId: activeConversation?._id,
       })
     },
-    [activeConversation?._id, recipient, socket]
+    [activeConversation?._id, recipient, socket, user, dispatch]
   )
 
   useEffect(() => {
@@ -102,7 +117,7 @@ export default function ActiveConversation({ socket }: { socket: Socket }) {
         </Box>
         <Box
           pos="sticky"
-          bottom="5%"
+          bottom="1rem"
           insetX="0"
           w="95%"
           maxW=""

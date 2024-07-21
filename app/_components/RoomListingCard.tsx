@@ -80,6 +80,7 @@ export default function RoomListingCard({
             <Image
               key={slide.secure_url}
               src={slide.secure_url}
+              bg="brand.50"
               w="100%"
               h="full"
               rounded="1.2rem"
@@ -130,7 +131,8 @@ export function FavouriteButton({
     () => favorites?.find((it) => it.doc?._id === listingId),
     [favorites, listingId]
   )
-  const isFavorite = useMemo(() => Boolean(favorite), [favorite])
+  const [isFavorite, setIsFavorite] = useState(() => Boolean(favorite))
+
   const [loading, setLoading] = useState(false)
   const getChildren = useCallback(
     () =>
@@ -147,6 +149,7 @@ export function FavouriteButton({
     (e) => {
       e.stopPropagation()
       setLoading(true)
+      setIsFavorite((prev) => !prev)
       if (!favorite) dispatch(addFavorite({ doc: listingId, type }))
       else {
         useConfirmation

@@ -47,11 +47,10 @@ input:checked ~ .custom-toggle-dot {
   background-color: #48bb78;
 }
 
-input::-webkit-calendar-picker-indicator {
-  /* opacity: 0; */
-}
+/* input::-webkit-calendar-picker-indicator {
+} */
 ::selection {
-  background: #3A86ff;
+  background: #3a86ff;
   color: #fff;
 }
 
@@ -67,19 +66,19 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .styled-scrollbar::-webkit-scrollbar-thumb {
-  background: #3A86ff; /* Thumb color */
+  background: #3a86ff; /* Thumb color */
   border-radius: 100px;
 }
 
 .styled-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #3A86ff; /* Thumb color on hover */
+  background: #3a86ff; /* Thumb color on hover */
 }
 .fqFVxM {
   display: inline-block;
   vertical-align: top;
   stroke: currentColor;
   fill: currentColor;
-  color: #3A86ff;
+  color: #3a86ff;
   height: 1em;
   width: 1em;
   height: 80px;

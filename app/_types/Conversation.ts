@@ -20,5 +20,5 @@ export interface Message {
   text: string,
   seen: boolean
   delivered: boolean
-
+  isPending?: boolean
 }

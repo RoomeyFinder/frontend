@@ -82,6 +82,7 @@ export default function ProfileEdit() {
       })
       if (res.statusCode === 200) {
         dispatch(updateUser(res.user))
+        res.message && toast(res.message)
         toast.success("Profile updated successfully")
         router.push("/nexus/me")
       } else

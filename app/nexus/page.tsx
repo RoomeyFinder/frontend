@@ -32,31 +32,6 @@ export default function NexusPage() {
         alignItems={loadingRoomies || loadingRooms ? "center" : "start"}
         gap="10rem"
       >
-        {(loadingRoomies || roomies.length > 0) &&
-          (user.preferences?.lookingFor === "roommate" ||
-            user.preferences?.lookingFor === "both" ||
-            !user.preferences?.lookingFor) && (
-            <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Flex justifyContent="space-between" alignItems="center" w="full">
-                <Heading fontWeight="600" fontSize="3.2rem">
-                  Recommended Profiles
-                </Heading>
-                <Button
-                  bg="transparent"
-                  _hover={{ bg: "transparent" }}
-                  h="unset"
-                  fontSize="1.6rem"
-                  color="brand.main"
-                  textDecor="underline"
-                  onClick={() => router.push("/users/")}
-                >
-                  View More
-                </Button>
-              </Flex>
-              <RecomendationsDisplay type="Roomey" list={roomies} />
-              {loadingRoomies && <SkeletalLoading variant="roomies" />}
-            </VStack>
-          )}
         {(loadingRooms || rooms.length > 0) &&
           (user.preferences?.lookingFor === "room" ||
             user.preferences?.lookingFor === "both" ||
@@ -80,6 +55,31 @@ export default function NexusPage() {
               </Flex>
               <RecomendationsDisplay type="Room" list={rooms} />
               {loadingRooms && <SkeletalLoading variant="rooms" />}n
+            </VStack>
+          )}
+        {(loadingRoomies || roomies.length > 0) &&
+          (user.preferences?.lookingFor === "roommate" ||
+            user.preferences?.lookingFor === "both" ||
+            !user.preferences?.lookingFor) && (
+            <VStack gap="3rem" alignItems="start" as="section" w="full">
+              <Flex justifyContent="space-between" alignItems="center" w="full">
+                <Heading fontWeight="600" fontSize="3.2rem">
+                  Roomies you might like
+                </Heading>
+                <Button
+                  bg="transparent"
+                  _hover={{ bg: "transparent" }}
+                  h="unset"
+                  fontSize="1.6rem"
+                  color="brand.main"
+                  textDecor="underline"
+                  onClick={() => router.push("/users/")}
+                >
+                  View More
+                </Button>
+              </Flex>
+              <RecomendationsDisplay type="Roomey" list={roomies} />
+              {loadingRoomies && <SkeletalLoading variant="roomies" />}
             </VStack>
           )}
       </VStack>

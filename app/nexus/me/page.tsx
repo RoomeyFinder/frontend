@@ -1,5 +1,5 @@
 "use client"
-import { Flex, Grid, GridItem, Spinner } from "@chakra-ui/react"
+import { Grid, GridItem } from "@chakra-ui/react"
 import { Suspense, useState } from "react"
 import { useAppSelector } from "../../_redux"
 import ProfileInfoSection from "./_components/ProfileInfoSection"
@@ -9,16 +9,11 @@ import ProfileSettingsModal from "./_components/AccountSettingsModal"
 import DeleteAcountModal from "./_components/DeleteAccountModal"
 import ChangePasswordModal from "./_components/ChangePasswordModal"
 import ChangeEmailModal from "./_components/ChangeEmailModal"
+import PageLoader from "@/app/_components/PageLoader"
 
 export default function Profile() {
   return (
-    <Suspense
-      fallback={
-        <Flex justifyContent="center" alignItems="center">
-          <Spinner size="xl" thickness=".4rem" />
-        </Flex>
-      }
-    >
+    <Suspense fallback={<PageLoader />}>
       <Renderer />
     </Suspense>
   )

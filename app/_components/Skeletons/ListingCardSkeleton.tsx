@@ -105,11 +105,10 @@ export function RoomListingCardSkeleton({
       py="1rem"
       px="1rem"
       border={hasBorder ? "1px solid #7070704D" : ""}
-      h="full"
+      h="41rem"
       _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
-      w="95dvw"
+      w="full"
       minH="38rem"
-      maxW={{ base: "32rem", sm: "28.3rem" }}
       alignItems="start"
       flexDir="column"
       gap=".5rem"
@@ -121,7 +120,7 @@ export function RoomListingCardSkeleton({
       animation={`${pulse} infinite 2s linear`}
     >
       <Box pos="absolute" right="2.4rem" top="2.4rem">
-        <FavouriteIcon isFilled={true} />
+        <FavouriteIcon />
       </Box>
       <Box
         w="full"
@@ -132,14 +131,18 @@ export function RoomListingCardSkeleton({
         rounded="1rem"
       ></Box>
       <Flex gap=".8rem" alignItems="center">
-        <Avatar w={25} h={25} src={""} name="" />
+        <Avatar w={35} h={35} src={""} name="" />
         <VStack alignItems="start" gap=".4rem">
-          <Box h=".4rem" w="8rem" bg="gray.100" opacity=".5" />
-          <Box h=".4rem" w="12rem" bg="gray.100" opacity=".3" />
+          <Box h=".8rem" w="8rem" bg="gray.100" opacity=".2" />
         </VStack>
       </Flex>
-      <Flex flexDir="column" gap=".5rem" w="full">
-        <Heading height=".4rem"></Heading>
+      <Flex flexDir="column" gap="1rem" w="full" mt="1rem">
+        <Heading
+          height="1rem"
+          bgColor="black"
+          w="80%"
+          opacity=".08"
+        ></Heading>
         <Flex
           height=".8rem"
           gap="1rem"
@@ -147,15 +150,12 @@ export function RoomListingCardSkeleton({
           pos="relative"
           alignItems="center"
         >
-          <Box bgColor="gray.main" opacity=".3" h=".6rem" w="30%"></Box>
+          <Box bgColor="gray.main" opacity=".1" h=".6rem" w="30%"></Box>
           <DotSeparator backgroundColor="gray.main" w=".6rem" h=".6rem" />
-          <Box bgColor="gray.main" opacity=".3" h=".6rem" w="30%"></Box>
-          <DotSeparator backgroundColor="gray.main" w=".6rem" h=".6rem" />
-          <Box bgColor="gray.main" opacity=".3" h=".6rem" w="30%"></Box>
+          <Box bgColor="gray.main" opacity=".1" h=".6rem" w="30%"></Box>
         </Flex>
         <Flex flexDir="column" textAlign="center" gap=".5rem" w="full">
-          <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
-          <Text bgColor="gray.main" w="full" h=".7rem" opacity=".1"></Text>
+          <Text bgColor="black" w="60%" h=".7rem" opacity=".1"></Text>
         </Flex>
       </Flex>
     </Flex>

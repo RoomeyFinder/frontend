@@ -3,8 +3,7 @@ import { fetchUserMessages, markMessagesAsRead } from "../thunks/messages.thunk"
 import { Message } from "@/app/_types/Conversation"
 import { mergeArrays } from "@/app/_utils"
 
-
-interface IAuthState {
+interface IMessageState {
   messages: { [x: string]: Message[] }
   loading: boolean
   errorMessage: string
@@ -12,7 +11,7 @@ interface IAuthState {
   hasError: boolean
 }
 
-const initialState: IAuthState = {
+const initialState: IMessageState = {
   messages: {},
   loading: false,
   errorMessage: "",
@@ -35,8 +34,20 @@ export const messagesSlice = createSlice({
             [...(state.messages[action.payload.message.conversationId] || [])],
             [action.payload.message],
             "_id"
-          ),
+          ).filter(it => !it.isPending),
         }
+    },
+    pseudoAddNewMessage: (
+      state,
+      action: PayloadAction<{ conversationId: string; message: Partial<Message> }>
+    ) => {
+      state.messages = {
+        ...state.messages,
+        [action.payload.conversationId]: [
+          ...(state.messages[action.payload.conversationId] || []),
+          action.payload.message as Message
+        ],
+      }
     },
   },
   extraReducers: (builder) => {
@@ -82,5 +93,5 @@ export const messagesSlice = createSlice({
   },
 })
 
-export const { addNewMessage } = messagesSlice.actions
+export const { addNewMessage, pseudoAddNewMessage } = messagesSlice.actions
 export default messagesSlice.reducer
