@@ -23,7 +23,7 @@ export default function ListingsSection() {
   if (listings.length === 0 && !loading) return null
   return (
     <>
-      <Box mx="auto" maxW="125rem" w="90%">
+      <Box mx="auto" maxW="125rem" w={{ md: "90%" }}>
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
           {loading ? (
