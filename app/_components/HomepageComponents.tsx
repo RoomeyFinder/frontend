@@ -7,13 +7,14 @@ import { Listing } from "@/app/_types/Listings"
 import { Heading, Flex, Button, Box, Text, Image } from "@chakra-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ReactNode, LegacyRef } from "react"
+import { ReactNode, LegacyRef, useContext } from "react"
 import Empty from "./Empty"
 import FeatureCard from "./FeatureCard"
 import ListingsGridLayout from "./ListingsGridLayout"
 import RoomListingCard from "./RoomListingCard"
 import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "./Skeletons/SkeletalLoader"
+import { AuthModalContext } from "../_providers/AuthModalProvider"
 
 export default function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)
@@ -115,10 +116,19 @@ function ContinueExploring({
   onClick: () => void
   show: boolean
 }) {
+  const { user, loading } = useAppSelector((store) => store.auth)
+  const { open: showAuthModal } = useContext(AuthModalContext)
+
   if (!show) return null
   return (
     <Text
-      onClick={onClick}
+      onClick={() => {
+        if (loading === false && user === null)
+          return showAuthModal({
+            title: "Sign in to view more ads",
+            nextUrl: "/ads",
+          })
+      }}
       as="button"
       color="brand.main"
       fontSize={{ base: "1.6rem", md: "1.9rem" }}
