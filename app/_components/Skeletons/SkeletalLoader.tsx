@@ -1,4 +1,4 @@
-import { HStack } from "@chakra-ui/react"
+import { GridItem, SimpleGrid } from "@chakra-ui/react"
 import {
   RoomListingCardSkeleton,
   RoomeyListingCardSkeleton,
@@ -19,14 +19,21 @@ export default function SkeletalLoading({
     return array
   }, [arrayLength])
   return (
-    <HStack flexWrap="wrap" w="full">
-      {list.map((_, idx) =>
-        variant === "rooms" ? (
-          <RoomListingCardSkeleton key={idx} hasBorder />
-        ) : (
-          <RoomeyListingCardSkeleton key={idx} hasBorder />
-        )
-      )}
-    </HStack>
+    <SimpleGrid
+      columns={{ base: 1, sm: 2, lg: 3, xl: 4 }}
+      gap="1rem"
+      w="full"
+      alignItems="stretch"
+    >
+      {list.map((_, idx) => (
+        <GridItem key={idx} w="full" h="full">
+          {variant === "rooms" ? (
+            <RoomListingCardSkeleton key={idx} hasBorder />
+          ) : (
+            <RoomeyListingCardSkeleton key={idx} hasBorder />
+          )}
+        </GridItem>
+      ))}
+    </SimpleGrid>
   )
 }
