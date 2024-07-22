@@ -58,7 +58,7 @@ export default function GlobalLayout({
       })
     }
     if (!user && !loadingUser) localStorage.setItem("hasForcedLogout", "true")
-  }, [dispatch, logout, user, loadingUser, router])
+  }, [dispatch, user, loadingUser, router])
 
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
   useEffect(() => {
