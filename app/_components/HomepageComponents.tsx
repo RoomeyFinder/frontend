@@ -128,6 +128,7 @@ function ContinueExploring({
             title: "Sign in to view more ads",
             nextUrl: "/ads",
           })
+        else typeof onClick === "function" && onClick()
       }}
       as="button"
       color="brand.main"
