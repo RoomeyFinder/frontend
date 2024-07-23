@@ -1,6 +1,4 @@
-import FilterIcon from "@/app/_assets/SVG/FilterIcon"
 import SearchIcon from "@/app/_assets/SVG/SearchIcon"
-import CustomRadioGroup from "@/app/_components/CustomRadio"
 import TextCheckbox from "@/app/nexus/me/_components/TextCheckbox"
 import {
   Flex,
@@ -59,6 +57,7 @@ export default function Banner({
       <Flex gap=".8rem">
         {["All", "Read", "Unread"].map((opt) => (
           <TextCheckbox
+            key={opt}
             name={opt}
             isSelected={selectedFilter === opt}
             onChange={() => onSelectFilter && onSelectFilter(opt)}
