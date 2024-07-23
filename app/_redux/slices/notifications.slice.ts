@@ -1,9 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import {
   fetchUserNotifications,
   markAllNotificationsAsSeen,
 } from "../thunks/notifications.thunk"
 import Notification from "@/app/_types/Notification"
+import { mergeArrays } from "@/app/_utils"
 
 interface IAuthState {
   notifications: Notification[]
@@ -26,7 +27,19 @@ const initialState: IAuthState = {
 export const notificationsSlice = createSlice({
   name: "notifications",
   initialState,
-  reducers: {},
+  reducers: {
+    addNewNotification: (
+      state,
+      action: PayloadAction<{ notification: Notification; statusCode: number }>
+    ) => {
+      if (action.payload?.statusCode === 201)
+        state.notifications = mergeArrays(
+          [action.payload.notification],
+          state.notifications,
+          "_id"
+        )
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserNotifications.pending, (store) => {
@@ -54,5 +67,5 @@ export const notificationsSlice = createSlice({
   },
 })
 
-// export const {} = notificationsSlice.actions
+export const { addNewNotification } = notificationsSlice.actions
 export default notificationsSlice.reducer

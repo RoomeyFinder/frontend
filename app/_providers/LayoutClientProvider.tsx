@@ -9,6 +9,7 @@ import {
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserConversations } from "../_redux/thunks/conversations.thunk"
 import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
+import useListenForNotificationsEvents from "../_socket/eventListeners/notifications"
 
 export default function LayoutDispatchProvider({
   children,
@@ -16,6 +17,7 @@ export default function LayoutDispatchProvider({
   children: ReactNode | ReactNode[]
 }) {
   useListenForMessengerEvents()
+  useListenForNotificationsEvents()
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((store) => store.auth)
   const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)

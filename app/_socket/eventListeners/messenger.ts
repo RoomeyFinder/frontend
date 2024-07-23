@@ -12,7 +12,6 @@ export default function useListenForMessengerEvents() {
   const useListener = useGetListener(socket)
   useListener(CONVERSATION_EVENTS.MESSAGE, (val) => {
     dispatch(addNewMessage(val))
-    console.log(val)
     dispatch(
       updateUnreadMsgsCount({
         ...(val || {}),
