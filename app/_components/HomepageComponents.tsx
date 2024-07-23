@@ -7,13 +7,14 @@ import { Listing } from "@/app/_types/Listings"
 import { Heading, Flex, Button, Box, Text, Image } from "@chakra-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ReactNode, LegacyRef } from "react"
+import { ReactNode, LegacyRef, useContext } from "react"
 import Empty from "./Empty"
 import FeatureCard from "./FeatureCard"
 import ListingsGridLayout from "./ListingsGridLayout"
 import RoomListingCard from "./RoomListingCard"
 import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "./Skeletons/SkeletalLoader"
+import { AuthModalContext } from "../_providers/AuthModalProvider"
 
 export default function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)
@@ -22,7 +23,7 @@ export default function ListingsSection() {
   if (listings.length === 0 && !loading) return null
   return (
     <>
-      <Box mx="auto" maxW="125rem" w="90%">
+      <Box mx="auto" maxW="125rem" w={{ md: "90%" }}>
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
           {loading ? (
@@ -115,10 +116,20 @@ function ContinueExploring({
   onClick: () => void
   show: boolean
 }) {
+  const { user, loading } = useAppSelector((store) => store.auth)
+  const { open: showAuthModal } = useContext(AuthModalContext)
+
   if (!show) return null
   return (
     <Text
-      onClick={onClick}
+      onClick={() => {
+        if (loading === false && user === null)
+          return showAuthModal({
+            title: "Sign in to view more ads",
+            nextUrl: "/ads",
+          })
+        else typeof onClick === "function" && onClick()
+      }}
       as="button"
       color="brand.main"
       fontSize={{ base: "1.6rem", md: "1.9rem" }}
@@ -182,13 +193,13 @@ export function Hero() {
             px="3rem"
             py="1.5rem"
             as={Link}
-            href={user ? "/nexus/me" : "/signup"}
+            href={user ? "/nexus" : "/signup"}
             variant={"brand"}
             fontSize="1.6rem"
             width="fit-content"
             fontWeight="700"
           >
-            Get Started
+            {user ? "My Dashboard" : " Get Started"}
           </Button>
         </Box>
         <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>

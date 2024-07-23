@@ -1,17 +1,11 @@
-import FilterIcon from "@/app/_assets/SVG/FilterIcon"
-import { SmallSearchIcon } from "@/app/_assets/SVG/SearchIcon"
-import CustomRadioGroup from "@/app/_components/CustomRadio"
+import SearchIcon from "@/app/_assets/SVG/SearchIcon"
+import TextCheckbox from "@/app/nexus/me/_components/TextCheckbox"
 import {
   Flex,
   Heading,
   Input,
   InputGroup,
-  InputRightAddon,
-  Popover,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
-  Text,
+  InputLeftAddon,
   VStack,
 } from "@chakra-ui/react"
 import { ChangeEventHandler } from "react"
@@ -30,82 +24,56 @@ export default function Banner({
       gap="1rem"
       alignItems="left"
       px={{ base: "1.5rem", md: "4rem" }}
-      pt="3rem"
+      pt="2rem"
     >
-      <Flex
-        as={Heading}
-        fontSize="2.6rem"
-        fontWeight="500"
-        justifyContent="space-between"
-      >
+      <Flex as={Heading} fontSize="2.6rem" fontWeight="500" mb="1.5rem">
         Chats
-        <FilterButton
-          value={selectedFilter}
-          handleChange={onSelectFilter}
-          options={["All", "Read", "Unread"]}
-        />
       </Flex>
-      <InputGroup border="0" borderBottom="1px solid #D9D9D9" pb="1rem" p="0">
-        <Input px="0" py="0" rounded="0" border="0" onChange={onChange} />
-        <InputRightAddon
+      <InputGroup
+        rounded="1.2rem"
+        border="1px solid #D9D9D9"
+        py=".6rem"
+        px="1.2rem"
+      >
+        <InputLeftAddon
           border="0"
-          color="gray.main"
+          color="gray.100"
+          pl=".3rem"
+          pr=".5rem"
           _hover={{ bg: "transparent" }}
         >
-          <SmallSearchIcon />
-        </InputRightAddon>
+          <SearchIcon />
+        </InputLeftAddon>
+        <Input
+          px="0"
+          py="0"
+          rounded="0"
+          border="0"
+          color="gray.main"
+          placeholder="Search"
+          onChange={onChange}
+        />
       </InputGroup>
+      <Flex gap=".8rem">
+        {["All", "Read", "Unread"].map((opt) => (
+          <TextCheckbox
+            key={opt}
+            name={opt}
+            isSelected={selectedFilter === opt}
+            onChange={() => onSelectFilter && onSelectFilter(opt)}
+            value={opt}
+            styleProps={{
+              px: "1.2rem",
+              py: ".6rem",
+              fontSize: "1.4rem",
+              rounded: ".6rem",
+            }}
+            inputType="radio"
+          >
+            {opt}
+          </TextCheckbox>
+        ))}
+      </Flex>
     </VStack>
-  )
-}
-
-function FilterButton({
-  handleChange,
-  value,
-  options = ["All", "Read", "Unread"],
-}: {
-  handleChange?: (val: string) => void
-  value?: string
-  options?: string[]
-}) {
-  return (
-    <Popover placement="bottom">
-      <PopoverTrigger>
-        <Text as="button" color="#707070" _hover={{ color: "brand.main" }}>
-          <FilterIcon />
-        </Text>
-      </PopoverTrigger>
-      <PopoverContent
-        bg="white"
-        border="0"
-        outline="0"
-        boxShadow="0px 0px 1px 0px #00000066"
-        padding="2rem"
-        rounded="1.2rem"
-      >
-        <PopoverBody border="0">
-          <Heading fontSize="1.6rem" mb="2rem">
-            Filter by
-          </Heading>
-          <Flex>
-            <CustomRadioGroup
-              options={options}
-              onChange={(val) => {
-                typeof handleChange === "function" && handleChange(val)
-              }}
-              name={"filterBy"}
-              selectedValue={value || options[0]}
-              containerProps={{
-                flexDir: "column",
-                alignItems: "start",
-                gap: "2rem",
-                fontSize: "1.4rem",
-                fontWeight: "400",
-              }}
-            />
-          </Flex>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
   )
 }

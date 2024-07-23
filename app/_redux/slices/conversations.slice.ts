@@ -52,16 +52,27 @@ export const conversationsSlice = createSlice({
         isSender: boolean
       }>
     ) => {
-      if (
-        action.payload.statusCode === 201 &&
-        !action.payload.isSender &&
-        state.activeConversation?._id !== action.payload.message.conversationId
-      )
+      console.log(action.payload)
+      if (action.payload.statusCode === 201)
         state.conversations = state.conversations.map((convo) =>
           convo._id === action.payload.message.conversationId
-            ? { ...convo, unreadMsgsCount: convo.unreadMsgsCount + 1 }
+            ? {
+                ...convo,
+                unreadMsgsCount: action.payload.isSender
+                  ? convo.unreadMsgsCount
+                  : convo.unreadMsgsCount + 1,
+                latestMessage: action.payload.message,
+              }
             : convo
         )
+      if (
+        state.activeConversation?._id === action.payload.message.conversationId
+      )
+        state.activeConversation = {
+          ...state.activeConversation,
+          unreadMsgsCount: state.activeConversation.unreadMsgsCount + 1,
+          latestMessage: action.payload.message,
+        }
     },
   },
   extraReducers: (builder) => {

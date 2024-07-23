@@ -40,7 +40,11 @@ export default function appendSharedMetaData(metadataBase: Metadata): Metadata {
     },
     icons: [
       {
-        url: "/rf-logo.png",
+        url: "/favicon.ico",
+        sizes: "64x64",
+      },
+      {
+        url: "/icon.ico",
         sizes: "64x64",
       },
     ],

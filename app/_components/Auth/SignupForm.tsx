@@ -100,6 +100,7 @@ export default function SignupForm({
       <Box
         onSubmit={handleSignup}
         as="form"
+        autoComplete="off"
         display="flex"
         flexDir="column"
         gap="1.6rem"
@@ -149,6 +150,7 @@ export default function SignupForm({
           <EmailInput
             error={error.email}
             variant="filled"
+            autoComplete="false"
             value={formData.email}
             onChange={handleFormDataChange}
           />

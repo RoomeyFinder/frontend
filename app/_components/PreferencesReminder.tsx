@@ -35,18 +35,18 @@ export default function PreferencesReminder() {
   }, [user, pathname, dispatch, hasClosedPreferenceReminder, showReminder])
 
   return (
-    <Fade in={showReminder} unmountOnExit>
+    <Fade in={!showReminder} unmountOnExit>
       <Box
-        left="full"
-        right={{ base: "1rem", sm: "5%" }}
-        top={{ base: "", md: "10rem" }}
-        bottom={{ base: "6rem", md: "unset" }}
+        left="50%"
+        transform={{ base: "translateX(-50%)", lg: "none" }}
+        bottom="4rem"
         bg="white"
         shadow="xl"
         pos="fixed"
         px="2rem"
         py="1.5rem"
-        maxW={{ base: "90dvw", sm: "35rem" }}
+        w="90dvw"
+        maxW={{  sm: "35rem" }}
         rounded="1.2rem"
         zIndex="1000"
       >

@@ -19,7 +19,7 @@ import { capitalizeFirstLetter } from "@/app/_utils"
 
 export default function Conversations() {
   const dispatch = useAppDispatch()
-  const { conversations, activeConversation } = useAppSelector(
+  const { conversations, activeConversation, loading } = useAppSelector(
     (store) => store.conversations
   )
   const { user } = useAppSelector((store) => store.auth)
@@ -89,20 +89,23 @@ export default function Conversations() {
             countOfUnreadMsgs={convo.unreadMsgsCount}
           />
         ))}
-        {conversations.length > 0 &&
+        {!loading &&
+          conversations.length > 0 &&
           conversationsThatMatchFilter.length === 0 && (
             <>
               <NoConversation
                 heading="No Conversations match your search"
                 body="Try removing some filters"
+                containerProps={{ justifyContent: "start", pt: "2rem" }}
               />
             </>
           )}
-        {conversations.length === 0 && (
+        {!loading && conversations.length === 0 && (
           <>
             <NoConversation
               heading="You don't have any conversation"
               body="Send and accept interests to initiate conversations"
+              containerProps={{ justifyContent: "center" }}
             />
           </>
         )}

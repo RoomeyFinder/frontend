@@ -121,10 +121,10 @@ export const footerSubLinks = [
     name: "Privacy policy",
     href: "/privacy",
   },
-  {
-    name: "Blog",
-    href: "/blog",
-  },
+  // {
+  //   name: "Blog",
+  //   href: "/blog",
+  // },
 ]
 
 export const socialMediaLinks = [
