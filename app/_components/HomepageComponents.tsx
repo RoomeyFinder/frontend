@@ -193,13 +193,13 @@ export function Hero() {
             px="3rem"
             py="1.5rem"
             as={Link}
-            href={user ? "/nexus/me" : "/signup"}
+            href={user ? "/nexus" : "/signup"}
             variant={"brand"}
             fontSize="1.6rem"
             width="fit-content"
             fontWeight="700"
           >
-            Get Started
+            {user ? "My Dashboard" : " Get Started"}
           </Button>
         </Box>
         <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>

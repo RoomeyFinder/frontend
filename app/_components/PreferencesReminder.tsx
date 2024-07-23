@@ -38,13 +38,15 @@ export default function PreferencesReminder() {
     <Fade in={!showReminder} unmountOnExit>
       <Box
         left="50%"
+        transform={{ base: "translateX(-50%)", lg: "none" }}
         bottom="4rem"
         bg="white"
         shadow="xl"
         pos="fixed"
         px="2rem"
         py="1.5rem"
-        maxW={{ base: "90dvw", sm: "35rem" }}
+        w="90dvw"
+        maxW={{  sm: "35rem" }}
         rounded="1.2rem"
         zIndex="1000"
       >

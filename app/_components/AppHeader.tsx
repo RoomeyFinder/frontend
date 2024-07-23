@@ -3,10 +3,8 @@ import { Flex } from "@chakra-ui/react"
 import AppLogo from "./Logo"
 import Navigation from "./Navigation/Navigation"
 import Link from "next/link"
-import { useAppSelector } from "../_redux"
 
 export default function AppHeader() {
-  const { user } = useAppSelector((store) => store.auth)
   return (
     <Flex
       data-testid="header"
@@ -25,7 +23,7 @@ export default function AppHeader() {
         maxW="125rem"
         mx="auto"
       >
-        <Flex href={user ? "/nexus" : "/"} as={Link} aria-label="home-page">
+        <Flex href="/" as={Link} aria-label="home-page">
           <AppLogo showTextLogoAlways={!false} />
         </Flex>
         <Navigation />
