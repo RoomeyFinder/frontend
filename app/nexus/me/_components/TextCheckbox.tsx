@@ -1,4 +1,4 @@
-import { Flex, VisuallyHidden } from "@chakra-ui/react"
+import { BoxProps, Flex, VisuallyHidden } from "@chakra-ui/react"
 import { ReactNode, ChangeEventHandler } from "react"
 
 export const defaultInputStyles = {
@@ -22,6 +22,7 @@ export default function TextCheckbox({
   onChange,
   value,
   inputType,
+  styleProps = {}
 }: {
   children: ReactNode[] | ReactNode
   isSelected: boolean
@@ -29,6 +30,7 @@ export default function TextCheckbox({
   name: string
   value: string
   inputType?: "radio" | "checkbox"
+  styleProps?: BoxProps
 }) {
   return (
     <Flex
@@ -43,6 +45,7 @@ export default function TextCheckbox({
       w="auto"
       cursor="pointer"
       _hover={{ bg: "white.300" }}
+      {...styleProps}
     >
       {children}
       {inputType && (
