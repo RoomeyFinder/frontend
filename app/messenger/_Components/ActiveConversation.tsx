@@ -78,6 +78,7 @@ export default function ActiveConversation({ socket }: { socket: Socket }) {
               sender: user?._id as any,
               isPending: true,
               _id: Math.random().toString(),
+              createdAt: new Date().toISOString(),
             },
           })
         )
