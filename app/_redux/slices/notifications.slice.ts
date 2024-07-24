@@ -6,7 +6,7 @@ import {
 import Notification from "@/app/_types/Notification"
 import { mergeArrays } from "@/app/_utils"
 
-interface IAuthState {
+interface INotificationsState {
   notifications: Notification[]
   loading: boolean
   errorMessage: string
@@ -15,7 +15,7 @@ interface IAuthState {
   hasFetchedNotifications: boolean
 }
 
-const initialState: IAuthState = {
+const initialState: INotificationsState = {
   notifications: [],
   loading: false,
   errorMessage: "",

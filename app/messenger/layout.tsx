@@ -21,14 +21,15 @@ export default function Layout({ children }: { children: ReactNode }) {
   useListenForMessengerEvents()
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((store) => store.auth)
-  const { hasFetchedUserConversations, activeConversation } = useAppSelector(
-    (store) => store.conversations
-  )
+  const { hasFetchedUserConversations, activeConversation, loading } =
+    useAppSelector((store) => store.conversations)
   useEffect(() => {
     if (user) {
-      !hasFetchedUserConversations && dispatch(fetchUserConversations())
+      !hasFetchedUserConversations &&
+        !loading &&
+        dispatch(fetchUserConversations())
     }
-  }, [dispatch, hasFetchedUserConversations, user])
+  }, [dispatch, hasFetchedUserConversations, user, loading])
   return (
     <Box bg="#3a86ff0a">
       <VStack
