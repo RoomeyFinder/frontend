@@ -169,7 +169,7 @@ function ListingsDisplay({
               {" "}
               {"You do not have any "}
               <b>{currentDisplay}</b>
-              {`${currentDisplay !== "drafts" ? "ads" : ""} `}
+              {` ${currentDisplay !== "drafts" ? "ads" : ""} `}
             </>
           }
           body={
