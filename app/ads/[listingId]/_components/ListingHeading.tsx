@@ -30,8 +30,8 @@ export default function ListingHeading({
                 : "Single") + " bedroom apartment"}{" "}
           in{" "}
           <Text as="span">
-            {appendCommaIfLengthNotZero(listing.city || "") || " "}&nbsp;
-            {appendCommaIfLengthNotZero(listing.state || " ") || " "}&nbsp;
+            {appendCommaIfLengthNotZero(listing.city || "") || " "}{" "}
+            {appendCommaIfLengthNotZero(listing.state || " ") || " "}{" "}
             {listing.country}
           </Text>
         </Text>
