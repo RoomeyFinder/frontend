@@ -166,9 +166,9 @@ export function FavouriteButton({
       as="button"
       pos="absolute"
       color={color || "inherit"}
-      top="5%"
+      top="1.2rem"
       zIndex={"120"}
-      right="8%"
+      right="1.2rem"
       {...buttonProps}
     >
       {getChildren()}

@@ -110,7 +110,7 @@ function ListingsSection() {
           h="calc(100dvh - 8rem)"
           overflow="hidden"
           pos={{ md: "relative" }}
-          w={{ base: "95%", lg: "full" }}
+          w={{ base: "88%", lg: "full" }}
           mx="auto"
         >
           <Box
@@ -236,9 +236,19 @@ function ListingsSection() {
             overflow="auto"
           >
             <BackButton left={{ md: "20%", xl: "2%" }} />
-            <HStack alignItems="center" justify="space-between" mb="2.5rem">
-              <Heading variant="md" color="" fontWeight="500">
-                &nbsp;
+            <HStack
+              p="0"
+              alignItems="center"
+              justify="space-between"
+              mb="2.5rem"
+            >
+              <Heading
+                variant="md"
+                fontSize={{ base: "2.4rem" }}
+                textAlign="left"
+                color=""
+                fontWeight="500"
+              >
                 {searchQueryString ? (
                   <>
                     {loading ? (
@@ -249,7 +259,7 @@ function ListingsSection() {
                     {` ${pluralizeText("Roomie", results.length, "s")} found`}
                   </>
                 ) : (
-                  "Latest Roomies"
+                  "Roomies you might like"
                 )}
               </Heading>
               <Show below="md">
@@ -263,7 +273,7 @@ function ListingsSection() {
                   alignItems="center"
                   gap="1rem"
                   h="unset"
-                  p=".5rem 2rem"
+                  p=".5rem .8rem"
                   onClick={() => setShowFilters((prev) => !prev)}
                 >
                   Filters <FunnelIcon />
