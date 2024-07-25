@@ -11,7 +11,6 @@ import SearchBar from "../_components/Search/SearchBar"
 import useAxios from "../_hooks/useAxios"
 import NoResultsDisplay from "../_components/NoResultsDisplay"
 import { pluralizeText } from "../_utils"
-import BackButton from "../_components/BackButton"
 
 export default function Search() {
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
@@ -107,7 +106,6 @@ function ListingsSection() {
   return (
     <>
       <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
-        <BackButton left="5%" />
         <Box
           pos="fixed"
           left="50%"

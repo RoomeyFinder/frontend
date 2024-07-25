@@ -24,7 +24,6 @@ import NoResultsDisplay from "../_components/NoResultsDisplay"
 import { pluralizeText } from "../_utils"
 import User from "../_types/User"
 import RoomeyListingCard from "../_components/RoomeyListingCard"
-import BackButton from "../_components/BackButton"
 
 export default function Search() {
   const { hasFetchedInitialUsers } = useAppSelector((store) => store.search)
@@ -119,7 +118,6 @@ function ListingsSection() {
   return (
     <>
       <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
-        <BackButton left="5%" />
         <Box
           pos="fixed"
           left="50%"
