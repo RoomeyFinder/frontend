@@ -74,17 +74,24 @@ function NameAgeAndGender({
   gender: string
 }) {
   return (
-    <VStack gap="1rem" alignItems="center">
+    <VStack gap="1rem" justifyContent="center" alignItems="center">
       <Heading
         as="h6"
         fontSize="1.9rem"
         fontWeight="normal"
         lineHeight="1.9rem"
         textTransform="capitalize"
+        noOfLines={2}
+        textAlign="center"
       >
         {name}
       </Heading>
-      <Flex alignItems="center" gap="1rem">
+      <Flex
+        justifyContent="center"
+        textAlign="center"
+        alignItems="center"
+        gap="1rem"
+      >
         <Text
           textTransform="capitalize"
           color="gray.main"

@@ -1,5 +1,14 @@
-import { Flex, Input, Select } from "@chakra-ui/react"
-import { ChangeEventHandler, useEffect, useState } from "react"
+import {
+  Radio,
+  Flex,
+  Input,
+  Select,
+  VStack,
+  Text,
+  RadioGroup,
+  Heading,
+} from "@chakra-ui/react"
+import { ChangeEventHandler, ReactNode, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
 export default function SearchBar({
@@ -111,162 +120,173 @@ const NumberOfBedroomsFilter = ({
 }
 export const RentDurationFilter = ({
   handleSelection,
-  placeholder,
+  value,
+  heading,
 }: {
-  handleSelection: ChangeEventHandler
-  placeholder?: string
+  handleSelection: (val: string) => void
+  value: string
+  heading?: string
 }) => {
-  const [value, setValue] = useState("")
   return (
-    <Input
-      rounded=".5rem"
-      fontSize="1.6rem"
-      placeholder={placeholder || "Duration"}
+    <RadioGroup
+      name="rentDuration"
       value={value}
-      onChange={(e) => {
-        handleSelection(e)
-        setValue(e.target.value)
-      }}
-      as={Select}
-      py=".5rem"
+      onChange={(val) => handleSelection(val)}
     >
-      <option value="annually">Annually</option>
-      <option value="biannually">Biannually</option>
-      <option value="quarterly">Quarterly</option>
-      <option value="monthly">Monthly</option>
-    </Input>
+      <VStack alignItems="start" spacing={[2, 5]} direction={["column", "row"]}>
+        <Heading as="h3" fontSize="1.6rem" fontWeight="700">
+          {heading || "Rent Duration"}
+        </Heading>
+        <Radio size="lg" value="annually" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Biannually
+          </Text>
+        </Radio>
+        <Radio size="lg" value="quarterly" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Quarterly
+          </Text>
+        </Radio>
+        <Radio size="lg" value="monthly" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Monthly
+          </Text>
+        </Radio>
+      </VStack>
+    </RadioGroup>
   )
 }
+
 export const RentFilter = ({
   handleSelection,
-  placeholder,
+  value,
+  heading,
 }: {
-  handleSelection: ChangeEventHandler
-  placeholder?: string
+  handleSelection: (val: string) => void
+  value: string
+  heading?: ReactNode | ReactNode[]
 }) => {
-  const [value, setValue] = useState("")
   return (
-    <Input
-      rounded=".5rem"
-      fontSize="1.6rem"
-      placeholder={placeholder || "Rent"}
-      onChange={(e) => {
-        handleSelection(e)
-        setValue(e.target.value)
-      }}
-      value={value}
-      as={Select}
-      py=".5rem"
-    >
-      <option value="0-100000">
-        {"<= "}
-        {"₦"}
-        {(100000).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}
-      </option>
-      <option value="100001-200000">
-        {"₦"}
-        {(100001).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}{" "}
-        -{" ₦"}
-        {(200000).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}
-      </option>
-      <option value="200001-300000">
-        {"₦"}
-        {(200001).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}{" "}
-        -{" ₦"}
-        {(300000).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}
-      </option>
-      <option value="300001-400000">
-        {"₦"}
-        {(300001).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}{" "}
-        -{" ₦"}
-        {(400000).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}
-      </option>
-      <option value="400001-500000">
-        {"₦"}
-        {(400001).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}{" "}
-        -{" ₦"}
-        {(500000).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}
-      </option>
-      <option value="500000">
-        {"> ₦"}
-        {(500000).toLocaleString("en-ng", {
-          maximumFractionDigits: 0,
-        })}
-      </option>
-    </Input>
+    <>
+      <RadioGroup
+        name="rentAmount"
+        value={value}
+        onChange={(val) => handleSelection(val)}
+      >
+        <VStack
+          alignItems="start"
+          spacing={[2, 5]}
+          direction={["column", "row"]}
+        >
+          <Heading as="h3" fontSize="1.6rem" fontWeight="700">
+            {heading}
+          </Heading>
+          <Radio size="lg" value="0-100000" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              {"<= "}
+              {"₦"}
+              {(100000).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}
+            </Text>
+          </Radio>
+          <Radio value="100001-200000" size="lg" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              {"₦"}
+              {(100001).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}{" "}
+              -{" ₦"}
+              {(200000).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}
+            </Text>
+          </Radio>
+          <Radio value="200001-300000" size="lg" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              {"₦"}
+              {(200001).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}{" "}
+              -{" ₦"}
+              {(300000).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}
+            </Text>
+          </Radio>
+          <Radio value="300001-400000" size="lg" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              {"₦"}
+              {(300001).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}{" "}
+              -{" ₦"}
+              {(400000).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}
+            </Text>
+          </Radio>
+          <Radio value="400001-500000" size="lg" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              {" "}
+              {"₦"}
+              {(400001).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}{" "}
+              -{" ₦"}
+              {(500000).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}
+            </Text>
+          </Radio>
+          <Radio value="500000" size="lg" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              {"> ₦"}
+              {(500000).toLocaleString("en-ng", {
+                maximumFractionDigits: 0,
+              })}
+            </Text>
+          </Radio>
+        </VStack>
+      </RadioGroup>
+    </>
   )
 }
 
 export const GenderFilter = ({
   handleSelection,
-  placeholder,
+  value,
 }: {
-  handleSelection: ChangeEventHandler
-  placeholder?: string
-}) => {
-  const [value, setValue] = useState("")
-  return (
-    <Input
-      rounded=".5rem"
-      fontSize="1.6rem"
-      placeholder={placeholder || "Gender"}
-      onChange={(e) => {
-        handleSelection(e)
-        setValue(e.target.value)
-      }}
-      value={value}
-      as={Select}
-      py=".5rem"
-    >
-      <option value="male">Male</option>
-      <option value="female">Female</option>
-      <option value="both">Both</option>
-    </Input>
-  )
-}
+  handleSelection: (val: string) => void
 
-export const LookingForFilter = ({
-  handleSelection,
-  placeholder,
-}: {
-  handleSelection: ChangeEventHandler
-  placeholder?: string
+  value: string
 }) => {
-  const [value, setValue] = useState("")
   return (
-    <Input
-      rounded=".5rem"
-      fontSize="1.6rem"
-      placeholder={placeholder || "Looking for"}
-      onChange={(e) => {
-        handleSelection(e)
-        setValue(e.target.value)
-      }}
+    <RadioGroup
+      name="gender"
       value={value}
-      as={Select}
-      py=".5rem"
+      onChange={(val) => handleSelection(val)}
     >
-      <option value="room">Room</option>
-      <option value="roommate">Roommate</option>
-      <option value="both">Both</option>
-    </Input>
+      <VStack alignItems="start" spacing={[2, 5]} direction={["column", "row"]}>
+        <Heading as="h3" fontSize="1.6rem" fontWeight="700">
+          Gender
+        </Heading>
+        <Radio size="lg" value="male" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Male
+          </Text>
+        </Radio>
+        <Radio size="lg" value="female" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Female
+          </Text>
+        </Radio>
+        <Radio size="lg" value="both" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Both
+          </Text>
+        </Radio>
+      </VStack>
+    </RadioGroup>
   )
 }

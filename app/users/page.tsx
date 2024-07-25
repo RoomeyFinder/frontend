@@ -1,13 +1,17 @@
 "use client"
-import { Box, Heading, SimpleGrid, Text } from "@chakra-ui/react"
 import {
-  ChangeEvent,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react"
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Show,
+  Flex,
+  VStack,
+  Text,
+  CloseButton,
+  Spinner,
+} from "@chakra-ui/react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
 import ListingsGridLayout from "../_components/ListingsGridLayout"
@@ -15,7 +19,6 @@ import { RoomListingCardSkeleton } from "../_components/Skeletons/ListingCardSke
 import { fetchUsers } from "../_redux/thunks/search.thunk"
 import {
   GenderFilter,
-  LookingForFilter,
   RentDurationFilter,
   RentFilter,
 } from "../_components/Search/SearchBar"
@@ -24,6 +27,8 @@ import NoResultsDisplay from "../_components/NoResultsDisplay"
 import { pluralizeText } from "../_utils"
 import User from "../_types/User"
 import RoomeyListingCard from "../_components/RoomeyListingCard"
+import FunnelIcon from "../_assets/SVG/Funnel"
+import BackButton from "../_components/BackButton"
 
 export default function Search() {
   const { hasFetchedInitialUsers } = useAppSelector((store) => store.search)
@@ -39,28 +44,9 @@ function ListingsSection() {
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [cache, setCache] = useState({})
   const [results, setResults] = useState([])
-  const [searchBarPositionAndZIndex, setSearchBarPositionAndZIndex] = useState({
-    top: "8rem",
-    zIndex: 100,
-  })
+
   const { user } = useAppSelector((store) => store.auth)
   const { users, loading } = useAppSelector((store) => store.search)
-
-  useEffect(() => {
-    document.body.firstElementChild?.addEventListener("scroll", (e) => {
-      if (e.target) {
-        const container = e.target as any
-        if (container.scrollTop > 80) {
-          setSearchBarPositionAndZIndex({ top: "0rem", zIndex: 1000 })
-        } else {
-          setSearchBarPositionAndZIndex({ top: "8rem", zIndex: 100 })
-        }
-      }
-    })
-    return () => {
-      document.body.firstElementChild?.removeEventListener("scroll", () => {})
-    }
-  }, [])
 
   const [budget, setBudget] = useState<{
     min?: number
@@ -70,6 +56,12 @@ function ListingsSection() {
     Listing["rentDuration"] | ""
   >("")
   const [gender, setGender] = useState<string>("")
+  const [showFilters, setShowFilters] = useState(false)
+  const clearFilters = useCallback(() => {
+    setBudget(null)
+    setGender("")
+    setRentDuration("")
+  }, [])
 
   const searchQueryString = useMemo(() => {
     let query = ""
@@ -113,75 +105,180 @@ function ListingsSection() {
 
   return (
     <>
-      <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
-        <Box
-          pos="fixed"
-          left="50%"
-          transform="translateX(-50%)"
-          w="100%"
-          style={searchBarPositionAndZIndex}
-          bg="white"
-          zIndex="100"
+      <Box maxW="129rem" mx="auto" px={{ md: "4rem" }}>
+        <Flex
+          h="calc(100dvh - 8rem)"
+          overflow="hidden"
+          pos={{ md: "relative" }}
+          w={{ base: "88%", lg: "full" }}
+          mx="auto"
         >
           <Box
-            maxW="125rem"
-            px={{ base: "1.5rem", lg: "0rem" }}
-            shadow={{ base: "lg", md: "none" }}
-            py="1.8rem"
-            mx="auto"
+            pos={{ base: "fixed", md: "sticky" }}
+            top={{ base: "0", md: "unset" }}
+            inset={{ base: 0, md: "unset" }}
+            w={{ base: "100%", md: "30%", lg: "20%" }}
+            bg="white"
+            zIndex={{ base: "1000", md: "1" }}
+            transform={{
+              base: showFilters ? "translateX(0)" : "translateX(-100%)",
+              md: "none",
+            }}
           >
-            <Heading variant="md" color="" fontWeight="500" mb="2.5rem">
-              {searchQueryString
-                ? `${results.length} ${pluralizeText("Roomie", results.length, "s")} found`
-                : "Latest Roomies"}
-            </Heading>{" "}
-            <Text
-              flexShrink="0"
-              fontSize="1.6rem"
-              fontWeight="600"
-              mb=".8rem"
-              as="h2"
+            <Flex
+              display={{ base: "flex", md: "none" }}
+              w="full"
+              py="1.4rem"
+              shadow="lg"
+              pos="relative"
             >
-              Filter by:
-            </Text>
-            <SimpleGrid
-              columns={{ base: 2, sm: 3, md: 5 }}
-              gap="1rem"
-              alignItems="center"
-              flexWrap={{ base: "wrap", md: "nowrap" }}
+              <Text
+                fontSize="1.6rem"
+                fontWeight="500"
+                textAlign="center"
+                mx="auto"
+              >
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  (searchQueryString ? results : users).length
+                )}
+                &nbsp;&nbsp;Roomies available
+              </Text>
+              <CloseButton
+                ml="auto"
+                pos="absolute"
+                right="2rem"
+                top="50%"
+                transform="translateY(-50%)"
+                size="xl"
+                onClick={() => setShowFilters(false)}
+              />
+            </Flex>
+            <VStack
+              maxW="125rem"
+              px={{ base: "1.5rem", lg: "0rem" }}
+              py="4rem"
+              mx="auto"
+              alignItems="start"
+              gap="2.1rem"
             >
+              <Heading fontSize="2.4rem" fontWeight="500" mb="1.4rem">
+                Filters
+              </Heading>
               <RentDurationFilter
-                placeholder="Preferred lease duration"
-                handleSelection={(e: ChangeEvent<HTMLSelectElement>) =>
-                  setRentDuration(e.target.value as any)
+                heading={"Preferred rent duration"}
+                value={rentDuration as string}
+                handleSelection={(value: string) =>
+                  setRentDuration(value as any)
                 }
               />
               <RentFilter
-                placeholder="Budget"
-                handleSelection={(e: ChangeEvent<HTMLSelectElement>) => {
-                  const minMax = e.target.value.split("-")
+                heading="Budget"
+                value={
+                  budget
+                    ? `${budget.min}${budget.max ? "-" : ""}${budget.max ? budget.max : ""}`
+                    : ""
+                }
+                handleSelection={(value: string) => {
+                  const minMax = value.split("-")
                   if (minMax.length > 1)
                     setBudget({ min: +minMax[0], max: +minMax[1] })
                   else setBudget({ min: +minMax[0] })
                 }}
               />
               <GenderFilter
-                placeholder="Preferred gender"
-                handleSelection={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setGender(e.target.value)
+                value={gender}
+                handleSelection={(value: string) => {
+                  setGender(value)
                 }}
               />
-            </SimpleGrid>
+              <Flex alignItems="center" gap="1.6rem">
+                <Show below="md">
+                  <Button
+                    variant="brand"
+                    as="button"
+                    mr="auto"
+                    p="2rem"
+                    size="xl"
+                    fontSize="1.6rem"
+                    onClick={() => setShowFilters(false)}
+                  >
+                    Apply Filters
+                  </Button>
+                </Show>{" "}
+                <Button
+                  border="none"
+                  rounded=".375rem"
+                  _hover={{ bg: "none" }}
+                  p="1rem"
+                  fontSize="1.6rem"
+                  textDecor="underline"
+                  bg="transparent"
+                  color="#000"
+                  fontWeight="500"
+                  onClick={() => {
+                    clearFilters()
+                  }}
+                >
+                  Clear all filters
+                </Button>
+              </Flex>
+            </VStack>
           </Box>
-        </Box>
-        <ListSectionContainer>
-          <RoomiesList
-            users={searchQueryString ? results : users}
-            allowFavoriting={user !== null}
-            loading={loading || loadingSearch}
-            emptyTextValue={<>No users found. Try removing some filters</>}
-          />
-        </ListSectionContainer>
+          <Box
+            w={{ base: "95dvw", md: "70%", lg: "80%" }}
+            py={{ base: "8rem", xl: "6rem" }}
+            zIndex="90"
+            pos="relative"
+            mx="auto"
+            overflow="auto"
+          >
+            <BackButton left={{ md: "20%", xl: "2%" }} />
+            <HStack alignItems="center" justify="space-between" mb="2.5rem">
+              <Heading variant="md" color="" fontWeight="500">
+                &nbsp;
+                {searchQueryString ? (
+                  <>
+                    {loading ? (
+                      <Spinner size="lg" />
+                    ) : (
+                      (searchQueryString ? results : users).length
+                    )}
+                    {` ${pluralizeText("Roomie", results.length, "s")} found`}
+                  </>
+                ) : (
+                  "Latest Roomies"
+                )}
+              </Heading>
+              <Show below="md">
+                <Button
+                  aria-label="show filters"
+                  bg="transparent"
+                  border="1px solid"
+                  borderColor="gray.main"
+                  rounded="lg"
+                  display="flex"
+                  alignItems="center"
+                  gap="1rem"
+                  h="unset"
+                  p=".5rem 2rem"
+                  onClick={() => setShowFilters((prev) => !prev)}
+                >
+                  Filters <FunnelIcon />
+                </Button>
+              </Show>
+            </HStack>
+            <ListSectionContainer>
+              <RoomiesList
+                users={searchQueryString ? results : users}
+                allowFavoriting={user !== null}
+                loading={loading || loadingSearch}
+                emptyTextValue={<>No users found. Try removing some filters</>}
+              />
+            </ListSectionContainer>
+          </Box>
+        </Flex>
       </Box>
     </>
   )
@@ -193,18 +290,7 @@ function ListSectionContainer({
   children: ReactNode | ReactNode[]
 }) {
   return (
-    <Box
-      w={{ base: "95dvw", md: "full" }}
-      maxW={{ base: "94%", xl: "123rem" }}
-      mx="auto"
-      display="flex"
-      flexDir="column"
-      gap="3rem"
-      py={{ base: "3rem", md: "6rem" }}
-      mt="7.4rem"
-      pos="relative"
-      zIndex="90"
-    >
+    <Box w="full" display="flex" flexDir="column" gap="3rem">
       {children}
     </Box>
   )
@@ -224,7 +310,7 @@ function RoomiesList({
   if (loading)
     return (
       <ListingsGridLayout
-        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        columns={{ base: 1, sm: 2, md: 3 }}
         list={new Array(12).fill(1).map((_, idx) => (
           <RoomListingCardSkeleton key={idx} />
         ))}
@@ -244,7 +330,7 @@ function RoomiesList({
           />
         ))}
         justifyContent="start"
-        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        columns={{ base: 1, sm: 2, md: 3 }}
         alignItems="stretch"
       ></ListingsGridLayout>
     </>
