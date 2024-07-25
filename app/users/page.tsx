@@ -70,13 +70,9 @@ function ListingsSection() {
     Listing["rentDuration"] | ""
   >("")
   const [gender, setGender] = useState<string>("")
-  const [lookingFor, setLookingFor] = useState<string>("")
 
   const searchQueryString = useMemo(() => {
     let query = ""
-    if (lookingFor) {
-      query += `lookingFor=${lookingFor}&`
-    }
     if (budget) {
       query += `${budget.min ? `minRent=${budget.min}&` : ""}${budget.max ? `maxRent=${budget.max}&` : ""}`
     }
@@ -87,7 +83,7 @@ function ListingsSection() {
       query += `gender=${gender}`
     }
     return query
-  }, [budget, rentDuration, gender, lookingFor])
+  }, [budget, rentDuration, gender])
 
   const { fetchData } = useAxios()
   const search = useCallback(async () => {
@@ -173,12 +169,6 @@ function ListingsSection() {
                 placeholder="Preferred gender"
                 handleSelection={(e: ChangeEvent<HTMLSelectElement>) => {
                   setGender(e.target.value)
-                }}
-              />
-              <LookingForFilter
-                placeholder="Looking for"
-                handleSelection={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setLookingFor(e.target.value)
                 }}
               />
             </SimpleGrid>
