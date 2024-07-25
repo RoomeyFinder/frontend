@@ -88,6 +88,7 @@ export default function ClientContent() {
       } catch (err) {
         toast.error("Unable to share, something went wrong")
         console.log(err)
+        setShowShareOptions(true)
       }
     } else {
       setShowShareOptions(true)
@@ -303,8 +304,8 @@ export default function ClientContent() {
                       : "Single") + " bedroom apartment"}{" "}
                 in{" "}
                 <Text as="span">
-                  {appendCommaIfLengthNotZero(listing?.city || "") || " "}
-                  {appendCommaIfLengthNotZero(listing?.state || "") || " "}
+                  {appendCommaIfLengthNotZero(listing?.city || "") || " "}{" "}
+                  {appendCommaIfLengthNotZero(listing?.state || "") || " "}{" "}
                   {listing?.country}
                 </Text>
               </Text>
