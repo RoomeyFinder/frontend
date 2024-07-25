@@ -13,14 +13,8 @@ import toast from "react-hot-toast"
 
 export default function SearchBar({
   handleCoordinatesChange,
-  handleBedroomChange,
-  handleRentDurationChange,
-  handleRentChange,
 }: {
   handleCoordinatesChange: (arg: { lat: number; lng: number } | null) => void
-  handleBedroomChange: ChangeEventHandler<HTMLSelectElement>
-  handleRentDurationChange: ChangeEventHandler<HTMLSelectElement>
-  handleRentChange: ChangeEventHandler<HTMLSelectElement>
 }) {
   useEffect(() => {
     const center = { lat: 9.082, lng: 8.6753 }
@@ -59,63 +53,64 @@ export default function SearchBar({
   }, [handleCoordinatesChange])
   return (
     <>
-      <Flex
-        w="full"
-        flexWrap="wrap"
-        justifyContent="space-between"
-        alignItems="center"
-        gap="1rem"
-      >
-        <Input
-          variant="filled"
-          py="1rem"
-          px="1rem"
-          rounded=".5rem"
-          placeholder="Find location"
-          maxW={{ md: "50rem" }}
-          id="pac-input"
-          onChange={(e) =>
-            e.target.value === "" && handleCoordinatesChange(null)
-          }
-        />
-        <Flex gap="1rem" flexGrow="1" maxW="60rem">
-          <RentDurationFilter handleSelection={handleRentDurationChange} />
-          <RentFilter handleSelection={handleRentChange} />
-          <NumberOfBedroomsFilter handleSelection={handleBedroomChange} />
-        </Flex>
-      </Flex>
+      <Input
+        variant="filled"
+        py="1rem"
+        px="1rem"
+        rounded=".5rem"
+        placeholder="Find location"
+        maxW={{ md: "50rem" }}
+        id="pac-input"
+        onChange={(e) => e.target.value === "" && handleCoordinatesChange(null)}
+      />
     </>
   )
 }
 
-const NumberOfBedroomsFilter = ({
+export const NumberOfBedroomsFilter = ({
   handleSelection,
+  value,
 }: {
-  handleSelection: ChangeEventHandler
+  handleSelection: (val: string) => void
+  value: string
 }) => {
-  const [value, setValue] = useState("")
   return (
-    <Input
-      rounded=".5rem"
-      fontSize="1.6rem"
-      placeholder="Bedrooms"
-      _focus={{
-        borderColor: "brand.main",
-      }}
+    <RadioGroup
+      name="numberOfBedrooms"
       value={value}
-      onChange={(e) => {
-        handleSelection(e)
-        setValue(e.target.value)
-      }}
-      py=".5rem"
-      as={Select}
+      onChange={(val) => handleSelection(val)}
     >
-      <option value="studio">Studio apartment</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4+</option>
-    </Input>
+      <VStack alignItems="start" spacing={[2, 5]} direction={["column", "row"]}>
+        <Heading as="h3" fontSize="1.6rem" fontWeight="700">
+          Number of bedrooms
+        </Heading>
+        <Radio size="lg" value="studio" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Studio apartment
+          </Text>
+        </Radio>
+        <Radio size="lg" value="1" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            1
+          </Text>
+        </Radio>
+        <Radio size="lg" value="2" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            2
+          </Text>
+        </Radio>
+        <Radio size="lg" value="3" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            3
+          </Text>
+        </Radio>
+        <Radio size="lg" value="4" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            4+
+          </Text>
+        </Radio>
+      </VStack>
+    </RadioGroup>
   )
 }
 export const RentDurationFilter = ({
@@ -138,6 +133,11 @@ export const RentDurationFilter = ({
           {heading || "Rent Duration"}
         </Heading>
         <Radio size="lg" value="annually" fontSize="1.6rem">
+          <Text as="span" fontSize="1.6rem">
+            Annually
+          </Text>
+        </Radio>
+        <Radio size="lg" value="biannually" fontSize="1.6rem">
           <Text as="span" fontSize="1.6rem">
             Biannually
           </Text>

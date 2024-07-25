@@ -1,5 +1,16 @@
 "use client"
-import { Box, Heading } from "@chakra-ui/react"
+import {
+  Box,
+  Button,
+  CloseButton,
+  Flex,
+  Heading,
+  HStack,
+  Show,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
@@ -7,10 +18,17 @@ import ListingsGridLayout from "../_components/ListingsGridLayout"
 import RoomListingCard from "../_components/RoomListingCard"
 import { RoomListingCardSkeleton } from "../_components/Skeletons/ListingCardSkeleton"
 import { fetchListings } from "../_redux/thunks/search.thunk"
-import SearchBar from "../_components/Search/SearchBar"
+import SearchBar, {
+  GenderFilter,
+  NumberOfBedroomsFilter,
+  RentDurationFilter,
+  RentFilter,
+} from "../_components/Search/SearchBar"
 import useAxios from "../_hooks/useAxios"
 import NoResultsDisplay from "../_components/NoResultsDisplay"
 import { pluralizeText } from "../_utils"
+import FunnelIcon from "../_assets/SVG/Funnel"
+import BackButton from "../_components/BackButton"
 
 export default function Search() {
   const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
@@ -26,6 +44,7 @@ function ListingsSection() {
   const [loadingSearch, setLoadingSearch] = useState(false)
   const [cache, setCache] = useState({})
   const [results, setResults] = useState([])
+  const [showFilters, setShowFilters] = useState(false)
   const [searchBarPositionAndZIndex, setSearchBarPositionAndZIndex] = useState({
     top: "8rem",
     zIndex: 1000,
@@ -61,7 +80,11 @@ function ListingsSection() {
     Listing["rentDuration"] | ""
   >("")
   const [bedrooms, setBedrooms] = useState<"studio" | number | "">("")
-
+  const clearFilters = useCallback(() => {
+    setRentAmount(null)
+    setBedrooms("")
+    setRentDuration("")
+  }, [])
   const searchQueryString = useMemo(() => {
     let query = ""
     if (searchCoordinates) {
@@ -105,59 +128,185 @@ function ListingsSection() {
 
   return (
     <>
-      <Box maxW="125rem" mx="auto" pt={{ base: "13rem", md: "4rem" }}>
-        <Box
-          pos="fixed"
-          left="50%"
-          transform="translateX(-50%)"
-          w="100%"
-          style={searchBarPositionAndZIndex}
-          bg="white"
+      <Box maxW="129rem" mx="auto" px={{ md: "4rem" }}>
+        <Flex
+          h="calc(100dvh - 8rem)"
+          overflow="hidden"
+          pos={{ md: "relative" }}
+          w={{ base: "95%", lg: "full" }}
+          mx="auto"
         >
           <Box
-            maxW="125rem"
-            px={{ base: "1.5rem", lg: "0rem" }}
-            shadow={{ base: "lg", md: "none" }}
-            py="1.8rem"
-            mx="auto"
+            pos={{ base: "fixed", md: "sticky" }}
+            top={{ base: "0", md: "unset" }}
+            inset={{ base: 0, md: "unset" }}
+            w={{ base: "100%", md: "30%", lg: "20%" }}
+            bg="white"
+            zIndex={{ base: "1000", md: "1" }}
+            transform={{
+              base: showFilters ? "translateX(0)" : "translateX(-100%)",
+              md: "none",
+            }}
           >
-            <SearchBar
-              handleCoordinatesChange={(coordinates) =>
-                setSearchCoordinates(coordinates)
-              }
-              handleBedroomChange={(e) => {
-                setBedrooms(
-                  !isNaN(+e.target.value)
-                    ? +e.target.value
-                    : (e.target.value as any)
-                )
-              }}
-              handleRentChange={(e) => {
-                const minMax = e.target.value.split("-")
-                if (minMax.length > 1)
-                  setRentAmount({ min: +minMax[0], max: +minMax[1] })
-                else setRentAmount({ min: +minMax[0] })
-              }}
-              handleRentDurationChange={(e) =>
-                setRentDuration(e.target.value as any)
-              }
-            />
+            <Flex
+              display={{ base: "flex", md: "none" }}
+              w="full"
+              py="1.4rem"
+              shadow="lg"
+              pos="relative"
+            >
+              <Text
+                fontSize="1.6rem"
+                fontWeight="500"
+                textAlign="center"
+                mx="auto"
+                as="div"
+              >
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  (searchQueryString ? results : listings).length
+                )}
+                &nbsp;&nbsp;Listings available
+              </Text>
+              <CloseButton
+                ml="auto"
+                pos="absolute"
+                right="2rem"
+                top="50%"
+                transform="translateY(-50%)"
+                size="xl"
+                onClick={() => setShowFilters(false)}
+              />
+            </Flex>
+            <VStack
+              maxW="125rem"
+              px={{ base: "1.5rem", lg: "0rem" }}
+              py="4rem"
+              mx="auto"
+              alignItems="start"
+              gap="2.1rem"
+            >
+              <Heading fontSize="2.4rem" fontWeight="500" mb="1.4rem">
+                Filters
+              </Heading>
+              <RentDurationFilter
+                heading={"Preferred rent duration"}
+                value={rentDuration as string}
+                handleSelection={(value: string) =>
+                  setRentDuration(value as any)
+                }
+              />
+              <RentFilter
+                heading="Budget"
+                value={
+                  rentAmount
+                    ? `${rentAmount.min}${rentAmount.max ? "-" : ""}${rentAmount.max ? rentAmount.max : ""}`
+                    : ""
+                }
+                handleSelection={(value: string) => {
+                  const minMax = value.split("-")
+                  if (minMax.length > 1)
+                    setRentAmount({ min: +minMax[0], max: +minMax[1] })
+                  else setRentAmount({ min: +minMax[0] })
+                }}
+              />
+              <NumberOfBedroomsFilter
+                value={bedrooms as string}
+                handleSelection={(value: string) => {
+                  setBedrooms(value as any)
+                }}
+              />
+              <Flex alignItems="center" gap="1.6rem">
+                <Show below="md">
+                  <Button
+                    variant="brand"
+                    as="button"
+                    mr="auto"
+                    p="2rem"
+                    size="xl"
+                    fontSize="1.6rem"
+                    onClick={() => setShowFilters(false)}
+                  >
+                    Apply Filters
+                  </Button>
+                </Show>{" "}
+                <Button
+                  border="none"
+                  rounded=".375rem"
+                  _hover={{ bg: "none" }}
+                  p="1rem"
+                  fontSize="1.6rem"
+                  textDecor="underline"
+                  bg="transparent"
+                  color="#000"
+                  fontWeight="500"
+                  onClick={() => {
+                    clearFilters()
+                  }}
+                >
+                  Clear all filters
+                </Button>
+              </Flex>
+            </VStack>
           </Box>
-        </Box>
-        <ListSectionContainer>
-          <Heading variant="md" color="" fontWeight="500">
-            {searchQueryString
-              ? `${results.length} ${pluralizeText("listing", results.length, "s")} found`
-              : "Latest Rooms"}
-          </Heading>
-
-          <RoomsList
-            rooms={searchQueryString ? results : listings}
-            allowFavoriting={user !== null}
-            loading={loading || loadingSearch}
-            emptyTextValue={<>No rooms found. Try removing some filters</>}
-          />
-        </ListSectionContainer>
+          <Box
+            w={{ base: "full", md: "70%", lg: "80%" }}
+            py={{ base: "8rem", xl: "2rem" }}
+            zIndex="90"
+            pos="relative"
+            mx="auto"
+            overflow="auto"
+          >
+            <ListSectionContainer>
+              <BackButton left={{ md: "23%", xl: "2%" }} />
+              <SearchBar
+                handleCoordinatesChange={(coordinates) =>
+                  setSearchCoordinates(coordinates)
+                }
+              />
+              <HStack alignItems="center" justify="space-between" mb="-1rem">
+                <Heading variant="md" color="" fontWeight="500">
+                  {searchQueryString ? (
+                    <>
+                      {loading ? (
+                        <Spinner size="lg" />
+                      ) : (
+                        (searchQueryString ? results : listings).length
+                      )}
+                      {` ${pluralizeText("Room", results.length, "s")} found`}
+                    </>
+                  ) : (
+                    "Latest Rooms"
+                  )}
+                </Heading>
+                <Show below="md">
+                  <Button
+                    aria-label="show filters"
+                    bg="transparent"
+                    border="1px solid"
+                    borderColor="gray.main"
+                    rounded="lg"
+                    display="flex"
+                    alignItems="center"
+                    gap="1rem"
+                    h="unset"
+                    p=".5rem 2rem"
+                    onClick={() => setShowFilters((prev) => !prev)}
+                  >
+                    Filters <FunnelIcon />
+                  </Button>
+                </Show>
+              </HStack>
+              <RoomsList
+                rooms={searchQueryString ? results : listings}
+                allowFavoriting={user !== null}
+                loading={loading || loadingSearch}
+                emptyTextValue={<>No rooms found. Try removing some filters</>}
+              />
+            </ListSectionContainer>
+          </Box>
+        </Flex>
       </Box>
     </>
   )
@@ -169,15 +318,7 @@ function ListSectionContainer({
   children: ReactNode | ReactNode[]
 }) {
   return (
-    <Box
-      w={{ base: "95dvw", md: "full" }}
-      maxW={{ base: "94%", xl: "123rem" }}
-      mx="auto"
-      display="flex"
-      flexDir="column"
-      gap="3rem"
-      py={{ base: "3rem", md: "6rem" }}
-    >
+    <Box w="full" display="flex" flexDir="column" gap="3rem">
       {children}
     </Box>
   )
@@ -197,7 +338,7 @@ function RoomsList({
   if (loading)
     return (
       <ListingsGridLayout
-        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        columns={{ base: 1, sm: 2, lg: 3 }}
         list={new Array(12).fill(1).map((_, idx) => (
           <RoomListingCardSkeleton key={idx} hasBorder />
         ))}
@@ -217,7 +358,7 @@ function RoomsList({
           />
         ))}
         justifyContent="start"
-        columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+        columns={{ base: 1, sm: 2, lg: 3 }}
         alignItems="stretch"
       ></ListingsGridLayout>
     </>

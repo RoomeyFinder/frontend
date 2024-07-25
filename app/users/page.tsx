@@ -110,7 +110,7 @@ function ListingsSection() {
           h="calc(100dvh - 8rem)"
           overflow="hidden"
           pos={{ md: "relative" }}
-          w={{ base: "88%", lg: "full" }}
+          w={{ base: "95%", lg: "full" }}
           mx="auto"
         >
           <Box
@@ -137,6 +137,7 @@ function ListingsSection() {
                 fontWeight="500"
                 textAlign="center"
                 mx="auto"
+                as="div"
               >
                 {loading ? (
                   <Spinner />
@@ -227,7 +228,7 @@ function ListingsSection() {
             </VStack>
           </Box>
           <Box
-            w={{ base: "95dvw", md: "70%", lg: "80%" }}
+            w={{ base: "full", md: "70%", lg: "80%" }}
             py={{ base: "8rem", xl: "6rem" }}
             zIndex="90"
             pos="relative"
