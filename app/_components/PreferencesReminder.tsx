@@ -35,7 +35,7 @@ export default function PreferencesReminder() {
   }, [user, pathname, dispatch, hasClosedPreferenceReminder, showReminder])
 
   return (
-    <Fade in={!showReminder} unmountOnExit>
+    <Fade in={showReminder} unmountOnExit>
       <Box
         left="50%"
         transform={{ base: "translateX(-50%)", lg: "none" }}
