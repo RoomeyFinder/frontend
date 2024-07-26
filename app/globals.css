@@ -93,3 +93,17 @@ input:checked ~ .custom-toggle-dot {
     transform: rotate(360deg);
   }
 }
+.pulse {
+  animation: pulse 1500ms ease-in-out infinite;
+}
+@keyframes pulse {
+  0% {
+    opacity: .6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .6;
+  }
+}

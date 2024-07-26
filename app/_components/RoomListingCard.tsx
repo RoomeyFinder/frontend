@@ -77,16 +77,28 @@ export default function RoomListingCard({
           slides={listing.photos}
           height="27rem"
           swiperSlideContent={({ slide }) => (
-            <Image
-              key={slide.secure_url}
-              src={slide.secure_url}
-              bg="brand.50"
-              w="100%"
-              h="full"
-              rounded="1.2rem"
-              objectFit="cover"
-              alt=""
-            />
+            <Box key={slide.secure_url} h="full" w="full" pos="relative">
+              <Box
+                pos="absolute"
+                bg="#dddddd48"
+                className="pulse"
+                h="full"
+                w="full"
+                zIndex="0"
+                inset="0"
+              />
+              <Image
+                zIndex="1"
+                pos="relative"
+                src={slide.secure_url}
+                w="100%"
+                h="full"
+                rounded="1.2rem"
+                objectFit="cover"
+                alt=""
+                border="0"
+              />
+            </Box>
           )}
         />
       </Box>

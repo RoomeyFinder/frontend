@@ -3,7 +3,6 @@ import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
 import { Box, Fade, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
-// import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
 import PreferencesReminder from "./PreferencesReminder"
@@ -27,28 +26,27 @@ export default function GlobalLayout({
   children: ReactNode | ReactNode[]
 }) {
   const router = useRouter()
-  // useListenForMessengerEvents()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
-  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
+  const {
+    user,
+    loading: loadingUser,
+    shouldLogout,
+  } = useAppSelector((store) => store.auth)
 
   useEffect(() => {
     localStorage.setItem("prevPath", pathname)
   }, [pathname])
   useEffect(() => {
-    if (!user) {
-      dispatch(checkAuthStatus()).then((res) => {
-        if (
-          (res.payload as any)?.statusCode !== 200 &&
-          pathname.startsWith("/nexus")
-        ) {
-          router.push("/")
-          dispatch(logout())
-        }
-      })
-      console.log("here")
-    }
+    if (!user) dispatch(checkAuthStatus())
   }, [dispatch, router, pathname, user])
+
+  useEffect(() => {
+    if (shouldLogout) {
+      router.push("/")
+      dispatch(logout())
+    }
+  }, [shouldLogout, dispatch])
 
   useEffect(() => {
     const hasForcedLogout = localStorage.getItem("hasForcedLogout")

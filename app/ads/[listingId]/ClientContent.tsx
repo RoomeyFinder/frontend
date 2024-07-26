@@ -132,13 +132,11 @@ export default function ClientContent() {
         <VStack gap="1.5rem" alignItems="start" w="full">
           {listing && (
             <>
-              <Hide below="sm">
-                <ListingHeading
-                  handleShare={handleShare}
-                  isOwnListing={isOwnListing}
-                  listing={listing}
-                />
-              </Hide>
+              <ListingHeading
+                handleShare={handleShare}
+                isOwnListing={isOwnListing}
+                listing={listing}
+              />
               <ListingPhotos photos={listing?.photos} />
             </>
           )}

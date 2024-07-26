@@ -38,19 +38,32 @@ export default function ListingPhotos({
   const ImageItem = useCallback(
     ({ src, index }: { index: number } & ImageProps) => {
       return (
-        <Image
-          w="100%"
-          h="100%"
-          display="inline-block"
-          objectFit="cover"
-          src={src}
-          alt="Alt"
-          cursor="pointer"
-          onClick={() => {
-            setShowPhotosInModal((prev) => !prev)
-            setSourceIndex(index)
-          }}
-        />
+        <Box pos="relative" w="full" h="full">
+          <Image
+            w="100%"
+            h="100%"
+            display="inline-block"
+            objectFit="cover"
+            pos="relative"
+            zIndex="1"
+            src={src}
+            alt="Alt"
+            cursor="pointer"
+            onClick={() => {
+              setShowPhotosInModal((prev) => !prev)
+              setSourceIndex(index)
+            }}
+          />
+          <Box
+            pos="absolute"
+            bg="#dddddd48"
+            className="pulse"
+            h="full"
+            w="full"
+            zIndex="0"
+            inset="0"
+          />
+        </Box>
       )
     },
     []
@@ -62,21 +75,34 @@ export default function ListingPhotos({
           <Carousel
             slides={photos}
             swiperSlideContent={({ slide, index }) => (
-              <Image
-                objectFit="cover"
-                objectPosition="center"
-                src={slide.secure_url}
-                width="100%"
-                height="100%"
-                mx="auto"
-                display="block"
-                cursor="pointer"
-                alt=""
-                onClick={() => {
-                  setShowPhotosInModal((prev) => !prev)
-                  setSourceIndex(index)
-                }}
-              />
+              <Box pos="relative" h="full" w="full">
+                <Box
+                  pos="absolute"
+                  bg="#dddddd48"
+                  className="pulse"
+                  h="full"
+                  w="full"
+                  zIndex="0"
+                  inset="0"
+                />
+                <Image
+                  objectFit="cover"
+                  objectPosition="center"
+                  src={slide.secure_url}
+                  width="100%"
+                  height="100%"
+                  mx="auto"
+                  zIndex="1"
+                  display="block"
+                  pos="relative"
+                  cursor="pointer"
+                  alt=""
+                  onClick={() => {
+                    setShowPhotosInModal((prev) => !prev)
+                    setSourceIndex(index)
+                  }}
+                />
+              </Box>
             )}
           />
         </Show>
@@ -85,6 +111,7 @@ export default function ListingPhotos({
             justifyContent="center"
             gap=".8rem"
             maxH="53.7rem"
+            h="45dvh"
             margin="0 auto"
             borderRadius={{ sm: "1.8rem" }}
             overflow="hidden"
@@ -92,7 +119,9 @@ export default function ListingPhotos({
             <Flex
               flexGrow="1"
               flexShrink="0"
+              h="full"
               maxW={{ sm: "50rem", md: "70rem", lg: "50%" }}
+              pos="relative"
             >
               <Image
                 w="100%"
@@ -100,10 +129,22 @@ export default function ListingPhotos({
                 src={photos?.[0]?.secure_url}
                 alt=""
                 cursor="pointer"
+                objectFit="cover"
                 onClick={() => {
                   setShowPhotosInModal((prev) => !prev)
                   setSourceIndex(0)
                 }}
+                pos="relative"
+                zIndex="1"
+              />
+              <Box
+                pos="absolute"
+                bg="#dddddd48"
+                className="pulse"
+                h="full"
+                w="full"
+                zIndex="0"
+                inset="0"
               />
             </Flex>
 

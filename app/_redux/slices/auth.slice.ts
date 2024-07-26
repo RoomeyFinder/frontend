@@ -16,6 +16,7 @@ interface IAuthState {
   loading: boolean
   errorMessage: string
   isUsingFallback: boolean
+  shouldLogout: boolean
 }
 
 const initialState: IAuthState = {
@@ -24,6 +25,7 @@ const initialState: IAuthState = {
   loading: true,
   errorMessage: "",
   isUsingFallback: false,
+  shouldLogout: false
 }
 
 export const authSlice = createSlice({
@@ -83,6 +85,7 @@ export const authSlice = createSlice({
         state.token = null
         state.loading = false
         state.errorMessage = "Please signin to continue"
+        state.shouldLogout = true
       })
       .addCase(
         updatePreferences.fulfilled,
