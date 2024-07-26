@@ -16,7 +16,7 @@ export default function BudgetInput({
       <FormLabel fontSize="2rem" m="0" fontWeight="600">
         Budget
       </FormLabel>
-      <HStack gap="2rem" fontSize="1.6rem" fontWeight="500">
+      <HStack gap="2rem" fontSize="1.6rem" fontWeight="500" flexWrap="wrap">
         <HStack gap="1rem">
           <Text>Min:</Text>
           <Input
