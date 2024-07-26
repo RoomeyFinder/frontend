@@ -42,7 +42,13 @@ export default function GlobalLayout({
   }, [dispatch, router, pathname, user])
 
   useEffect(() => {
-    if (shouldLogout) {
+    if (
+      shouldLogout &&
+      user &&
+      (pathname.startsWith("/nexus") ||
+        pathname.startsWith("/ads") ||
+        pathname.startsWith("/users"))
+    ) {
       router.push("/")
       dispatch(logout())
     }
