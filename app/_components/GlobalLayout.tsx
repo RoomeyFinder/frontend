@@ -3,7 +3,6 @@ import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
 import { Box, Fade, Flex } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
-// import useListenForMessengerEvents from "../_socket/eventListeners/messenger"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
 import PreferencesReminder from "./PreferencesReminder"
@@ -27,25 +26,33 @@ export default function GlobalLayout({
   children: ReactNode | ReactNode[]
 }) {
   const router = useRouter()
-  // useListenForMessengerEvents()
   const pathname = usePathname()
   const dispatch = useAppDispatch()
-  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
+  const {
+    user,
+    loading: loadingUser,
+    shouldLogout,
+  } = useAppSelector((store) => store.auth)
 
   useEffect(() => {
     localStorage.setItem("prevPath", pathname)
   }, [pathname])
   useEffect(() => {
-    dispatch(checkAuthStatus()).then((res) => {
-      if (
-        (res.payload as any)?.statusCode !== 200 &&
-        pathname.startsWith("/nexus")
-      ) {
-        router.push("/")
-        dispatch(logout())
-      }
-    })
-  }, [dispatch, router, pathname])
+    if (!user) dispatch(checkAuthStatus())
+  }, [dispatch, user])
+
+  useEffect(() => {
+    if (
+      shouldLogout &&
+      user &&
+      (pathname.startsWith("/nexus") ||
+        pathname.startsWith("/ads") ||
+        pathname.startsWith("/users"))
+    ) {
+      router.push("/")
+      dispatch(logout())
+    }
+  }, [shouldLogout, dispatch, pathname, router, user])
 
   useEffect(() => {
     const hasForcedLogout = localStorage.getItem("hasForcedLogout")
@@ -65,19 +72,29 @@ export default function GlobalLayout({
     if (!loadingUser)
       !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
   }, [dispatch, hasFetchedInitialListings, user, loadingUser])
-  const { hasFetchedUserFavorites } = useAppSelector((store) => store.favorites)
-  const { hasFetchedUserInterests } = useAppSelector((store) => store.interests)
-  const { hasFetchedUserListings } = useAppSelector((store) => store.listings)
-  const { hasFetchedNotifications } = useAppSelector(
-    (store) => store.notifications
-  )
+  const { hasFetchedUserFavorites, loading: loadingUserFavorites } =
+    useAppSelector((store) => store.favorites)
+  const { hasFetchedUserInterests, loading: loadingUserInterests } =
+    useAppSelector((store) => store.interests)
+  const { hasFetchedUserListings, loading: loadingUserListings } =
+    useAppSelector((store) => store.listings)
+  const { hasFetchedNotifications, loading: loadingUserNotifications } =
+    useAppSelector((store) => store.notifications)
 
   useEffect(() => {
     if (user) {
-      !hasFetchedUserFavorites && dispatch(fetchUserFavorites())
-      !hasFetchedUserInterests && dispatch(fetchUsersInterests())
-      !hasFetchedUserListings && dispatch(fetchUserListings())
-      !hasFetchedNotifications && dispatch(fetchUserNotifications())
+      !hasFetchedUserFavorites &&
+        loadingUserFavorites === false &&
+        dispatch(fetchUserFavorites())
+      !hasFetchedUserInterests &&
+        loadingUserInterests === false &&
+        dispatch(fetchUsersInterests())
+      !hasFetchedUserListings &&
+        loadingUserListings === false &&
+        dispatch(fetchUserListings())
+      !hasFetchedNotifications &&
+        loadingUserNotifications === false &&
+        dispatch(fetchUserNotifications())
     }
   }, [
     dispatch,
@@ -85,6 +102,10 @@ export default function GlobalLayout({
     hasFetchedUserInterests,
     hasFetchedUserListings,
     hasFetchedNotifications,
+    loadingUserFavorites,
+    loadingUserInterests,
+    loadingUserListings,
+    loadingUserNotifications,
     user,
   ])
   useProtectRoutes()

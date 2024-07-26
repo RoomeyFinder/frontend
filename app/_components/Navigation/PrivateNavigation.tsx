@@ -251,6 +251,9 @@ export function InterestsAccessCount() {
 const PrivateMenuItem = chakra(MenuItem, {
   baseStyle: {
     ...baseNavItemStyles,
+    _focus: {
+      bg: "transparent",
+    },
   },
 })
 

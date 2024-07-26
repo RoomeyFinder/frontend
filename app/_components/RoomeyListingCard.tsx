@@ -1,11 +1,18 @@
-import { Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react"
+import {
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
-import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import User from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
 import { useRouter } from "next/navigation"
 import DotSeparator from "./DotSeparator"
+import { getAgeInYears } from "../_utils/date"
+import { useMemo } from "react"
 
 export default function RoomeyListingCard({
   variant,
@@ -22,9 +29,11 @@ export default function RoomeyListingCard({
 
   return (
     <Flex
-      py="2rem"
+      py="1rem"
       w="100%"
-      alignItems="center"
+      justifyContent="center"
+      px="2rem"
+      alignItems="start"
       flexDir="column"
       gap="1.5rem"
       pos="relative"
@@ -43,55 +52,53 @@ export default function RoomeyListingCard({
           useConfirmation={useConfirmationToRemoveFavorite}
         />
       )}
-      <ProfileAvatar
-        imageSrc={user.profileImage?.secure_url}
-        width={100}
-        height={100}
-      />
-      <NameAgeAndGender
-        name={`${user.firstName} ${user.lastName}`}
-        ageInYears={
-          user && user.settings?.isAgeVisibleOnProfile
-            ? new Date(Date.now()).getFullYear() -
-              new Date(user?.dob || Date.now()).getFullYear()
-            : 0
-        }
-        gender={user.gender}
-      />
-      {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />}
-      <VStack>{user.about && <AboutSection about={user.about} />}</VStack>
+      <HStack justifyContent="start" alignItems="center">
+        <ProfileAvatar
+          imageSrc={user.profileImage?.secure_url}
+          width={"5rem"}
+          height={"5rem"}
+          size="sm"
+        />
+        <NameAgeAndGender user={user} />
+      </HStack>
+      {/* {isLocked ? <PadlockDivider /> : <Divider borderColor="white.200" />} */}
+      {/* <VStack>{user.about && <AboutSection about={user.about} />}</VStack> */}
     </Flex>
   )
 }
 
-function NameAgeAndGender({
-  name,
-  ageInYears,
-  gender,
-}: {
-  name: string
-  ageInYears?: number
-  gender: string
-}) {
+function NameAgeAndGender({ user }: { user: User }) {
+  const ageInYears = useMemo(
+    () => getAgeInYears(new Date(user.dob)),
+    [user.dob]
+  )
   return (
-    <VStack gap="1rem" alignItems="center">
+    <VStack gap=".2rem" justifyContent="center" alignItems="start">
       <Heading
         as="h6"
         fontSize="1.9rem"
         fontWeight="normal"
         lineHeight="1.9rem"
         textTransform="capitalize"
+        noOfLines={2}
+        textAlign="left"
       >
-        {name}
+        {user.firstName} {user.lastName}
       </Heading>
-      <Flex alignItems="center" gap="1rem">
+      <Flex
+        justifyContent="start"
+        textAlign="center"
+        alignItems="center"
+        gap="1rem"
+        w="full"
+      >
         <Text
           textTransform="capitalize"
           color="gray.main"
           fontSize="1.4rem"
           fontWeight="500"
         >
-          {gender}
+          {user.gender}
         </Text>
         {ageInYears ? (
           <>
@@ -111,7 +118,7 @@ function NameAgeAndGender({
   )
 }
 
-function AboutSection({ about }: { about: string }) {
+export function AboutSection({ about }: { about: string }) {
   return (
     <Flex flexDir="column" textAlign="center" gap="1rem">
       <Heading as="h6" fontSize="1.6rem" lineHeight="1.6rem">

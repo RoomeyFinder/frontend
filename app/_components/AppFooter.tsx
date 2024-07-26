@@ -22,7 +22,7 @@ import { usePathname, useRouter } from "next/navigation"
 export default function AppFooter() {
   const pathname = usePathname()
 
-  if (pathname.startsWith("/ads")) return null
+  if (pathname.startsWith("/ads") || pathname.startsWith("/users")) return null
   return <AppFooterContent />
 }
 

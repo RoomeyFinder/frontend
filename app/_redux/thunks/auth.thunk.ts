@@ -5,12 +5,13 @@ import localforage from "localforage"
 
 export const checkAuthStatus = createAsyncThunk(
   "auth/checkAuthStatus",
-  async () => {
+  async (_f, thunkAPI) => {
     const response = await axiosFetcher({
       url: "/users/me",
       method: "get",
     })
     const storedUser = await localforage.getItem(STORAGE_KEYS.RF_USER)
+    if(response.statusCode !== 200) return thunkAPI.rejectWithValue(response)
     return {
       user: response.statusCode === 200 ? response.user : storedUser || null,
       statusCode: response.statusCode,

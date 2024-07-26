@@ -20,7 +20,8 @@ export default function EarliestMoveDateInput({
         name="earliestMoveDate"
         value={value}
         onChange={onChange}
-        w="auto"
+        w="100%"
+        maxW="20rem"
       />
     </VStack>
   )

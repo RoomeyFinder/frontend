@@ -88,6 +88,7 @@ export default function ClientContent() {
       } catch (err) {
         toast.error("Unable to share, something went wrong")
         console.log(err)
+        setShowShareOptions(true)
       }
     } else {
       setShowShareOptions(true)
@@ -131,13 +132,11 @@ export default function ClientContent() {
         <VStack gap="1.5rem" alignItems="start" w="full">
           {listing && (
             <>
-              <Hide below="sm">
-                <ListingHeading
-                  handleShare={handleShare}
-                  isOwnListing={isOwnListing}
-                  listing={listing}
-                />
-              </Hide>
+              <ListingHeading
+                handleShare={handleShare}
+                isOwnListing={isOwnListing}
+                listing={listing}
+              />
               <ListingPhotos photos={listing?.photos} />
             </>
           )}
@@ -303,8 +302,8 @@ export default function ClientContent() {
                       : "Single") + " bedroom apartment"}{" "}
                 in{" "}
                 <Text as="span">
-                  {appendCommaIfLengthNotZero(listing?.city || "") || " "}
-                  {appendCommaIfLengthNotZero(listing?.state || "") || " "}
+                  {appendCommaIfLengthNotZero(listing?.city || "") || " "}{" "}
+                  {appendCommaIfLengthNotZero(listing?.state || "") || " "}{" "}
                   {listing?.country}
                 </Text>
               </Text>

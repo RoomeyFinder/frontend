@@ -24,8 +24,8 @@ interface IRecommendationsState {
 const initialState: IRecommendationsState = {
   rooms: [],
   roomies: [],
-  loadingRooms: true,
-  loadingRoomies: true,
+  loadingRooms: false,
+  loadingRoomies: false,
   errorMessage: "",
   isUsingFallbackForRooms: false,
   isUsingFallbackForRoomies: false,
