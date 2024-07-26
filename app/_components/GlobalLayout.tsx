@@ -39,7 +39,7 @@ export default function GlobalLayout({
   }, [pathname])
   useEffect(() => {
     if (!user) dispatch(checkAuthStatus())
-  }, [dispatch, router, pathname, user])
+  }, [dispatch, user])
 
   useEffect(() => {
     if (
@@ -52,7 +52,7 @@ export default function GlobalLayout({
       router.push("/")
       dispatch(logout())
     }
-  }, [shouldLogout, dispatch])
+  }, [shouldLogout, dispatch, pathname, router, user])
 
   useEffect(() => {
     const hasForcedLogout = localStorage.getItem("hasForcedLogout")

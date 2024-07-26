@@ -1,6 +1,4 @@
 import {
-  Button,
-  Divider,
   Flex,
   Heading,
   HStack,
@@ -8,7 +6,6 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
-import PadlockDivider from "../_assets/SVG/PadlockDivider"
 import User from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
 import { FavoriteType } from "../_types/Favorites"
@@ -71,7 +68,6 @@ export default function RoomeyListingCard({
 }
 
 function NameAgeAndGender({ user }: { user: User }) {
-  const router = useRouter()
   const ageInYears = useMemo(
     () => getAgeInYears(new Date(user.dob)),
     [user.dob]
@@ -122,7 +118,7 @@ function NameAgeAndGender({ user }: { user: User }) {
   )
 }
 
-function AboutSection({ about }: { about: string }) {
+export function AboutSection({ about }: { about: string }) {
   return (
     <Flex flexDir="column" textAlign="center" gap="1rem">
       <Heading as="h6" fontSize="1.6rem" lineHeight="1.6rem">

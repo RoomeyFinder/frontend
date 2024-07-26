@@ -1,14 +1,12 @@
 import {
   Radio,
-  Flex,
   Input,
-  Select,
   VStack,
   Text,
   RadioGroup,
   Heading,
 } from "@chakra-ui/react"
-import { ChangeEventHandler, ReactNode, useEffect, useState } from "react"
+import { ReactNode, useEffect } from "react"
 import toast from "react-hot-toast"
 
 export default function SearchBar({

@@ -19,7 +19,6 @@ import RoomListingCard from "../_components/RoomListingCard"
 import { RoomListingCardSkeleton } from "../_components/Skeletons/ListingCardSkeleton"
 import { fetchListings } from "../_redux/thunks/search.thunk"
 import SearchBar, {
-  GenderFilter,
   NumberOfBedroomsFilter,
   RentDurationFilter,
   RentFilter,
@@ -45,28 +44,10 @@ function ListingsSection() {
   const [cache, setCache] = useState({})
   const [results, setResults] = useState([])
   const [showFilters, setShowFilters] = useState(false)
-  const [searchBarPositionAndZIndex, setSearchBarPositionAndZIndex] = useState({
-    top: "8rem",
-    zIndex: 1000,
-  })
+
   const { user } = useAppSelector((store) => store.auth)
   const { listings, loading } = useAppSelector((store) => store.search)
 
-  useEffect(() => {
-    document.body.firstElementChild?.addEventListener("scroll", (e) => {
-      if (e.target) {
-        const container = e.target as any
-        if (container.scrollTop > 80) {
-          setSearchBarPositionAndZIndex({ top: "0", zIndex: 1000 })
-        } else {
-          setSearchBarPositionAndZIndex({ top: "8rem", zIndex: 100 })
-        }
-      }
-    })
-    return () => {
-      document.body.firstElementChild?.removeEventListener("scroll", () => {})
-    }
-  }, [])
   const [searchCoordinates, setSearchCoordinates] = useState<null | {
     lat: number
     lng: number
