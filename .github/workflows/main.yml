@@ -1,0 +1,27 @@
+name: CI/CD
+on:
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    # 1. install node modules 
+    - run: npm install
+    # 2. just build the application for now since we don't really have any
+    #    tests. 
+    - run: npm run build
+      env:
+        CI: false
+      
+    
+    # linting/airbnb !?
