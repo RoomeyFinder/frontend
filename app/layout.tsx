@@ -22,8 +22,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" style={{ height: "100%" }}>
-      <body style={{ height: "100%", overflow: "hidden" }}>
+    <html 
+    // lang="en" style={{ height: "100%" }}
+    >
+      <body 
+      // style={{ height: "100%", overflow: "hidden" }}
+      >
         <Suspense fallback={<PageLoader />}>
           <ChakraUIProvider>
             <LocalForageProvider>

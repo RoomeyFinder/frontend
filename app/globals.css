@@ -9,12 +9,14 @@
 html {
   font-size: 10px;
   background: white;
+  overscroll-behavior: none !important;
+  background-color: #f4f4f480;
 }
 
 body {
-  /* overflow: hidden; */
   background: white;
   color: white;
+  overscroll-behavior: none !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -98,12 +100,18 @@ input:checked ~ .custom-toggle-dot {
 }
 @keyframes pulse {
   0% {
-    opacity: .6;
+    opacity: 0.6;
   }
   50% {
     opacity: 1;
   }
   100% {
-    opacity: .6;
+    opacity: 0.6;
+  }
+}
+@supports (-webkit-touch-callout: none) {
+  /* CSS specific to iOS devices */
+  .header {
+    position: static !important;
   }
 }

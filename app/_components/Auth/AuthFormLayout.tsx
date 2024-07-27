@@ -72,6 +72,7 @@ export default function AuthFormLayout({
         maxW="85.9rem"
         mx="auto"
         as="form"
+        pb="3rem"
         onSubmit={(e: FormEvent) => {
           e.preventDefault()
           handleSubmit()
@@ -107,7 +108,6 @@ export default function AuthFormLayout({
           justifyContent="space-between"
           alignItems="center"
           gap="2rem"
-          // flexDir={{ base: "column-reverse", sm: "row" }}
         >
           {showBackButton && (
             <Button
