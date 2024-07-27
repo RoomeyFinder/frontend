@@ -127,12 +127,19 @@ export default function GlobalLayout({
     )
   return (
     <>
-      <Box maxW={{ "2xl": "144rem" }} mx="auto" h="full" overflow="auto">
+      <Box
+        maxW={{ "2xl": "144rem" }}
+        mx="auto"
+        h="full"
+        overflow="auto"
+        overscrollBehavior={"none"}
+      >
         <AppHeader />
         <Flex
           justifyContent="center"
           alignItems="center"
-          minH={{ base: "80dvh" }}
+          // mt="8rem"
+          // minH={{ base: "80dvh" }}
         >
           <Box flexGrow="1">{children}</Box>
         </Flex>
