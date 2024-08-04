@@ -25,7 +25,7 @@ const initialState: IAuthState = {
   loading: true,
   errorMessage: "",
   isUsingFallback: false,
-  shouldLogout: false
+  shouldLogout: false,
 }
 
 export const authSlice = createSlice({
@@ -36,6 +36,7 @@ export const authSlice = createSlice({
       state.token = null
       state.user = null
       Object.values(STORAGE_KEYS).forEach((val) => localforage.removeItem(val))
+      Object.values(STORAGE_KEYS).forEach((val) => localStorage.removeItem(val))
     },
     authenticate: (
       state,
