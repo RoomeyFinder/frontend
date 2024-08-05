@@ -119,7 +119,7 @@ export default function ClientContent() {
     )
 
   return (
-    <Box height="calc(100dvh - 9rem)" overflow="auto" ref={containerRef as any}>
+    <Box ref={containerRef as any}>
       <VStack
         gap={{ base: "3rem" }}
         alignItems="start"

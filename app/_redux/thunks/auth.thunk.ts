@@ -10,8 +10,8 @@ export const checkAuthStatus = createAsyncThunk(
       url: "/users/me",
       method: "get",
     })
+    if (response.statusCode !== 200) return thunkAPI.rejectWithValue(response)
     const storedUser = await localforage.getItem(STORAGE_KEYS.RF_USER)
-    if(response.statusCode !== 200) return thunkAPI.rejectWithValue(response)
     return {
       user: response.statusCode === 200 ? response.user : storedUser || null,
       statusCode: response.statusCode,
