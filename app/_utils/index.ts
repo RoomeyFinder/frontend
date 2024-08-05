@@ -83,9 +83,7 @@ export function isStrongPassword(password: string): boolean {
 
 export async function getTokenFromStorage() {
   let token = await localforage.getItem(STORAGE_KEYS.RF_TOKEN)
-  console.log(token, "before")
   if (!token) token = localStorage.getItem(STORAGE_KEYS.RF_TOKEN)
-  console.log(token, "after")
   return token
 }
 

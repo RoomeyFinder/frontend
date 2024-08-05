@@ -122,7 +122,10 @@ function ContinueExploring({
   if (!show) return null
   return (
     <Text
-      onClick={() => {
+      as="a"
+      href="/ads"
+      onClick={(e) => {
+        e.preventDefault()
         if (loading === false && user === null)
           return showAuthModal({
             title: "Sign in to view more ads",
@@ -130,7 +133,6 @@ function ContinueExploring({
           })
         else typeof onClick === "function" && onClick()
       }}
-      as="button"
       color="brand.main"
       fontSize={{ base: "1.6rem", md: "1.9rem" }}
       display="flex"
@@ -163,7 +165,8 @@ export function Hero() {
         justifyContent="space-between"
         alignItems="center"
         flexDir={{ base: "column", md: "row" }}
-        py={{ base: "5rem", md: "10rem" }}
+        pb={{ base: "5rem", md: "10rem" }}
+        pt={{ base: "", md: "8rem" }}
         maxW="125rem"
         w="90%"
         mx="auto"

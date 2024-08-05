@@ -119,13 +119,13 @@ export default function ClientContent() {
     )
 
   return (
-    <Box height="calc(100dvh - 9rem)" overflow="auto" ref={containerRef as any}>
+    <Box ref={containerRef as any}>
       <VStack
         gap={{ base: "3rem" }}
         alignItems="start"
         maxW={{ sm: "90%", md: "88dvw", xl: "125rem" }}
         mx="auto"
-        pt={{ base: "7.5rem" }}
+        pt={{ base: "9.5rem", md: "15.5rem" }}
         pb={{ base: "8rem", md: "12rem" }}
       >
         <BackButton left="" />

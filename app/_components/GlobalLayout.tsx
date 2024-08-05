@@ -138,8 +138,7 @@ export default function GlobalLayout({
         <Flex
           justifyContent="center"
           alignItems="center"
-          // mt="8rem"
-          // minH={{ base: "80dvh" }}
+          pt="8rem"
         >
           <Box flexGrow="1">{children}</Box>
         </Flex>

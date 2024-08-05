@@ -42,6 +42,7 @@ export const authSlice = createSlice({
       state,
       action: PayloadAction<{ user: User; token: string }>
     ) => {
+      state.shouldLogout = false
       state.user = action.payload.user
       state.token = action.payload.token
       localStorage.setItem(STORAGE_KEYS.RF_TOKEN, action.payload.token)
@@ -52,6 +53,7 @@ export const authSlice = createSlice({
       state.user = state.user
         ? { ...state.user, ...action.payload }
         : state.user
+      state.shouldLogout = false
     },
     updateErrorMessage: (state, action: PayloadAction<string>) => {
       state.errorMessage = action.payload
@@ -78,6 +80,7 @@ export const authSlice = createSlice({
           state.user = payload.user as User
           localforage.setItem(STORAGE_KEYS.RF_USER, payload.user)
           state.loading = false
+          state.shouldLogout = false
           state.isUsingFallback = payload.statusCode !== 200
         }
       )
