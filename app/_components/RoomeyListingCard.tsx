@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Heading,
-  HStack,
-  Text,
-  VStack,
-} from "@chakra-ui/react"
+import { Flex, Heading, HStack, Text, VStack } from "@chakra-ui/react"
 import ProfileAvatar from "./ProfileAvatar"
 import User from "../_types/User"
 import { FavouriteButton } from "./RoomListingCard"
@@ -42,7 +36,11 @@ export default function RoomeyListingCard({
       background="transparent"
       cursor="pointer"
       h="full"
-      onClick={() => router.push(`/users/${user._id}`)}
+      as="a"
+      onClick={(e) => {
+        e.preventDefault()
+        router.push(`/users/${user._id}`)
+      }}
       _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
     >
       {!isLocked && (

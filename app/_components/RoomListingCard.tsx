@@ -45,14 +45,17 @@ export default function RoomListingCard({
 
   return (
     <Flex
-      onClick={() =>
+      as="a"
+      href={`/ads/${listing._id}`}
+      onClick={(e) => {
+        e.preventDefault()
         user
           ? router.push(`/ads/${listing._id}`)
           : showAuthModal({
               title: "Sign in to view this listing",
               nextUrl: `/ads/${listing._id}`,
             })
-      }
+      }}
       w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
       alignItems="start"
