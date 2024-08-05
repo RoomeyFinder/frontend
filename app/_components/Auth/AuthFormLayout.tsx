@@ -66,7 +66,7 @@ export default function AuthFormLayout({
   }, [user, nextRoute, loadingAuthState])
 
   return (
-    <Box as="main">
+    <Box as="main" pt="8rem">
       <Box
         w="85dvw"
         maxW="85.9rem"

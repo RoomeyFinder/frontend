@@ -163,7 +163,8 @@ export function Hero() {
         justifyContent="space-between"
         alignItems="center"
         flexDir={{ base: "column", md: "row" }}
-        py={{ base: "5rem", md: "10rem" }}
+        pb={{ base: "5rem", md: "10rem" }}
+        pt={{ base: "", md: "8rem" }}
         maxW="125rem"
         w="90%"
         mx="auto"
