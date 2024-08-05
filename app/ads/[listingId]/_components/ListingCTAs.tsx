@@ -17,7 +17,7 @@ export default function ListingCTAs({
   return (
     <>
       <Flex
-        pos="sticky"
+        pos="fixed"
         insetX="0"
         bottom={{ base: "0" }}
         alignItems="center"
