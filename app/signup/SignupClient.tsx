@@ -41,7 +41,7 @@ function SignupConsumer() {
       handleFormDataChange(contactDetails.name, "email", unverifiedEmail)
       totalStages.navigateToStage(2)
     }
-  }, [totalStages, contactDetails.name, isSignupDone])
+  }, [totalStages, contactDetails.name, isSignupDone, handleFormDataChange])
 
   useEffect(() => {
     window.addEventListener("beforeunload", () => {

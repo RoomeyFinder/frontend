@@ -1,7 +1,7 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
-import { Box, Fade, Flex } from "@chakra-ui/react"
+import { Box, Fade } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"

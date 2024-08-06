@@ -1,3 +1,4 @@
+import ActiveBall from "@/app/_assets/SVG/ActiveBall"
 import LogoutIcon from "@/app/_assets/SVG/Logout"
 import ThreeDotsVertical from "@/app/_assets/SVG/ThreeDots"
 import { sidebarLinks } from "@/app/_data/navLinks"
@@ -154,6 +155,7 @@ function UserInfoHeading() {
             hour: "2-digit",
             minute: "2-digit",
           })}
+          <ActiveBall />
         </Text>
       </Box>
       <Show above="md">
