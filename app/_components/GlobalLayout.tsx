@@ -145,13 +145,15 @@ export default function GlobalLayout({
           pos="sticky"
           top="7rem"
           alignItems="start"
-          bg="#f4f4f480"
+          bg="#f4f4f4"
         >
           <GridItem
             colStart={1}
             colSpan={12}
             h="calc(100dvh - 8rem)"
             overflow="auto"
+            display="flex"
+            flexDir="column"
           >
             <Box bg="white">{children}</Box>
             <AppFooter />
