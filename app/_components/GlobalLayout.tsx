@@ -133,15 +133,13 @@ export default function GlobalLayout({
         h="full"
         overflow="auto"
         overscrollBehavior={"none"}
+        pt="8rem"
+        bg="#f4f4f408"
       >
         <AppHeader />
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          pt="8rem"
-        >
-          <Box flexGrow="1">{children}</Box>
-        </Flex>
+        <Box flexGrow="1" bg="white">
+          {children}
+        </Box>
         <AppFooter />
       </Box>
     </>
