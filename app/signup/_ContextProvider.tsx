@@ -44,6 +44,7 @@ export default function SignupProvider({
         body: {
           ...profileInitials.formData,
           ...contactDetails.formData,
+          gender: profileInitials.formData.gender === "nil" ? undefined : profileInitials.formData.gender
         } as RequestBody,
       })
       if (res.statusCode === 201) {
