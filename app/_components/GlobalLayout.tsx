@@ -136,7 +136,7 @@ export default function GlobalLayout({
         overflow="hidden"
         bg="white"
       >
-        <Box w="full" pos="sticky" zIndex="200" top="0">
+        <Box w="full" pos="sticky" top="0" zIndex={19}>
           <AppHeader />
         </Box>
         <SimpleGrid
@@ -146,6 +146,7 @@ export default function GlobalLayout({
           top="7rem"
           alignItems="start"
           bg="#f4f4f4"
+          zIndex={9}
         >
           <GridItem
             colStart={1}

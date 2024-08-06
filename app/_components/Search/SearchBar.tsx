@@ -5,6 +5,7 @@ import {
   Text,
   RadioGroup,
   Heading,
+  HStack,
 } from "@chakra-ui/react"
 import { ReactNode, useEffect } from "react"
 import toast from "react-hot-toast"
@@ -78,35 +79,37 @@ export const NumberOfBedroomsFilter = ({
       value={value}
       onChange={(val) => handleSelection(val)}
     >
-      <VStack alignItems="start" spacing={[2, 5]} direction={["column", "row"]}>
+      <VStack alignItems="start" gap="2rem" direction={["column", "row"]}>
         <Heading as="h3" fontSize="1.6rem" fontWeight="700">
           Number of bedrooms
         </Heading>
-        <Radio size="lg" value="studio" fontSize="1.6rem">
-          <Text as="span" fontSize="1.6rem">
-            Studio apartment
-          </Text>
-        </Radio>
-        <Radio size="lg" value="1" fontSize="1.6rem">
-          <Text as="span" fontSize="1.6rem">
-            1
-          </Text>
-        </Radio>
-        <Radio size="lg" value="2" fontSize="1.6rem">
-          <Text as="span" fontSize="1.6rem">
-            2
-          </Text>
-        </Radio>
-        <Radio size="lg" value="3" fontSize="1.6rem">
-          <Text as="span" fontSize="1.6rem">
-            3
-          </Text>
-        </Radio>
-        <Radio size="lg" value="4" fontSize="1.6rem">
-          <Text as="span" fontSize="1.6rem">
-            4+
-          </Text>
-        </Radio>
+        <HStack gap="2rem" flexWrap="wrap">
+          <Radio size="lg" value="studio" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              Studio
+            </Text>
+          </Radio>
+          <Radio size="lg" value="1" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              1
+            </Text>
+          </Radio>
+          <Radio size="lg" value="2" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              2
+            </Text>
+          </Radio>
+          <Radio size="lg" value="3" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              3
+            </Text>
+          </Radio>
+          <Radio size="lg" value="4" fontSize="1.6rem">
+            <Text as="span" fontSize="1.6rem">
+              4+
+            </Text>
+          </Radio>
+        </HStack>
       </VStack>
     </RadioGroup>
   )
