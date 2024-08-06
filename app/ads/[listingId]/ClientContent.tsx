@@ -125,7 +125,7 @@ export default function ClientContent() {
         alignItems="start"
         maxW={{ sm: "90%", md: "88dvw", xl: "125rem" }}
         mx="auto"
-        pt={{ base: "9.5rem", md: "15.5rem" }}
+        pt={{ base: "9.5rem", md: "9rem" }}
         pb={{ base: "8rem", md: "12rem" }}
       >
         <BackButton left="" />

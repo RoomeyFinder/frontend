@@ -9,27 +9,29 @@ export default function Welcome() {
       gap="4rem"
       maxW="120rem"
       mx="auto"
-      minH={{ base: "60dvh", md: "60dvh" }}
+      minH={{ base: "70dvh", md: "68dvh" }}
       alignItems={{ sm: "center" }}
       px={{ base: "3rem", sm: "6rem" }}
       bgImage={{
         base: "url(https://res.cloudinary.com/messengerapptask/image/upload/v1719666824/welcome_eeuyan.svg)",
       }}
-      bgSize={{ base: "25rem", sm: "30rem", md: "contain" }}
+      bgSize={{ base: "25rem", sm: "30rem", md: "48rem" }}
       bgRepeat="no-repeat"
       bgPos={{ base: "top", sm: "left" }}
     >
       <Flex
         flexDir="column"
+        mt={{ base: "9rem", sm: "0" }}
         alignItems={{ base: "center", sm: "end" }}
-        justifyContent="end"
+        justifyContent="center"
         textAlign={{ base: "center", sm: "right" }}
         gap="2.4rem"
+        pt={{ base: "3rem"}}
       >
         <Heading variant="large" fontWeight="500">
           Welcome To{" "}
           <Text
-            textShadow="2px  2px #3a86ff30"
+            textShadow="2px 2px #3a86ff30"
             fontSize="inherit"
             fontWeight="inherit"
             as="span"

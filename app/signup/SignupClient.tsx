@@ -36,6 +36,14 @@ function SignupConsumer() {
   } = useContext(SignupContext)
 
   useEffect(() => {
+    const unverifiedEmail = sessionStorage.getItem("unverifiedEmail")
+    if (!isSignupDone && unverifiedEmail && totalStages.currentStage !== 2) {
+      handleFormDataChange(contactDetails.name, "email", unverifiedEmail)
+      totalStages.navigateToStage(2)
+    }
+  }, [totalStages, contactDetails.name, isSignupDone, handleFormDataChange])
+
+  useEffect(() => {
     window.addEventListener("beforeunload", () => {
       sessionStorage.removeItem("unverifiedEmail")
     })
