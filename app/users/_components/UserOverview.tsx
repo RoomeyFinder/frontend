@@ -104,7 +104,7 @@ export default function UserOverview({
               >
                 {lastSeen === "Just now" ? (
                   <>
-                    <ActiveBall color="green" />
+                    <ActiveBall color="#14b474" />
                     <Text as="span">Active</Text>
                   </>
                 ) : (

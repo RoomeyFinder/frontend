@@ -147,7 +147,7 @@ function UserInfoHeading() {
           size="xl"
         />
         <Text pos="absolute" top="80%" right="15%">
-          <ActiveBall color="green" />
+          <ActiveBall color="#14b474" />
         </Text>
       </Box>
       <Text fontSize="2rem" textTransform="capitalize" noOfLines={2}>
