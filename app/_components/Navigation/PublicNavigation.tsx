@@ -125,6 +125,7 @@ export default function PublicNavigation() {
                   height: "unset",
                   justifyContent: "center",
                 }}
+                handleClose={onClose}
               />
             </DrawerBody>
           </DrawerContent>
