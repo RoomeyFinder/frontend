@@ -167,9 +167,8 @@ export default function PreferencesPage() {
             <LifestyleInputs
               selectedValues={lifestyle}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                console.log(e.target.value)
                 const value = e.target.value as any
-                if (leaseDurations.includes(value))
+                if (lifestyle.includes(value))
                   setLifestyle((prev) => prev.filter((it) => it !== value))
                 else setLifestyle((prev) => [...prev, value])
               }}
