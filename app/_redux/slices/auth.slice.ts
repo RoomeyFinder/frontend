@@ -43,6 +43,7 @@ export const authSlice = createSlice({
       action: PayloadAction<{ user: User; token: string }>
     ) => {
       state.shouldLogout = false
+      state.loading = false
       state.user = action.payload.user
       state.token = action.payload.token
       localStorage.setItem(STORAGE_KEYS.RF_TOKEN, action.payload.token)
@@ -78,6 +79,7 @@ export const authSlice = createSlice({
         ) => {
           const payload = action.payload
           state.user = payload.user as User
+          state.token = localStorage.getItem(STORAGE_KEYS.RF_TOKEN)
           localforage.setItem(STORAGE_KEYS.RF_USER, payload.user)
           state.loading = false
           state.shouldLogout = false

@@ -265,19 +265,19 @@ function OwnersInfo({
       >
         Stay with{" "}
         <Text
-          as={Link}
-          href={`/users/${ownerId}`}
+          as={"button"}
           onClick={(e) => {
             e.stopPropagation()
             e.preventDefault()
-             user
-               ? router.push(`/users/${ownerId}`)
-               : showAuthModal({
-                   title: "Sign in to view this Profile",
-                   nextUrl: `/users/${ownerId}`,
-                 })
+            user
+              ? router.push(`/users/${ownerId}`)
+              : showAuthModal({
+                  title: "Sign in to view this Profile",
+                  nextUrl: `/users/${ownerId}`,
+                })
           }}
           textTransform="capitalize"
+          _hover={{ textDecor: "underline" }}
         >
           {ownersName}
         </Text>

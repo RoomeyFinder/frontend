@@ -34,6 +34,7 @@ import ListingPhotos from "./_components/ListingPhotos"
 import {
   appendCommaIfLengthNotZero,
   capitalizeFirstLetter,
+  getTokenFromStorage,
   pluralizeText,
 } from "@/app/_utils"
 import ListingInfoCard from "./_components/ListingInfoCard"
@@ -48,6 +49,7 @@ import { AppFooterContent } from "@/app/_components/AppFooter"
 
 export default function ClientContent() {
   const params = useParams()
+  const { token } = useAppSelector((store) => store.auth)
   const [showShareOptions, setShowShareOptions] = useState(false)
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
@@ -58,6 +60,10 @@ export default function ClientContent() {
     const res = await fetchData({
       url: `/listings/${listingId}`,
       method: "get",
+      headers: {
+        authorization: `Bearer ${(await getTokenFromStorage()) || token}`,
+        contentType: "application/json",
+      },
     })
     if (res.statusCode === 200) {
       setListing(res.listing)
@@ -65,7 +71,7 @@ export default function ClientContent() {
       setError(res.message || "Listing not found")
     }
     setLoading(false)
-  }, [listingId, fetchData])
+  }, [listingId, fetchData, token])
 
   useEffect(() => {
     fetchListingById()
@@ -174,7 +180,6 @@ export default function ClientContent() {
                       top: 200000,
                       behavior: "smooth",
                     })
-                    console.log(containerRef.current, "dfsdasd")
                   }}
                   fontSize="1.8rem"
                   fontWeight="600"
