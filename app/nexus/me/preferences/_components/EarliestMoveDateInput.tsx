@@ -18,10 +18,13 @@ export default function EarliestMoveDateInput({
         {...defaultInputStyles}
         type="date"
         name="earliestMoveDate"
+        placeholder="Earliest Move Date"
         value={value}
         onChange={onChange}
         w="100%"
         maxW="20rem"
+        height="3.3rem"
+        textAlign="left"
       />
     </VStack>
   )
