@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { logout } from "@/app/_redux/slices/auth.slice"
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Flex,
@@ -137,27 +138,21 @@ function UserInfoHeading() {
       pl={{ base: "2rem", sm: "4rem", md: "5rem" }}
       pr={{ base: "2rem", sm: "3rem" }}
     >
-      <Avatar
-        src={user?.profileImage?.secure_url}
-        name={user ? `${user?.firstName}  ${user?.lastName}` : ""}
-        bg="brand.10"
-        color="brand.main"
-        size="xl"
-      />
-      <Box>
-        <Text fontSize="2rem" textTransform="capitalize" noOfLines={1}>
-          {user?.firstName} {user?.lastName}
-        </Text>
-        <Text color="gray.100" fontSize="1.4rem">
-          Last seen:{" "}
-          {new Date(user?.lastSeen || Date.now()).toLocaleTimeString("en-us", {
-            hour12: false,
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-          <ActiveBall />
+      <Box pos="relative">
+        <Avatar
+          src={user?.profileImage?.secure_url}
+          name={user ? `${user?.firstName}  ${user?.lastName}` : ""}
+          bg="brand.10"
+          color="brand.main"
+          size="xl"
+        />
+        <Text pos="absolute" top="80%" right="15%">
+          <ActiveBall color="green" />
         </Text>
       </Box>
+      <Text fontSize="2rem" textTransform="capitalize" noOfLines={2}>
+        {user?.firstName} {user?.lastName}
+      </Text>
       <Show above="md">
         <Popover placement="bottom-end">
           <PopoverTrigger>

@@ -1,4 +1,5 @@
 import moment from "moment"
+import { pluralizeText } from "."
 
 const THIRTY_DAY_MONTHS = [3, 5, 8, 10]
 
@@ -46,14 +47,15 @@ export function timeAgo(date: Date) {
     else if (days === 365) return "1yr"
     if (days < 7) return `${days}d`
     else if (days === 7) return "1wk"
-    else return `${Math.round(days / 7)}wks`
+    else
+      return `${Math.round(days / 7)}${pluralizeText("wk", Math.round(days / 7), "s")}`
   } else if (days === 1) {
     return "1d"
   } else if (hours > 0) {
-    return `${hours}hr${hours !== 1 ? "s" : ""}`
+    return `${hours}${pluralizeText("hr", hours, "s")}`
   } else if (minutes > 0) {
-    return `${minutes}m`
-  } else if (seconds > 0) {
+    return `${minutes}${pluralizeText("min", minutes, "s")}`
+  } else if (seconds > 50) {
     return `${seconds}s`
   } else return "Just now"
 }
