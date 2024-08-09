@@ -7,17 +7,11 @@ import Link from "next/link"
 export default function AppHeader() {
   return (
     <Flex
-      data-testid="header"
       as="header"
-      className="header"
-      position="fixed"
-      zIndex="1000"
-      top="0"
-      insetX="0"
-      h="8rem"
-      px={{ base: "5.5%", md: "5.5%" }}
-      boxShadow="0px 2px 0px 0px rgba(0,0,0,0.05);"
-      bg="white.main"
+      bg="rgba(58, 134, 255, 0.05)"
+      height="8rem"
+      width="100dvw"
+      px={{ base: "1.5rem", sm: "4rem", md: "6rem" }}
     >
       <Flex
         justifyContent={{ base: "space-between" }}

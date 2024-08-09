@@ -30,6 +30,9 @@ const PageLoader = () => {
       position="relative"
       flexDir="column-reverse"
       gap="3rem"
+      pos="fixed"
+      inset="0"
+      bg="white"
     >
       <Text fontSize="2rem" fontWeight="500">
         RoomeyFinder

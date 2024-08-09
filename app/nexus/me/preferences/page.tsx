@@ -15,6 +15,7 @@ import { getAddressComponents } from "@/app/_utils/google"
 import { updatePreferences } from "@/app/_redux/thunks/auth.thunk"
 import { useRouter } from "next/navigation"
 import BackButton from "@/app/_components/BackButton"
+import toast from "react-hot-toast"
 
 export default function PreferencesPage() {
   const router = useRouter()
@@ -53,11 +54,15 @@ export default function PreferencesPage() {
           city: formData.targetCity,
           region: formData.targetState,
         })
-        if (res.status !== "OK")
+        if (res.status !== "OK") {
+          toast.error(
+            "The coordinates of the city and state you provided were not found!"
+          )
           return setErrors({
             location:
               "The coordinates of the city and state you provided were not found!",
           })
+        }
         formData = {
           ...formData,
           longitude: res.results[0].geometry.location.lng,
@@ -162,9 +167,8 @@ export default function PreferencesPage() {
             <LifestyleInputs
               selectedValues={lifestyle}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                console.log(e.target.value)
                 const value = e.target.value as any
-                if (leaseDurations.includes(value))
+                if (lifestyle.includes(value))
                   setLifestyle((prev) => prev.filter((it) => it !== value))
                 else setLifestyle((prev) => [...prev, value])
               }}

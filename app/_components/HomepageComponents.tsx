@@ -166,7 +166,7 @@ export function Hero() {
         alignItems="center"
         flexDir={{ base: "column", md: "row" }}
         pb={{ base: "5rem", md: "10rem" }}
-        pt={{ base: "", md: "8rem" }}
+        pt={{ base: "4rem", md: "8rem" }}
         maxW="125rem"
         w="90%"
         mx="auto"
@@ -205,12 +205,13 @@ export function Hero() {
             {user ? "My Dashboard" : " Get Started"}
           </Button>
         </Box>
-        <Box maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}>
-          <Image
-            src="https://res.cloudinary.com/messengerapptask/image/upload/v1719666871/hero-image_hokwu8.jpg"
-            alt="Hero image for Roomeyfinder. Two ladies sitting on a blue couch having coffee"
-          />
-        </Box>
+        <Image
+          minW={{ base: "100%", md: "60rem" }}
+          height="auto"
+          maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}
+          src="https://res.cloudinary.com/messengerapptask/image/upload/v1719666871/hero-image_hokwu8.jpg"
+          alt="Two roommates sitting on a blue couch having coffee"
+        />
       </Flex>
     </>
   )

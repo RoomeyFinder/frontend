@@ -12,6 +12,7 @@ export default function AppLogo({
         src="/images/logo.png"
         width="3.588rem"
         height="3rem"
+        objectFit="contain"
         alt="RoomeyFinder Logo - Two magnifying glasses upside down connected by their handles forming an acute angle"
       />
       <Text

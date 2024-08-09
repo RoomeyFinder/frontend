@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import axios, { AxiosHeaders, AxiosRequestConfig } from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 import { getTokenFromStorage } from "../_utils"
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_URL
@@ -10,7 +10,7 @@ export type RequestBody = AxiosRequestConfig["data"]
 export type FetchOptions = {
   url: string
   method: "get" | "post" | "put" | "delete"
-  headers?: AxiosHeaders
+  headers?: { [x: string]: string }
   baseURL?: string
   body?: RequestBody
 }
@@ -21,11 +21,10 @@ export default function useAxios() {
     async ({ url, method, body, headers, baseURL }: FetchOptions) => {
       setIsFetching(true)
       try {
+        axios.defaults.headers.common["Authorization"] =
+          `Bearer ${await getTokenFromStorage()}`
         const response = await axios[method](url, body, {
-          headers: {
-            ...headers,
-            authorization: `Bearer ${await getTokenFromStorage()}`,
-          },
+          ...headers,
           baseURL: baseURL || process.env.NEXT_PUBLIC_SERVER_URL,
         })
         return await response.data

@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react"
 import defaultCoverImg from "@/app/_assets/images/default-user-cover.png"
 import InterestButton from "@/app/_components/InterestButton"
-import { getAgeInYears } from "@/app/_utils/date"
+import { getAgeInYears, timeAgo } from "@/app/_utils/date"
 import LookingForIcon from "@/app/_assets/SVG/LookingForIcon"
 import { ReactNode, useMemo, useState } from "react"
 import GenderIcon from "@/app/_assets/SVG/GenderIcon"
@@ -35,6 +35,7 @@ import RoomListingCard from "@/app/_components/RoomListingCard"
 import BackButton from "@/app/_components/BackButton"
 import EditSVG from "@/app/_assets/SVG/Edit"
 import { useRouter } from "next/navigation"
+import ActiveBall from "@/app/_assets/SVG/ActiveBall"
 
 export const lookingForMappings = {
   both: "a Roommate and an Apartment",
@@ -61,6 +62,10 @@ export default function UserOverview({
   const [showMore, setShowMore] = useState(false)
   const aboutPreview = useMemo(() => user.about?.slice(0, 600), [user.about])
   const router = useRouter()
+  const lastSeen = useMemo(
+    () => user?.lastSeen && timeAgo(new Date(user?.lastSeen)),
+    [user.lastSeen]
+  )
   return (
     <Box minH="calc(100vh - 9rem)" w="full">
       <BackButton />
@@ -89,6 +94,23 @@ export default function UserOverview({
               >
                 {user.firstName} {user.lastName}
               </Heading>
+              <Text
+                as="span"
+                fontSize="1.2rem"
+                color={lastSeen === "Just now" ? "green" : "gray.100"}
+                display="flex"
+                alignItems="center"
+                gap=".5rem"
+              >
+                {lastSeen === "Just now" ? (
+                  <>
+                    <ActiveBall color="#14b474" />
+                    <Text as="span">Active</Text>
+                  </>
+                ) : (
+                  `Last seen: ${lastSeen} ago`
+                )}
+              </Text>
               <Flex
                 gap=".8rem"
                 fontSize="1.5rem"

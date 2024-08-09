@@ -108,6 +108,7 @@ export default function RoomListingCard({
       <Box p=".5rem" roundedBottom="1.2rem">
         <OwnersInfo
           ownersName={`${listing.owner?.firstName} ${listing.owner?.lastName}`}
+          ownerId={listing.owner?._id || ""}
         />
         <AboutSection
           rentAmount={listing.rentAmount || 0}
@@ -242,7 +243,16 @@ export function FavouriteButton({
   )
 }
 
-function OwnersInfo({ ownersName }: { ownersName: string }) {
+function OwnersInfo({
+  ownersName,
+  ownerId,
+}: {
+  ownersName: string
+  ownerId: string
+}) {
+  const { user } = useAppSelector((store) => store.auth)
+  const { open: showAuthModal } = useContext(AuthModalContext)
+  const router = useRouter()
   return (
     <Flex gap=".8rem" alignItems="center">
       <Avatar w={35} h={35} src={imgOne.src} />
@@ -253,7 +263,21 @@ function OwnersInfo({ ownersName }: { ownersName: string }) {
         lineHeight="1.6rem"
       >
         Stay with{" "}
-        <Text as="span" textTransform="capitalize">
+        <Text
+          as={"button"}
+          onClick={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            user
+              ? router.push(`/users/${ownerId}`)
+              : showAuthModal({
+                  title: "Sign in to view this Profile",
+                  nextUrl: `/users/${ownerId}`,
+                })
+          }}
+          textTransform="capitalize"
+          _hover={{ textDecor: "underline" }}
+        >
           {ownersName}
         </Text>
       </Heading>

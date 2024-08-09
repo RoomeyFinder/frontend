@@ -1,7 +1,7 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
-import { Box, Fade } from "@chakra-ui/react"
+import { Box, Fade, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
@@ -127,21 +127,39 @@ export default function GlobalLayout({
     )
   return (
     <>
-      <Box
-        maxW={{ "2xl": "144rem" }}
-        mx="auto"
-        h="full"
-        overflow="auto"
-        overscrollBehavior={"none"}
-        pt="8rem"
-        bg="#f4f4f408"
+      <VStack
+        w="full"
+        alignItems="stretch"
+        gap=".5rem"
+        height="100dvh"
+        overflow="hidden"
+        bg="white"
       >
-        <AppHeader />
-        <Box flexGrow="1" bg="white">
-          {children}
+        <Box w="full" pos="sticky" top="0" zIndex={19}>
+          <AppHeader />
         </Box>
-        <AppFooter />
-      </Box>
+        <SimpleGrid
+          columns={12}
+          h="calc(100dvh - 8rem)"
+          pos="sticky"
+          top="7rem"
+          alignItems="start"
+          bg="#f4f4f4"
+          zIndex={9}
+        >
+          <GridItem
+            colStart={1}
+            colSpan={12}
+            h="calc(100dvh - 8rem)"
+            overflow="auto"
+            display="flex"
+            flexDir="column"
+          >
+            <Box bg="white">{children}</Box>
+            <AppFooter />
+          </GridItem>
+        </SimpleGrid>
+      </VStack>
     </>
   )
 }

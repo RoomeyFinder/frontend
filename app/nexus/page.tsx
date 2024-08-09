@@ -44,6 +44,7 @@ export default function NexusPage() {
                 <Button
                   bg="transparent"
                   _hover={{ bg: "transparent" }}
+                  _active={{ bg: "transparent" }}
                   h="unset"
                   fontSize="1.6rem"
                   color="brand.main"
@@ -69,6 +70,7 @@ export default function NexusPage() {
                 <Button
                   bg="transparent"
                   _hover={{ bg: "transparent" }}
+                  _active={{ bg: "transparent" }}
                   h="unset"
                   fontSize="1.6rem"
                   color="brand.main"

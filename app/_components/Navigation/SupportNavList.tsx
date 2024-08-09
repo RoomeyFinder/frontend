@@ -57,9 +57,11 @@ export function getSupportMenuElement(
 export default function SupportNav({
   navItemComponent,
   navItemStyles,
+  handleClose,
 }: {
   navItemComponent: ChakraComponent<never, BoxProps>
   navItemStyles?: SystemStyleObject
+  handleClose: () => void
 }) {
   const router = useRouter()
   const SupportMenuComponent = getSupportMenuElement(
@@ -72,7 +74,10 @@ export default function SupportNav({
         {supportLinks.map((link) => (
           <SupportMenuComponent
             key={link.name}
-            onClick={() => router.push(link.href)}
+            onClick={() => {
+              router.push(link.href)
+              handleClose()
+            }}
           >
             {link.name}
           </SupportMenuComponent>

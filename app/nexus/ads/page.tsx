@@ -175,7 +175,7 @@ function ListingsDisplay({
           body={
             <>
               {" "}
-              {currentDisplay} {`${currentDisplay !== "drafts" ? "ads" : ""}`}
+              {currentDisplay} {`${currentDisplay !== "drafts" ? "ads" : ""} `}
               you create will appear here.
             </>
           }

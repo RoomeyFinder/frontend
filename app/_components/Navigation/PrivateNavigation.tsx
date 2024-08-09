@@ -12,6 +12,7 @@ import {
   Show,
   chakra,
   Badge,
+  Link,
 } from "@chakra-ui/react"
 import MessageIcon from "@/app/_assets/SVG/MessageIcon"
 import NotificationIcon from "@/app/_assets/SVG/NotificationIcon"
@@ -162,7 +163,14 @@ function MainPrivateNav() {
   return (
     <>
       <Flex flexDir="column" w="100%" data-testid="profile-nav" shadow="xl">
-        <PrivateMenuItem onClick={() => router.push("/nexus")}>
+        <PrivateMenuItem
+          as={Link}
+          href="/nexus"
+          onClick={(e) => {
+            e.preventDefault()
+            router.push("/nexus")
+          }}
+        >
           <PrivateMenuIcon width="2rem" as={UserIcon} />
           <Text as="span">Dashboard</Text>
         </PrivateMenuItem>

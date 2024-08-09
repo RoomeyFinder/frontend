@@ -111,7 +111,7 @@ function ListingsSection() {
     <>
       <Box maxW="129rem" mx="auto" px={{ md: "4rem" }}>
         <Flex
-          h="calc(100dvh - 8rem)"
+          // h="calc(100dvh - 4rem)"
           overflow="hidden"
           pos={{ md: "relative" }}
           w={{ base: "95%", lg: "full" }}
@@ -119,22 +119,27 @@ function ListingsSection() {
         >
           <Box
             pos={{ base: "fixed", md: "sticky" }}
-            top={{ base: "0", md: "unset" }}
             inset={{ base: 0, md: "unset" }}
             w={{ base: "100%", md: "30%", lg: "20%" }}
             bg="white"
             zIndex={{ base: "1000", md: "1" }}
+            top="8rem"
             transform={{
               base: showFilters ? "translateX(0)" : "translateX(-100%)",
               md: "none",
             }}
+            h="calc(100dvh - 4rem)"
+            overflow="auto"
           >
             <Flex
               display={{ base: "flex", md: "none" }}
+              pos={{ base: "sticky", md: "sticky" }}
               w="full"
+              bg="white"
+              zIndex="10"
               py="1.4rem"
               shadow="lg"
-              pos="relative"
+              top="-.3rem"
             >
               <Text
                 fontSize="1.6rem"
@@ -163,12 +168,13 @@ function ListingsSection() {
             <VStack
               maxW="125rem"
               px={{ base: "1.5rem", lg: "0rem" }}
-              py="4rem"
+              py="2rem"
+              pb="8rem"
               mx="auto"
               alignItems="start"
-              gap="2.1rem"
+              gap="1rem"
             >
-              <Heading fontSize="2.4rem" fontWeight="500" mb="1.4rem">
+              <Heading fontSize="2.4rem" fontWeight="500" mb=".4rem">
                 Filters
               </Heading>
               <RentDurationFilter
