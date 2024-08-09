@@ -19,7 +19,6 @@ import useProtectRoutes from "../_hooks/useProtectRoutes"
 import PageLoader from "./PageLoader"
 import STORAGE_KEYS from "../STORAGE_KEYS"
 import localforage from "localforage"
-import NexusHeading from "./NexusLayout/NexusHeading"
 
 export default function GlobalLayout({
   children,
