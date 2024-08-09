@@ -17,7 +17,6 @@ import {
   Avatar,
   Link,
 } from "@chakra-ui/react"
-import { useRouter } from "next/navigation"
 import { GiGraduateCap } from "react-icons/gi"
 import { IoInformationCircle } from "react-icons/io5"
 
@@ -27,7 +26,6 @@ function getStringRepresentationOfYearOfBirth(yearOfBirth: number) {
 }
 
 export default function ListingOwnerSection({ listing }: { listing: Listing }) {
-  const router = useRouter()
   return (
     <Box
       id="owner-section"

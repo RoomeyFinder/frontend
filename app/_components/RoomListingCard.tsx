@@ -6,7 +6,6 @@ import {
   Flex,
   Heading,
   Image,
-  Link,
   Spinner,
   Text,
 } from "@chakra-ui/react"

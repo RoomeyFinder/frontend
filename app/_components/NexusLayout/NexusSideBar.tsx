@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/app/_redux"
 import { logout } from "@/app/_redux/slices/auth.slice"
 import {
   Avatar,
-  Badge,
   Box,
   Button,
   Flex,
