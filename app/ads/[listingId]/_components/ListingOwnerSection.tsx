@@ -8,7 +8,15 @@ import {
   ProfileCard,
   ProfileIconTextPair,
 } from "@/app/users/_components/UserOverview"
-import { Heading, VStack, Box, Flex, Text, Avatar } from "@chakra-ui/react"
+import {
+  Heading,
+  VStack,
+  Box,
+  Flex,
+  Text,
+  Avatar,
+  Link,
+} from "@chakra-ui/react"
 import { useRouter } from "next/navigation"
 import { GiGraduateCap } from "react-icons/gi"
 import { IoInformationCircle } from "react-icons/io5"
@@ -18,11 +26,7 @@ function getStringRepresentationOfYearOfBirth(yearOfBirth: number) {
   return `${decade}'s`
 }
 
-export default function ListingOwnerSection({
-  listing,
-}: {
-  listing: Listing
-}) {
+export default function ListingOwnerSection({ listing }: { listing: Listing }) {
   const router = useRouter()
   return (
     <Box
@@ -105,14 +109,16 @@ export default function ListingOwnerSection({
               {listing?.owner?.about}
             </Text>
             <Text
-              as="button"
+              as={Link}
+              href={`/users/${listing.owner?._id}`}
+              target="_blank"
               _hover={{ textDecor: "underline" }}
               fontSize="1.5rem"
               display="flex"
               alignItems="center"
               gap=".5rem"
               fontWeight="600"
-              onClick={() => router.push(`/users/${listing.owner?._id}`)}
+              cursor="pointer"
             >
               View full profile
               <Text as="span" display="block" transform="rotate(180deg)">
