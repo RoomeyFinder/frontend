@@ -13,6 +13,7 @@ import { setActiveConversation } from "../_redux/slices/conversations.slice"
 import { socket } from "../_socket/socket"
 import { logout } from "../_redux/slices/auth.slice"
 import PageLoader from "../_components/PageLoader"
+import STORAGE_KEYS from "../STORAGE_KEYS"
 
 export default function Messenger() {
   return (
@@ -26,7 +27,11 @@ function Page() {
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!socket.connected && user !== null) socket.connect()
-    if ((socket.auth as any)?.token === null) dispatch(logout())
+    const tokenInLocalStorage = localStorage.getItem(STORAGE_KEYS.RF_TOKEN)
+    console.log(tokenInLocalStorage, socket.auth, "debug")
+    if (!tokenInLocalStorage && (socket.auth as any)?.token === null) {
+      dispatch(logout())
+    }
   }, [user, dispatch])
   const { activeConversation, conversations, loading } = useAppSelector(
     (store) => store.conversations
@@ -81,9 +86,7 @@ function Page() {
             ) : (
               <InactiveConversationView />
             ))}
-          {loading && (
-            <PageLoader />
-          )}
+          {loading && <PageLoader />}
         </Flex>
       </Flex>
     </>
