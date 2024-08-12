@@ -65,7 +65,7 @@ function Page() {
         router.push("/messenger")
       }
     },
-    [fetchData, router]
+    [fetchData, router, dispatch]
   )
 
   useEffect(() => {
@@ -87,7 +87,7 @@ function Page() {
         dispatch(setActiveConversation(conversation))
       } else fetchConversation(otherUser)
     }
-  }, [searchParams, router, conversations, dispatch])
+  }, [searchParams, router, conversations, dispatch, fetchConversation])
 
   useEffect(() => {
     toast.remove(toastId)
