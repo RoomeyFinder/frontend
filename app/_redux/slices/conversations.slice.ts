@@ -3,6 +3,7 @@ import { fetchUserConversations } from "../thunks/conversations.thunk"
 import localforage from "localforage"
 import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import Conversation, { Message } from "@/app/_types/Conversation"
+import { mergeArrays } from "@/app/_utils"
 
 interface IAuthState {
   conversations: Conversation[]
@@ -44,6 +45,16 @@ export const conversationsSlice = createSlice({
           : convo
       )
     },
+    addNewConversation: (
+      state,
+      action: PayloadAction<Partial<Conversation>>
+    ) => {
+      state.conversations = mergeArrays(
+        [action.payload],
+        [...state.conversations],
+        "_id"
+      )
+    },
     updateUnreadMsgsCount: (
       state,
       action: PayloadAction<{
@@ -52,7 +63,6 @@ export const conversationsSlice = createSlice({
         isSender: boolean
       }>
     ) => {
-      console.log(action.payload)
       if (action.payload.statusCode === 201)
         state.conversations = state.conversations.map((convo) =>
           convo._id === action.payload.message.conversationId
@@ -105,5 +115,6 @@ export const {
   removeActiveConversation,
   updateConversation,
   updateUnreadMsgsCount,
+  addNewConversation,
 } = conversationsSlice.actions
 export default conversationsSlice.reducer

@@ -4,16 +4,21 @@ import { Flex } from "@chakra-ui/react"
 // import Conversations from "./_Components/Conversations"
 // import Banner from "./_Components/Banner"
 // import { MessengerContext } from "../../_providers/MessengerProvider"
-import { Suspense, useEffect, useMemo } from "react"
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import ActiveConversation from "./_Components/ActiveConversation"
 import InactiveConversationView from "./_Components/InactiveConversationView"
 import { useRouter, useSearchParams } from "next/navigation"
-import { setActiveConversation } from "../_redux/slices/conversations.slice"
+import {
+  addNewConversation,
+  setActiveConversation,
+} from "../_redux/slices/conversations.slice"
 import { socket } from "../_socket/socket"
 import { logout } from "../_redux/slices/auth.slice"
 import PageLoader from "../_components/PageLoader"
 import STORAGE_KEYS from "../STORAGE_KEYS"
+import useAxios from "../_hooks/useAxios"
+import toast from "react-hot-toast"
 
 export default function Messenger() {
   return (
@@ -23,6 +28,7 @@ export default function Messenger() {
   )
 }
 function Page() {
+  const { fetchData } = useAxios()
   const { user } = useAppSelector((store) => store.auth)
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -43,6 +49,25 @@ function Page() {
 
   const searchParams = useSearchParams()
   const router = useRouter()
+
+  const [toastId, setToastId] = useState("")
+  const fetchConversation = useCallback(
+    async (otherUser: string) => {
+      const res = await fetchData({
+        url: `/conversations/me/single?otherUser=${otherUser}`,
+        method: "get",
+      })
+      if (res.statusCode === 200) {
+        dispatch(setActiveConversation(res.conversation))
+        dispatch(addNewConversation(res.conversation))
+      } else {
+        setToastId(toast.error("Oops, that conversation was not found."))
+        router.push("/messenger")
+      }
+    },
+    [fetchData, router]
+  )
+
   useEffect(() => {
     const conversationId = searchParams.get("convoId")
     const otherUser = searchParams.get("otherUser")
@@ -60,9 +85,13 @@ function Page() {
       if (conversation) {
         router.push("/messenger")
         dispatch(setActiveConversation(conversation))
-      }
+      } else fetchConversation(otherUser)
     }
   }, [searchParams, router, conversations, dispatch])
+
+  useEffect(() => {
+    toast.remove(toastId)
+  }, [toastId])
 
   return (
     <>
