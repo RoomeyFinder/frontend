@@ -8,7 +8,7 @@ export default function ErrorText({
   children: ReactNode | ReactNode[]
 } & TextProps) {
   return (
-    <Text color="red" mt=".5rem" {...rest}>
+    <Text color="red" mt=".5rem" fontSize="1.4rem" {...rest}>
       {children}
     </Text>
   )

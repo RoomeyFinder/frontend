@@ -105,7 +105,7 @@ export default function UserOverview({
                 {lastSeen === "Just now" ? (
                   <>
                     <ActiveBall color="#14b474" />
-                    <Text as="span">Active</Text>
+                    <Text as="span" fontSize="1.4rem">Active</Text>
                   </>
                 ) : (
                   `Last seen: ${lastSeen} ago`

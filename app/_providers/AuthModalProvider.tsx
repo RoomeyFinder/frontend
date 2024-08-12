@@ -35,7 +35,6 @@ export default function AuthModalProvider({
         },
         open: (options = { title: "", nextUrl: "" }) => {
           const { title = "", nextUrl = "" } = options
-          console.log(options)
           setActionHeading(title)
           setNextUrl(nextUrl)
           setIsOpen(true)
