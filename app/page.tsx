@@ -1,3 +1,4 @@
+import BlogSection from "./_components/BlogSection"
 import ListingsSection, {
   FeaturesSection,
   Hero,
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <FeaturesSection />
       <ListingsSection />
+      <BlogSection />
     </>
   )
 }

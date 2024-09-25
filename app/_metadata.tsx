@@ -2,9 +2,9 @@ import { Metadata } from "next"
 
 export default function appendSharedMetaData(metadataBase: Metadata): Metadata {
   return {
-    title: "RoomeyFinder | Find a roommate",
+    title: "Find a Roommate | Roommate Finder for Students & Professionals",
     description:
-      "Facilitating seamless roommate connections for Nigerian professionals and students, ensuring they find compatible roommates who are also schoolmates effortlessly.",
+      "Discover the best roommate matching service to find your perfect shared accommodation. Start your roommate search today",
     metadataBase: new URL("https://roomeyfinder.com"),
     keywords:
       "roommate, living situation, housing, accommodation, room, finder, room finder, roomie, roomey, room",
