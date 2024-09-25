@@ -15,6 +15,9 @@ import RoomListingCard from "./RoomListingCard"
 import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "./Skeletons/SkeletalLoader"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
+import MatchIcon from "../_assets/SVG/Match"
+import Contract from "../_assets/SVG/Contract"
+import SupportIcon from "../_assets/SVG/Support"
 
 export default function ListingsSection() {
   const { user } = useAppSelector((store) => store.auth)
@@ -222,9 +225,10 @@ export function FeaturesSection() {
     <>
       <Flex
         minH="40dvh"
-        bg="#f5f9ff"
+        bg="#f5f9ff59"
         textAlign="center"
         justifyContent="center"
+        mb="12rem"
         w="100%"
         px={{ base: "3rem", md: "8rem", lg: "8rem" }}
         py={{ base: "5rem", md: "8rem" }}
@@ -234,7 +238,7 @@ export function FeaturesSection() {
             as="h1"
             variant="md"
             mb="1rem"
-            fontSize={{ base: "3rem", md: "4rem" }}
+            fontSize={{ base: "2.6rem", md: "4rem" }}
             fontWeight="500"
           >
             What Roomeyfinder offers
@@ -244,9 +248,9 @@ export function FeaturesSection() {
             mb="4rem"
             maxW="80rem"
             mx="auto"
-            lineHeight="3rem"
+            // lineHeight="3rem"
           >
-            Find your perfect roommate effortlessly.
+            Find Your Perfect Roommate with Our Roommate Finder effortlessly.
           </Text>
           <Flex
             as="ul"
@@ -255,10 +259,15 @@ export function FeaturesSection() {
             w="full"
             justifyContent="center"
           >
-            <FeatureCard
+            {/* <FeatureCard
               iconChild={<ForRent />}
               heading="List your space"
               body="Roomeyfinder helps you effortlessly project and list your available living spaces. Our platform serves as a dedicated avenue to showcase your space and connect with individuals searching for their ideal space."
+            />
+            <FeatureCard
+              iconChild={<ForRent />}
+              heading="Roommate matching"
+              body="Our roommate matching system ensures you find a roommate with similar lifestyles and preferences"
             />
             <FeatureCard
               iconChild={<Handlens />}
@@ -269,6 +278,41 @@ export function FeaturesSection() {
               iconChild={<ChatIcon />}
               heading="Message potential roommates"
               body="Message and get in touch with potential roommates in order to get to know each other  by using the Roomeyfinder messaging system."
+            /> */}
+            <FeatureCard
+              iconChild={<ForRent />}
+              heading="List Your Space"
+              body="Effortlessly showcase your available living spaces on RoomeyFinder. Our platform connects you with individuals actively searching for their ideal home."
+            />
+
+            <FeatureCard
+              iconChild={<MatchIcon />}
+              heading="Roommate Matching"
+              body="Discover your perfect match with our advanced roommate matching system. Find someone who shares your lifestyle, interests, and preferences for a harmonious living experience."
+            />
+
+            <FeatureCard
+              iconChild={<Handlens />}
+              heading="Find Your New Space"
+              body="Explore a diverse selection of living spaces tailored to your needs. RoomeyFinder makes it easy to discover your next home with just a few clicks."
+            />
+
+            <FeatureCard
+              iconChild={<ChatIcon />}
+              heading="Connect with Potential Roommates"
+              body="Use our built-in messaging system to communicate with potential roommates. Get to know each other better and make informed decisions before moving in together."
+            />
+
+            {/* <FeatureCard
+              iconChild={<Contract />}
+              heading="Roommate Agreements"
+              body="Create customized roommate agreements to set clear expectations. Our templates help you outline responsibilities and keep your living situation stress-free."
+            /> */}
+
+            <FeatureCard
+              iconChild={<SupportIcon />}
+              heading="24/7 Support"
+              body="Enjoy peace of mind with our dedicated support team available around the clock. Whether you have questions or need assistance, we’re here to help you every step of the way."
             />
           </Flex>
         </Box>
