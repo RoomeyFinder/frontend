@@ -1,7 +1,6 @@
 import { Box, GridItem, Heading, Link, Text } from "@chakra-ui/react"
 import { StaticImport } from "next/dist/shared/lib/get-img-props"
 import Image from "next/image"
-
 import { ReactNode } from "react"
 
 export default function BlogPostItem({
