@@ -7,7 +7,7 @@ export default function Contract() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_4346_6303)">
+      <g clipPath="url(#clip0_4346_6303)">
         <path
           d="M3 2H44V27L46.1944 27.3327V0.0600586H0.739746V54.606H25.7398V52H3V2Z"
           fill="currentColor"

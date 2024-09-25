@@ -228,7 +228,7 @@ export function FeaturesSection() {
         bg="#f5f9ff59"
         textAlign="center"
         justifyContent="center"
-        mb="12rem"
+        mb="6rem"
         w="100%"
         px={{ base: "3rem", md: "8rem", lg: "8rem" }}
         py={{ base: "5rem", md: "8rem" }}
