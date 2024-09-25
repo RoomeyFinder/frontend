@@ -17,6 +17,15 @@ jobs:
     
     # 1. install node modules 
     - run: npm install
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v2.0
+      with:
+        envkey_NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        envkey_NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        directory: ./
+        file_name: .env
+        fail_on_empty: false
+        sort_keys: false
     # 2. just build the application for now since we don't really have any
     #    tests. 
     - run: npm run build
