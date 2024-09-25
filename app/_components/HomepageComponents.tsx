@@ -16,7 +16,7 @@ import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
 import SkeletalLoading from "./Skeletons/SkeletalLoader"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
 import MatchIcon from "../_assets/SVG/Match"
-import Contract from "../_assets/SVG/Contract"
+// import Contract from "../_assets/SVG/Contract"
 import SupportIcon from "../_assets/SVG/Support"
 
 export default function ListingsSection() {
