@@ -29,8 +29,8 @@ jobs:
     # 2. just build the application for now since we don't really have any
     #    tests. 
     - run: npm run build
-      env:
-        CI: false
+      # env:
+      #   CI: false
       
     
     # linting/airbnb !?
