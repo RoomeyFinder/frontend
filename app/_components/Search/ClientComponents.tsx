@@ -99,6 +99,7 @@ function ListingsSection({
     setBedrooms("")
     setRentDuration("")
   }, [searchText, initialLocation, router])
+  const [errorToastId, setErrorToastId] = useState<null | string>(null)
 
   const debouncedSearchText = useDebounce(searchText, 500)
 
@@ -124,6 +125,7 @@ function ListingsSection({
   const search = useCallback(
     async (queryString: string) => {
       if (loading) return
+      if (errorToastId) return
       setLoading(true)
       const cacheInSessionStorage = sessionStorage.getItem(
         STORAGE_KEYS.RF_SEARCH_CACHE
@@ -143,8 +145,11 @@ function ListingsSection({
         if (res.statusCode === 200) {
           cache = { ...cache, [queryString]: res.results }
           setResults(res.results as any)
+          setErrorToastId(null)
         } else {
-          toast.error("Please retry that search, something went wrong!")
+          setErrorToastId(
+            toast.error("Please retry that search, something went wrong!")
+          )
         }
       }
       sessionStorage.setItem(
