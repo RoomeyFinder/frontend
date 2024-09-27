@@ -69,7 +69,12 @@ jobs:
 
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-
+        
+      - name: Create .env
+        run: |
+          echo "NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }}" > .env
+          echo "NOTION_API_KEY=${{ secrets.NOTION_API_KEY }}" > .env
+        
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v2.0
         with:
