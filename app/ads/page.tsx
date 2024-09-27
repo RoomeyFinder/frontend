@@ -1,5 +1,7 @@
 "use client"
+import { Suspense } from "react"
 import SearchPageContent from "../_components/Search/ClientComponents"
+import PageLoader from "../_components/PageLoader"
 
 export default function Search() {
   // const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
@@ -9,7 +11,11 @@ export default function Search() {
   //   if (!loadingUser)
   //     !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
   // }, [dispatch, hasFetchedInitialListings, user, loadingUser])
-  return <SearchPageContent mainLocation="" initialResults={[]} />
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <SearchPageContent mainLocation="" initialResults={[]} />
+    </Suspense>
+  )
 }
 
 // function ListingsSection() {
