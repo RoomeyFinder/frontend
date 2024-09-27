@@ -95,6 +95,7 @@ function ListingsSection({
   )
   const clearFilters = useCallback(() => {
     router.push(`/${searchText || initialLocation}`)
+    setErrorToastId(null)
     setRentAmount(null)
     setBedrooms("")
     setRentDuration("")
@@ -158,7 +159,7 @@ function ListingsSection({
       )
       setLoading(false)
     },
-    [fetchData, router, initialLocation, searchText, loading]
+    [fetchData, router, initialLocation, searchText, loading, errorToastId]
   )
 
   useEffect(() => {
@@ -239,9 +240,10 @@ function ListingsSection({
               <RentDurationFilter
                 heading={"Preferred rent duration"}
                 value={rentDuration as string}
-                handleSelection={(value: string) =>
+                handleSelection={(value: string) => {
                   setRentDuration(value as any)
-                }
+                  setErrorToastId(null)
+                }}
               />
               <RentFilter
                 heading="Budget"
@@ -255,11 +257,13 @@ function ListingsSection({
                   if (minMax.length > 1)
                     setRentAmount({ min: +minMax[0], max: +minMax[1] })
                   else setRentAmount({ min: +minMax[0] })
+                  setErrorToastId(null)
                 }}
               />
               <NumberOfBedroomsFilter
                 value={bedrooms as string}
                 handleSelection={(value: string) => {
+                   setErrorToastId(null)
                   setBedrooms(value as any)
                 }}
               />
@@ -315,7 +319,10 @@ function ListingsSection({
                 maxW={{ md: "50rem" }}
                 defaultValue={decodeURIComponent(initialLocation)}
                 type="text"
-                onChange={(e) => setSearchText(e.target.value)}
+                onChange={(e) => {
+                  setErrorToastId(null)
+                  setSearchText(e.target.value)
+                }}
               />
               <HStack alignItems="center" justify="space-between" mb="-1rem">
                 <Heading variant="md" color="" fontWeight="500">
