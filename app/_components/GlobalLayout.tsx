@@ -8,7 +8,6 @@ import NexusLayout from "./NexusLayout/NexusLayout"
 import PreferencesReminder from "./PreferencesReminder"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import { useRouter } from "next/navigation"
-import { fetchListings } from "../_redux/thunks/search.thunk"
 import { checkAuthStatus } from "../_redux/thunks/auth.thunk"
 import { logout } from "../_redux/slices/auth.slice"
 import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
@@ -67,11 +66,6 @@ export default function GlobalLayout({
     if (!user && !loadingUser) localStorage.setItem("hasForcedLogout", "true")
   }, [dispatch, user, loadingUser, router])
 
-  const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
-  useEffect(() => {
-    if (!loadingUser)
-      !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
-  }, [dispatch, hasFetchedInitialListings, user, loadingUser])
   const { hasFetchedUserFavorites, loading: loadingUserFavorites } =
     useAppSelector((store) => store.favorites)
   const { hasFetchedUserInterests, loading: loadingUserInterests } =

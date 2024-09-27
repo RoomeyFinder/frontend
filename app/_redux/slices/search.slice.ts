@@ -19,7 +19,7 @@ interface ISearchState {
 const initialState: ISearchState = {
   listings: [],
   users: [],
-  loading: true,
+  loading: false,
   errorMessage: "",
   isUsingFallback: false,
   hasError: false,
@@ -44,13 +44,13 @@ export const searchSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchListings.pending, (store) => {
-        store.loading = true
+      .addCase(fetchListings.pending, () => {
+        // store.loading = true
       })
       .addCase(fetchListings.fulfilled, (store, action) => {
         store.listings = action.payload.listings
         localforage.setItem(STORAGE_KEYS.RF_LISTINGS, action.payload.listings)
-        store.loading = false
+        // store.loading = false
         store.errorMessage = ""
         store.isUsingFallback = action.payload.statusCode !== 200
         store.hasFetchedInitialListings = true
@@ -58,7 +58,7 @@ export const searchSlice = createSlice({
       })
       .addCase(fetchListings.rejected, (store) => {
         store.errorMessage = "Oops, Something went wrong!"
-        store.loading = false
+        // store.loading = false
         store.hasError = true
       })
       .addCase(fetchUsers.pending, (store) => {

@@ -20,12 +20,11 @@ import {
   useMemo,
   useState,
 } from "react"
-import { useAppDispatch, useAppSelector } from "@/app/_redux"
+import { useAppSelector } from "@/app/_redux"
 import { Listing } from "@/app/_types/Listings"
 import ListingsGridLayout from "../ListingsGridLayout"
 import RoomListingCard from "../RoomListingCard"
 import { RoomListingCardSkeleton } from "../Skeletons/ListingCardSkeleton"
-import { fetchListings } from "../../_redux/thunks/search.thunk"
 import {
   NumberOfBedroomsFilter,
   RentDurationFilter,
@@ -37,8 +36,10 @@ import FunnelIcon from "../../_assets/SVG/Funnel"
 import BackButton from "../BackButton"
 import useDebounce from "@/app/_hooks/useDebounce"
 import { useRouter, useSearchParams } from "next/navigation"
-import { startLoading, stopLoading } from "@/app/_redux/slices/search.slice"
 import { AppLoader } from "../PageLoader"
+import useAxios from "@/app/_hooks/useAxios"
+import STORAGE_KEYS from "@/app/STORAGE_KEYS"
+import toast from "react-hot-toast"
 
 export default function SearchPageContent({
   mainLocation,
@@ -47,13 +48,6 @@ export default function SearchPageContent({
   initialResults: Listing[]
   mainLocation: string
 }) {
-  const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
-  const { user, loading: loadingUser } = useAppSelector((store) => store.auth)
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    if (!loadingUser)
-      !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
-  }, [dispatch, hasFetchedInitialListings, user, loadingUser])
   return (
     <ListingsSection
       initialResults={initialResults}
@@ -70,7 +64,9 @@ function ListingsSection({
   initialLocation: string
 }) {
   const router = useRouter()
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(true)
+  const [results, setResults] = useState(initialResults)
   const [showFilters, setShowFilters] = useState(false)
   const { loading: loadingSearch } = useAppSelector((store) => store.search)
 
@@ -108,7 +104,7 @@ function ListingsSection({
 
   const searchQueryString = useMemo(() => {
     let query = ""
-    if (debouncedSearchText) {
+    if (debouncedSearchText || initialLocation) {
       query += `city=${debouncedSearchText || initialLocation}&`
     }
     if (rentAmount) {
@@ -123,49 +119,50 @@ function ListingsSection({
     return query
   }, [rentAmount, rentDuration, bedrooms, debouncedSearchText, initialLocation])
 
-  // const { fetchData } = useAxios()
-  // const search = useCallback(
-  //   async (queryString: string) => {
-  //     console.log(loadingSearch, "isLoading")
-  //     if (loadingSearch) return
-  //     setLoadingSearch(true)
-  //     const cacheInSessionStorage = sessionStorage.getItem(
-  //       STORAGE_KEYS.RF_SEARCH_CACHE
-  //     )
-  //     let cache = {}
-  //     if (cacheInSessionStorage) cache = JSON.parse(cacheInSessionStorage)
-  //     if ((cache as any)[queryString]) {
-  //       setLoadingSearch(false)
-  //       return setResults([...((cache as any)[queryString] || [])] as any)
-  //     }
-  //     router.push(`/${searchText || initialLocation}?${queryString}`)
-  //     // const res = await fetchData({
-  //     //   url: `/listings/search?${searchQueryString}`,
-  //     //   method: "get",
-  //     // })
-  //     console.log("searched")
-  //     // if (res.statusCode === 200) {
-  //     //   setCache((prev) => ({ ...prev, [searchQueryString]: res.results }) as any)
-  //     //   setResults(res.results as any)
-  //     // } else {
-  //     //   setCache((prev) => ({ ...prev, [searchQueryString]: [] }) as any)
-  //     //   setResults([])
-  //     // }
-  //     setLoadingSearch(false)
-  //   },
-  //   [loadingSearch, fetchData, router, initialLocation, searchText]
-  // )
+  const { fetchData } = useAxios()
 
-  // const debouncedSearchQueryString = useDebounce(searchQueryString, 500)
-  useEffect(() => {
-    console.log("djakskj;;a")
-    dispatch(startLoading())
-    router.push(`/${searchText || initialLocation}?${searchQueryString}`)
-  }, [searchQueryString, dispatch, initialLocation, router, searchText])
+  const search = useCallback(
+    async (queryString: string) => {
+      if (loading) return
+      setLoading(true)
+      const cacheInSessionStorage = sessionStorage.getItem(
+        STORAGE_KEYS.RF_SEARCH_CACHE
+      )
+      let cache = {}
+      if (cacheInSessionStorage) cache = JSON.parse(cacheInSessionStorage)
+      if ((cache as any)[queryString]) {
+        setLoading(false)
+        if (searchText && searchText !== initialLocation)
+          router.push(`/${searchText}?${queryString}`)
+        return setResults([...((cache as any)[queryString] || [])] as any)
+      } else {
+        const res = await fetchData({
+          url: `/listings/search?${queryString}`,
+          method: "get",
+        })
+        if (res.statusCode === 200) {
+          cache = { ...cache, [queryString]: res.results }
+          setResults(res.results as any)
+        } else {
+          toast.error("Please retry that search, something went wrong!")
+        }
+      }
+      sessionStorage.setItem(
+        STORAGE_KEYS.RF_SEARCH_CACHE,
+        JSON.stringify(cache)
+      )
+      setLoading(false)
+    },
+    [fetchData, router, initialLocation, searchText, loading]
+  )
 
   useEffect(() => {
-    dispatch(stopLoading())
-  })
+    if (!loading) search(searchQueryString)
+  }, [search, searchQueryString, loading])
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
   return (
     <>
@@ -208,10 +205,9 @@ function ListingsSection({
                 mx="auto"
                 as="div"
               >
-                {loadingSearch ? <Spinner /> : initialResults.length}
+                {loadingSearch || loading ? <Spinner /> : results.length}
                 &nbsp;&nbsp;
-                {pluralizeText("Listing", initialResults?.length, "s")}{" "}
-                available
+                {pluralizeText("Listing", results?.length, "s")} available
               </Text>
               <CloseButton
                 ml="auto"
@@ -319,12 +315,12 @@ function ListingsSection({
               <HStack alignItems="center" justify="space-between" mb="-1rem">
                 <Heading variant="md" color="" fontWeight="500">
                   <>
-                    {loadingSearch ? (
+                    {loadingSearch || loading ? (
                       <Spinner size="lg" />
                     ) : (
-                      initialResults.length
+                      results.length
                     )}
-                    {` ${pluralizeText("Listing", initialResults.length, "s")} found`}
+                    {` ${pluralizeText("Listing", results.length, "s")} found`}
                   </>
                 </Heading>
                 <Show below="md">
@@ -347,9 +343,9 @@ function ListingsSection({
               </HStack>
               <Suspense fallback={<AppLoader />}>
                 <RoomsList
-                  rooms={initialResults}
+                  rooms={results}
                   allowFavoriting={user !== null}
-                  loading={loadingSearch}
+                  loading={loading || loadingSearch}
                   emptyTextValue={
                     <>No rooms found. Try removing some filters</>
                   }
