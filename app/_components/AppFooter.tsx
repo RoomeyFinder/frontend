@@ -49,7 +49,7 @@ export function AppFooterContent() {
         mx="auto"
       >
         <FooterLinks />
-        <Divider />
+        <Divider zIndex={-10} />
         <Flex
           alignItems="center"
           gap="2.22rem"

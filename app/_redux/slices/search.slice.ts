@@ -35,6 +35,12 @@ export const searchSlice = createSlice({
       store.hasError = false
       store.errorMessage = ""
     },
+    startLoading: (store) => {
+      store.loading = true
+    },
+    stopLoading: (store) => {
+      store.loading = false
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -51,8 +57,7 @@ export const searchSlice = createSlice({
         // action.payload.statusCode === 200
       })
       .addCase(fetchListings.rejected, (store) => {
-        store.errorMessage =
-          "Oops, Something went wrong!"
+        store.errorMessage = "Oops, Something went wrong!"
         store.loading = false
         store.hasError = true
       })
@@ -69,13 +74,12 @@ export const searchSlice = createSlice({
         // action.payload.statusCode === 200
       })
       .addCase(fetchUsers.rejected, (store) => {
-        store.errorMessage =
-          "Oops, Something went wrong!"
+        store.errorMessage = "Oops, Something went wrong!"
         store.loading = false
         store.hasError = true
       })
   },
 })
 
-export const { resetError } = searchSlice.actions
+export const { resetError, startLoading, stopLoading } = searchSlice.actions
 export default searchSlice.reducer

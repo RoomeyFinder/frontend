@@ -1,7 +1,7 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
-import { Box, Fade, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
+import { Box, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
@@ -16,9 +16,9 @@ import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserNotifications } from "../_redux/thunks/notifications.thunk"
 import useProtectRoutes from "../_hooks/useProtectRoutes"
-import PageLoader from "./PageLoader"
 import STORAGE_KEYS from "../STORAGE_KEYS"
 import localforage from "localforage"
+
 
 export default function GlobalLayout({
   children,
@@ -110,12 +110,12 @@ export default function GlobalLayout({
   ])
   useProtectRoutes()
 
-  if (loadingUser)
-    return (
-      <Fade in>
-        <PageLoader />
-      </Fade>
-    )
+  // if (loadingUser)
+  //   return (
+  //     <Fade in>
+  //       <PageLoader />
+  //     </Fade>
+  //   )
   if (pathname.includes("nexus"))
     return (
       <>
