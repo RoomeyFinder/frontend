@@ -1,6 +1,6 @@
 "use client"
 import { ReactNode, useEffect } from "react"
-import { useAppSelector } from "../_redux"
+import { useAppSelector } from "../../_redux"
 import { useRouter } from "next/navigation"
 
 export default function NexusLayout({

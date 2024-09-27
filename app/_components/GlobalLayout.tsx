@@ -1,14 +1,13 @@
 "use client"
 import { ReactNode, useEffect } from "react"
 import AppHeader from "./AppHeader"
-import { Box, Fade, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
+import { Box, GridItem, SimpleGrid, VStack } from "@chakra-ui/react"
 import AppFooter from "./AppFooter"
 import { usePathname } from "next/navigation"
 import NexusLayout from "./NexusLayout/NexusLayout"
 import PreferencesReminder from "./PreferencesReminder"
 import { useAppDispatch, useAppSelector } from "../_redux"
 import { useRouter } from "next/navigation"
-import { fetchListings } from "../_redux/thunks/search.thunk"
 import { checkAuthStatus } from "../_redux/thunks/auth.thunk"
 import { logout } from "../_redux/slices/auth.slice"
 import { fetchUsersInterests } from "../_redux/thunks/interests.thunk"
@@ -16,9 +15,9 @@ import { fetchUserFavorites } from "../_redux/thunks/favorites.thunk"
 import { fetchUserListings } from "../_redux/thunks/listings.thunk"
 import { fetchUserNotifications } from "../_redux/thunks/notifications.thunk"
 import useProtectRoutes from "../_hooks/useProtectRoutes"
-import PageLoader from "./PageLoader"
 import STORAGE_KEYS from "../STORAGE_KEYS"
 import localforage from "localforage"
+
 
 export default function GlobalLayout({
   children,
@@ -67,11 +66,6 @@ export default function GlobalLayout({
     if (!user && !loadingUser) localStorage.setItem("hasForcedLogout", "true")
   }, [dispatch, user, loadingUser, router])
 
-  const { hasFetchedInitialListings } = useAppSelector((store) => store.search)
-  useEffect(() => {
-    if (!loadingUser)
-      !hasFetchedInitialListings && dispatch(fetchListings(Boolean(user)))
-  }, [dispatch, hasFetchedInitialListings, user, loadingUser])
   const { hasFetchedUserFavorites, loading: loadingUserFavorites } =
     useAppSelector((store) => store.favorites)
   const { hasFetchedUserInterests, loading: loadingUserInterests } =
@@ -110,12 +104,12 @@ export default function GlobalLayout({
   ])
   useProtectRoutes()
 
-  if (loadingUser)
-    return (
-      <Fade in>
-        <PageLoader />
-      </Fade>
-    )
+  // if (loadingUser)
+  //   return (
+  //     <Fade in>
+  //       <PageLoader />
+  //     </Fade>
+  //   )
   if (pathname.includes("nexus"))
     return (
       <>

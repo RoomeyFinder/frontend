@@ -1,8 +1,8 @@
 "use client"
 import { Flex } from "@chakra-ui/react"
 import AppLogo from "./Logo"
-import Navigation from "./Navigation/Navigation"
 import Link from "next/link"
+import Navigation from "./Navigation/Navigation"
 
 export default function AppHeader() {
   return (

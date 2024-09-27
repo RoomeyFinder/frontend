@@ -6,13 +6,13 @@ import GlobalLayout from "./_components/GlobalLayout"
 import LocalForageProvider from "./_providers/localforage"
 import { Toaster } from "react-hot-toast"
 import { GoogleOAuthProvider } from "@react-oauth/google"
-import { Suspense } from "react"
+// import { Suspense } from "react"
 import AuthModal from "./_components/Auth/AuthModal"
 import FacebookProvider from "./_providers/FacebookProvider"
 import AuthModalProvider from "./_providers/AuthModalProvider"
 import ReduxProvider from "./_providers/ReduxProvider"
 import LayoutClientProvider from "./_providers/LayoutClientProvider"
-import PageLoader from "./_components/PageLoader"
+// import PageLoader from "./_components/PageLoader"
 
 export const metadata: Metadata = appendSharedMetaData({})
 
@@ -28,7 +28,7 @@ export default function RootLayout({
       <body 
       // style={{ height: "100%", overflow: "hidden" }}
       >
-        <Suspense fallback={<PageLoader />}>
+        {/* <Suspense fallback={<PageLoader />}> */}
           <ChakraUIProvider>
             <LocalForageProvider>
               <GoogleOAuthProvider
@@ -53,7 +53,7 @@ export default function RootLayout({
             <FacebookProvider />
             <Toaster containerStyle={{ fontSize: "1.6rem" }} />
           </ChakraUIProvider>
-        </Suspense>
+        {/* </Suspense> */}
       </body>
     </html>
   )
