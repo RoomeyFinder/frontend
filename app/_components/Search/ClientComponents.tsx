@@ -164,7 +164,7 @@ function ListingsSection({
     setBedrooms("")
     setRentDuration("")
     setShowFilters(false)
-    search(searchQueryString)
+    search(`city=${searchText}`)
   }, [searchText, initialLocation, router, searchQueryString])
   // useEffect(() => {
   //   if (!loading) search(searchQueryString)
@@ -272,21 +272,22 @@ function ListingsSection({
                 }}
               />
               <Flex alignItems="center" gap="1.6rem">
-                <Show below="md">
-                  <Button
-                    variant="brand"
-                    as="button"
-                    mr="auto"
-                    p="2rem"
-                    size="xl"
-                    fontSize="1.6rem"
-                    onClick={() => {
-                      search(searchQueryString)
-                    }}
-                  >
-                    Apply Filters
-                  </Button>
-                </Show>{" "}
+                <Button
+                  bg="brand.main"
+                  color="white"
+                  h="unset"
+                  py=".6rem"
+                  _hover={{ color: "brand.main", bg: "brand.10" }}
+                  _active={{ color: "brand.main", bg: "brand.10" }}
+                  _focus={{ color: "brand.main", bg: "brand.10" }}
+                  fontWeight="600"
+                  mr="auto"
+                  onClick={() => {
+                    search(searchQueryString)
+                  }}
+                >
+                  Apply Filters
+                </Button>
                 <Button
                   border="none"
                   rounded=".375rem"
