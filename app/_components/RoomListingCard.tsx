@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Image,
+  Link,
   Spinner,
   Text,
 } from "@chakra-ui/react"
@@ -43,19 +44,21 @@ export default function RoomListingCard({
   const { user } = useAppSelector((store) => store.auth)
   const { open: showAuthModal } = useContext(AuthModalContext)
 
+  const handleClick: MouseEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      e.preventDefault()
+      if (user) return router.push(`/ads/${listing._id}`)
+      return showAuthModal({
+        title: "Sign in to view this listing",
+        nextUrl: `/ads/${listing._id}`,
+      })
+    },
+    [router, showAuthModal, user]
+  )
+
   return (
     <Flex
-      as="a"
-      href={`/ads/${listing._id}`}
-      onClick={(e) => {
-        e.preventDefault()
-        user
-          ? router.push(`/ads/${listing._id}`)
-          : showAuthModal({
-              title: "Sign in to view this listing",
-              nextUrl: `/ads/${listing._id}`,
-            })
-      }}
+      onClick={handleClick}
       w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
       alignItems="start"
@@ -67,6 +70,7 @@ export default function RoomListingCard({
       background="transparent"
       cursor="pointer"
     >
+      <Link href={`/ads/${listing._id}`}></Link>
       {showFavoriteButton && (
         <FavouriteButton
           color="white"
