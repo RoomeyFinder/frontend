@@ -53,7 +53,7 @@ export default function RoomListingCard({
         nextUrl: `/ads/${listing._id}`,
       })
     },
-    [router, showAuthModal, user]
+    [router, showAuthModal, user, listing?._id]
   )
 
   return (
@@ -145,12 +145,14 @@ export function FavouriteButton({
   buttonProps?: ButtonProps
   useConfirmation?: boolean
 }) {
+  const { open: showAuthModal } = useContext(AuthModalContext)
   const { favorites } = useAppSelector((store) => store.favorites)
   const dispatch = useAppDispatch()
   const favorite = useMemo(
     () => favorites?.find((it) => it.doc?._id === listingId),
     [favorites, listingId]
   )
+  const { user } = useAppSelector((store) => store.auth)
   const [isFavorite, setIsFavorite] = useState(() => Boolean(favorite))
 
   const [loading, setLoading] = useState(false)
@@ -168,6 +170,11 @@ export function FavouriteButton({
   const handleFavoriteClick: MouseEventHandler = useCallback(
     (e) => {
       e.stopPropagation()
+      if (!user)
+        return showAuthModal({
+          title: "Sign in to view this listing",
+          nextUrl: window.location.href,
+        })
       setLoading(true)
       setIsFavorite((prev) => !prev)
       if (!favorite) dispatch(addFavorite({ doc: listingId, type }))
@@ -178,7 +185,7 @@ export function FavouriteButton({
       }
       setLoading(false)
     },
-    [dispatch, favorite, listingId, type, useConfirmation]
+    [dispatch, favorite, listingId, type, useConfirmation, user, showAuthModal]
   )
   return (
     <Box
