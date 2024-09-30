@@ -10,7 +10,7 @@ export async function generateMetadata({
   let res: Response | undefined
   try {
     res = await fetch(
-      `${process.env.SERVER_URL}/api/v1/listings/${params.slug}`,
+      `${process.env.SERVER_URL}/api/v1/listings/metadata/${params.slug}`,
       {
         method: "get",
       }
@@ -19,6 +19,7 @@ export async function generateMetadata({
     console.log(err)
   }
   const json = await res?.json()
+  console.log(json, "dljf;sk;;")
   if (json?.statusCode !== 200) {
     return {
       title: "Listing not found",
