@@ -70,7 +70,7 @@ export default function RoomListingCard({
       background="transparent"
       cursor="pointer"
     >
-      <Link href={`/ads/${listing._id}`}></Link>
+      <Link href={`/ads/${listing.slug}`}></Link>
       {showFavoriteButton && (
         <FavouriteButton
           color="white"

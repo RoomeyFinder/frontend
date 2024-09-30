@@ -25,6 +25,8 @@ export interface Listing {
   isDraft?: boolean
   owner?: User
   earliestMoveInDate: string
+  slug: string
+  title: string
 }
 
 export default interface Listings {

@@ -23,17 +23,7 @@ export default function ListingHeading({
     >
       <Heading as="h1" display="flex" flexDir="column" gap="1rem">
         <Text as="span" display="block" fontSize="2.6rem" fontWeight="600">
-          {listing.isStudioApartment
-            ? "Studio Apartment"
-            : (Number(listing.numberOfBedrooms) > 1
-                ? listing.numberOfBedrooms
-                : "Single") + " bedroom apartment"}{" "}
-          in{" "}
-          <Text as="span">
-            {appendCommaIfLengthNotZero(listing.city || "") || " "}{" "}
-            {appendCommaIfLengthNotZero(listing.state || " ") || " "}{" "}
-            {listing.country}
-          </Text>
+          {listing.title}
         </Text>
       </Heading>
       <Flex

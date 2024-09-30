@@ -5,12 +5,12 @@ import { Listing } from "@/app/_types/Listings"
 export async function generateMetadata({
   params,
 }: {
-  params: { listingId: string }
+  params: { slug: string }
 }) {
   let res: Response | undefined
   try {
     res = await fetch(
-      `${process.env.SERVER_URL}/api/v1/listings/${params.listingId}`,
+      `${process.env.SERVER_URL}/api/v1/listings/${params.slug}`,
       {
         method: "get",
       }
@@ -54,7 +54,6 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      siteId: `${params.listingId}`,
       creator: "@roomeyfinder",
       creatorId: "945750336823873537",
       images: {

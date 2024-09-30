@@ -53,12 +53,12 @@ export default function ClientContent() {
   const [showShareOptions, setShowShareOptions] = useState(false)
   const [listing, setListing] = useState<Listing | null>(null)
   const [loading, setLoading] = useState(true)
-  const listingId = useMemo(() => params.listingId, [params])
+  const slug = useMemo(() => params.slug, [params])
   const { fetchData } = useAxios()
   const [error, setError] = useState("")
   const fetchListingById = useCallback(async () => {
     const res = await fetchData({
-      url: `/listings/${listingId}`,
+      url: `/listings/${slug}`,
       method: "get",
       headers: {
         authorization: `Bearer ${(await getTokenFromStorage()) || token}`,
@@ -71,7 +71,7 @@ export default function ClientContent() {
       setError(res.message || "Listing not found")
     }
     setLoading(false)
-  }, [listingId, fetchData, token])
+  }, [slug, fetchData, token])
 
   useEffect(() => {
     fetchListingById()

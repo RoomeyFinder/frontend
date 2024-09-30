@@ -84,10 +84,10 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
         onClick={(e) => {
           e.preventDefault()
           if (isActivated) {
-            router.push(`/ads/${listing._id}`)
+            router.push(`/ads/${listing.slug}`)
           }
         }}
-        href={`/ads/${listing._id}`}
+        href={`/ads/${listing.slug}`}
         as={Link}
       >
         <Image
