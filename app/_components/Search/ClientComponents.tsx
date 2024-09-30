@@ -34,11 +34,9 @@ import NoResultsDisplay from "../NoResultsDisplay"
 import { pluralizeText } from "../../_utils"
 import FunnelIcon from "../../_assets/SVG/Funnel"
 import BackButton from "../BackButton"
-import useDebounce from "@/app/_hooks/useDebounce"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { AppLoader } from "../PageLoader"
 import useAxios from "@/app/_hooks/useAxios"
-import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import toast from "react-hot-toast"
 
 export default function SearchPageContent({
@@ -63,7 +61,6 @@ function ListingsSection({
   initialResults: Listing[]
   initialLocation: string
 }) {
-  const router = useRouter()
   // const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState(initialResults)
@@ -93,21 +90,15 @@ function ListingsSection({
       ? (searchParams.get("bedrooms") as "studio" | "")
       : (+(searchParams.get("bedrooms") || "") as number)
   )
-  const clearFilters = useCallback(() => {
-    router.push(`/${searchText || initialLocation}`)
-    setErrorToastId(null)
-    setRentAmount(null)
-    setBedrooms("")
-    setRentDuration("")
-  }, [searchText, initialLocation, router])
+
   const [errorToastId, setErrorToastId] = useState<null | string>(null)
 
-  const debouncedSearchText = useDebounce(searchText, 500)
+  // const debouncedSearchText = useDebounce(searchText, 500)
 
   const searchQueryString = useMemo(() => {
     let query = ""
-    if (debouncedSearchText || initialLocation) {
-      query += `city=${debouncedSearchText || initialLocation}&`
+    if (searchText || initialLocation) {
+      query += `city=${searchText || initialLocation}&`
     }
     if (rentAmount) {
       query += `${rentAmount.min ? `minRent=${rentAmount.min}&` : ""}${rentAmount.max ? `maxRent=${rentAmount.max}&` : ""}`
@@ -119,7 +110,7 @@ function ListingsSection({
       query += `bedrooms=${bedrooms}`
     }
     return query
-  }, [rentAmount, rentDuration, bedrooms, debouncedSearchText, initialLocation])
+  }, [rentAmount, rentDuration, bedrooms, searchText, initialLocation])
 
   const { fetchData } = useAxios()
 
@@ -127,44 +118,54 @@ function ListingsSection({
     async (queryString: string) => {
       if (loading) return
       if (errorToastId) return
+      setShowFilters(false)
       setLoading(true)
-      const cacheInSessionStorage = sessionStorage.getItem(
-        STORAGE_KEYS.RF_SEARCH_CACHE
-      )
-      let cache = {}
-      if (cacheInSessionStorage) cache = JSON.parse(cacheInSessionStorage)
-      if ((cache as any)[queryString]) {
-        setLoading(false)
-        if (searchText && searchText !== initialLocation)
-          router.push(`/${searchText}?${queryString}`)
-        return setResults([...((cache as any)[queryString] || [])] as any)
+      // const cacheInSessionStorage = sessionStorage.getItem(
+      //   STORAGE_KEYS.RF_SEARCH_CACHE
+      // )
+      // let cache = {}
+      // if (cacheInSessionStorage) cache = JSON.parse(cacheInSessionStorage)
+      // if ((cache as any)[queryString]) {
+      //   setLoading(false)
+      //   if (searchText && searchText !== initialLocation)
+      //     router.push(`/${searchText}?${queryString}`)
+      //   return setResults([...((cache as any)[queryString] || [])] as any)
+      // } else {
+      const res = await fetchData({
+        url: `/listings/search?${queryString}`,
+        method: "get",
+      })
+      if (res.statusCode === 200) {
+        // cache = { ...cache, [queryString]: res.results }
+        setResults(res.results as any)
+        setErrorToastId(null)
       } else {
-        const res = await fetchData({
-          url: `/listings/search?${queryString}`,
-          method: "get",
-        })
-        if (res.statusCode === 200) {
-          cache = { ...cache, [queryString]: res.results }
-          setResults(res.results as any)
-          setErrorToastId(null)
-        } else {
-          setErrorToastId(
-            toast.error("Please retry that search, something went wrong!")
-          )
-        }
+        setErrorToastId(
+          toast.error("Please retry that search, something went wrong!")
+        )
       }
-      sessionStorage.setItem(
-        STORAGE_KEYS.RF_SEARCH_CACHE,
-        JSON.stringify(cache)
-      )
+      // }
+      // sessionStorage.setItem(
+      //   STORAGE_KEYS.RF_SEARCH_CACHE,
+      //   JSON.stringify(cache)
+      // )
       setLoading(false)
     },
-    [fetchData, router, initialLocation, searchText, loading, errorToastId]
+    [fetchData, loading, errorToastId]
   )
 
-  useEffect(() => {
-    if (!loading) search(searchQueryString)
-  }, [search, searchQueryString, loading])
+  const clearFilters = useCallback(() => {
+    // router.push(`/${searchText || initialLocation}`)
+    setErrorToastId(null)
+    setRentAmount(null)
+    setBedrooms("")
+    setRentDuration("")
+    setShowFilters(false)
+    search(`city=${searchText}`)
+  }, [searchText, search])
+  // useEffect(() => {
+  //   if (!loading) search(searchQueryString)
+  // }, [search, searchQueryString, loading])
 
   useEffect(() => {
     setLoading(false)
@@ -263,24 +264,27 @@ function ListingsSection({
               <NumberOfBedroomsFilter
                 value={bedrooms as string}
                 handleSelection={(value: string) => {
-                   setErrorToastId(null)
+                  setErrorToastId(null)
                   setBedrooms(value as any)
                 }}
               />
               <Flex alignItems="center" gap="1.6rem">
-                <Show below="md">
-                  <Button
-                    variant="brand"
-                    as="button"
-                    mr="auto"
-                    p="2rem"
-                    size="xl"
-                    fontSize="1.6rem"
-                    onClick={() => setShowFilters(false)}
-                  >
-                    Apply Filters
-                  </Button>
-                </Show>{" "}
+                <Button
+                  bg="brand.main"
+                  color="white"
+                  h="unset"
+                  py=".6rem"
+                  _hover={{ color: "brand.main", bg: "brand.10" }}
+                  _active={{ color: "brand.main", bg: "brand.10" }}
+                  _focus={{ color: "brand.main", bg: "brand.10" }}
+                  fontWeight="600"
+                  mr="auto"
+                  onClick={() => {
+                    search(searchQueryString)
+                  }}
+                >
+                  Apply Filters
+                </Button>
                 <Button
                   border="none"
                   rounded=".375rem"
@@ -310,20 +314,42 @@ function ListingsSection({
           >
             <ListSectionContainer>
               <BackButton left={{ md: "23%", xl: "2%" }} />
-              <Input
-                variant="filled"
-                py="1rem"
-                px="1rem"
-                rounded=".5rem"
-                placeholder="Find location"
-                maxW={{ md: "50rem" }}
-                defaultValue={decodeURIComponent(initialLocation)}
-                type="text"
-                onChange={(e) => {
-                  setErrorToastId(null)
-                  setSearchText(e.target.value)
-                }}
-              />
+              <Flex pos="relative">
+                <Input
+                  variant="filled"
+                  w="full"
+                  py="1rem"
+                  px="1rem"
+                  rounded=".5rem"
+                  placeholder="Enter a street or area"
+                  pr="8rem"
+                  maxW={{ md: "50rem" }}
+                  defaultValue={decodeURIComponent(initialLocation)}
+                  type="text"
+                  onChange={(e) => {
+                    setErrorToastId(null)
+                    setSearchText(e.target.value)
+                  }}
+                />
+                <Button
+                  pos="absolute"
+                  top="50%"
+                  left={{ md: "calc(50rem - 80px)" }}
+                  right={{ base: "12px", md: "unset" }}
+                  transform="translateY(-50%)"
+                  bg="brand.main"
+                  color="white"
+                  h="unset"
+                  py=".6rem"
+                  _hover={{ color: "brand.main", bg: "brand.10" }}
+                  _active={{ color: "brand.main", bg: "brand.10" }}
+                  _focus={{ color: "brand.main", bg: "brand.10" }}
+                  fontWeight="600"
+                  onClick={() => search(searchQueryString)}
+                >
+                  Search
+                </Button>
+              </Flex>
               <HStack alignItems="center" justify="space-between" mb="-1rem">
                 <Heading variant="md" color="" fontWeight="500">
                   <>

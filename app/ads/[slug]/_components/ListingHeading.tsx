@@ -2,7 +2,6 @@ import ShareIcon from "@/app/_assets/SVG/ShareIcon"
 import { FavouriteButton } from "@/app/_components/RoomListingCard"
 import { FavoriteType } from "@/app/_types/Favorites"
 import { Listing } from "@/app/_types/Listings"
-import { appendCommaIfLengthNotZero } from "@/app/_utils"
 import { Button, Flex, Heading, Text } from "@chakra-ui/react"
 
 export default function ListingHeading({
@@ -23,17 +22,7 @@ export default function ListingHeading({
     >
       <Heading as="h1" display="flex" flexDir="column" gap="1rem">
         <Text as="span" display="block" fontSize="2.6rem" fontWeight="600">
-          {listing.isStudioApartment
-            ? "Studio Apartment"
-            : (Number(listing.numberOfBedrooms) > 1
-                ? listing.numberOfBedrooms
-                : "Single") + " bedroom apartment"}{" "}
-          in{" "}
-          <Text as="span">
-            {appendCommaIfLengthNotZero(listing.city || "") || " "}{" "}
-            {appendCommaIfLengthNotZero(listing.state || " ") || " "}{" "}
-            {listing.country}
-          </Text>
+          {listing.title}
         </Text>
       </Heading>
       <Flex

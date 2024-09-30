@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   Image,
+  Link,
   Spinner,
   Text,
 } from "@chakra-ui/react"
@@ -43,19 +44,21 @@ export default function RoomListingCard({
   const { user } = useAppSelector((store) => store.auth)
   const { open: showAuthModal } = useContext(AuthModalContext)
 
+  const handleClick: MouseEventHandler<HTMLDivElement> = useCallback(
+    (e) => {
+      e.preventDefault()
+      if (user) return router.push(`/ads/${listing.slug}`)
+      return showAuthModal({
+        title: "Sign in to view this listing",
+        nextUrl: `/ads/${listing.slug}`,
+      })
+    },
+    [router, showAuthModal, user, listing?.slug]
+  )
+
   return (
     <Flex
-      as="a"
-      href={`/ads/${listing._id}`}
-      onClick={(e) => {
-        e.preventDefault()
-        user
-          ? router.push(`/ads/${listing._id}`)
-          : showAuthModal({
-              title: "Sign in to view this listing",
-              nextUrl: `/ads/${listing._id}`,
-            })
-      }}
+      onClick={handleClick}
       w="100%"
       padding={variant === "outlined" ? "1rem" : "0"}
       alignItems="start"
@@ -67,6 +70,7 @@ export default function RoomListingCard({
       background="transparent"
       cursor="pointer"
     >
+      <Link href={`/ads/${listing.slug}`}></Link>
       {showFavoriteButton && (
         <FavouriteButton
           color="white"
@@ -141,12 +145,14 @@ export function FavouriteButton({
   buttonProps?: ButtonProps
   useConfirmation?: boolean
 }) {
+  const { open: showAuthModal } = useContext(AuthModalContext)
   const { favorites } = useAppSelector((store) => store.favorites)
   const dispatch = useAppDispatch()
   const favorite = useMemo(
     () => favorites?.find((it) => it.doc?._id === listingId),
     [favorites, listingId]
   )
+  const { user } = useAppSelector((store) => store.auth)
   const [isFavorite, setIsFavorite] = useState(() => Boolean(favorite))
 
   const [loading, setLoading] = useState(false)
@@ -164,6 +170,11 @@ export function FavouriteButton({
   const handleFavoriteClick: MouseEventHandler = useCallback(
     (e) => {
       e.stopPropagation()
+      if (!user)
+        return showAuthModal({
+          title: "Sign in to view this listing",
+          nextUrl: window.location.href,
+        })
       setLoading(true)
       setIsFavorite((prev) => !prev)
       if (!favorite) dispatch(addFavorite({ doc: listingId, type }))
@@ -174,7 +185,7 @@ export function FavouriteButton({
       }
       setLoading(false)
     },
-    [dispatch, favorite, listingId, type, useConfirmation]
+    [dispatch, favorite, listingId, type, useConfirmation, user, showAuthModal]
   )
   return (
     <Box
