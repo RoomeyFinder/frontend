@@ -34,11 +34,9 @@ import NoResultsDisplay from "../NoResultsDisplay"
 import { pluralizeText } from "../../_utils"
 import FunnelIcon from "../../_assets/SVG/Funnel"
 import BackButton from "../BackButton"
-import useDebounce from "@/app/_hooks/useDebounce"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 import { AppLoader } from "../PageLoader"
 import useAxios from "@/app/_hooks/useAxios"
-import STORAGE_KEYS from "@/app/STORAGE_KEYS"
 import toast from "react-hot-toast"
 
 export default function SearchPageContent({
@@ -63,7 +61,6 @@ function ListingsSection({
   initialResults: Listing[]
   initialLocation: string
 }) {
-  const router = useRouter()
   // const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
   const [results, setResults] = useState(initialResults)
@@ -154,7 +151,7 @@ function ListingsSection({
       // )
       setLoading(false)
     },
-    [fetchData, router, initialLocation, searchText, loading, errorToastId]
+    [fetchData, loading, errorToastId]
   )
 
   const clearFilters = useCallback(() => {
@@ -165,7 +162,7 @@ function ListingsSection({
     setRentDuration("")
     setShowFilters(false)
     search(`city=${searchText}`)
-  }, [searchText, initialLocation, router, searchQueryString])
+  }, [searchText, search])
   // useEffect(() => {
   //   if (!loading) search(searchQueryString)
   // }, [search, searchQueryString, loading])
