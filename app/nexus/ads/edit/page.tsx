@@ -10,7 +10,7 @@ export default function ListingPage() {
   const query = useSearchParams()
   const { listings, loading } = useAppSelector((store) => store.listings)
   const listing = useMemo(
-    () => listings.find((it) => it._id === query.get("id")),
+    () => listings.find((it) => it.slug === query.get("id")),
     [listings, query]
   )
   if (loading) return <PageLoader />
