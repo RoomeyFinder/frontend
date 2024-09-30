@@ -131,7 +131,7 @@ export default function EditableListingCard({ listing }: { listing: Listing }) {
         <IconButton
           aria-label="Edit"
           onClick={() => {
-            router.push(`/nexus/ads/edit?id=${listing._id}`)
+            router.push(`/nexus/ads/edit?id=${listing.slug}`)
           }}
           icon={<EditSVG />}
           {...buttonProps}

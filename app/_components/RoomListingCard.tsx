@@ -47,13 +47,13 @@ export default function RoomListingCard({
   const handleClick: MouseEventHandler<HTMLDivElement> = useCallback(
     (e) => {
       e.preventDefault()
-      if (user) return router.push(`/ads/${listing._id}`)
+      if (user) return router.push(`/ads/${listing.slug}`)
       return showAuthModal({
         title: "Sign in to view this listing",
-        nextUrl: `/ads/${listing._id}`,
+        nextUrl: `/ads/${listing.slug}`,
       })
     },
-    [router, showAuthModal, user, listing?._id]
+    [router, showAuthModal, user, listing?.slug]
   )
 
   return (
