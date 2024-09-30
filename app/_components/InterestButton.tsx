@@ -145,6 +145,8 @@ export default function InterestButton({
     handleUnsend,
     hasInterest,
   ])
+
+  if (docOwner === user?._id) return null
   return (
     <>
       <Button
