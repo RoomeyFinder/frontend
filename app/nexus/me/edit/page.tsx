@@ -148,6 +148,7 @@ export default function ProfileEdit() {
               <VisuallyHidden>
                 <Input
                   type="file"
+                  accept="image/*"
                   ref={profileImageInputRef}
                   name="profileImage"
                   onChange={(e) => {
@@ -168,6 +169,7 @@ export default function ProfileEdit() {
               <VisuallyHidden>
                 <Input
                   type="file"
+                  accept="image/*"
                   ref={coverImageInputRef}
                   name="coverImage"
                   onChange={(e) => {
