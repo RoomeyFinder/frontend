@@ -47,7 +47,6 @@ export default function LayoutDispatchProvider({
     user,
     loadingRoomies,
     loadingRooms,
-    user,
   ])
   return <>{children}</>
 }

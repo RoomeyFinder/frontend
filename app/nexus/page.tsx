@@ -21,7 +21,6 @@ export default function NexusPage() {
   const { loadingRoomies, loadingRooms, roomies, rooms } = useAppSelector(
     (store) => store.recommendations
   )
-  console.log(roomies)
   const router = useRouter()
   if (!user) return <></>
   return (
