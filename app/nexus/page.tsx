@@ -21,6 +21,7 @@ export default function NexusPage() {
   const { loadingRoomies, loadingRooms, roomies, rooms } = useAppSelector(
     (store) => store.recommendations
   )
+  console.log(roomies)
   const router = useRouter()
   if (!user) return <></>
   return (
@@ -32,58 +33,52 @@ export default function NexusPage() {
         alignItems={loadingRoomies || loadingRooms ? "center" : "start"}
         gap="10rem"
       >
-        {(loadingRooms || rooms.length > 0) &&
-          (user.preferences?.lookingFor === "room" ||
-            user.preferences?.lookingFor === "both" ||
-            !user.preferences?.lookingFor) && (
-            <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Flex justifyContent="space-between" w="full" alignItems="center">
-                <Heading fontWeight="600" fontSize="3.2rem">
-                  Recommended Rooms
-                </Heading>
-                <Button
-                  bg="transparent"
-                  _hover={{ bg: "transparent" }}
-                  _active={{ bg: "transparent" }}
-                  h="unset"
-                  fontSize="1.6rem"
-                  color="brand.main"
-                  textDecor="underline"
-                  onClick={() => router.push("/ads/")}
-                >
-                  View More
-                </Button>
-              </Flex>
-              <RecomendationsDisplay type="Room" list={rooms} />
-              {loadingRooms && <SkeletalLoading variant="rooms" />}n
-            </VStack>
-          )}
-        {(loadingRoomies || roomies.length > 0) &&
-          (user.preferences?.lookingFor === "roommate" ||
-            user.preferences?.lookingFor === "both" ||
-            !user.preferences?.lookingFor) && (
-            <VStack gap="3rem" alignItems="start" as="section" w="full">
-              <Flex justifyContent="space-between" alignItems="center" w="full">
-                <Heading fontWeight="600" fontSize="3.2rem">
-                  Roomies you might like
-                </Heading>
-                <Button
-                  bg="transparent"
-                  _hover={{ bg: "transparent" }}
-                  _active={{ bg: "transparent" }}
-                  h="unset"
-                  fontSize="1.6rem"
-                  color="brand.main"
-                  textDecor="underline"
-                  onClick={() => router.push("/users/")}
-                >
-                  View More
-                </Button>
-              </Flex>
-              <RecomendationsDisplay type="Roomey" list={roomies} />
-              {loadingRoomies && <SkeletalLoading variant="roomies" />}
-            </VStack>
-          )}
+        {(loadingRooms || rooms.length > 0) && (
+          <VStack gap="3rem" alignItems="start" as="section" w="full">
+            <Flex justifyContent="space-between" w="full" alignItems="center">
+              <Heading fontWeight="600" fontSize="3.2rem">
+                Recommended Rooms
+              </Heading>
+              <Button
+                bg="transparent"
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+                h="unset"
+                fontSize="1.6rem"
+                color="brand.main"
+                textDecor="underline"
+                onClick={() => router.push("/ads/")}
+              >
+                View More
+              </Button>
+            </Flex>
+            <RecomendationsDisplay type="Room" list={rooms} />
+            {loadingRooms && <SkeletalLoading variant="rooms" />}n
+          </VStack>
+        )}
+        {(roomies.length > 0 || loadingRoomies) && (
+          <VStack gap="3rem" alignItems="start" as="section" w="full">
+            <Flex justifyContent="space-between" alignItems="center" w="full">
+              <Heading fontWeight="600" fontSize="3.2rem">
+                Roomies you might like
+              </Heading>
+              <Button
+                bg="transparent"
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+                h="unset"
+                fontSize="1.6rem"
+                color="brand.main"
+                textDecor="underline"
+                onClick={() => router.push("/users/")}
+              >
+                View More
+              </Button>
+            </Flex>
+            <RecomendationsDisplay type="Roomey" list={roomies} />
+            {loadingRoomies && <SkeletalLoading variant="roomies" />}
+          </VStack>
+        )}
       </VStack>
     </>
   )

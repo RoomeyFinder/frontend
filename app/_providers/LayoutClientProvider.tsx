@@ -22,10 +22,23 @@ export default function LayoutDispatchProvider({
 
   useEffect(() => {
     if (user) {
-      !hasFetchedRooms && !loadingRooms && dispatch(fetchRoomRecommendations())
-      !hasFetchedRoomies &&
-        !loadingRoomies &&
-        dispatch(fetchRoomiesRecommendations())
+      if (
+        user.preferences?.lookingFor === "room" ||
+        user.preferences?.lookingFor === "both" ||
+        !user.preferences?.lookingFor
+      )
+        !hasFetchedRooms &&
+          !loadingRooms &&
+          dispatch(fetchRoomRecommendations())
+
+      if (
+        user.preferences?.lookingFor === "roommate" ||
+        user.preferences?.lookingFor === "both" ||
+        !user.preferences?.lookingFor
+      )
+        !hasFetchedRoomies &&
+          !loadingRoomies &&
+          dispatch(fetchRoomiesRecommendations())
     }
   }, [
     dispatch,
@@ -34,6 +47,7 @@ export default function LayoutDispatchProvider({
     user,
     loadingRoomies,
     loadingRooms,
+    user,
   ])
   return <>{children}</>
 }
