@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/react"
 import { usePathname, useRouter } from "next/navigation"
 import { ReactNode } from "react"
+import DisclaimerText from "../DisclaimerText"
 
 export default function NexusSidebar({
   closeSidebar,
@@ -83,6 +84,7 @@ export default function NexusSidebar({
           <br />
           All rights reserved.
         </Text>
+        <DisclaimerText mt="-1.8rem" />
       </VStack>
     </Box>
   )

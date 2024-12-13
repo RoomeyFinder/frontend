@@ -1,9 +1,8 @@
+import DisclaimerText from "@/app/_components/DisclaimerText"
 import AppLogo from "@/app/_components/Logo"
 import { Flex, Heading } from "@chakra-ui/react"
 
-
-
-export default function InactiveConversationView(){
+export default function InactiveConversationView() {
   return (
     <Flex
       h="full"
@@ -18,6 +17,7 @@ export default function InactiveConversationView(){
       <Heading fontWeight="500" fontSize="1.6rem" color="#707070">
         Send and receive messages
       </Heading>
+      <DisclaimerText maxW="70ch" />
     </Flex>
   )
 }
