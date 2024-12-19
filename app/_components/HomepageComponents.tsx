@@ -237,7 +237,7 @@ export function FeaturesSection() {
       >
         <Box as="section">
           <Heading
-            as="h1"
+            as="h2"
             variant="md"
             mb="1rem"
             fontSize={{ base: "2.6rem", md: "4rem" }}
