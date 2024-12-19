@@ -208,12 +208,14 @@ export function Hero() {
             {user ? "My Dashboard" : " Get Started"}
           </Button>
         </Box>
-        <Image
-          minW={{ base: "100%", md: "60rem" }}
-          height="auto"
+        <Box
+          w={{ base: "100%" }}
+          minH="400px"
           maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}
-          src="https://res.cloudinary.com/drwuaxewb/image/upload/v1734579561/statics/eb1s3mse2h7mvhpsmj3x.webp"
-          alt="Two roommates sitting on a blue couch having coffee"
+          bgImage="url(https://res.cloudinary.com/drwuaxewb/image/upload/v1734579561/statics/eb1s3mse2h7mvhpsmj3x.webp)"
+          bgSize="contain"
+          bgRepeat="no-repeat"
+          bgPos="center"
         />
       </Flex>
     </>
