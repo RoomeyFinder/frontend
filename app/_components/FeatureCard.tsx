@@ -12,7 +12,7 @@ export default function FeatureCard({
 }) {
   return (
     <Flex
-      as="article"
+      as="li"
       gap="3rem"
       p={{ base: "2rem", md: "3rem" }}
       flexDir="column"
