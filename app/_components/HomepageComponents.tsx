@@ -200,13 +200,13 @@ export function Hero() {
             px="3rem"
             py="1.5rem"
             as={Link}
-            href={user ? "/nexus" : "/signup"}
+            href={user ? "/nexus" : "/signup?next=/ads"}
             variant={"brand"}
             fontSize="1.6rem"
             width="fit-content"
             fontWeight="700"
           >
-            {user ? "My Dashboard" : " Get Started"}
+            Explore Rooms
           </Button>
         </Box>
         <Box
