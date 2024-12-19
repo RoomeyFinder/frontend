@@ -179,10 +179,11 @@ export function Hero() {
             as="h1"
             variant="xl"
             fontWeight="500"
+            lineHeight="120%"
             mb="1rem"
-            fontSize={{ base: "3.6rem", md: "6rem" }}
+            fontSize={{ base: "2.8rem", md: "4.2rem" }}
           >
-            Find Roomies & Rooms.
+            Find Your Perfect Match: Roommates and Spaces Tailored to You
           </Heading>
 
           <Text
