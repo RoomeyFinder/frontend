@@ -212,7 +212,7 @@ export function Hero() {
           minW={{ base: "100%", md: "60rem" }}
           height="auto"
           maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}
-          src="https://res.cloudinary.com/messengerapptask/image/upload/v1719666871/hero-image_hokwu8.jpg"
+          src="https://res.cloudinary.com/drwuaxewb/image/upload/v1734579561/statics/eb1s3mse2h7mvhpsmj3x.webp"
           alt="Two roommates sitting on a blue couch having coffee"
         />
       </Flex>
