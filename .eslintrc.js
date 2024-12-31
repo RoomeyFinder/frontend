@@ -19,7 +19,6 @@ module.exports = {
   rules: {
     // indent: ["error", 2],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
     semi: ["error", "never"],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [
