@@ -1,20 +1,20 @@
-import ChakraUIProvider from './_providers/chakra-ui';
-import type { Metadata } from 'next';
-import './globals.css';
-import appendSharedMetaData from './_metadata';
-import GlobalLayout from './_components/GlobalLayout';
-import LocalForageProvider from './_providers/localforage';
-import { Toaster } from 'react-hot-toast';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import ChakraUIProvider from './_providers/chakra-ui'
+import type { Metadata } from 'next'
+import './globals.css'
+import appendSharedMetaData from './_metadata'
+import GlobalLayout from './_components/GlobalLayout'
+import LocalForageProvider from './_providers/localforage'
+import { Toaster } from 'react-hot-toast'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 // import { Suspense } from "react"
-import AuthModal from './_components/Auth/AuthModal';
-import FacebookProvider from './_providers/FacebookProvider';
-import AuthModalProvider from './_providers/AuthModalProvider';
-import ReduxProvider from './_providers/ReduxProvider';
-import LayoutClientProvider from './_providers/LayoutClientProvider';
+import AuthModal from './_components/Auth/AuthModal'
+import FacebookProvider from './_providers/FacebookProvider'
+import AuthModalProvider from './_providers/AuthModalProvider'
+import ReduxProvider from './_providers/ReduxProvider'
+import LayoutClientProvider from './_providers/LayoutClientProvider'
 // import PageLoader from "./_components/PageLoader"
 
-export const metadata: Metadata = appendSharedMetaData({});
+export const metadata: Metadata = appendSharedMetaData({})
 
 export default function RootLayout({
     children,
