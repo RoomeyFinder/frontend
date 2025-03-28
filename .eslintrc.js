@@ -18,14 +18,13 @@ module.exports = {
   plugins: ["react", "@typescript-eslint"],
   rules: {
     // indent: ["error", 2],
-    "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
-    semi: ["error", "never"],
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [
-      1,
-      { extensions: [".ts", ".tsx", ".js", ".jsx"] },
-    ],
-    "@typescript-eslint/no-explicit-any": "off",
+    //"linebreak-style": ["error", "unix"],
+   // semi: ["error", "never"],
+   "react/react-in-jsx-scope": "off",
+ "react/jsx-filename-extension": [
+    1,
+     { extensions: [".ts", ".tsx", ".js", ".jsx"] },
+  ],
+   "@typescript-eslint/no-explicit-any": "off",
   },
 }
