@@ -20,11 +20,11 @@ module.exports = {
     // indent: ["error", 2],
     //"linebreak-style": ["error", "unix"],
    // semi: ["error", "never"],
- //   "react/react-in-jsx-scope": "off",
-    //"react/jsx-filename-extension": [
- //     1,
- //     { extensions: [".ts", ".tsx", ".js", ".jsx"] },
-  //  ],
-  //  "@typescript-eslint/no-explicit-any": "off",
+   "react/react-in-jsx-scope": "off",
+ "react/jsx-filename-extension": [
+    1,
+     { extensions: [".ts", ".tsx", ".js", ".jsx"] },
+  ],
+   "@typescript-eslint/no-explicit-any": "off",
   },
 }
