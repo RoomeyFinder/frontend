@@ -1,6 +1,6 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next'
 
-import citiesInNigeria from './_data/citiesInNigeria.json';
+import citiesInNigeria from './_data/citiesInNigeria.json'
 
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
