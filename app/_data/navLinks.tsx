@@ -95,6 +95,10 @@ export const supportLinks = [
     name: "Contact",
     href: "/contact",
   },
+  {
+    name: "FAQ",
+    href: "/contact",
+  },
 ]
 
 export const footerLinks = [
@@ -108,6 +112,10 @@ export const footerLinks = [
   },
   {
     name: "Contact",
+    href: "/contact",
+  },
+  {
+    name: "FAQ",
     href: "/contact",
   },
   {

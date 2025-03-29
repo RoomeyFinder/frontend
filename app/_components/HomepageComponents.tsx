@@ -13,32 +13,25 @@ import FeatureCard from "./FeatureCard"
 import ListingsGridLayout from "./ListingsGridLayout"
 import RoomListingCard from "./RoomListingCard"
 import { RoomListingCardSkeleton } from "./Skeletons/ListingCardSkeleton"
-import SkeletalLoading from "./Skeletons/SkeletalLoader"
 import { AuthModalContext } from "../_providers/AuthModalProvider"
 import MatchIcon from "../_assets/SVG/Match"
 // import Contract from "../_assets/SVG/Contract"
 import SupportIcon from "../_assets/SVG/Support"
 
-export default function ListingsSection() {
+export default function ListingsSection({ listings }: { listings: Listing[] }) {
   const { user } = useAppSelector((store) => store.auth)
-  const { listings, loading } = useAppSelector((store) => store.search)
   const router = useRouter()
-  if (listings.length === 0 && !loading) return null
   return (
     <>
       <Box mx="auto" maxW="125rem" w={{ md: "90%" }}>
         <ListSectionContainer>
           <Heading variant="md">Latest Rooms</Heading>
-          {loading ? (
-            <SkeletalLoading variant="rooms" />
-          ) : (
             <RoomsList
               rooms={listings}
               allowFavoriting={user !== null}
-              loading={loading}
+              loading={false}
               emptyTextValue={<>No rooms found</>}
             />
-          )}
           {listings.length > 0 && (
             <ContinueExploring
               text="rooms"
