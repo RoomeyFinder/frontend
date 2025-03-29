@@ -1,3 +1,4 @@
+"use client"
 import { GridItem, SimpleGrid } from "@chakra-ui/react"
 import {
   RoomListingCardSkeleton,
