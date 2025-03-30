@@ -1,3 +1,4 @@
+"use client"
 import { GridItem, SimpleGrid, SimpleGridProps } from "@chakra-ui/react"
 import { ReactNode } from "react"
 

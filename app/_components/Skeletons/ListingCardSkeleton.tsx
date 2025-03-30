@@ -102,19 +102,14 @@ export function RoomListingCardSkeleton({
   `
   return (
     <Flex
-      py="1rem"
-      px="1rem"
-      border={hasBorder ? "1px solid #7070704D" : ""}
-      h="41rem"
-      _hover={{ background: "white", shadow: "md", textDecor: "underline" }}
-      w="full"
-      minH="38rem"
+      w="100%"
+      padding={hasBorder === true ? "1rem" : "0"}
       alignItems="start"
       flexDir="column"
       gap=".5rem"
       pos="relative"
+      border={hasBorder === true ? "1px solid #7070704D" : ""}
       borderRadius="1.2rem"
-      overflow="hidden"
       background="transparent"
       cursor="pointer"
       animation={`${pulse} infinite 2s linear`}
@@ -137,12 +132,7 @@ export function RoomListingCardSkeleton({
         </VStack>
       </Flex>
       <Flex flexDir="column" gap="1rem" w="full" mt="1rem">
-        <Heading
-          height="1rem"
-          bgColor="black"
-          w="80%"
-          opacity=".08"
-        ></Heading>
+        <Heading height="1rem" bgColor="black" w="80%" opacity=".08"></Heading>
         <Flex
           height=".8rem"
           gap="1rem"
