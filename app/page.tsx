@@ -19,7 +19,7 @@ async function fetchListings<T>(): Promise<T> {
     const response = await axios.get<
       T,
       { data: T & { statusCode: number; status: "success" } }
-    >(`/api/v1/listings`, {
+    >(`/api/v1/listings?limit=4`, {
       baseURL: process.env.SERVER_URL,
     })
     return response.data
