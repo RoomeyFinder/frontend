@@ -24,7 +24,7 @@ async function fetchListings<T>(): Promise<T> {
     })
     return response.data
   } catch (err) {
-    return { listings: [], statusCode: 400, message: "err.message" } as T
+    return { listings: [], statusCode: 500, message: "err.message" } as T
   }
 }
 
