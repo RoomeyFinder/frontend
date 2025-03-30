@@ -2,8 +2,6 @@
 import { useAppSelector } from "@/app/_redux"
 import { Box, Button, Flex, Heading, Link, Text } from "@chakra-ui/react"
 
-
-
 export default function Hero() {
   const { user } = useAppSelector((store) => store.auth)
   return (
@@ -13,7 +11,7 @@ export default function Hero() {
         bg="white"
         justifyContent="space-between"
         alignItems="center"
-        flexDir={{ base: "column", md: "row" }}
+        flexDir={{ base: "column", sm: "row" }}
         pb={{ base: "5rem", md: "10rem" }}
         pt={{ base: "4rem", md: "8rem" }}
         maxW="125rem"
@@ -26,10 +24,11 @@ export default function Hero() {
             variant="xl"
             fontWeight="500"
             lineHeight="120%"
+            color="dark.main"
             mb="1rem"
             fontSize={{ base: "2.8rem", md: "4.2rem" }}
           >
-            Find Your Perfect Match: Roommates and Spaces Tailored to You
+            Find The Perfect Roommate & Space For You
           </Heading>
 
           <Text
@@ -38,9 +37,8 @@ export default function Hero() {
             mb="4rem"
             lineHeight="150%"
           >
-            Whether you&apos;re a student searching for a cozy apartment, a
-            professional seeking a shared living space, or a homeowner looking
-            for a compatible roommate, we&apos;ve got you covered.
+            Who says the perfect roommate does not exist? Easily find a roommate
+            or living space that fits your lifestyle.
           </Text>
           <Button
             px="3rem"
@@ -57,12 +55,11 @@ export default function Hero() {
         </Box>
         <Box
           w={{ base: "100%" }}
-          minH="400px"
-          maxW={{ base: "100vw", md: "60rem", lg: "60rem" }}
-          bgImage="url(https://res.cloudinary.com/drwuaxewb/image/upload/v1734579561/statics/eb1s3mse2h7mvhpsmj3x.webp)"
+          minH={{ base: "40dvh", lg: "50dvh" }}
+          bgImage="url(/hero.svg)"
           bgSize="contain"
           bgRepeat="no-repeat"
-          bgPos="center"
+          bgPos={{ base: "center", sm: "right" }}
         />
       </Flex>
     </>
