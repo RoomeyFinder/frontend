@@ -1,26 +1,36 @@
-import ChakraUIProvider from "./_providers/chakra-ui"
-import type { Metadata } from "next"
-import "./globals.css"
-import appendSharedMetaData from "./_metadata"
-import GlobalLayout from "./_components/GlobalLayout"
-import LocalForageProvider from "./_providers/localforage"
-import { Toaster } from "react-hot-toast"
-import { GoogleOAuthProvider } from "@react-oauth/google"
+import * as Sentry from "@sentry/nextjs";
+import ChakraUIProvider from "./_providers/chakra-ui";
+import type { Metadata } from "next";
+import "./globals.css";
+import appendSharedMetaData from "./_metadata";
+import GlobalLayout from "./_components/GlobalLayout";
+import LocalForageProvider from "./_providers/localforage";
+import { Toaster } from "react-hot-toast";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 // import { Suspense } from "react"
-import AuthModal from "./_components/Auth/AuthModal"
-import FacebookProvider from "./_providers/FacebookProvider"
-import AuthModalProvider from "./_providers/AuthModalProvider"
-import ReduxProvider from "./_providers/ReduxProvider"
-import LayoutClientProvider from "./_providers/LayoutClientProvider"
-import Script from "next/script"
+import AuthModal from "./_components/Auth/AuthModal";
+import FacebookProvider from "./_providers/FacebookProvider";
+import AuthModalProvider from "./_providers/AuthModalProvider";
+import ReduxProvider from "./_providers/ReduxProvider";
+import LayoutClientProvider from "./_providers/LayoutClientProvider";
+import Script from "next/script";
 // import PageLoader from "./_components/PageLoader"
 
-export const metadata: Metadata = appendSharedMetaData({})
+export const metadata: Metadata = {};
 
+// Add or edit your "generateMetadata" to include the Sentry trace data:
+export function generateMetadata(): Metadata {
+  return {
+    ...appendSharedMetaData({}),
+    other: {
+      ...Sentry.getTraceData(),
+    },
+  };
+}
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html
@@ -71,5 +81,5 @@ export default function RootLayout({
         {/* </Suspense> */}
       </body>
     </html>
-  )
+  );
 }

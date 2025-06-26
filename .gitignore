@@ -42,3 +42,5 @@ next-env.d.ts
 
 /__archive
 /archive
+# Sentry Config File
+.env.sentry-build-plugin
