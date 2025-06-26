@@ -16,8 +16,6 @@ import LayoutClientProvider from "./_providers/LayoutClientProvider";
 import Script from "next/script";
 // import PageLoader from "./_components/PageLoader"
 
-export const metadata: Metadata = {};
-
 // Add or edit your "generateMetadata" to include the Sentry trace data:
 export function generateMetadata(): Metadata {
   return {
