@@ -13,9 +13,16 @@ import AuthModalProvider from "./_providers/AuthModalProvider"
 import ReduxProvider from "./_providers/ReduxProvider"
 import LayoutClientProvider from "./_providers/LayoutClientProvider"
 import Script from "next/script"
+import type { Viewport } from "next"
 // import PageLoader from "./_components/PageLoader"
 
 export const metadata: Metadata = appendSharedMetaData({})
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+}
 
 export default function RootLayout({
   children,

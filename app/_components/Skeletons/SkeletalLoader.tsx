@@ -1,10 +1,12 @@
 "use client"
-import { GridItem, SimpleGrid } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import {
   RoomListingCardSkeleton,
   RoomeyListingCardSkeleton,
 } from "./ListingCardSkeleton"
 import { useMemo } from "react"
+import { ListSectionContainer } from "../HomeComponents/ListingsClient"
+import ListingsGridLayout from "../ListingsGridLayout"
 
 export default function SkeletalLoading({
   variant,
@@ -20,21 +22,23 @@ export default function SkeletalLoading({
     return array
   }, [arrayLength])
   return (
-    <SimpleGrid
-      columns={{ base: 1, sm: 2, lg: 3, xl: 4 }}
-      gap="1rem"
-      w="full"
-      alignItems="stretch"
-    >
-      {list.map((_, idx) => (
-        <GridItem key={idx} w="full" h="full">
-          {variant === "rooms" ? (
-            <RoomListingCardSkeleton key={idx} hasBorder />
-          ) : (
-            <RoomeyListingCardSkeleton key={idx} hasBorder />
-          )}
-        </GridItem>
-      ))}
-    </SimpleGrid>
+    <>
+      <ListSectionContainer>
+        <ListingsGridLayout
+          justifyContent="start"
+          columns={{ base: 1, sm: 2, md: 2, lg: 4 }}
+          alignItems="stretch"
+          list={list.map((_, idx) => (
+            <Box key={idx}>
+              {variant === "rooms" ? (
+                <RoomListingCardSkeleton key={idx} hasBorder />
+              ) : (
+                <RoomeyListingCardSkeleton key={idx} hasBorder />
+              )}
+            </Box>
+          ))}
+        />
+      </ListSectionContainer>
+    </>
   )
 }

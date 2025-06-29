@@ -1,3 +1,4 @@
+"use client"
 import {
   Avatar,
   Box,
@@ -11,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react"
 import FavouriteIcon from "../_assets/SVG/Favourite"
-import imgOne from "../_assets/images/sample.png"
+// import imgOne from "../_assets/images/sample.png"
 import ListingCardImageCarousel from "./ListingCardImageCarousel"
 import DotSeparator from "./DotSeparator"
 import { rentDurationMapping } from "../_utils"
@@ -111,6 +112,7 @@ export default function RoomListingCard({
       </Box>
       <Box p=".5rem" roundedBottom="1.2rem">
         <OwnersInfo
+          ownersImage={listing.owner?.profileImage?.secure_url || ""}
           ownersName={`${listing.owner?.firstName} ${listing.owner?.lastName}`}
           ownerId={listing.owner?._id || ""}
         />
@@ -257,16 +259,18 @@ export function FavouriteButton({
 function OwnersInfo({
   ownersName,
   ownerId,
+  ownersImage,
 }: {
   ownersName: string
   ownerId: string
+  ownersImage: string
 }) {
   const { user } = useAppSelector((store) => store.auth)
   const { open: showAuthModal } = useContext(AuthModalContext)
   const router = useRouter()
   return (
-    <Flex gap=".8rem" alignItems="center">
-      <Avatar w={35} h={35} src={imgOne.src} />
+    <Flex gap=".8rem" alignItems="center" flexWrap="nowrap">
+      <Avatar w="35px" h="35px" src={ownersImage} size="xs" />
       <Heading
         as="h6"
         fontSize="1.6rem"
