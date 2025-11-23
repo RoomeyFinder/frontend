@@ -53,11 +53,6 @@ export default function appendSharedMetaData(metadataBase: Metadata): Metadata {
         sizes: "64x64",
       },
     ],
-    viewport: {
-      width: 'device-width',
-      initialScale: 1,
-      maximumScale: 1,
-    },
     verification: {
       google: "CMjgKjsziclrkIOp9eyalVvYqfl5uOQ4IxOsEvkbI5M",
     },
